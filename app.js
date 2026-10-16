@@ -92,62 +92,55 @@ cb.addEventListener('click',function(){var on=body.classList.toggle('contraste')
 applyPrefs();
 
 
-/* ---------- Leitura em voz alta: fila sequencial mais estável em navegadores móveis ---------- */
+/* ---------- Leitura em voz alta: compatibilidade reforçada com Safari/iPhone ---------- */
 var Voz=(function(){
-  var ok='speechSynthesis' in window&&'SpeechSynthesisUtterance' in window,voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0;
+  var ok=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0,current=null,startTimer=null;
   try{prefV=localStorage.getItem('ovelia-voz');vel.value=localStorage.getItem('ovelia-vel')||'1'}catch(e){}
-  if(!ok){document.body.classList.add('sem-voz');st.textContent='Este navegador não oferece leitura por voz. Atualize o Safari ou tente outro navegador compatível.';return {falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
+  if(!ok){document.body.classList.add('sem-voz');st.textContent='A leitura por voz não é compatível com este navegador. Atualize o Safari ou tente outro navegador.';return {falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
   function carregar(){
-    var all=speechSynthesis.getVoices()||[];
-    voices=all.filter(function(v){return /^pt([_-]|$)/i.test(v.lang)});
-    if(!voices.length)voices=all;
-    voices.sort(function(a,b){return (/pt[-_]BR/i.test(b.lang)?1:0)-(/pt[-_]BR/i.test(a.lang)?1:0)});
-    var old=sel.value;
-    sel.innerHTML=voices.map(function(v,i){return '<option value="'+i+'">Voz '+(i+1)+' — '+esc(v.name+' ('+v.lang+')')+'</option>'}).join('');
-    var chosen=-1;voices.forEach(function(v,i){if(prefV&&v.name===prefV)chosen=i});
+    try{voices=window.speechSynthesis.getVoices()||[]}catch(e){voices=[]}
+    var pt=voices.filter(function(v){return /^pt([_-]|$)/i.test(v.lang)});
+    var lista=pt.length?pt:voices;
+    lista.sort(function(a,b){return (/pt[-_]BR/i.test(b.lang)?1:0)-(/pt[-_]BR/i.test(a.lang)?1:0)});
+    var old=sel.value;sel.innerHTML=lista.map(function(v,i){return '<option value="'+i+'">'+esc(v.name+' ('+v.lang+')')+'</option>'}).join('');
+    voices=lista;var chosen=-1;voices.forEach(function(v,i){if(prefV&&v.name===prefV)chosen=i});
     if(chosen>=0)sel.value=String(chosen);else if(old&&+old<voices.length)sel.value=old;
-    if(!voices.length)st.textContent='Carregando as vozes do aparelho…';
-    else if(!voices.some(function(v){return /^pt([_-]|$)/i.test(v.lang)}))st.textContent='Não encontrei voz em português. As vozes disponíveis foram listadas; instale uma voz em português nas configurações do aparelho para melhor resultado.';
+    if(!voices.length)st.textContent='O Safari ainda não listou as vozes. Você pode tocar em “Testar voz” ou “Ouvir esta página”; tentaremos usar a voz padrão do aparelho.';
   }
   carregar();
-  if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',carregar);
-  speechSynthesis.onvoiceschanged=carregar;
-  setTimeout(carregar,500);setTimeout(carregar,1500);
-  sel.addEventListener('change',function(){try{var v=voices[+sel.value];if(v)localStorage.setItem('ovelia-voz',v.name)}catch(e){}});
+  if(window.speechSynthesis.addEventListener)window.speechSynthesis.addEventListener('voiceschanged',carregar);
+  window.speechSynthesis.onvoiceschanged=carregar;
+  sel.addEventListener('change',function(){try{var v=voices[+sel.value];if(v){prefV=v.name;localStorage.setItem('ovelia-voz',v.name)}}catch(e){}});
   vel.addEventListener('input',function(){try{localStorage.setItem('ovelia-vel',vel.value)}catch(e){}});
-  function parar(){var was=active||speechSynthesis.speaking||speechSynthesis.paused;runId++;queue=[];active=false;try{speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';st.textContent=was?'Leitura interrompida.':''}
+  function parar(silent){var was=active||window.speechSynthesis.speaking||window.speechSynthesis.paused;runId++;queue=[];active=false;current=null;if(startTimer){clearTimeout(startTimer);startTimer=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';if(!silent)st.textContent=was?'Leitura interrompida.':''}
   function next(id){
     if(id!==runId)return;
-    if(!queue.length){active=false;pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
-    var text=queue.shift(),u=new SpeechSynthesisUtterance(text),v=voices[+sel.value||0];
-    if(v){u.voice=v;u.lang=v.lang}else u.lang='pt-BR';
-    u.rate=+vel.value||1;u.pitch=1;
-    u.onend=function(){if(id===runId)next(id)};
-    u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;active=false;st.textContent='A voz parou. Tente iniciar a leitura novamente ou escolha outra voz.'};
-    try{speechSynthesis.speak(u)}catch(e){active=false;st.textContent='Não foi possível iniciar a voz neste aparelho.'}
+    if(!queue.length){active=false;current=null;pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
+    var part=queue.shift(),u=new SpeechSynthesisUtterance(part),v=voices[+sel.value];current=u;
+    u.lang=(v&&v.lang)||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||1;u.pitch=1;u.volume=1;
+    u.onend=function(){if(id===runId){current=null;startTimer=setTimeout(function(){next(id)},80)}};
+    u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;active=false;current=null;st.textContent='O navegador não conseguiu reproduzir a voz ('+(e.error||'erro')+'). Toque em Testar voz ou verifique as vozes do iPhone.'};
+    try{window.speechSynthesis.speak(u)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar o áudio. Tente novamente.'}
   }
-  function partir(t){var r=t.match(/[^.!?;:\n]+[.!?;:]?\s*/g)||[t],o=[],c='';r.forEach(function(x){if((c+x).length>180&&c){o.push(c);c=x}else c+=x});if(c)o.push(c);return o}
+  function partir(t){var r=t.match(/[^.!?;:\n]+[.!?;:]?\s*/g)||[t],o=[],c='';r.forEach(function(x){if((c+x).length>160&&c){o.push(c);c=x}else c+=x});if(c)o.push(c);return o}
   function falar(txt,tit){
-    txt=(txt||'').replace(/\s+/g,' ').trim();
-    if(!txt){st.textContent='Não há texto para ler nesta seção.';return}
-    if(!voices.length){carregar()}
-    if(!voices.length){st.textContent='O aparelho ainda não disponibilizou vozes. Aguarde alguns segundos ou verifique Ajustes > Acessibilidade > Conteúdo Falado no iPhone.';return}
-    runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Preparando leitura: '+(tit||'texto')+'.';
-    try{speechSynthesis.cancel()}catch(e){}
-    pz.textContent='Pausar';
-    /* Uma fala por vez evita que alguns navegadores móveis descartem partes da fila. */
-    next(id);
+    txt=(txt||'').replace(/\s+/g,' ').trim();if(!txt){st.textContent='Não há texto para ler nesta seção.';return}
+    carregar();runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Iniciando áudio: '+(tit||'texto')+'.';
+    if(startTimer){clearTimeout(startTimer);startTimer=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';
+    /* O pequeno intervalo após cancel() evita falhas comuns do Safari móvel. */
+    startTimer=setTimeout(function(){if(id!==runId)return;try{next(id)}catch(e){active=false;st.textContent='Não foi possível iniciar a leitura neste aparelho.'}},120);
   }
+  $('#vozPag').addEventListener('click',function(){var s=$('section.pg.on');if(!s){st.textContent='Abra uma seção para ouvir o conteúdo.';return}var h=s.querySelector('h1,h2');falar(texto(s),h?h.textContent:'página')});
+  var testar=$('#vozTestar');if(testar)testar.addEventListener('click',function(){falar('Olá! Esta é a voz da Ovelia. Se você está ouvindo esta mensagem, a leitura por áudio está funcionando.','teste de áudio')});
+  pz.addEventListener('click',function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}else if(window.speechSynthesis.speaking){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}});
+  $('#vozParar').addEventListener('click',function(){parar(false)});
+  $('#vozCfg').addEventListener('click',function(){var o=$('#vozOpc');o.hidden=!o.hidden;this.setAttribute('aria-expanded',!o.hidden);if(!o.hidden)carregar()});
+  window.addEventListener('pagehide',function(){parar(true)});
   function texto(no,tudo){var c=no.cloneNode(true);$$('button,select,input,label,script,.beads,.prog,.vozbar,[aria-hidden="true"],[hidden],.perfil-overlay',c).forEach(function(x){x.parentNode&&x.parentNode.removeChild(x)});
     if(!tudo)$$('details',c).forEach(function(d){if(!d.open)[].slice.call(d.children).forEach(function(x){if(x.tagName!=='SUMMARY')d.removeChild(x)})});
     $$('h1,h2,h3,p,li,summary,div,td,th,caption,small,a.btn,.tag',c).forEach(function(x){x.appendChild(document.createTextNode('. '))});
     return c.textContent.replace(/\.\s*\.(\s*\.)*/g,'.').replace(/([!?:;])\s*\./g,'$1')}
-  $('#vozPag').addEventListener('click',function(){var s=$('section.pg.on');var h=s.querySelector('h1,h2');falar(texto(s),h?h.textContent:'página')});
-  pz.addEventListener('click',function(){if(speechSynthesis.paused){speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}else if(speechSynthesis.speaking){speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}});
-  $('#vozParar').addEventListener('click',parar);
-  $('#vozCfg').addEventListener('click',function(){var o=$('#vozOpc');o.hidden=!o.hidden;this.setAttribute('aria-expanded',!o.hidden);if(!o.hidden)carregar()});
-  window.addEventListener('pagehide',function(){try{speechSynthesis.cancel()}catch(e){}});
-  return {falar:falar,parar:parar,texto:texto};
+  return {falar:falar,parar:function(){parar(false)},texto:texto};
 })();
 
 /* ---------- Orações (textos tradicionais em uso no Brasil — ver LEIA-ME, pendência de revisão) ---------- */
