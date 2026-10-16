@@ -26,14 +26,14 @@
   <div class="perfil-card">
     <img src="ovelha-biblia.png" width="112" height="148" alt="Ovelinha, mascote da Ovelia">
     <p class="tag pd">Bem-vindo à Ovelia</p>
-    <h1 id="perfilTitulo">Como você quer aprender hoje?</h1>
-    <p>Escolha uma experiência. Você pode trocar de perfil a qualquer momento, sem cadastro.</p>
+    <h1 id="perfilTitulo">Qual experiência combina com você?</h1>
+    <p>A Ovelia adapta a apresentação para cada público. Você pode trocar de perfil a qualquer momento, sem cadastro.</p>
     <div class="perfil-opcoes">
-      <button class="perfil-opcao" type="button" data-profile="kids"><span aria-hidden="true">🐑</span><strong>Crianças e jovens</strong><small>6 a 15 anos · histórias, orações e atividades</small></button>
-      <button class="perfil-opcao" type="button" data-profile="adult"><span aria-hidden="true">📖</span><strong>Adolescentes e adultos</strong><small>16 a 59 anos · Bíblia, liturgia e estudos</small></button>
-      <button class="perfil-opcao" type="button" data-profile="easy"><span aria-hidden="true">🔎</span><strong>Modo Fácil</strong><small>60+ ou quem prefere letras grandes e poucos passos</small></button>
+      <button class="perfil-opcao perfil-kids-choice" type="button" data-profile="kids"><span aria-hidden="true">🐑</span><strong>Modo infantil</strong><small>Histórias da Bíblia, orações simples, brincadeiras e desafios para crianças.</small></button>
+      <button class="perfil-opcao" type="button" data-profile="adult"><span aria-hidden="true">📖</span><strong>Modo normal</strong><small>A experiência completa da Ovelia: liturgia, Bíblia, orações, terço e estudos.</small></button>
+      <button class="perfil-opcao perfil-senior-choice" type="button" data-profile="senior"><span aria-hidden="true">🌷</span><strong>Ovelia 60+</strong><small>Letras maiores, botões fáceis de tocar, orientação clara e acesso rápido ao essencial.</small></button>
     </div>
-    <p class="perfil-nota">As faixas etárias são apenas sugestões. Escolha livremente a experiência que for melhor para você.</p>
+    <p class="perfil-nota">Escolha livremente a experiência que for mais confortável para você.</p>
   </div>
 </div>
 <a class="skip" href="#conteudo" onclick="event.preventDefault();document.getElementById('conteudo').focus()">Pular para o conteúdo</a>
@@ -68,6 +68,26 @@
 <!-- INÍCIO -->
 <section class="pg on" id="home">
 <div class="perfil-atual" id="perfilAtual" role="status"></div>
+<div class="profile-home kids-home" id="kidsHome" hidden>
+  <div class="kids kids-welcome">
+    <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha, amiga das crianças"><div><span class="tag pd">Cantinho da Ovelinha</span><h1>Oi, amiguinho! 🐑</h1><p>Vamos conhecer as histórias de Deus, conversar com Jesus e aprender brincando?</p><a class="btn lg kids-main-btn" href="#infantil">Vamos brincar e aprender!</a></div></div>
+  </div>
+  <div class="grid c2 kids-home-actions">
+    <div class="card"><div class="kids-emoji" aria-hidden="true">📚</div><h2>Histórias e quiz</h2><p>Conheça Noé, Davi e outras histórias da Bíblia. Depois, teste o que aprendeu!</p><a class="btn lg" href="#infantil">Entrar nas histórias</a></div>
+    <div class="card"><div class="kids-emoji" aria-hidden="true">🙏</div><h2>Minhas orações</h2><p>Orações curtinhas para agradecer, pedir ajuda e conversar com Deus.</p><a class="btn lg" href="#oracoes">Escolher uma oração</a></div>
+  </div>
+  <div class="card kids-message"><h2>Uma lembrança para hoje 💛</h2><p>Deus ama você. Seja gentil, diga a verdade e, quando errar, peça desculpas e tente de novo.</p><p><b>Desafio:</b> faça hoje uma coisa boa por alguém da sua família.</p></div>
+</div>
+<div class="profile-home senior-home" id="seniorHome" hidden>
+  <div class="senior-welcome"><span class="tag">Ovelia 60+</span><h1>Bem-vindo(a) à Ovelia</h1><p>Escolha o que deseja fazer. Deixamos os caminhos principais em destaque, com letras grandes e instruções simples.</p><p class="senior-tip">🔊 Você também pode tocar em <b>“Ouvir esta página”</b> para escutar o conteúdo.</p></div>
+  <div class="grid c2 senior-actions">
+    <div class="card"><div class="senior-icon" aria-hidden="true">📖</div><h2>Liturgia diária</h2><p>Veja as leituras da celebração de hoje.</p><a class="btn lg" href="#liturgia">Abrir liturgia</a></div>
+    <div class="card"><div class="senior-icon" aria-hidden="true">🙏</div><h2>Orações</h2><p>Encontre uma oração para o seu momento.</p><a class="btn lg" href="#oracoes">Abrir orações</a></div>
+    <div class="card"><div class="senior-icon" aria-hidden="true">📿</div><h2>Rezar o terço</h2><p>Siga cada etapa, uma de cada vez.</p><a class="btn lg" href="#terco">Começar o terço</a></div>
+    <div class="card"><div class="senior-icon" aria-hidden="true">📚</div><h2>Bíblia</h2><p>Consulte os livros da Bíblia e orientações para a leitura.</p><a class="btn lg" href="#biblia">Abrir Bíblia</a></div>
+  </div>
+  <div class="card senior-help"><h2>Precisa de ajuda?</h2><ol><li>Escolha uma das opções acima.</li><li>Use o botão “Aumentar texto” se quiser letras maiores.</li><li>Toque em “Ouvir esta página” para escutar o conteúdo disponível.</li></ol><button class="btn g lg" type="button" id="seniorVoiceHelp">🔊 Ouvir estas orientações</button></div>
+</div>
 <div class="hero"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
 <div><h1>Fé para o dia a dia</h1><p>Plataforma católica gratuita de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Sem cadastro, sem anúncios.</p>
 <div class="row" style="margin-top:12px"><a class="btn lg" href="#terco">Rezar o terço</a><a class="btn g lg" href="#oracoes">Ver orações</a></div></div></div>
@@ -184,15 +204,15 @@
 <!-- INFANTIL -->
 <section class="pg" id="infantil">
 <div class="kids">
-<div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Oi! Vamos aprender com a Ovelinha?</h2><p>Aqui você ouve histórias da Bíblia e brinca de perguntas. Não pedimos nome nem nenhum dado seu.</p></div></div>
-<h3 style="margin-top:14px">Minha trilha de aprendizagem</h3>
+<div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Vamos aprender brincando!</h2><p>Aqui tem histórias, orações e um quiz para você aprender sobre Deus. Você não precisa escrever seu nome nem fazer cadastro.</p></div></div>
+<h3 style="margin-top:14px">🌟 Meu desafio de hoje</h3>
 <div class="kids-trilha">
 <label><input type="checkbox" data-progress="kids-historia"> Ler ou ouvir uma história bíblica</label>
 <label><input type="checkbox" data-progress="kids-oracao"> Fazer uma oração curta</label>
 <label><input type="checkbox" data-progress="kids-quiz"> Responder ao quiz da Ovelinha</label>
 </div>
-<h3 style="margin-top:14px">Orações para crianças</h3>
-<p>Abra a página <a href="#oracoes">Orações</a> e escolha a categoria “Orações para crianças”. Você também pode usar o botão “Ouvir esta página” no alto do site.</p>
+<h3 style="margin-top:14px">🙏 Vamos conversar com Deus</h3>
+<p>Você pode agradecer pelo dia, pedir ajuda ou rezar antes de dormir. <a class="btn lg" href="#oracoes">Ver orações infantis</a></p>
 <h3 style="margin-top:14px">Histórias</h3>
 <details><summary>Noé e a arca <small>(Gênesis 6 a 9)</small></summary>
 <p>Havia um homem chamado Noé, que amava a Deus e confiava nele. Deus pediu que ele construísse uma grande arca. Noé obedeceu, mesmo quando muita gente achava estranho. Quando a chuva veio, Noé, a família e os animais ficaram a salvo dentro da arca. Depois da chuva, Deus colocou o arco-íris no céu, como sinal de sua promessa.</p>
@@ -200,7 +220,7 @@
 <details><summary>Davi, o pastorzinho <small>(1 Samuel 16 e 17)</small></summary>
 <p>Davi era um jovem que cuidava das ovelhas do pai. Ele era corajoso e rezava muito. Um dia, um gigante chamado Golias assustava todo o povo. Davi não tinha armadura nem espada, mas confiava em Deus. Com uma funda e uma pedra, ele venceu o gigante.</p>
 <p><b>Pequena lição:</b> a coragem vem de confiar em Deus, e não de ser o maior ou o mais forte.</p></details>
-<h3>Quiz da Ovelinha</h3>
+<h3>🎲 Quiz da Ovelinha</h3>
 <div class="card" id="quiz"></div>
 <h3>Desafio da semana</h3>
 <div class="card"><p>Faça uma boa ação em casa sem ninguém pedir, como arrumar a cama ou ajudar a guardar os brinquedos. E, antes de dormir, reze com um adulto o <a href="#oracoes">Santo Anjo</a>.</p></div>

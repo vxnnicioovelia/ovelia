@@ -6,30 +6,58 @@ var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){retu
 function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
 
 /* ---------- Perfis e navegação ---------- */
-var PROFILE_NAMES={kids:'Crianças e jovens',adult:'Adolescentes e adultos',easy:'Modo Fácil'};
+var PROFILE_NAMES={kids:'Modo infantil',adult:'Modo normal',senior:'Ovelia 60+'};
 var profile='';
 try{profile=localStorage.getItem('ovelia-perfil')||''}catch(e){}
+/* Migra a escolha antiga sem obrigar a pessoa a selecionar o perfil novamente. */
+if(profile==='easy')profile='senior';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
+var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
-  if(profile==='kids')return [['home','Início'],['infantil','Ovelia Kids'],['biblia','Bíblia'],['oracoes','Orações'],['sobre','Sobre']];
-  if(profile==='easy')return [['home','Início'],['liturgia','Liturgia diária'],['biblia','Bíblia'],['oracoes','Orações'],['terco','Terço'],['estudos','Estudos'],['sobre','Sobre']];
-  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Orações'],['terco','Terço'],['estudos','Estudos'],['infantil','Kids'],['sobre','Sobre']];
+  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['oracoes','Orações infantis']];
+  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Orações'],['terco','Rezar o terço'],['biblia','Bíblia'],['sobre','Sobre']];
+  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Orações'],['terco','Terço'],['estudos','Estudos bíblicos'],['infantil','Área infantil'],['sobre','Sobre']];
 }
 var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
+function setProfileControls(){
+  var senior=profile==='senior',kids=profile==='kids';
+  $('#aMenos').textContent=senior?'Diminuir texto':'A−';
+  $('#aMais').textContent=senior?'Aumentar texto':'A+';
+  $('#aCont').textContent=senior?'Alto contraste':'Contraste';
+  $('#aMenos').setAttribute('aria-label','Diminuir tamanho do texto');
+  $('#aMais').setAttribute('aria-label','Aumentar tamanho do texto');
+  $('#aCont').setAttribute('aria-label','Ativar ou desativar alto contraste');
+  if(kids){$('#aMenos').hidden=true;$('#aMais').hidden=true;$('#aCont').hidden=true}
+  else{$('#aMenos').hidden=false;$('#aMais').hidden=false;$('#aCont').hidden=false}
+}
 function applyProfile(){
-  document.body.classList.remove('perfil-kids','perfil-easy');
+  document.body.classList.remove('perfil-kids','perfil-senior','perfil-easy');
   if(profile==='kids')document.body.classList.add('perfil-kids');
-  if(profile==='easy')document.body.classList.add('perfil-easy');
-  perfilAtual.textContent=profile?'Experiência: '+PROFILE_NAMES[profile]+'. Para mudar, toque em “Trocar perfil”.':'';
-  renderMenu();
+  if(profile==='senior')document.body.classList.add('perfil-senior');
+  perfilAtual.textContent=profile?'Experiência ativa: '+PROFILE_NAMES[profile]+'. Para mudar, toque em “Trocar perfil”.':'';
+  renderMenu();setProfileControls();
+  if(kidsHome)kidsHome.hidden=profile!=='kids';
+  if(seniorHome)seniorHome.hidden=profile!=='senior';
+  var prayerTitle=$('#oracoes h2');if(prayerTitle)prayerTitle.textContent=profile==='kids'?'Orações para crianças':'Orações';
   try{if(profile)localStorage.setItem('ovelia-perfil',profile)}catch(e){}
   if(perfilInicio)perfilInicio.hidden=!!profile;
-  if(profile==='easy'){document.body.classList.add('t2');tam=2;applyPrefs()}
-  if(profile==='kids'){document.body.classList.remove('t2');tam=0;applyPrefs()}
-  if(profile==='adult')applyPrefs();
+  if(profile==='senior'){
+    try{if(localStorage.getItem('ovelia-letra-normal')===null)localStorage.setItem('ovelia-letra-normal',String(tam))}catch(e){}
+    tam=Math.max(1,tam);applyPrefs();
+  }
+  if(profile==='kids')applyPrefs();
+  if(profile==='adult'){
+    try{if(localStorage.getItem('ovelia-letra-normal')!==null)tam=+(localStorage.getItem('ovelia-letra-normal')||0)}catch(e){}
+    applyPrefs();
+  }
 }
-function chooseProfile(p){var old=profile;if(old!=='easy'&&p==='easy'){try{localStorage.setItem('ovelia-letra-normal',String(tam))}catch(e){}}if(old==='easy'&&p==='adult'){try{tam=+(localStorage.getItem('ovelia-letra-normal')||0)}catch(e){tam=0}}profile=p;applyProfile();if(location.hash!=='#home')location.hash='home';else show(false)}
+function chooseProfile(p){
+  var old=profile;
+  if(p==='senior'&&old!=='senior'){try{localStorage.setItem('ovelia-letra-normal',String(tam))}catch(e){}}
+  if(p==='adult'&&old==='senior'){try{tam=+(localStorage.getItem('ovelia-letra-normal')||0)}catch(e){tam=0}}
+  profile=p;applyProfile();if(location.hash!=='#home')location.hash='home';else show(false);
+}
 $$('[data-profile]').forEach(function(b){b.addEventListener('click',function(){chooseProfile(b.getAttribute('data-profile'))})});
 perfilBtn.addEventListener('click',function(){perfilInicio.hidden=false;var first=$('[data-profile]',perfilInicio);if(first)first.focus()});
 menuBtn.addEventListener('click',function(){var o=menu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o)});
@@ -37,13 +65,13 @@ renderMenu();
 if(!profile)perfilInicio.hidden=false;
 function show(first){
   var id=location.hash.slice(1);if(!$('section.pg[id="'+id+'"]'))id='home';
-  if(profile==='kids'&&['liturgia','terco','estudos'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
+  if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
   $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   menu.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
   window.scrollTo(0,0);
-  var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?'Ovelia — Bíblia, Liturgia Diária e orações católicas':(t?t[1]:id)+' — Ovelia');
+  var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Ovelia Kids — histórias e orações':profile==='senior'?'Ovelia 60+ — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
   if(!first){var h=$('#'+id+' h1,#'+id+' h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
 }
 window.addEventListener('hashchange',function(){show(false)});
@@ -263,11 +291,13 @@ function drawQ(){
     $('#qNext').focus();$('#qNext').addEventListener('click',function(){qi++;drawQ();var f=$('[data-o],#qRef',qb);if(f)f.focus()})})})
 }
 drawQ();
+var seniorVoiceHelp=$('#seniorVoiceHelp');
+if(seniorVoiceHelp)seniorVoiceHelp.addEventListener('click',function(){Voz.falar('Bem-vindo à Ovelia. Escolha uma opção: liturgia diária, orações, rezar o terço ou Bíblia. Para ouvir o conteúdo, use o botão Ouvir esta página. Para aumentar as letras, toque em Aumentar texto.','orientações da Ovelia 60+')});
 
 $$('details').forEach(function(d){var s=d.querySelector('summary'),b=document.createElement('button');b.type='button';b.className='btn g voz-btn';b.textContent='🔊 Ouvir';b.setAttribute('aria-label','Ouvir: '+s.textContent.trim());b.addEventListener('click',function(){Voz.falar(Voz.texto(d,true),s.textContent.trim())});s.insertAdjacentElement('afterend',b)});
 /* ---------- Progresso local das trilhas (somente neste aparelho) ---------- */
 $$('[data-progress]').forEach(function(c){var key='ovelia-progresso-'+c.getAttribute('data-progress');try{c.checked=localStorage.getItem(key)==='1'}catch(e){}c.addEventListener('change',function(){try{localStorage.setItem(key,c.checked?'1':'0')}catch(e){}})});
-/* Ajustes de perfil: conteúdo infantil simplificado e leitura ampliada no Modo Fácil. */
+/* Ajustes finais de cada perfil: telas, navegação e acessibilidade próprias. */
 applyProfile();
 $('#ano').textContent=new Date().getFullYear();
 show(true);

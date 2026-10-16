@@ -35,3 +35,14 @@ Todos os arquivos deste ZIP devem ficar juntos na raiz do repositório `ovelia`,
 O arquivo `index.html` também pode ser enviado sozinho para substituir o `index.html` do repositório. Ele contém CSS e JavaScript incorporados e usa as imagens que já existem no repositório. Assim, os outros arquivos antigos podem continuar lá, sem serem carregados pela nova página.
 
 Para substituir somente o `index.html`: abra o arquivo no repositório, escolha editar (lápis ou menu), use o método de upload/substituição disponível no GitHub pelo navegador se aparecer; se não aparecer uma opção para substituir por arquivo, use **Add file → Upload files** e envie o novo `index.html`.
+
+
+## Atualização de perfis (16/10/2026)
+Esta versão diferencia de forma mais clara três experiências:
+- **Modo infantil:** início próprio com a Ovelinha, botões para histórias/quiz e orações infantis, desafio do dia, navegação curta e visual acolhedor. Esconde ferramentas avançadas do topo.
+- **Modo normal:** mantém a experiência central completa da Ovelia, com liturgia, Bíblia, orações, terço, estudos e área infantil.
+- **Ovelia 60+:** início próprio com atalhos grandes para Liturgia, Orações, Terço e Bíblia; textos e botões maiores; navegação reduzida; controles de acessibilidade com rótulos mais claros e orientação para leitura em voz alta.
+
+O perfil antigo salvo como “easy” é migrado automaticamente para “senior” no próximo carregamento. As preferências de texto continuam guardadas localmente neste aparelho.
+
+**Como atualizar pelo GitHub no iPhone:** abra o repositório, entre no arquivo `index.html`, toque no lápis e substitua pelo `index.html` deste pacote; repita para `app.js` e `estilo.css`. Confirme cada alteração com um commit. Os demais arquivos e imagens devem permanecer no repositório. Como esta atualização modifica três arquivos, não envie somente o HTML.
