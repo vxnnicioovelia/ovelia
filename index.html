@@ -13,19 +13,19 @@
 <meta property="og:title" content="Ovelia — fé para o dia a dia">
 <meta property="og:description" content="Orações, terço passo a passo, estudos bíblicos e área infantil. Gratuito e sem cadastro.">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="img/favicon-64.png" type="image/png">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="icon" href="favicon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="css/estilo.css">
+<link rel="stylesheet" href="estilo.css">
 </head>
 <body>
 <a class="skip" href="#conteudo" onclick="event.preventDefault();document.getElementById('conteudo').focus()">Pular para o conteúdo</a>
 <header>
 <div class="bar">
-<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="img/icone-128.png" width="42" height="42" alt="">Ovelia</a>
+<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="icone-128.png" width="42" height="42" alt="">Ovelia</a>
 <div class="tools" role="group" aria-label="Opções de leitura">
 <button class="btn g" id="aMenos" type="button" aria-label="Diminuir letra">A−</button>
 <button class="btn g" id="aMais" type="button" aria-label="Aumentar letra">A+</button>
@@ -39,9 +39,20 @@
 <main id="conteudo" tabindex="-1">
 <noscript><div class="aviso">Este site precisa de JavaScript ativado para funcionar.</div></noscript>
 
+<div class="vozbar" role="region" aria-label="Leitura em voz alta">
+<div class="row"><strong>🔊 Ouvir o site</strong>
+<button class="btn" id="vozPag" type="button">Ouvir esta página</button>
+<button class="btn g" id="vozPausa" type="button">Pausar</button>
+<button class="btn g" id="vozParar" type="button">Parar</button>
+<button class="btn g" id="vozCfg" type="button" aria-expanded="false" aria-controls="vozOpc">Ajustar voz</button></div>
+<div id="vozOpc" hidden><label for="vozSel">Voz (em português, do seu aparelho)</label><select id="vozSel"></select>
+<label for="vozVel">Velocidade da leitura</label><input type="range" id="vozVel" min="0.6" max="1.4" step="0.1" value="1"></div>
+<p id="vozStatus" role="status" aria-live="polite" style="margin:6px 0 0;color:var(--mut);font-size:.9rem"></p>
+</div>
+
 <!-- INÍCIO -->
 <section class="pg on" id="home">
-<div class="hero"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
+<div class="hero"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
 <div><h1>Fé para o dia a dia</h1><p>Plataforma católica gratuita de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Sem cadastro, sem anúncios.</p>
 <div class="row" style="margin-top:12px"><a class="btn lg" href="#terco">Rezar o terço</a><a class="btn g lg" href="#oracoes">Ver orações</a></div></div></div>
 <div class="card" style="border-color:var(--gold)"><span class="tag pd">Hoje</span><h2 style="margin-top:8px">Leitura e liturgia do dia</h2><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a> <a class="btn g" href="#biblia">Abrir a Bíblia</a></div>
@@ -51,7 +62,7 @@
 <div class="card"><h3>Estudos bíblicos</h3><p>Passagem, contexto, perguntas e aplicação.</p><a class="btn g" href="#estudos">Abrir</a></div>
 <div class="card"><h3>Área infantil</h3><p>Histórias e um quiz para as crianças.</p><a class="btn g" href="#infantil">Abrir</a></div>
 <div class="card"><h3>Letra grande e contraste</h3><p>Use os botões A−, A+ e Contraste no topo, em qualquer página.</p></div>
-<div class="card side"><img src="img/pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba lembra a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
+<div class="card side"><img src="pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba lembra a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
 </div>
 </section>
 
@@ -97,7 +108,7 @@
 
 <!-- TERÇO -->
 <section class="pg" id="terco">
-<div class="side" style="margin-bottom:12px"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>O terço tem cinco dezenas. Em cada uma medita-se um mistério da vida de Jesus e de Maria, rezando 1 Pai-Nosso, 10 Ave-Marias e 1 Glória.</p></div></div>
+<div class="side" style="margin-bottom:12px"><img src="ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>O terço tem cinco dezenas. Em cada uma medita-se um mistério da vida de Jesus e de Maria, rezando 1 Pai-Nosso, 10 Ave-Marias e 1 Glória.</p></div></div>
 <div class="card"><h3>Rezar o terço, passo a passo</h3>
 <label for="selMist" style="font-weight:700">Mistérios</label><br>
 <select id="selMist" style="font:inherit;padding:10px;border-radius:12px;margin:6px 0 10px;max-width:100%"></select>
@@ -105,7 +116,9 @@
 <div class="prog" aria-hidden="true"><i id="progFill" style="width:0"></i></div>
 <p id="progTxt" role="status" aria-live="polite" style="color:var(--mut)"></p>
 <div class="beads" id="contas" aria-hidden="true"></div>
+<label style="display:block;margin:8px 0"><input type="checkbox" id="vozPasso"> Ler cada passo em voz alta</label>
 <div id="passo" aria-live="polite"></div>
+<button class="btn g voz-btn" id="vozPassoBtn" type="button">🔊 Ouvir este passo</button>
 <div class="row" style="margin-top:10px"><button class="btn g lg" id="tAnt" type="button">← Voltar</button><button class="btn lg" id="tProx" type="button">Começar</button><button class="btn g" id="tZero" type="button">Recomeçar</button></div>
 <p style="color:var(--mut);font-size:.9rem">O progresso não é salvo. Se você sair desta página, o contador volta ao começo.</p></div>
 <div class="card"><h3>Quando rezar cada conjunto de mistérios</h3>
@@ -141,7 +154,7 @@
 <!-- INFANTIL -->
 <section class="pg" id="infantil">
 <div class="kids">
-<div class="side"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Oi! Vamos aprender com a Ovelinha?</h2><p>Aqui você ouve histórias da Bíblia e brinca de perguntas. Não pedimos nome nem nenhum dado seu.</p></div></div>
+<div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Oi! Vamos aprender com a Ovelinha?</h2><p>Aqui você ouve histórias da Bíblia e brinca de perguntas. Não pedimos nome nem nenhum dado seu.</p></div></div>
 <h3 style="margin-top:14px">Histórias</h3>
 <details><summary>Noé e a arca <small>(Gênesis 6 a 9)</small></summary>
 <p>Havia um homem chamado Noé, que amava a Deus e confiava nele. Deus pediu que ele construísse uma grande arca. Noé obedeceu, mesmo quando muita gente achava estranho. Quando a chuva veio, Noé, a família e os animais ficaram a salvo dentro da arca. Depois da chuva, Deus colocou o arco-íris no céu, como sinal de sua promessa.</p>
@@ -159,7 +172,7 @@
 <!-- SOBRE -->
 <section class="pg" id="sobre">
 <h2>Sobre o Ovelia</h2>
-<div class="card side"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
+<div class="card side"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
 <p>O Ovelia é uma plataforma de fé, aprendizado e crescimento pessoal, com identidade cristã e fundamento católico, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Começamos por este site e, aos poucos, queremos chegar a um aplicativo.</p>
 <p>A ovelhinha é a companheira de caminhada. A pomba lembra a paz e a esperança.</p>
 <p><b>Criado por Vxnnicio.</b></p></div></div>
@@ -167,12 +180,12 @@
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
 <p><b>Liturgia e Bíblia:</b> só serão exibidas com fonte e licença de uso confirmadas.</p>
-<p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho apenas sua preferência de tamanho de letra e contraste. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
+<p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho apenas suas preferências de tamanho de letra, contraste, voz e velocidade de leitura. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
 <p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p></footer>
-<script src="dados/liturgia.js"></script>
-<script src="js/app.js"></script>
+<script src="liturgia.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
