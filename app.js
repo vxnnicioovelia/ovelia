@@ -92,19 +92,33 @@ cb.addEventListener('click',function(){var on=body.classList.toggle('contraste')
 applyPrefs();
 
 
+/* ---------- Calendário da liturgia: data escolhida e consulta da fonte ---------- */
+(function(){
+  var input=$('#litDataEscolhida'),link=$('#litAbrirData');if(!input||!link)return;
+  var hoje=new Date(),pad=function(n){return String(n).padStart(2,'0')};
+  input.value=hoje.getFullYear()+'-'+pad(hoje.getMonth()+1)+'-'+pad(hoje.getDate());
+  function atualizar(){var p=(input.value||'').split('-');if(p.length!==3)return;var ano=+p[0],mes=+p[1],dia=+p[2];if(!ano||!mes||!dia)return;
+    var url=new URL('https://liturgia.cancaonova.com/pb/liturgia/santo-inacio-de-antioquia-bispo-e-martir-memoria-sabado/');
+    url.searchParams.set('sDia',String(dia));url.searchParams.set('sMes',String(mes));url.searchParams.set('sAno',String(ano));link.href=url.toString();
+    link.textContent='Consultar '+pad(dia)+'/'+pad(mes)+'/'+ano+' na Canção Nova ↗';
+  }
+  input.addEventListener('change',atualizar);atualizar();
+})();
+
 /* ---------- Leitura em voz alta: compatibilidade reforçada com Safari/iPhone ---------- */
 var Voz=(function(){
   var ok=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0,current=null,startTimer=null,watchdog=null;
-  try{prefV=localStorage.getItem('ovelia-voz');vel.value=localStorage.getItem('ovelia-vel')||'1'}catch(e){}
+  try{prefV=localStorage.getItem('ovelia-voz');vel.value=localStorage.getItem('ovelia-vel')||'0.85'}catch(e){}
   if(!ok){document.body.classList.add('sem-voz');st.textContent='A leitura por voz não é compatível com este navegador. Atualize o Safari ou tente outro navegador.';return {falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
   function carregar(){
     try{voices=window.speechSynthesis.getVoices()||[]}catch(e){voices=[]}
     var pt=voices.filter(function(v){return /^pt([_-]|$)/i.test(v.lang)});
     var lista=pt.length?pt:voices;
-    lista.sort(function(a,b){return (/pt[-_]BR/i.test(b.lang)?1:0)-(/pt[-_]BR/i.test(a.lang)?1:0)});
+    function qualidade(v){var n=(v.name||'').toLowerCase(),s=0;if(/^pt[-_]br$/i.test(v.lang))s+=100;if(/natural|enhanced|premium|neural|luciana|fernanda|francisca|siri/i.test(n))s+=20;if(/compact|basic|default/i.test(n))s-=10;return s}
+    lista.sort(function(a,b){return qualidade(b)-qualidade(a)});
     var old=sel.value;sel.innerHTML=lista.map(function(v,i){return '<option value="'+i+'">'+esc(v.name+' ('+v.lang+')')+'</option>'}).join('');
     voices=lista;var chosen=-1;voices.forEach(function(v,i){if(prefV&&v.name===prefV)chosen=i});
-    if(chosen>=0)sel.value=String(chosen);else if(old&&+old<voices.length)sel.value=old;
+    if(chosen>=0)sel.value=String(chosen);else if(old&&+old<voices.length)sel.value=old;else if(voices.length)sel.value='0';
     if(!voices.length)st.textContent='O Safari ainda não listou as vozes. Você pode tocar em “Testar voz” ou “Ouvir esta página”; tentaremos usar a voz padrão do aparelho.';
   }
   carregar();
@@ -117,9 +131,9 @@ var Voz=(function(){
     if(id!==runId)return;
     if(!queue.length){active=false;current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
     var part=queue.shift(),u=new SpeechSynthesisUtterance(part),v=voices[+sel.value];current=u;
-    u.lang=(v&&v.lang)||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||1;u.pitch=1;u.volume=1;
+    u.lang=(v&&/^pt[-_]br$/i.test(v.lang)&&v.lang)||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||0.85;u.pitch=1;u.volume=1;
     u.onstart=function(){if(id!==runId)return;if(watchdog){clearTimeout(watchdog);watchdog=null}st.textContent='Reproduzindo áudio…';};
-    u.onend=function(){if(id===runId){current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}startTimer=setTimeout(function(){next(id)},80)}};
+    u.onend=function(){if(id===runId){current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}var fim=(part.slice(-1)==='?'||part.slice(-1)==='!')?380:(part.slice(-1)==='.'?300:180);startTimer=setTimeout(function(){next(id)},fim)}};
     u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;if(watchdog){clearTimeout(watchdog);watchdog=null}active=false;current=null;st.textContent='O navegador informou que não conseguiu reproduzir a voz ('+(e.error||'erro')+'). Verifique o volume e as vozes do iPhone.'};
     try{
       window.speechSynthesis.speak(u);

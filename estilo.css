@@ -211,3 +211,10 @@ body.perfil-senior input,body.perfil-senior select{font:inherit;min-height:54px}
 body.perfil-kids .kids-home-actions .card,body.perfil-kids .kids-message{background:#FFFFFF;color:#454A40;border-color:#D6B77A}
 body.perfil-kids .kids-home-actions h2,body.perfil-kids .kids-message h2{color:#526B55}
 body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:#E8E2D5;color:#454A40}
+
+/* Calendário de consulta da Liturgia Diária */
+.calendario-liturgia{margin:12px 0;border:1px solid var(--line)}
+.calendario-controles{display:grid;grid-template-columns:1fr;gap:10px;max-width:560px}
+.calendario-controles label{font-weight:700}
+.calendario-controles input[type="date"]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;min-height:48px;width:100%;box-sizing:border-box}
+@media(min-width:620px){.calendario-controles{grid-template-columns:minmax(180px,.7fr) minmax(260px,1.3fr);align-items:end}.calendario-controles label{grid-column:1/-1}}
