@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ovelia — Bíblia, Liturgia Diária e orações católicas</title>
+<meta name="description" content="Ovelia é uma plataforma católica gratuita de fé e aprendizado. Versão de teste com contador do terço; Bíblia, Liturgia Diária e estudos em desenvolvimento.">
+<meta name="theme-color" content="#1F2F57">
+<meta name="author" content="Vxnnicio">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Ovelia">
+<meta property="og:title" content="Ovelia — fé para o dia a dia">
+<meta property="og:description" content="Plataforma católica gratuita de fé e aprendizado. Versão de teste em desenvolvimento.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="img/favicon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{--bg:#EEF3FA;--card:#fff;--ink:#1F2F57;--mut:#56628A;--gold:#D9A441;--olive:#5E7F5B;--line:#D6DEEE;--soft:#E3EBF8;--hero:#1F2F57;--fs:17px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#121A33;--card:#1B2547;--ink:#EAF0FF;--mut:#A9B5DA;--line:#2C3963;--soft:#232F57;--hero:#2A3A6E}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.6 Nunito,system-ui,sans-serif}
+body.big{--fs:22px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;margin:0 0 .5em}
+h1{font-size:2rem}h2{font-size:1.5rem}h3{font-size:1.1rem}p{margin:.4em 0;max-width:70ch}
+img{max-width:100%;height:auto;display:block}
+[tabindex="-1"]:focus{outline:none}
+header{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{font:700 1.4rem Fraunces,serif;display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
+.brand img{width:40px;height:40px}
+nav a{color:var(--mut);text-decoration:none}
+nav.top{display:none;gap:4px;margin-left:auto}
+nav.top a{padding:8px 14px;border-radius:99px}
+nav a[aria-current]{background:var(--soft);color:var(--ink);font-weight:700}
+nav.bot{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
+nav.bot a{flex:1;font-size:.8rem;padding:6px 2px;text-align:center}
+nav.bot a[aria-current]{background:none;border-top:3px solid var(--gold)}
+nav.bot span{display:block;font-size:1.4rem}
+main{max-width:980px;margin:0 auto;padding:18px 18px 110px}
+.js section{display:none}.js section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+.grid{display:grid;gap:14px}
+.hero{display:flex;gap:22px;align-items:center;background:var(--hero);color:#fff;border-radius:26px;padding:24px;margin-bottom:16px}
+.hero p{color:#CBD6F5}.hero img{flex:0 0 190px;width:190px;background:#F7F5EC;border-radius:22px;padding:8px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:99px;padding:10px 18px;background:var(--gold);color:#2A2108;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.g{background:var(--soft);color:var(--ink)}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:2px 10px;border-radius:99px;background:#F6E7C4;color:#6A4B07}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.beads{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.bead{width:24px;height:24px;border-radius:50%;background:var(--soft);border:2px solid var(--line)}
+.bead.f{background:var(--gold);border-color:var(--gold)}.bead.big{width:34px;height:34px;border-color:var(--mut)}
+.side{display:flex;gap:18px;align-items:center}.side img{flex:0 0 130px;width:130px}
+footer{text-align:center;color:var(--mut);font-size:.85rem;padding:10px 18px 120px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (min-width:800px){nav.top{display:flex}nav.bot{display:none}main{padding-bottom:40px}footer{padding-bottom:30px}
+.grid.c2{grid-template-columns:1fr 1fr}h1{font-size:2.6rem}.side img{flex-basis:170px;width:170px}}
+@media (max-width:560px){.hero{flex-direction:column;text-align:center}.hero .row{justify-content:center}.hero img{width:160px;flex:none}.side{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<header>
+<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="img/icone-128.png" width="40" height="40" alt="">Ovelia</a>
+<nav class="top" id="navTop" aria-label="Menu principal"></nav>
+<button class="btn g" id="acc" type="button" aria-pressed="false" style="margin-left:auto">A+ Letra grande</button>
+</header>
+
+<main>
+<section id="home" class="on">
+<div class="hero"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
+<div><h1>Fé para o dia a dia</h1><p>O Ovelia é uma plataforma católica de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis e acolhedores.</p>
+<p>Esta é uma versão de teste: por enquanto, você já pode rezar o terço com o contador.</p>
+<div class="row" style="margin-top:12px"><a class="btn" href="#oracoes">Rezar o terço</a><a class="btn g" href="#embreve">Ver o que vem por aí</a></div></div></div>
+<div class="grid c2">
+<div class="card"><h3>Terço e orações</h3><p>Contador de contas para acompanhar a oração do terço, com letra ampliável.</p><a class="btn g" href="#oracoes">Abrir</a></div>
+<div class="card side"><img src="img/pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba acompanha a ovelha lembrando a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
+</div>
+</section>
+
+<section id="oracoes">
+<div class="side" style="margin-bottom:12px"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>Toque em “Próxima conta” a cada oração. O contador marca onde você está.</p></div></div>
+<div class="card"><p id="mist" style="color:var(--mut)"></p>
+<div class="beads" id="beads" aria-hidden="true"></div>
+<p id="pray" aria-live="polite"></p>
+<div class="row"><button class="btn" type="button" id="nextB">Próxima conta</button><button class="btn g" type="button" id="resetB">Recomeçar</button></div>
+<p style="color:var(--mut);font-size:.85rem">Este contador só marca as contas. Os textos das orações serão adicionados depois, com fonte verificada.</p></div>
+</section>
+
+<section id="embreve">
+<h2>O que vem por aí</h2>
+<p>O Ovelia está nascendo aos poucos. Estes conteúdos ainda <b>não estão disponíveis</b>. Cada um só entra no ar com fonte e permissão de uso verificadas.</p>
+<div class="grid c2" style="margin-top:14px">
+<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Liturgia Diária</h3><p>Leituras, salmo, Evangelho e reflexão, a partir de fonte litúrgica autorizada. Nada será inventado.</p></div>
+<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Bíblia</h3><p>A tradução será integrada depois de confirmar a licença de uso.</p></div>
+<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">News</h3><p>Notícias católicas só serão publicadas após revisão e aprovação manual, com conteúdo e fonte verificados.</p></div>
+<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Estudos e aprendizado da fé</h3><p>Trilhas curtas e didáticas para aprender e crescer na fé.</p></div>
+<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Área infantil</h3><p>Conteúdos próprios para crianças, sem coleta de dados.</p></div>
+<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Experiência acessível</h3><p>Navegação simplificada para idosos. O botão “A+” já aumenta a letra do site.</p></div>
+</div>
+</section>
+
+<section id="sobre">
+<h2>Sobre o Ovelia</h2>
+<div class="card side"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
+<p>O Ovelia será uma plataforma de fé, aprendizado e crescimento pessoal, com identidade cristã e fundamento católico, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores.</p>
+<p>A ovelhinha é a companheira de caminhada. A pomba lembra a paz e a esperança.</p>
+<p>Começamos por um site e, aos poucos, queremos chegar a um aplicativo.</p>
+<p><b>Criado por Vxnnicio.</b></p></div></div>
+</section>
+</main>
+<footer>Ovelia · Criado por Vxnnicio</footer>
+<nav class="bot" id="navBot" aria-label="Menu principal (celular)"></nav>
+
+<script>
+(function(){
+var tabs=[['home','Início','🏠'],['oracoes','Terço','📿'],['embreve','Em breve','🌱'],['sobre','Sobre','ℹ️']];
+var navTop=document.getElementById('navTop'),navBot=document.getElementById('navBot'),acc=document.getElementById('acc');
+navTop.innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'">'+x[1]+'</a>'}).join('');
+navBot.innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'"><span aria-hidden="true">'+x[2]+'</span>'+x[1]+'</a>'}).join('');
+function show(first){
+  var id=location.hash.slice(1);if(!document.querySelector('section[id="'+id+'"]'))id='home';
+  document.querySelectorAll('section').forEach(function(s){s.classList.toggle('on',s.id===id)});
+  document.querySelectorAll('nav a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  window.scrollTo(0,0);
+  if(!first){var h=document.querySelector('#'+id+' h1,#'+id+' h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+}
+window.addEventListener('hashchange',function(){show(false)});
+function setBig(on){document.body.classList.toggle('big',on);acc.setAttribute('aria-pressed',on);acc.textContent=on?'A− Letra normal':'A+ Letra grande';try{localStorage.setItem('ovelia-big',on?'1':'0')}catch(e){}}
+acc.addEventListener('click',function(){setBig(!document.body.classList.contains('big'))});
+try{if(localStorage.getItem('ovelia-big')==='1')setBig(true)}catch(e){}
+/* Terço: 1 Pai-Nosso + 3 Ave-Marias + 5 x (Pai-Nosso + 10 Ave-Marias) = 59 contas */
+var steps=[{big:1,t:'Pai-Nosso (conta grande)'}],beadsEl=document.getElementById('beads'),pray=document.getElementById('pray'),n=0;
+for(var i=1;i<=3;i++)steps.push({big:0,t:'Ave-Maria '+i+' de 3'});
+for(var d=1;d<=5;d++){steps.push({big:1,t:'Dezena '+d+' · Pai-Nosso (conta grande)'});for(var k=1;k<=10;k++)steps.push({big:0,t:'Dezena '+d+' · Ave-Maria '+k+' de 10'})}
+var grp=['Gloriosos','Gozosos','Dolorosos','Gloriosos','Luminosos','Dolorosos','Gozosos'][new Date().getDay()];
+document.getElementById('mist').textContent='Hoje, pela distribuição tradicional por dia da semana: Mistérios '+grp+'.';
+function draw(){beadsEl.innerHTML=steps.map(function(s,i){return '<span class="bead'+(s.big?' big':'')+(i<n?' f':'')+'"></span>'}).join('');
+  pray.innerHTML=n===0?'Toque em <b>Próxima conta</b> para começar.':n>=steps.length?'<b>Terço concluído.</b>':'<b>Conta '+n+' de '+steps.length+':</b> '+steps[n-1].t}
+document.getElementById('nextB').addEventListener('click',function(){if(n<steps.length){n++;draw()}});
+document.getElementById('resetB').addEventListener('click',function(){n=0;draw()});
+draw();show(true);
+})();
+</script>
+</body>
+</html>
