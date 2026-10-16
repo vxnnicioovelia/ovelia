@@ -130,13 +130,14 @@ var Voz=(function(){
   function partir(t){var r=t.match(/[^.!?;:\n]+[.!?;:]?\s*/g)||[t],o=[],c='';r.forEach(function(x){if((c+x).length>160&&c){o.push(c);c=x}else c+=x});if(c)o.push(c);return o}
   function falar(txt,tit){
     txt=(txt||'').replace(/\s+/g,' ').trim();if(!txt){st.textContent='Não há texto para ler nesta seção.';return}
-    carregar();runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Iniciando áudio: '+(tit||'texto')+'.';
-    if(startTimer){clearTimeout(startTimer);startTimer=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';
+    carregar();var precisaCancelar=active||window.speechSynthesis.speaking||window.speechSynthesis.pending||window.speechSynthesis.paused;runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Toque recebido. Preparando áudio: '+(tit||'texto')+'.';
+    if(startTimer){clearTimeout(startTimer);startTimer=null}if(precisaCancelar){try{window.speechSynthesis.cancel()}catch(e){}}pz.textContent='Pausar';
     /* Inicia a primeira fala dentro do toque do usuário; no Safari móvel, adiar speak() pode bloquear o áudio. */
     try{next(id)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar a leitura neste aparelho: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
   $('#vozPag').addEventListener('click',function(){var s=$('section.pg.on');if(!s){st.textContent='Abra uma seção para ouvir o conteúdo.';return}var h=s.querySelector('h1,h2');falar(texto(s),h?h.textContent:'página')});
   var testar=$('#vozTestar');if(testar)testar.addEventListener('click',function(){falar('Olá! Esta é a voz da Ovelia. Se você está ouvindo esta mensagem, a leitura por áudio está funcionando.','teste de áudio')});
+  var diagnostico=$('#vozDiagnostico');if(diagnostico)diagnostico.addEventListener('click',function(){diagnosticar()});
   pz.addEventListener('click',function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}else if(window.speechSynthesis.speaking){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}});
   $('#vozParar').addEventListener('click',function(){parar(false)});
   $('#vozCfg').addEventListener('click',function(){var o=$('#vozOpc');o.hidden=!o.hidden;this.setAttribute('aria-expanded',!o.hidden);if(!o.hidden)carregar()});
@@ -145,7 +146,21 @@ var Voz=(function(){
     if(!tudo)$$('details',c).forEach(function(d){if(!d.open)[].slice.call(d.children).forEach(function(x){if(x.tagName!=='SUMMARY')d.removeChild(x)})});
     $$('h1,h2,h3,p,li,summary,div,td,th,caption,small,a.btn,.tag',c).forEach(function(x){x.appendChild(document.createTextNode('. '))});
     return c.textContent.replace(/\.\s*\.(\s*\.)*/g,'.').replace(/([!?:;])\s*\./g,'$1')}
-  return {falar:falar,parar:function(){parar(false)},texto:texto};
+  function diagnosticar(){
+    st.textContent='Botão acionado. Verificando se o navegador inicia a voz…';
+    if(!ok){st.textContent='Este navegador não oferece a função de leitura por voz. Abra o site no Safari atualizado.';return}
+    var was=active||window.speechSynthesis.speaking||window.speechSynthesis.pending||window.speechSynthesis.paused;
+    if(was){try{window.speechSynthesis.cancel()}catch(e){}}
+    active=false;queue=[];current=null;runId++;var id=runId,started=false,ended=false,u;
+    try{u=new SpeechSynthesisUtterance('Olá. Este é o teste de áudio da Ovelia.');u.lang='pt-BR';u.volume=1;u.rate=1;
+      u.onstart=function(){if(id!==runId)return;started=true;st.textContent='A voz começou a tocar. Se não estiver ouvindo, confira o volume de mídia do iPhone.'};
+      u.onend=function(){if(id!==runId)return;ended=true;st.textContent='Teste concluído. Se não ouviu a voz, o problema está na reprodução do navegador ou nas configurações de áudio do aparelho.'};
+      u.onerror=function(e){if(id!==runId)return;st.textContent='O navegador retornou erro de áudio ('+(e&&e.error?e.error:'sem detalhe')+'). Tente abrir a Ovelia no Safari e confira Ajustes > Acessibilidade > Conteúdo Falado.'};
+      window.speechSynthesis.speak(u);
+      setTimeout(function(){if(id!==runId||started||ended)return;if(!window.speechSynthesis.speaking){st.textContent='O botão foi acionado, mas o Safari não iniciou a voz. Recarregue a página e teste novamente; se persistir, será preciso usar áudio pré-gravado em vez da voz do navegador.'}},3000);
+    }catch(e){st.textContent='Falha ao iniciar o teste: '+(e&&e.message?e.message:'erro do navegador')+'.'}
+  }
+  return {falar:falar,parar:function(){parar(false)},texto:texto,diagnosticar:diagnosticar};
 })();
 
 /* ---------- Orações (textos tradicionais em uso no Brasil — ver LEIA-ME, pendência de revisão) ---------- */
@@ -242,32 +257,55 @@ function drawLivros(q){q=norm(q||'');var total=0;
   $('#livros').innerHTML=h||'<p>Nenhum livro encontrado com esse nome.</p>';$('#livrosN').textContent=total+' livro'+(total===1?'':'s')+' exibido'+(total===1?'':'s')+' (de 73)'}
 $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)});drawLivros('');
 
-/* ---------- Liturgia: mostra apenas dados revisados manualmente ---------- */
+/* ---------- Liturgia diária automática: metadados e referências, sem copiar textos integrais ---------- */
 var hoje=new Date(),iso=hoje.getFullYear()+'-'+('0'+(hoje.getMonth()+1)).slice(-2)+'-'+('0'+hoje.getDate()).slice(-2);
 var dataBR=hoje.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-var L=window.LITURGIA||{dias:[]},dia=(L.dias||[]).filter(function(d){return d.data===iso})[0];
+var litStatus=$('#litStatus'),litDia=$('#litDia'),litSem=$('#litSem'),litReflexao=$('#litReflexao'),litEstudoDia=$('#litEstudoDia'),estudoLiturgia=$('#estudoLiturgia');
 $('#litData').textContent=dataBR;
-$('#litAtual').textContent=L.ultimaAtualizacao?('Última atualização do conteúdo: '+L.ultimaAtualizacao.split('-').reverse().join('/')):'As leituras completas são consultadas na fonte católica externa indicada abaixo; ainda não são reproduzidas automaticamente dentro da Ovelia.';
-function parte(id,titulo,o){if(!o)return '';return '<section class="card" id="'+id+'"><h3>'+titulo+'</h3><p><b>'+esc(o.ref||'')+'</b></p>'+(o.refrao?'<p><i>Refrão: '+esc(o.refrao)+'</i></p>':'')+'<div class="oracao">'+esc(o.texto||'')+'</div></section>'}
-if(dia){
-  var partes=[['l1','Primeira leitura',dia.primeiraLeitura],['sal','Salmo responsorial',dia.salmo],['l2','Segunda leitura',dia.segundaLeitura],['acl','Aclamação ao Evangelho',dia.aclamacao],['ev','Evangelho',dia.evangelho]].filter(function(x){return x[2]});
-  $('#litDia').innerHTML='<div class="card"><span class="tag ok">Conteúdo revisado</span><h3 style="margin-top:8px">'+esc(dia.celebracao||'')+'</h3>'+(dia.fonte?'<p style="color:var(--mut)">Fonte: '+esc(dia.fonte)+'</p>':'')+'<div class="row">'+partes.map(function(x){return '<button class="btn g" type="button" data-scroll="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div></div>'+
-   partes.map(function(x){return parte(x[0],x[1],x[2])}).join('')+(dia.reflexao?'<div class="card"><span class="tag pd">Reflexão da Ovelia · conteúdo editorial</span><p>'+esc(dia.reflexao)+'</p></div>':'');
-  var s=$('#litSem');if(s)s.hidden=true;
-}
-$('#homeLit').textContent=dia?('Hoje: '+(dia.celebracao||'liturgia do dia')+'.'):'Consulte as leituras atualizadas na fonte católica indicada na página Liturgia Diária.';
-/* Reflexão diária original da Ovelia. Não é apresentada como comentário oficial nem como resumo das leituras litúrgicas. */
-var reflexoesOvelia=[
- {ref:'João 15,4-5',titulo:'Permaneça perto de Jesus',texto:'Reserve alguns minutos para estar em silêncio, rezar e lembrar que a fé também cresce nos pequenos gestos de cada dia.',acao:'Escolha hoje uma atitude concreta de amor e pratique-a com alguém próximo.'},
- {ref:'Salmo 23',titulo:'Confie no cuidado de Deus',texto:'Nem todos os caminhos são fáceis, mas você pode levar suas preocupações à oração e buscar ajuda quando precisar.',acao:'Apresente a Deus uma preocupação e converse com alguém de confiança, se precisar.'},
- {ref:'Lucas 10,25-37',titulo:'Aproxime-se de quem precisa',texto:'A caridade começa quando percebemos a necessidade do outro e escolhemos não passar adiante indiferentes.',acao:'Faça hoje um gesto simples de cuidado, sem esperar recompensa.'},
- {ref:'Mateus 6,9-13',titulo:'Reze com simplicidade',texto:'A oração não precisa de palavras difíceis. Fale com Deus com sinceridade e reserve um momento para escutar.',acao:'Reze devagar o Pai-Nosso, prestando atenção no significado das palavras.'},
- {ref:'Filipenses 4,6-7',titulo:'Leve suas preocupações à oração',texto:'A fé não significa ignorar os problemas. Significa atravessá-los buscando sabedoria, apoio e paz em Deus.',acao:'Escreva uma preocupação e um pequeno passo que você pode dar para enfrentá-la.'},
- {ref:'1 Coríntios 13,4-7',titulo:'Pratique o amor no cotidiano',texto:'O amor se revela na paciência, na gentileza, no respeito e na disposição de reparar os próprios erros.',acao:'Escolha uma conversa em que você possa ouvir com mais paciência.'},
- {ref:'Marcos 10,13-16',titulo:'Acolha com ternura',texto:'Jesus nos ensina a acolher com dignidade e cuidado. Cada pessoa merece ser tratada com respeito.',acao:'Dê atenção verdadeira a alguém que costuma ficar de lado.'}
+$('#litAtual').textContent='A Ovelia tenta atualizar as referências automaticamente quando você abre esta página.';
+var CNBB_URL='https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php';
+var temasEstudo=[
+ {id:'misericordia',palavras:['misericórdia','misericordia','perdo','compaix','perdão'],titulo:'Misericórdia e perdão',versos:['Lucas 15,11-32','Efésios 4,32','Salmo 103,8-13'],reflexao:'A misericórdia de Deus nos convida a recomeçar e a tratar os outros com compaixão.',pergunta:'A quem posso oferecer perdão, escuta ou uma nova oportunidade?',acao:'Faça um gesto concreto de reconciliação, respeitando também os limites necessários.'},
+ {id:'amor',palavras:['amor','amar','caridade','próximo','proximo'],titulo:'Amar a Deus e ao próximo',versos:['Lucas 10,25-37','João 13,34-35','1 Coríntios 13,4-7'],reflexao:'O amor cristão aparece em escolhas concretas: cuidar, escutar, servir e respeitar.',pergunta:'Quem precisa que eu pare e lhe dê atenção hoje?',acao:'Pratique um ato de caridade discreto, sem esperar recompensa.'},
+ {id:'fe',palavras:['fé','fe ','crer','acredit','confiança','confiar'],titulo:'Fé e confiança em Deus',versos:['Hebreus 11,1-6','Marcos 4,35-41','Salmo 23'],reflexao:'A fé não elimina todas as dificuldades, mas nos ajuda a atravessá-las buscando a presença e a sabedoria de Deus.',pergunta:'Qual preocupação posso apresentar a Deus e qual passo responsável posso dar?',acao:'Faça uma oração breve e identifique uma atitude possível para enfrentar uma preocupação.'},
+ {id:'oracao',palavras:['orar','oração','oracao','rez','pai-nosso'],titulo:'Aprender a rezar',versos:['Mateus 6,5-13','Filipenses 4,6-7','Salmo 141,1-2'],reflexao:'A oração é encontro com Deus. Podemos falar com sinceridade, agradecer, pedir ajuda e também permanecer em silêncio.',pergunta:'Minha oração tem espaço para agradecer e escutar, além de pedir?',acao:'Reze o Pai-Nosso devagar, prestando atenção em cada frase.'},
+ {id:'esperanca',palavras:['esperança','esperanca','vida eterna','ressusc','alegria'],titulo:'Esperança em Deus',versos:['Romanos 15,13','João 11,25-26','Salmo 27,1'],reflexao:'A esperança cristã nos ajuda a caminhar sem negar a dor, confiando que Deus permanece conosco.',pergunta:'Que palavra de esperança posso partilhar com alguém?',acao:'Envie uma mensagem de ânimo ou visite alguém que precise de companhia.'},
+ {id:'servico',palavras:['servi','serviço','servico','humild','pobres','pequenos'],titulo:'Servir com humildade',versos:['Marcos 10,42-45','João 13,12-15','Filipenses 2,3-5'],reflexao:'Jesus ensina que a grandeza passa pelo serviço e pelo cuidado com a dignidade de cada pessoa.',pergunta:'Como posso ajudar sem querer aparecer ou controlar o outro?',acao:'Ofereça ajuda prática a alguém da família ou da comunidade.'},
+ {id:'palavra',palavras:['palavra do senhor','escutai','escuta','lei do senhor','escritura'],titulo:'Escutar e viver a Palavra',versos:['Tiago 1,22-25','Salmo 119,105','2 Timóteo 3,16-17'],reflexao:'Ler a Bíblia é um começo; a Palavra amadurece em nós quando a acolhemos e procuramos colocá-la em prática.',pergunta:'O que o texto me revela sobre Deus e que atitude me convida a mudar?',acao:'Anote uma frase da leitura e transforme-a numa ação simples para hoje.'}
 ];
-var diaAno=Math.floor((new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate())-new Date(hoje.getFullYear(),0,0))/86400000),reflexao=reflexoesOvelia[diaAno%reflexoesOvelia.length];
-$('#litReflexao').innerHTML='<span class="tag pd">Pausa de oração da Ovelia · conteúdo original</span><h3>'+esc(reflexao.titulo)+'</h3><p>'+esc(reflexao.texto)+'</p><p><b>Para colocar em prática:</b> '+esc(reflexao.acao)+'</p><p class="muted-note">Referência para leitura na sua Bíblia: '+esc(reflexao.ref)+'. Esta pausa não substitui a reflexão específica sobre as leituras litúrgicas do dia.</p>';
+function primeira(arr){return Array.isArray(arr)?(arr[0]||null):arr||null}
+function refLeitura(obj){if(!obj)return '';return obj.referencia||obj.ref||obj.referenciaBiblica||obj.titulo||''}
+function textoDados(d){try{return JSON.stringify({liturgia:d.liturgia,leituras:d.leituras}).toLowerCase()}catch(e){return ''}}
+function escolherTema(d){var texto=textoDados(d),melhor=null,pontos=0;temasEstudo.forEach(function(t){var n=t.palavras.reduce(function(s,p){return s+(texto.indexOf(p)>=0?1:0)},0);if(n>pontos){pontos=n;melhor=t}});if(melhor)return melhor;var n=Math.floor((new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate())-new Date(hoje.getFullYear(),0,0))/86400000);return temasEstudo[n%temasEstudo.length]}
+function renderEstudo(tema,leituras,origem){var refs=leituras.map(function(x){return x.titulo+': '+x.ref}).filter(function(x){return x.indexOf(': ')>0});var html='<span class="tag pd">Trilha de estudo da Ovelia</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p>';
+ if(refs.length)html+='<h4>Leituras litúrgicas de hoje</h4><ul>'+refs.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';
+ html+='<h4>Outros versículos para estudar o mesmo tema</h4><p class="versos">'+tema.versos.map(esc).join(' · ')+'</p><p><b>Pergunta para meditar:</b> '+esc(tema.pergunta)+'</p><p><b>Prática de hoje:</b> '+esc(tema.acao)+'</p><p class="muted-note">Leia as referências na sua Bíblia católica. A seleção é uma sugestão de estudo editorial da Ovelia, não uma nota oficial da liturgia.</p>';
+ if(origem)html+='<p class="muted-note">Referências consultadas automaticamente em uma API comunitária; confirme sempre a celebração na fonte oficial.</p>';else if(!refs.length)html+='<p class="muted-note">A conexão automática não está disponível neste momento. Este é um tema geral de estudo e não está confirmado como relacionado à liturgia de hoje.</p>';
+ if(estudoLiturgia)estudoLiturgia.innerHTML=html;if(litEstudoDia)litEstudoDia.innerHTML='<div class="card estudo-do-dia"><span class="tag">Estudo relacionado</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p><p class="versos">'+tema.versos.map(esc).join(' · ')+'</p><a class="btn g" href="#estudos">Abrir estudo guiado</a></div>';
+ litReflexao.innerHTML='<span class="tag pd">Reflexão da Ovelia · conteúdo original</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p><p><b>Para refletir:</b> '+esc(tema.pergunta)+'</p><p><b>Para colocar em prática:</b> '+esc(tema.acao)+'</p>';
+}
+function renderLiturgy(d,origem){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[];
+ defs.forEach(function(def){var arr=Array.isArray(def[1])?def[1]:(def[1]?[def[1]]:[]);if(arr.length){var unique=[];arr.forEach(function(o){var r=refLeitura(o);if(r&&unique.indexOf(r)<0)unique.push(r)});if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})}});
+ var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';var dataApi=d.data||dataBR;
+ $('#litData').textContent=dataApi+' · '+dataBR;
+ $('#litAtual').textContent=origem?'Referências atualizadas automaticamente nesta visita.':'Referências consultadas a partir dos dados disponíveis.';
+ var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Atualização automática</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
+ if(refs.length)html+='<div class="liturgia-referencias">'+refs.map(function(x){return '<div class="ref-item"><b>'+esc(x.titulo)+'</b><br>'+esc(x.ref)+'</div>'}).join('')+'</div>';
+ else html+='<p>Não foi possível identificar as referências nesta resposta. Consulte a fonte oficial.</p>';
+ html+='<p class="muted-note">Para preservar a fidelidade e os direitos das traduções, a Ovelia mostra aqui as referências e abre os textos integrais na fonte oficial.</p><a class="btn lg" href="'+CNBB_URL+'" target="_blank" rel="noopener noreferrer">Ler os textos completos na Edições CNBB ↗</a><p class="muted-note">Fonte dos metadados: API comunitária Liturgia Diária (<a href="https://github.com/Dancrf/liturgia-diaria" target="_blank" rel="noopener noreferrer">projeto e documentação</a>). Confira a fonte oficial antes de usar em celebrações.</p></div>';
+ litDia.innerHTML=html;litStatus.textContent='Liturgia do dia carregada.';
+ var tema=escolherTema(d);renderEstudo(tema,refs,origem);
+}
+function fallbackLiturgy(){var L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===iso})[0];
+ if(manual){var conv=function(x){return x?[{referencia:x.ref||x.referencia||'',texto:x.texto||''}]:[]};renderLiturgy({data:iso,liturgia:manual.celebracao,leituras:{primeiraLeitura:conv(manual.primeiraLeitura),salmo:conv(manual.salmo),segundaLeitura:conv(manual.segundaLeitura),evangelho:conv(manual.evangelho)},cor:''},false);return}
+ litStatus.textContent='Não foi possível atualizar automaticamente as referências agora. Você ainda pode consultar a liturgia na fonte oficial.';
+ litDia.innerHTML='<div class="card"><span class="tag">Modo de segurança</span><h3>Consulte as leituras de hoje</h3><p>A conexão com a fonte automática pode estar indisponível. Não vamos inventar nem mostrar referências de outro dia.</p><a class="btn lg" href="'+CNBB_URL+'" target="_blank" rel="noopener noreferrer">Abrir Igreja em Oração — Edições CNBB ↗</a></div>';
+ var n=Math.floor((new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate())-new Date(hoje.getFullYear(),0,0))/86400000);var tema=temasEstudo[n%temasEstudo.length];renderEstudo(tema,[],false);
+}
+$('#homeLit').textContent='Consulte a liturgia de hoje e o estudo relacionado na Ovelia.';
+/* A API fornece conteúdo completo; a Ovelia usa apenas os metadados e referências nesta tela.
+   Os textos integrais são lidos na fonte oficial enquanto a licença de reprodução não for confirmada. */
+Promise.race([fetch('https://liturgia.up.railway.app/v2/',{cache:'no-store',headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),new Promise(function(_,reject){setTimeout(function(){reject(new Error('Tempo limite ao consultar a liturgia'))},9000)})]).then(function(d){if(!d||!d.leituras||!d.liturgia)throw new Error('Formato de resposta inesperado');renderLiturgy(d,true)}).catch(function(){fallbackLiturgy()});
 
 /* ---------- Infantil: histórias em detalhes + quiz sem coleta de dados ---------- */
 var Q=[
@@ -275,7 +313,12 @@ var Q=[
  ['Que sinal bonito Deus colocou no céu depois do dilúvio?',['Uma estrela','O arco-íris','Uma nuvem dourada'],1,'Muito bem! O arco-íris lembra a promessa de Deus.'],
  ['De qual animal Davi cuidava quando era jovem?',['Ovelhas','Camelos','Cavalos'],0,'Certo! Davi era pastor de ovelhas, como a nossa Ovelinha.'],
  ['Quem Davi enfrentou com a ajuda de Deus?',['Golias','Faraó','Herodes'],0,'Acertou! Davi enfrentou Golias.'],
- ['Nas duas histórias, em quem as pessoas confiaram?',['Só em si mesmas','Em Deus','Na sorte'],1,'Isso! Confiar em Deus é a grande lição.']
+ ['Qual é uma lição que aparece em várias histórias bíblicas?',['Nunca ajudar ninguém','Confiar em Deus e fazer o bem','Pensar apenas em si mesmo'],1,'Muito bem! Muitas histórias ensinam a confiar em Deus e amar o próximo.'],
+ ['Onde Jesus foi colocado quando nasceu?',['Numa manjedoura','Num palácio','Num barco'],0,'Muito bem! Jesus nasceu com humildade e foi colocado numa manjedoura.'],
+ ['O que Jesus fez durante a tempestade?',['Escondeu-se','Acalmou o vento e o mar','Abandonou o barco'],1,'Isso mesmo! A história nos lembra de confiar e pedir ajuda quando sentimos medo.'],
+ ['Quem parou para ajudar o homem ferido?',['O samaritano','Um soldado romano','Ninguém'],0,'Certo! O samaritano mostrou amor com uma atitude concreta.'],
+ ['O que o pastor fez quando uma ovelha se perdeu?',['Esqueceu dela','Foi procurá-la','Vendeu as outras'],1,'Muito bem! Jesus ensina que cada pessoa é preciosa para Deus.'],
+ ['O que o menino ofereceu a Jesus para partilhar com a multidão?',['Cinco pães e dois peixes','Uma cesta de frutas','Água e mel'],0,'Isso! Partilhar o que temos pode ajudar muitas pessoas.']
 ];
 var qi=0,acertos=0,qb=$('#quiz');
 function drawQ(){

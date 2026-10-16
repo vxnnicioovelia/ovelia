@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ovelia — Bíblia, Liturgia Diária e orações católicas</title>
 <meta name="description" content="Ovelia: plataforma católica gratuita de fé e aprendizado, com orações, terço passo a passo, estudos bíblicos e uma área infantil. Sem cadastro.">
-<meta name="theme-color" content="#1F2F57">
+<meta name="theme-color" content="#526B55">
 <meta name="author" content="Vxnnicio">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -56,7 +56,7 @@
 
 <div class="vozbar" role="region" aria-label="Leitura em voz alta">
 <div class="row"><strong>🔊 Ouvir o site</strong>
-<button class="btn" id="vozPag" type="button">Ouvir esta página</button>
+<button class="btn" id="vozPag" type="button">Ouvir esta página</button><button class="btn g" id="vozDiagnostico" type="button">Testar áudio</button>
 <button class="btn g" id="vozPausa" type="button">Pausar</button>
 <button class="btn g" id="vozParar" type="button">Parar</button>
 <button class="btn g" id="vozCfg" type="button" aria-expanded="false" aria-controls="vozOpc">Ajustar voz</button></div>
@@ -108,14 +108,16 @@
 <h2>Liturgia Diária</h2>
 <p id="litData" style="font-weight:700"></p>
 <p id="litAtual" style="color:var(--mut)"></p>
+<div id="litStatus" class="card" role="status" aria-live="polite">Buscando a liturgia de hoje…</div>
 <div id="litDia"></div>
 <div class="card" id="litReflexao" aria-live="polite"></div>
+<div id="litEstudoDia"></div>
 <div id="litSem">
 <div class="card liturgia-oficial">
-<h3>Liturgia de hoje — fonte católica oficial</h3>
-<p>Consulte as leituras atualizadas no serviço <b>Igreja em Oração</b>, das Edições CNBB. A Ovelia ainda não tem autorização e integração técnica confirmadas para reproduzir automaticamente os textos completos aqui; por isso, abrimos a fonte oficial em vez de mostrar leituras que possam estar incorretas.</p>
+<h3>Leia os textos completos na fonte oficial</h3>
+<p>A Ovelia atualiza automaticamente a data, a celebração, a cor litúrgica e as referências bíblicas. Para ler o texto integral das leituras, abrimos o serviço <b>Igreja em Oração</b>, das Edições CNBB, que utiliza a tradução oficial dos textos litúrgicos no Brasil.</p>
 <a class="btn lg" href="https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php" target="_blank" rel="noopener noreferrer">Consultar liturgia de hoje na CNBB ↗</a>
-<p class="muted-note">A reflexão automática baseada nas leituras será adicionada quando a integração de dados puder ser feita com segurança. Não exibimos leituras inventadas ou desatualizadas.</p>
+<p class="muted-note">A integração usa uma API comunitária para localizar as referências e pode ficar indisponível. A Ovelia não reproduz o texto integral sem licença confirmada; por isso, o botão acima sempre leva à fonte oficial.</p>
 </div>
 <div class="card"><h3>Como é a Liturgia da Palavra na Missa</h3>
 <p><b>Primeira leitura:</b> geralmente do Antigo Testamento (no Tempo Pascal, dos Atos dos Apóstolos).</p>
@@ -185,6 +187,7 @@
 <!-- ESTUDOS -->
 <section class="pg" id="estudos">
 <h2>Estudos bíblicos</h2>
+<div id="estudoLiturgia" class="card estudo-do-dia" aria-live="polite"><span class="tag">Estudo do dia</span><h3>Preparando o estudo a partir da liturgia…</h3><p>Vamos relacionar as leituras do dia com outras passagens da Bíblia.</p></div>
 <div class="card trilha-adulto"><h3>Minha trajetória de estudo</h3><p>Marque as etapas concluídas. O progresso fica salvo somente neste aparelho, sem cadastro.</p><div class="trilha-lista"><label><input type="checkbox" data-progress="adult-biblia"> Conhecer os 73 livros da Bíblia católica</label><label><input type="checkbox" data-progress="adult-salmo23"> Estudar o Salmo 23</label><label><input type="checkbox" data-progress="adult-bomsamaritano"> Estudar a parábola do Bom Samaritano</label><label><input type="checkbox" data-progress="adult-oracao"> Praticar a leitura orante</label></div></div>
 <div class="aviso"><b>Como ler estes estudos:</b> a <b>passagem</b> indicada é o texto bíblico, que você deve ler na sua Bíblia. A <b>explicação</b> e as <b>perguntas</b> são conteúdo editorial da Ovelia, para iniciantes, e não substituem a catequese nem o ensinamento da Igreja.</div>
 <details open><summary>1. O Senhor é meu pastor — Salmo 23</summary>
@@ -220,6 +223,16 @@
 <details><summary>Davi, o pastorzinho <small>(1 Samuel 16 e 17)</small></summary>
 <p>Davi era um jovem que cuidava das ovelhas do pai. Ele era corajoso e rezava muito. Um dia, um gigante chamado Golias assustava todo o povo. Davi não tinha armadura nem espada, mas confiava em Deus. Com uma funda e uma pedra, ele venceu o gigante.</p>
 <p><b>Pequena lição:</b> a coragem vem de confiar em Deus, e não de ser o maior ou o mais forte.</p></details>
+<details class="kids-story"><summary>O nascimento de Jesus <small>(Lucas 2,1-20)</small></summary>
+<p>Maria e José viajaram até Belém. Como não encontraram lugar na hospedaria, Jesus nasceu e foi colocado numa manjedoura. Anjos anunciaram a boa notícia a pastores, que foram visitar o menino e ficaram cheios de alegria.</p><p><b>Pequena lição:</b> Deus veio ao nosso encontro com humildade e amor. Podemos acolher Jesus com um coração simples.</p></details>
+<details class="kids-story"><summary>Jesus acalma a tempestade <small>(Marcos 4,35-41)</small></summary>
+<p>Jesus e seus discípulos estavam num barco quando uma tempestade começou. Os discípulos ficaram com medo, mas Jesus se levantou e mandou o vento e o mar ficarem quietos. Tudo se acalmou, e eles perceberam que podiam confiar nele.</p><p><b>Pequena lição:</b> quando sentimos medo, podemos rezar, pedir ajuda a um adulto de confiança e lembrar que não estamos sozinhos.</p></details>
+<details class="kids-story"><summary>O bom samaritano <small>(Lucas 10,25-37)</small></summary>
+<p>Um homem foi ferido no caminho. Algumas pessoas passaram sem ajudar, mas um samaritano parou, cuidou dele e procurou um lugar seguro para que se recuperasse. Jesus contou essa história para ensinar quem é o nosso próximo.</p><p><b>Pequena lição:</b> amar o próximo é perceber quem precisa de ajuda e fazer o bem com respeito e cuidado.</p></details>
+<details class="kids-story"><summary>A ovelha perdida <small>(Lucas 15,3-7)</small></summary>
+<p>Jesus contou sobre um pastor que tinha cem ovelhas. Quando uma se perdeu, ele foi procurá-la e ficou muito feliz quando a encontrou. Jesus usou essa história para mostrar como cada pessoa é preciosa para Deus.</p><p><b>Pequena lição:</b> cada pessoa tem valor, e podemos acolher com carinho quem está triste ou se sente sozinho.</p></details>
+<details class="kids-story"><summary>Jesus partilha o pão <small>(João 6,1-13)</small></summary>
+<p>Uma grande multidão foi ouvir Jesus. Havia pouca comida, mas um menino ofereceu cinco pães e dois peixes. Jesus agradeceu a Deus e repartiu o alimento, e todos comeram. Ainda sobraram cestos cheios.</p><p><b>Pequena lição:</b> quando partilhamos o que temos, mesmo que pareça pouco, podemos fazer diferença na vida de outras pessoas.</p></details>
 <h3>🎲 Quiz da Ovelinha</h3>
 <div class="card" id="quiz"></div>
 <h3>Desafio da semana</h3>
@@ -237,13 +250,13 @@
 <div class="card"><h3>Transparência sobre os conteúdos</h3>
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
-<p><b>Liturgia e Bíblia:</b> só serão exibidas com fonte e licença de uso confirmadas.</p>
+<p><b>Liturgia:</b> a data, a celebração, a cor litúrgica e as referências são consultadas automaticamente; os textos integrais abrem na fonte oficial enquanto a licença de reprodução não estiver confirmada. <b>Bíblia:</b> o texto integral de traduções modernas depende de licença.</p>
 <p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho o perfil escolhido, as preferências de tamanho de letra, contraste, voz e velocidade, além das etapas de estudo marcadas como concluídas. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
-<p><b>Próximas etapas:</b> notificações diárias com versículos, notícias católicas selecionadas e integração interna da liturgia e de traduções bíblicas, após verificar fontes, permissões e viabilidade técnica.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
+<p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. A liturgia atualiza os metadados quando a página é aberta; não envia notificações nem atualiza a tela em segundo plano.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p></footer>
-<script src="liturgia.js"></script>
-<script src="app.js"></script>
+<script src="liturgia.js?v=20261016-mass1"></script>
+<script src="app.js?v=20261016-mass1"></script>
 </body>
 </html>

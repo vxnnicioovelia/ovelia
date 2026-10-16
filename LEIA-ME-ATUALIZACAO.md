@@ -1,48 +1,26 @@
-# Ovelia — atualização preparada para publicação pelo iPhone
+# Ovelia — atualização em massa (16/10/2026)
 
 ## O que foi atualizado
-- Tela inicial para escolher Crianças e Jovens, Adolescentes e Adultos ou Modo Fácil.
-- Menu adaptado ao perfil; perfil pode ser trocado pelo botão no cabeçalho.
-- Modo Fácil com fonte ampliada e controles de acessibilidade.
-- Leitura por voz reescrita para ler um trecho por vez, com controles de pausar/continuar/parar, velocidade e seleção das vozes disponibilizadas pelo aparelho.
-- Orações curtas originais para crianças.
-- Trilha infantil e trilha geral com etapas marcáveis, salvas somente no aparelho.
-- Reflexão diária original da Ovelia, claramente identificada como reflexão geral e não como comentário oficial da liturgia.
-- Link direto para a Liturgia Diária das Edições CNBB.
-- Links externos para consultar edições bíblicas, sem copiar traduções protegidas para o site.
-- Notícias e notificações diárias continuam adiadas; a página informa essas ideias como próximas etapas.
+- Paleta visual alinhada à identidade Ovelia: marfim `#F7F4EC`, verde-oliva `#526B55`, dourado fosco `#D6B77A`, bege areia `#E8E2D5`, grafite esverdeado `#454A40` e branco `#FFFFFF`.
+- Mantidos os três perfis: Modo infantil, Modo normal e Ovelia 60+. As cores infantis e os tamanhos para 60+ seguem a identidade comum.
+- Área infantil ampliada de 2 para 7 histórias bíblicas resumidas em linguagem própria, além do quiz com mais perguntas.
+- Liturgia diária: tenta consultar automaticamente data, celebração, cor litúrgica e referências via API comunitária. Não mostra os textos bíblicos completos da API; o botão leva à fonte oficial Edições CNBB enquanto a licença de reprodução não estiver confirmada. Se a API falhar, aparece um aviso e um link oficial em vez de conteúdo inventado.
+- Estudos bíblicos: estudo do dia com tema, referências complementares, pergunta de meditação e ação prática, relacionado às leituras quando os dados automáticos estão disponíveis.
+- Áudio: botão de teste sempre visível, status mais destacado, diagnóstico de falha e ajuste para não cancelar a voz do navegador quando ela está ociosa. A reprodução ainda precisa ser validada no Safari do iPhone; não há como garantir áudio sem teste real no aparelho.
+- Cache busting nos scripts para reduzir o risco de o navegador manter a versão anterior.
 
-## Limitações conhecidas (importante)
-- A Liturgia Diária ainda NÃO é incorporada automaticamente ao site. A Ovelia abre a fonte externa das Edições CNBB, pois não foi confirmada uma API com autorização de reprodução dos textos. A reflexão diária atual é um conteúdo devocional original e NÃO é gerada a partir das leituras litúrgicas do dia.
-- O texto integral da Bíblia não é reproduzido dentro da Ovelia. Os links levam a fontes externas; confirme a edição e sua adequação para uso catequético com sua paróquia.
-- A leitura por voz depende do Safari/iOS e das vozes instaladas no aparelho. O site lista as vozes que o navegador disponibilizar; não pode garantir três vozes, nem identificar com segurança o gênero de cada uma.
-- Notificações automáticas, notícias, login e sincronização entre aparelhos não estão implementados.
-- O código passou por verificação sintática do JavaScript e leitura do HTML, mas precisa ser testado no Safari do iPhone depois de publicado.
+## Arquivos principais alterados
+`index.html`, `app.js`, `estilo.css`. Os demais arquivos e imagens foram preservados.
 
-## Arquivos do pacote completo
-Todos os arquivos deste ZIP devem ficar juntos na raiz do repositório `ovelia`, no mesmo nível de `index.html`.
+## Como publicar pelo iPhone
+1. Extraia este ZIP no app Arquivos.
+2. No repositório GitHub, substitua `index.html`, `app.js` e `estilo.css` pelos arquivos desta pasta.
+3. Faça Commit changes.
+4. Abra o site no Safari e recarregue a página. Se necessário, feche a aba antiga e abra o endereço novamente.
 
-## Publicação pelo iPhone (pacote completo)
-1. Abra o ZIP no app Arquivos do iPhone para descompactá-lo.
-2. No Safari, abra https://github.com/vxnnicioovelia/ovelia
-3. Toque em **Add file** e depois em **Upload files**.
-4. Selecione os arquivos descompactados e envie-os para a raiz do repositório. Não envie a pasta do ZIP como uma pasta aninhada.
-5. Se o GitHub perguntar sobre substituir arquivos existentes, confirme somente os arquivos do pacote que têm o mesmo nome.
-6. Toque em **Commit changes**.
-7. Aguarde alguns minutos e abra https://vxnnicioovelia.github.io/ovelia/ em uma aba privada ou atualize a página.
-
-## Alternativa mais simples
-O arquivo `index.html` também pode ser enviado sozinho para substituir o `index.html` do repositório. Ele contém CSS e JavaScript incorporados e usa as imagens que já existem no repositório. Assim, os outros arquivos antigos podem continuar lá, sem serem carregados pela nova página.
-
-Para substituir somente o `index.html`: abra o arquivo no repositório, escolha editar (lápis ou menu), use o método de upload/substituição disponível no GitHub pelo navegador se aparecer; se não aparecer uma opção para substituir por arquivo, use **Add file → Upload files** e envie o novo `index.html`.
-
-
-## Atualização de perfis (16/10/2026)
-Esta versão diferencia de forma mais clara três experiências:
-- **Modo infantil:** início próprio com a Ovelinha, botões para histórias/quiz e orações infantis, desafio do dia, navegação curta e visual acolhedor. Esconde ferramentas avançadas do topo.
-- **Modo normal:** mantém a experiência central completa da Ovelia, com liturgia, Bíblia, orações, terço, estudos e área infantil.
-- **Ovelia 60+:** início próprio com atalhos grandes para Liturgia, Orações, Terço e Bíblia; textos e botões maiores; navegação reduzida; controles de acessibilidade com rótulos mais claros e orientação para leitura em voz alta.
-
-O perfil antigo salvo como “easy” é migrado automaticamente para “senior” no próximo carregamento. As preferências de texto continuam guardadas localmente neste aparelho.
-
-**Como atualizar pelo GitHub no iPhone:** abra o repositório, entre no arquivo `index.html`, toque no lápis e substitua pelo `index.html` deste pacote; repita para `app.js` e `estilo.css`. Confirme cada alteração com um commit. Os demais arquivos e imagens devem permanecer no repositório. Como esta atualização modifica três arquivos, não envie somente o HTML.
+## Notas importantes
+- A liturgia automática depende de uma API comunitária de terceiros e de conexão com a internet. Não é um feed oficial da CNBB e pode ficar indisponível; confira sempre as leituras na fonte oficial.
+- O projeto da API: https://github.com/Dancrf/liturgia-diaria
+- Fonte oficial dos textos litúrgicos: https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php
+- O site é estático no GitHub Pages: atualização automática ocorre quando a pessoa abre a página; não há notificações push nem atualização em segundo plano.
+- Não foi possível testar a reprodução de áudio diretamente no iPhone. O novo botão de diagnóstico deve mostrar se o navegador recebeu o toque e se a API de voz iniciou.
