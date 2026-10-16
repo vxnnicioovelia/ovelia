@@ -94,7 +94,7 @@ applyPrefs();
 
 /* ---------- Leitura em voz alta: compatibilidade reforçada com Safari/iPhone ---------- */
 var Voz=(function(){
-  var ok=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0,current=null,startTimer=null;
+  var ok=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0,current=null,startTimer=null,watchdog=null;
   try{prefV=localStorage.getItem('ovelia-voz');vel.value=localStorage.getItem('ovelia-vel')||'1'}catch(e){}
   if(!ok){document.body.classList.add('sem-voz');st.textContent='A leitura por voz não é compatível com este navegador. Atualize o Safari ou tente outro navegador.';return {falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
   function carregar(){
@@ -112,23 +112,28 @@ var Voz=(function(){
   window.speechSynthesis.onvoiceschanged=carregar;
   sel.addEventListener('change',function(){try{var v=voices[+sel.value];if(v){prefV=v.name;localStorage.setItem('ovelia-voz',v.name)}}catch(e){}});
   vel.addEventListener('input',function(){try{localStorage.setItem('ovelia-vel',vel.value)}catch(e){}});
-  function parar(silent){var was=active||window.speechSynthesis.speaking||window.speechSynthesis.paused;runId++;queue=[];active=false;current=null;if(startTimer){clearTimeout(startTimer);startTimer=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';if(!silent)st.textContent=was?'Leitura interrompida.':''}
+  function parar(silent){var was=active||window.speechSynthesis.speaking||window.speechSynthesis.paused;runId++;queue=[];active=false;current=null;if(startTimer){clearTimeout(startTimer);startTimer=null}if(watchdog){clearTimeout(watchdog);watchdog=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';if(!silent)st.textContent=was?'Leitura interrompida.':''}
   function next(id){
     if(id!==runId)return;
-    if(!queue.length){active=false;current=null;pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
+    if(!queue.length){active=false;current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
     var part=queue.shift(),u=new SpeechSynthesisUtterance(part),v=voices[+sel.value];current=u;
     u.lang=(v&&v.lang)||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||1;u.pitch=1;u.volume=1;
-    u.onend=function(){if(id===runId){current=null;startTimer=setTimeout(function(){next(id)},80)}};
-    u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;active=false;current=null;st.textContent='O navegador não conseguiu reproduzir a voz ('+(e.error||'erro')+'). Toque em Testar voz ou verifique as vozes do iPhone.'};
-    try{window.speechSynthesis.speak(u)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar o áudio. Tente novamente.'}
+    u.onstart=function(){if(id!==runId)return;if(watchdog){clearTimeout(watchdog);watchdog=null}st.textContent='Reproduzindo áudio…';};
+    u.onend=function(){if(id===runId){current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}startTimer=setTimeout(function(){next(id)},80)}};
+    u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;if(watchdog){clearTimeout(watchdog);watchdog=null}active=false;current=null;st.textContent='O navegador informou que não conseguiu reproduzir a voz ('+(e.error||'erro')+'). Verifique o volume e as vozes do iPhone.'};
+    try{
+      window.speechSynthesis.speak(u);
+      if(watchdog)clearTimeout(watchdog);
+      watchdog=setTimeout(function(){if(id===runId&&active&&current===u&&!window.speechSynthesis.speaking){st.textContent='O iPhone não iniciou o áudio. Verifique o volume, o modo silencioso e Ajustes > Acessibilidade > Conteúdo Falado.'}},3500);
+    }catch(e){active=false;current=null;st.textContent='Não foi possível iniciar o áudio: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
   function partir(t){var r=t.match(/[^.!?;:\n]+[.!?;:]?\s*/g)||[t],o=[],c='';r.forEach(function(x){if((c+x).length>160&&c){o.push(c);c=x}else c+=x});if(c)o.push(c);return o}
   function falar(txt,tit){
     txt=(txt||'').replace(/\s+/g,' ').trim();if(!txt){st.textContent='Não há texto para ler nesta seção.';return}
     carregar();runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Iniciando áudio: '+(tit||'texto')+'.';
     if(startTimer){clearTimeout(startTimer);startTimer=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';
-    /* O pequeno intervalo após cancel() evita falhas comuns do Safari móvel. */
-    startTimer=setTimeout(function(){if(id!==runId)return;try{next(id)}catch(e){active=false;st.textContent='Não foi possível iniciar a leitura neste aparelho.'}},120);
+    /* Inicia a primeira fala dentro do toque do usuário; no Safari móvel, adiar speak() pode bloquear o áudio. */
+    try{next(id)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar a leitura neste aparelho: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
   $('#vozPag').addEventListener('click',function(){var s=$('section.pg.on');if(!s){st.textContent='Abra uma seção para ouvir o conteúdo.';return}var h=s.querySelector('h1,h2');falar(texto(s),h?h.textContent:'página')});
   var testar=$('#vozTestar');if(testar)testar.addEventListener('click',function(){falar('Olá! Esta é a voz da Ovelia. Se você está ouvindo esta mensagem, a leitura por áudio está funcionando.','teste de áudio')});
