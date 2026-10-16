@@ -77,3 +77,47 @@ nav a{padding:8px 12px}nav a[aria-current]{border-left:0;border-bottom:4px solid
 .vozbar .btn{padding:8px 14px}
 .voz-btn{margin:4px 0 8px}
 .sem-voz .voz-btn,.sem-voz .vozbar .row{display:none}
+
+/* Escolha inicial de perfil e experiências adaptadas */
+[hidden]{display:none!important}
+.perfil-overlay{position:fixed;inset:0;z-index:1000;background:rgba(14,23,48,.82);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.perfil-card{width:min(680px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--card);color:var(--ink);border-radius:24px;padding:clamp(18px,4vw,30px);text-align:center;box-shadow:0 18px 70px rgba(0,0,0,.3)}
+.perfil-card>img{width:92px;height:auto;margin:0 auto 8px;object-fit:contain}
+.perfil-card h1{font-size:clamp(1.6rem,5vw,2.25rem);margin:.4em 0}
+.perfil-opcoes{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0}
+.perfil-opcao{font:inherit;text-align:left;color:var(--ink);background:var(--soft);border:2px solid var(--line);border-radius:16px;padding:14px 16px;min-height:76px;cursor:pointer;display:grid;grid-template-columns:40px 1fr;column-gap:10px;align-items:center}
+.perfil-opcao span{grid-row:span 2;font-size:1.8rem;text-align:center}
+.perfil-opcao strong{font-size:1.05rem}
+.perfil-opcao small{font-size:.9rem;color:var(--mut)}
+.perfil-opcao:hover,.perfil-opcao:focus-visible{border-color:var(--gold);outline:3px solid var(--gold);outline-offset:2px}
+.perfil-nota,.muted-note{font-size:.92rem;color:var(--mut)}
+.perfil-atual{font-size:.9rem;color:var(--mut);margin:0 0 8px}
+.liturgia-oficial{border:2px solid var(--gold)}
+.liturgia-oficial .btn{margin:6px 0}
+.kids-trilha{display:grid;gap:10px;background:#fff;border-radius:14px;padding:14px;margin:10px 0 18px;color:#3A2E0A}
+.kids-trilha label{display:flex;gap:10px;align-items:flex-start;padding:8px 0}
+.kids-trilha input{width:22px;height:22px;flex:0 0 auto}
+body.perfil-kids .hero .row a[href="#terco"],
+body.perfil-kids #home .grid>.card:nth-child(2),
+body.perfil-kids #home .grid>.card:nth-child(3),
+body.perfil-kids #home .grid>.card:nth-child(5),
+body.perfil-kids #home .grid>.card:nth-child(7),
+body.perfil-kids #home .grid>.card:nth-child(8){display:none}
+body.perfil-kids #home .hero p{font-size:1.1em}
+body.perfil-kids #home .grid>.card{border-color:#E6C96F}
+body.perfil-kids #listaOracoes .categoria-oracao:not(.kids-cat){display:none}
+body.perfil-kids #biblia .aviso:first-of-type{border-color:#E6C96F}
+body.perfil-kids #biblia .card:first-of-type{border-color:#E6C96F}
+body.perfil-kids .kids{font-size:1.08em}
+body.perfil-easy{--fs:24px}
+body.perfil-easy .btn{min-height:54px;padding:12px 18px}
+body.perfil-easy nav a{padding:14px}
+body.perfil-easy .card{padding:22px}
+body.perfil-easy .hero{gap:14px}
+body.perfil-easy .hero img{width:150px;flex-basis:150px}
+@media(min-width:600px){.perfil-opcoes{grid-template-columns:1fr}.perfil-card{padding:30px}}
+@media(max-width:480px){.tools{width:100%;margin-left:0;flex-wrap:wrap}.tools .btn{flex:1 1 auto}.perfil-card{padding:18px}.perfil-opcao{grid-template-columns:34px 1fr;padding:12px}.vozbar .row .btn{flex:1 1 40%}}
+body.perfil-kids #home .grid>.card:nth-child(6),
+body.perfil-kids #home .grid>.card:nth-child(7){display:none}
+body.perfil-kids #home .grid>.card:nth-child(5){display:block}
+.trilha-lista{display:grid;gap:10px}.trilha-lista label{display:flex;gap:10px;align-items:flex-start;padding:8px 0}.trilha-lista input{width:22px;height:22px;flex:0 0 auto}

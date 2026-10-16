@@ -22,6 +22,20 @@
 <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+<div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
+  <div class="perfil-card">
+    <img src="ovelha-biblia.png" width="112" height="148" alt="Ovelinha, mascote da Ovelia">
+    <p class="tag pd">Bem-vindo à Ovelia</p>
+    <h1 id="perfilTitulo">Como você quer aprender hoje?</h1>
+    <p>Escolha uma experiência. Você pode trocar de perfil a qualquer momento, sem cadastro.</p>
+    <div class="perfil-opcoes">
+      <button class="perfil-opcao" type="button" data-profile="kids"><span aria-hidden="true">🐑</span><strong>Crianças e jovens</strong><small>6 a 15 anos · histórias, orações e atividades</small></button>
+      <button class="perfil-opcao" type="button" data-profile="adult"><span aria-hidden="true">📖</span><strong>Adolescentes e adultos</strong><small>16 a 59 anos · Bíblia, liturgia e estudos</small></button>
+      <button class="perfil-opcao" type="button" data-profile="easy"><span aria-hidden="true">🔎</span><strong>Modo Fácil</strong><small>60+ ou quem prefere letras grandes e poucos passos</small></button>
+    </div>
+    <p class="perfil-nota">As faixas etárias são apenas sugestões. Escolha livremente a experiência que for melhor para você.</p>
+  </div>
+</div>
 <a class="skip" href="#conteudo" onclick="event.preventDefault();document.getElementById('conteudo').focus()">Pular para o conteúdo</a>
 <header>
 <div class="bar">
@@ -30,6 +44,7 @@
 <button class="btn g" id="aMenos" type="button" aria-label="Diminuir letra">A−</button>
 <button class="btn g" id="aMais" type="button" aria-label="Aumentar letra">A+</button>
 <button class="btn g" id="aCont" type="button" aria-pressed="false">Contraste</button>
+<button class="btn g" id="perfilBtn" type="button">Trocar perfil</button>
 <button class="btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">☰ Menu</button>
 </div>
 <nav aria-label="Menu principal"><ul id="menu"></ul></nav>
@@ -45,13 +60,14 @@
 <button class="btn g" id="vozPausa" type="button">Pausar</button>
 <button class="btn g" id="vozParar" type="button">Parar</button>
 <button class="btn g" id="vozCfg" type="button" aria-expanded="false" aria-controls="vozOpc">Ajustar voz</button></div>
-<div id="vozOpc" hidden><label for="vozSel">Voz (em português, do seu aparelho)</label><select id="vozSel"></select>
+<div id="vozOpc" hidden><label for="vozSel">Voz disponível no seu aparelho</label><select id="vozSel"></select><p class="muted-note">As vozes variam conforme o iPhone ou navegador. Escolha entre as opções disponíveis; o site não consegue garantir três vozes nem identificar com segurança se são masculinas ou femininas.</p>
 <label for="vozVel">Velocidade da leitura</label><input type="range" id="vozVel" min="0.6" max="1.4" step="0.1" value="1"></div>
 <p id="vozStatus" role="status" aria-live="polite" style="margin:6px 0 0;color:var(--mut);font-size:.9rem"></p>
 </div>
 
 <!-- INÍCIO -->
 <section class="pg on" id="home">
+<div class="perfil-atual" id="perfilAtual" role="status"></div>
 <div class="hero"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
 <div><h1>Fé para o dia a dia</h1><p>Plataforma católica gratuita de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Sem cadastro, sem anúncios.</p>
 <div class="row" style="margin-top:12px"><a class="btn lg" href="#terco">Rezar o terço</a><a class="btn g lg" href="#oracoes">Ver orações</a></div></div></div>
@@ -61,6 +77,7 @@
 <div class="card"><h3>Terço passo a passo</h3><p>Avance e volte durante a oração, com as contas na tela.</p><a class="btn g" href="#terco">Abrir</a></div>
 <div class="card"><h3>Estudos bíblicos</h3><p>Passagem, contexto, perguntas e aplicação.</p><a class="btn g" href="#estudos">Abrir</a></div>
 <div class="card"><h3>Área infantil</h3><p>Histórias e um quiz para as crianças.</p><a class="btn g" href="#infantil">Abrir</a></div>
+<div class="card"><h3>Bíblia para começar</h3><p>Encontre os livros da Bíblia católica e consulte uma fonte online.</p><a class="btn g" href="#biblia">Abrir Bíblia</a></div>
 <div class="card"><h3>Letra grande e contraste</h3><p>Use os botões A−, A+ e Contraste no topo, em qualquer página.</p></div>
 <div class="card side"><img src="pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba lembra a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
 </div>
@@ -72,8 +89,14 @@
 <p id="litData" style="font-weight:700"></p>
 <p id="litAtual" style="color:var(--mut)"></p>
 <div id="litDia"></div>
+<div class="card" id="litReflexao" aria-live="polite"></div>
 <div id="litSem">
-<div class="aviso"><b>A liturgia de hoje ainda não está publicada aqui.</b> Este site não busca as leituras automaticamente. Elas só aparecem quando uma pessoa insere o texto revisado, de fonte autorizada. Para a liturgia de hoje, consulte o site da CNBB ou o missal da sua paróquia: <a href="https://www.cnbb.org.br/" rel="noopener">cnbb.org.br</a>.</div>
+<div class="card liturgia-oficial">
+<h3>Liturgia de hoje — fonte católica oficial</h3>
+<p>Consulte as leituras atualizadas no serviço <b>Igreja em Oração</b>, das Edições CNBB. A Ovelia ainda não tem autorização e integração técnica confirmadas para reproduzir automaticamente os textos completos aqui; por isso, abrimos a fonte oficial em vez de mostrar leituras que possam estar incorretas.</p>
+<a class="btn lg" href="https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php" target="_blank" rel="noopener noreferrer">Consultar liturgia de hoje na CNBB ↗</a>
+<p class="muted-note">A reflexão automática baseada nas leituras será adicionada quando a integração de dados puder ser feita com segurança. Não exibimos leituras inventadas ou desatualizadas.</p>
+</div>
 <div class="card"><h3>Como é a Liturgia da Palavra na Missa</h3>
 <p><b>Primeira leitura:</b> geralmente do Antigo Testamento (no Tempo Pascal, dos Atos dos Apóstolos).</p>
 <p><b>Salmo responsorial:</b> o povo responde à Palavra com um refrão e versos do livro dos Salmos.</p>
@@ -87,6 +110,12 @@
 <section class="pg" id="biblia">
 <h2>Bíblia</h2>
 <div class="aviso"><span class="tag">Texto bíblico ainda não integrado</span><p>O texto completo de uma tradução só será exibido aqui depois de confirmada a licença de uso. Até lá, esta página ajuda a se orientar na Bíblia católica. Leia o texto na sua Bíblia impressa ou em fonte autorizada pela sua paróquia ou diocese.</p></div>
+<div class="card">
+<h3>Escolha como consultar a Bíblia</h3>
+<p>O texto integral de traduções modernas pode ter direitos autorais. Até confirmarmos a licença para reproduzi-las dentro da Ovelia, você pode consultar a Bíblia em uma fonte externa e voltar aqui para estudar.</p>
+<div class="row"><a class="btn" href="https://oraetlabora.com.br/biblia" target="_blank" rel="noopener noreferrer">Ler Bíblia católica online ↗</a><a class="btn g" href="https://www.biblicas.com.br/biblia" target="_blank" rel="noopener noreferrer">Consultar outra edição online ↗</a></div>
+<p class="muted-note">São fontes externas independentes. Antes de usar uma tradução para estudo formal ou catequese, confira a edição, a tradução e a orientação da sua paróquia. A leitura integral dentro da Ovelia dependerá de licença confirmada.</p>
+</div>
 <div class="card"><h3>Como ler a Bíblia (para iniciantes)</h3>
 <p>1. Comece por um Evangelho, por exemplo Marcos ou Lucas, e leia um trecho curto por dia.</p>
 <p>2. Os livros têm capítulos e versículos. Em “Lc 10,25-37”, Lc é Lucas, 10 é o capítulo e 25-37 são os versículos.</p>
@@ -120,7 +149,7 @@
 <div id="passo" aria-live="polite"></div>
 <button class="btn g voz-btn" id="vozPassoBtn" type="button">🔊 Ouvir este passo</button>
 <div class="row" style="margin-top:10px"><button class="btn g lg" id="tAnt" type="button">← Voltar</button><button class="btn lg" id="tProx" type="button">Começar</button><button class="btn g" id="tZero" type="button">Recomeçar</button></div>
-<p style="color:var(--mut);font-size:.9rem">O progresso não é salvo. Se você sair desta página, o contador volta ao começo.</p></div>
+<p style="color:var(--mut);font-size:.9rem">O contador do terço recomeça ao sair. O progresso das trilhas de estudo pode ser guardado apenas neste aparelho.</p></div>
 <div class="card"><h3>Quando rezar cada conjunto de mistérios</h3>
 <table><caption class="sr" style="text-align:left;font-weight:700;padding-bottom:6px">Distribuição tradicional por dia da semana</caption>
 <thead><tr><th scope="col">Mistérios</th><th scope="col">Dias</th></tr></thead>
@@ -136,6 +165,7 @@
 <!-- ESTUDOS -->
 <section class="pg" id="estudos">
 <h2>Estudos bíblicos</h2>
+<div class="card trilha-adulto"><h3>Minha trajetória de estudo</h3><p>Marque as etapas concluídas. O progresso fica salvo somente neste aparelho, sem cadastro.</p><div class="trilha-lista"><label><input type="checkbox" data-progress="adult-biblia"> Conhecer os 73 livros da Bíblia católica</label><label><input type="checkbox" data-progress="adult-salmo23"> Estudar o Salmo 23</label><label><input type="checkbox" data-progress="adult-bomsamaritano"> Estudar a parábola do Bom Samaritano</label><label><input type="checkbox" data-progress="adult-oracao"> Praticar a leitura orante</label></div></div>
 <div class="aviso"><b>Como ler estes estudos:</b> a <b>passagem</b> indicada é o texto bíblico, que você deve ler na sua Bíblia. A <b>explicação</b> e as <b>perguntas</b> são conteúdo editorial da Ovelia, para iniciantes, e não substituem a catequese nem o ensinamento da Igreja.</div>
 <details open><summary>1. O Senhor é meu pastor — Salmo 23</summary>
 <p><span class="tag pd">Passagem</span> Sl 23 (leia o salmo inteiro antes de continuar).</p>
@@ -155,6 +185,14 @@
 <section class="pg" id="infantil">
 <div class="kids">
 <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Oi! Vamos aprender com a Ovelinha?</h2><p>Aqui você ouve histórias da Bíblia e brinca de perguntas. Não pedimos nome nem nenhum dado seu.</p></div></div>
+<h3 style="margin-top:14px">Minha trilha de aprendizagem</h3>
+<div class="kids-trilha">
+<label><input type="checkbox" data-progress="kids-historia"> Ler ou ouvir uma história bíblica</label>
+<label><input type="checkbox" data-progress="kids-oracao"> Fazer uma oração curta</label>
+<label><input type="checkbox" data-progress="kids-quiz"> Responder ao quiz da Ovelinha</label>
+</div>
+<h3 style="margin-top:14px">Orações para crianças</h3>
+<p>Abra a página <a href="#oracoes">Orações</a> e escolha a categoria “Orações para crianças”. Você também pode usar o botão “Ouvir esta página” no alto do site.</p>
 <h3 style="margin-top:14px">Histórias</h3>
 <details><summary>Noé e a arca <small>(Gênesis 6 a 9)</small></summary>
 <p>Havia um homem chamado Noé, que amava a Deus e confiava nele. Deus pediu que ele construísse uma grande arca. Noé obedeceu, mesmo quando muita gente achava estranho. Quando a chuva veio, Noé, a família e os animais ficaram a salvo dentro da arca. Depois da chuva, Deus colocou o arco-íris no céu, como sinal de sua promessa.</p>
@@ -180,8 +218,8 @@
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
 <p><b>Liturgia e Bíblia:</b> só serão exibidas com fonte e licença de uso confirmadas.</p>
-<p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho apenas suas preferências de tamanho de letra, contraste, voz e velocidade de leitura. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
-<p><b>Contato:</b> ainda não há canal de contato público.</p></div>
+<p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho o perfil escolhido, as preferências de tamanho de letra, contraste, voz e velocidade, além das etapas de estudo marcadas como concluídas. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
+<p><b>Próximas etapas:</b> notificações diárias com versículos, notícias católicas selecionadas e integração interna da liturgia e de traduções bíblicas, após verificar fontes, permissões e viabilidade técnica.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p></footer>
