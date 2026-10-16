@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ovelia — Bíblia, Liturgia Diária e orações católicas</title>
-<meta name="description" content="Ovelia é uma plataforma católica gratuita de fé e aprendizado. Versão de teste com contador do terço; Bíblia, Liturgia Diária e estudos em desenvolvimento.">
+<meta name="description" content="Ovelia: plataforma católica gratuita de fé e aprendizado, com orações, terço passo a passo, estudos bíblicos e uma área infantil. Sem cadastro.">
 <meta name="theme-color" content="#1F2F57">
 <meta name="author" content="Vxnnicio">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Ovelia">
 <meta property="og:title" content="Ovelia — fé para o dia a dia">
-<meta property="og:description" content="Plataforma católica gratuita de fé e aprendizado. Versão de teste em desenvolvimento.">
+<meta property="og:description" content="Orações, terço passo a passo, estudos bíblicos e área infantil. Gratuito e sem cadastro.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="img/favicon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -19,131 +19,160 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<style>
-:root{--bg:#EEF3FA;--card:#fff;--ink:#1F2F57;--mut:#56628A;--gold:#D9A441;--olive:#5E7F5B;--line:#D6DEEE;--soft:#E3EBF8;--hero:#1F2F57;--fs:17px;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root{--bg:#121A33;--card:#1B2547;--ink:#EAF0FF;--mut:#A9B5DA;--line:#2C3963;--soft:#232F57;--hero:#2A3A6E}}
-*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.6 Nunito,system-ui,sans-serif}
-body.big{--fs:22px}
-h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;margin:0 0 .5em}
-h1{font-size:2rem}h2{font-size:1.5rem}h3{font-size:1.1rem}p{margin:.4em 0;max-width:70ch}
-img{max-width:100%;height:auto;display:block}
-[tabindex="-1"]:focus{outline:none}
-header{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
-.brand{font:700 1.4rem Fraunces,serif;display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
-.brand img{width:40px;height:40px}
-nav a{color:var(--mut);text-decoration:none}
-nav.top{display:none;gap:4px;margin-left:auto}
-nav.top a{padding:8px 14px;border-radius:99px}
-nav a[aria-current]{background:var(--soft);color:var(--ink);font-weight:700}
-nav.bot{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
-nav.bot a{flex:1;font-size:.8rem;padding:6px 2px;text-align:center}
-nav.bot a[aria-current]{background:none;border-top:3px solid var(--gold)}
-nav.bot span{display:block;font-size:1.4rem}
-main{max-width:980px;margin:0 auto;padding:18px 18px 110px}
-.js section{display:none}.js section.on{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
-.grid{display:grid;gap:14px}
-.hero{display:flex;gap:22px;align-items:center;background:var(--hero);color:#fff;border-radius:26px;padding:24px;margin-bottom:16px}
-.hero p{color:#CBD6F5}.hero img{flex:0 0 190px;width:190px;background:#F7F5EC;border-radius:22px;padding:8px}
-.btn{font:inherit;font-weight:700;border:0;border-radius:99px;padding:10px 18px;background:var(--gold);color:#2A2108;cursor:pointer;text-decoration:none;display:inline-block}
-.btn.g{background:var(--soft);color:var(--ink)}
-.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:2px 10px;border-radius:99px;background:#F6E7C4;color:#6A4B07}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.beads{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.bead{width:24px;height:24px;border-radius:50%;background:var(--soft);border:2px solid var(--line)}
-.bead.f{background:var(--gold);border-color:var(--gold)}.bead.big{width:34px;height:34px;border-color:var(--mut)}
-.side{display:flex;gap:18px;align-items:center}.side img{flex:0 0 130px;width:130px}
-footer{text-align:center;color:var(--mut);font-size:.85rem;padding:10px 18px 120px}
-a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-@media (min-width:800px){nav.top{display:flex}nav.bot{display:none}main{padding-bottom:40px}footer{padding-bottom:30px}
-.grid.c2{grid-template-columns:1fr 1fr}h1{font-size:2.6rem}.side img{flex-basis:170px;width:170px}}
-@media (max-width:560px){.hero{flex-direction:column;text-align:center}.hero .row{justify-content:center}.hero img{width:160px;flex:none}.side{flex-direction:column;text-align:center}}
-</style>
+<link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
+<a class="skip" href="#conteudo" onclick="event.preventDefault();document.getElementById('conteudo').focus()">Pular para o conteúdo</a>
 <header>
-<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="img/icone-128.png" width="40" height="40" alt="">Ovelia</a>
-<nav class="top" id="navTop" aria-label="Menu principal"></nav>
-<button class="btn g" id="acc" type="button" aria-pressed="false" style="margin-left:auto">A+ Letra grande</button>
+<div class="bar">
+<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="img/icone-128.png" width="42" height="42" alt="">Ovelia</a>
+<div class="tools" role="group" aria-label="Opções de leitura">
+<button class="btn g" id="aMenos" type="button" aria-label="Diminuir letra">A−</button>
+<button class="btn g" id="aMais" type="button" aria-label="Aumentar letra">A+</button>
+<button class="btn g" id="aCont" type="button" aria-pressed="false">Contraste</button>
+<button class="btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">☰ Menu</button>
+</div>
+<nav aria-label="Menu principal"><ul id="menu"></ul></nav>
+</div>
 </header>
 
-<main>
-<section id="home" class="on">
+<main id="conteudo" tabindex="-1">
+<noscript><div class="aviso">Este site precisa de JavaScript ativado para funcionar.</div></noscript>
+
+<!-- INÍCIO -->
+<section class="pg on" id="home">
 <div class="hero"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
-<div><h1>Fé para o dia a dia</h1><p>O Ovelia é uma plataforma católica de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis e acolhedores.</p>
-<p>Esta é uma versão de teste: por enquanto, você já pode rezar o terço com o contador.</p>
-<div class="row" style="margin-top:12px"><a class="btn" href="#oracoes">Rezar o terço</a><a class="btn g" href="#embreve">Ver o que vem por aí</a></div></div></div>
-<div class="grid c2">
-<div class="card"><h3>Terço e orações</h3><p>Contador de contas para acompanhar a oração do terço, com letra ampliável.</p><a class="btn g" href="#oracoes">Abrir</a></div>
-<div class="card side"><img src="img/pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba acompanha a ovelha lembrando a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
+<div><h1>Fé para o dia a dia</h1><p>Plataforma católica gratuita de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Sem cadastro, sem anúncios.</p>
+<div class="row" style="margin-top:12px"><a class="btn lg" href="#terco">Rezar o terço</a><a class="btn g lg" href="#oracoes">Ver orações</a></div></div></div>
+<div class="card" style="border-color:var(--gold)"><span class="tag pd">Hoje</span><h2 style="margin-top:8px">Leitura e liturgia do dia</h2><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a> <a class="btn g" href="#biblia">Abrir a Bíblia</a></div>
+<div class="grid c3">
+<div class="card"><h3>Orações</h3><p>Orações tradicionais para ler e copiar.</p><a class="btn g" href="#oracoes">Abrir</a></div>
+<div class="card"><h3>Terço passo a passo</h3><p>Avance e volte durante a oração, com as contas na tela.</p><a class="btn g" href="#terco">Abrir</a></div>
+<div class="card"><h3>Estudos bíblicos</h3><p>Passagem, contexto, perguntas e aplicação.</p><a class="btn g" href="#estudos">Abrir</a></div>
+<div class="card"><h3>Área infantil</h3><p>Histórias e um quiz para as crianças.</p><a class="btn g" href="#infantil">Abrir</a></div>
+<div class="card"><h3>Letra grande e contraste</h3><p>Use os botões A−, A+ e Contraste no topo, em qualquer página.</p></div>
+<div class="card side"><img src="img/pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba lembra a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
 </div>
 </section>
 
-<section id="oracoes">
-<div class="side" style="margin-bottom:12px"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>Toque em “Próxima conta” a cada oração. O contador marca onde você está.</p></div></div>
-<div class="card"><p id="mist" style="color:var(--mut)"></p>
-<div class="beads" id="beads" aria-hidden="true"></div>
-<p id="pray" aria-live="polite"></p>
-<div class="row"><button class="btn" type="button" id="nextB">Próxima conta</button><button class="btn g" type="button" id="resetB">Recomeçar</button></div>
-<p style="color:var(--mut);font-size:.85rem">Este contador só marca as contas. Os textos das orações serão adicionados depois, com fonte verificada.</p></div>
-</section>
-
-<section id="embreve">
-<h2>O que vem por aí</h2>
-<p>O Ovelia está nascendo aos poucos. Estes conteúdos ainda <b>não estão disponíveis</b>. Cada um só entra no ar com fonte e permissão de uso verificadas.</p>
-<div class="grid c2" style="margin-top:14px">
-<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Liturgia Diária</h3><p>Leituras, salmo, Evangelho e reflexão, a partir de fonte litúrgica autorizada. Nada será inventado.</p></div>
-<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Bíblia</h3><p>A tradução será integrada depois de confirmar a licença de uso.</p></div>
-<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">News</h3><p>Notícias católicas só serão publicadas após revisão e aprovação manual, com conteúdo e fonte verificados.</p></div>
-<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Estudos e aprendizado da fé</h3><p>Trilhas curtas e didáticas para aprender e crescer na fé.</p></div>
-<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Área infantil</h3><p>Conteúdos próprios para crianças, sem coleta de dados.</p></div>
-<div class="card"><span class="tag">Em desenvolvimento</span><h3 style="margin-top:8px">Experiência acessível</h3><p>Navegação simplificada para idosos. O botão “A+” já aumenta a letra do site.</p></div>
+<!-- LITURGIA -->
+<section class="pg" id="liturgia">
+<h2>Liturgia Diária</h2>
+<p id="litData" style="font-weight:700"></p>
+<p id="litAtual" style="color:var(--mut)"></p>
+<div id="litDia"></div>
+<div id="litSem">
+<div class="aviso"><b>A liturgia de hoje ainda não está publicada aqui.</b> Este site não busca as leituras automaticamente. Elas só aparecem quando uma pessoa insere o texto revisado, de fonte autorizada. Para a liturgia de hoje, consulte o site da CNBB ou o missal da sua paróquia: <a href="https://www.cnbb.org.br/" rel="noopener">cnbb.org.br</a>.</div>
+<div class="card"><h3>Como é a Liturgia da Palavra na Missa</h3>
+<p><b>Primeira leitura:</b> geralmente do Antigo Testamento (no Tempo Pascal, dos Atos dos Apóstolos).</p>
+<p><b>Salmo responsorial:</b> o povo responde à Palavra com um refrão e versos do livro dos Salmos.</p>
+<p><b>Segunda leitura:</b> uma carta ou outro livro do Novo Testamento. Há segunda leitura nos domingos e nas solenidades, não nos dias de semana comuns.</p>
+<p><b>Aclamação ao Evangelho:</b> um canto de acolhida a Cristo, que vem falar.</p>
+<p><b>Evangelho:</b> o ponto alto da Liturgia da Palavra, com um trecho de Mateus, Marcos, Lucas ou João.</p></div>
 </div>
 </section>
 
-<section id="sobre">
+<!-- BÍBLIA -->
+<section class="pg" id="biblia">
+<h2>Bíblia</h2>
+<div class="aviso"><span class="tag">Texto bíblico ainda não integrado</span><p>O texto completo de uma tradução só será exibido aqui depois de confirmada a licença de uso. Até lá, esta página ajuda a se orientar na Bíblia católica. Leia o texto na sua Bíblia impressa ou em fonte autorizada pela sua paróquia ou diocese.</p></div>
+<div class="card"><h3>Como ler a Bíblia (para iniciantes)</h3>
+<p>1. Comece por um Evangelho, por exemplo Marcos ou Lucas, e leia um trecho curto por dia.</p>
+<p>2. Os livros têm capítulos e versículos. Em “Lc 10,25-37”, Lc é Lucas, 10 é o capítulo e 25-37 são os versículos.</p>
+<p>3. Antes de ler, faça uma breve oração pedindo luz ao Espírito Santo. Depois, releia e pergunte: o que este texto diz? O que ele me pede?</p></div>
+<div class="card"><h3>Os 73 livros da Bíblia católica</h3>
+<label for="buscaLivro" style="font-weight:700">Buscar livro pelo nome</label>
+<input type="search" id="buscaLivro" placeholder="Ex.: Lucas" autocomplete="off">
+<p id="livrosN" role="status" aria-live="polite" style="color:var(--mut)"></p>
+<div id="livros"></div></div>
+</section>
+
+<!-- ORAÇÕES -->
+<section class="pg" id="oracoes">
+<h2>Orações</h2>
+<p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
+<div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
+<div id="listaOracoes"></div>
+</section>
+
+<!-- TERÇO -->
+<section class="pg" id="terco">
+<div class="side" style="margin-bottom:12px"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>O terço tem cinco dezenas. Em cada uma medita-se um mistério da vida de Jesus e de Maria, rezando 1 Pai-Nosso, 10 Ave-Marias e 1 Glória.</p></div></div>
+<div class="card"><h3>Rezar o terço, passo a passo</h3>
+<label for="selMist" style="font-weight:700">Mistérios</label><br>
+<select id="selMist" style="font:inherit;padding:10px;border-radius:12px;margin:6px 0 10px;max-width:100%"></select>
+<ol id="listaMist" style="margin:0 0 10px"></ol>
+<div class="prog" aria-hidden="true"><i id="progFill" style="width:0"></i></div>
+<p id="progTxt" role="status" aria-live="polite" style="color:var(--mut)"></p>
+<div class="beads" id="contas" aria-hidden="true"></div>
+<div id="passo" aria-live="polite"></div>
+<div class="row" style="margin-top:10px"><button class="btn g lg" id="tAnt" type="button">← Voltar</button><button class="btn lg" id="tProx" type="button">Começar</button><button class="btn g" id="tZero" type="button">Recomeçar</button></div>
+<p style="color:var(--mut);font-size:.9rem">O progresso não é salvo. Se você sair desta página, o contador volta ao começo.</p></div>
+<div class="card"><h3>Quando rezar cada conjunto de mistérios</h3>
+<table><caption class="sr" style="text-align:left;font-weight:700;padding-bottom:6px">Distribuição tradicional por dia da semana</caption>
+<thead><tr><th scope="col">Mistérios</th><th scope="col">Dias</th></tr></thead>
+<tbody><tr><th scope="row">Gozosos</th><td>Segunda-feira e sábado</td></tr><tr><th scope="row">Luminosos</th><td>Quinta-feira</td></tr><tr><th scope="row">Dolorosos</th><td>Terça-feira e sexta-feira</td></tr><tr><th scope="row">Gloriosos</th><td>Quarta-feira e domingo</td></tr></tbody></table></div>
+<div class="card"><h3>Para iniciantes</h3>
+<p>1. Faça o Sinal da Cruz e reze o Credo no crucifixo.</p>
+<p>2. Na primeira conta grande reze o Pai-Nosso, nas três pequenas seguintes a Ave-Maria, e depois o Glória.</p>
+<p>3. Em cada dezena: anuncie o mistério, reze o Pai-Nosso (conta grande), dez Ave-Marias (contas pequenas) e o Glória.</p>
+<p>4. Ao final, reze a Salve-Rainha e faça o Sinal da Cruz.</p>
+<p>Não se preocupe em rezar “perfeitamente”. O importante é rezar com o coração. As orações estão na página <a href="#oracoes">Orações</a>.</p></div>
+</section>
+
+<!-- ESTUDOS -->
+<section class="pg" id="estudos">
+<h2>Estudos bíblicos</h2>
+<div class="aviso"><b>Como ler estes estudos:</b> a <b>passagem</b> indicada é o texto bíblico, que você deve ler na sua Bíblia. A <b>explicação</b> e as <b>perguntas</b> são conteúdo editorial da Ovelia, para iniciantes, e não substituem a catequese nem o ensinamento da Igreja.</div>
+<details open><summary>1. O Senhor é meu pastor — Salmo 23</summary>
+<p><span class="tag pd">Passagem</span> Sl 23 (leia o salmo inteiro antes de continuar).</p>
+<h3>Contexto</h3><p>O Salmo 23 é um dos salmos mais conhecidos. Tradicionalmente é atribuído a Davi, que foi pastor de ovelhas antes de ser rei. O salmo usa a imagem do pastor que cuida do rebanho para falar da confiança em Deus.</p>
+<h3>Explicação <span class="tag pd">editorial</span></h3><p>O pastor conduz, protege e acompanha. A ovelha não precisa ter tudo sob controle: precisa ficar perto do pastor. O salmo não promete uma vida sem dificuldades, e fala até de caminhar por vales escuros, mas afirma que Deus está presente nesses momentos.</p>
+<h3>Perguntas para reflexão</h3><ol><li>Em que momento da minha vida senti que alguém cuidava de mim?</li><li>O que me impede de confiar mais em Deus?</li><li>Que “vale escuro” eu atravesso hoje e o que quero pedir nele?</li></ol>
+<h3>Aplicação prática</h3><p>Nesta semana, reze o salmo uma vez por dia, devagar. Escolha um versículo que mais falou ao seu coração e leve-o consigo durante o dia.</p></details>
+<details><summary>2. Quem é o meu próximo? — Lucas 10,25-37</summary>
+<p><span class="tag pd">Passagem</span> Lc 10,25-37 (a parábola do Bom Samaritano).</p>
+<h3>Contexto</h3><p>Um especialista na Lei pergunta a Jesus o que fazer para herdar a vida eterna e, depois, “quem é o meu próximo”. Jesus responde com uma parábola. Na época, muitos judeus tinham desconfiança dos samaritanos, e por isso a escolha do personagem é surpreendente.</p>
+<h3>Explicação <span class="tag pd">editorial</span></h3><p>Na parábola, duas pessoas passam por um homem ferido e seguem adiante; o texto não explica o motivo. Um samaritano para, cuida dele e paga pela sua recuperação. No final, Jesus muda a pergunta: em vez de “quem merece minha ajuda?”, ele pergunta de qual deles o ferido se tornou próximo, e conclui com um convite: “Vai e faze tu também”.</p>
+<h3>Perguntas para reflexão</h3><ol><li>Quem está “ferido na estrada” perto de mim?</li><li>Que desculpas costumo dar para não parar?</li><li>Que gesto concreto de cuidado posso ter esta semana?</li></ol>
+<h3>Aplicação prática</h3><p>Escolha uma pessoa que precise de atenção (um vizinho, um familiar, um colega) e faça por ela um gesto simples: uma visita, uma ligação, uma ajuda.</p></details>
+</section>
+
+<!-- INFANTIL -->
+<section class="pg" id="infantil">
+<div class="kids">
+<div class="side"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Oi! Vamos aprender com a Ovelinha?</h2><p>Aqui você ouve histórias da Bíblia e brinca de perguntas. Não pedimos nome nem nenhum dado seu.</p></div></div>
+<h3 style="margin-top:14px">Histórias</h3>
+<details><summary>Noé e a arca <small>(Gênesis 6 a 9)</small></summary>
+<p>Havia um homem chamado Noé, que amava a Deus e confiava nele. Deus pediu que ele construísse uma grande arca. Noé obedeceu, mesmo quando muita gente achava estranho. Quando a chuva veio, Noé, a família e os animais ficaram a salvo dentro da arca. Depois da chuva, Deus colocou o arco-íris no céu, como sinal de sua promessa.</p>
+<p><b>Pequena lição:</b> confiar em Deus ajuda a fazer o que é certo, mesmo quando é difícil.</p></details>
+<details><summary>Davi, o pastorzinho <small>(1 Samuel 16 e 17)</small></summary>
+<p>Davi era um jovem que cuidava das ovelhas do pai. Ele era corajoso e rezava muito. Um dia, um gigante chamado Golias assustava todo o povo. Davi não tinha armadura nem espada, mas confiava em Deus. Com uma funda e uma pedra, ele venceu o gigante.</p>
+<p><b>Pequena lição:</b> a coragem vem de confiar em Deus, e não de ser o maior ou o mais forte.</p></details>
+<h3>Quiz da Ovelinha</h3>
+<div class="card" id="quiz"></div>
+<h3>Desafio da semana</h3>
+<div class="card"><p>Faça uma boa ação em casa sem ninguém pedir, como arrumar a cama ou ajudar a guardar os brinquedos. E, antes de dormir, reze com um adulto o <a href="#oracoes">Santo Anjo</a>.</p></div>
+</div>
+</section>
+
+<!-- SOBRE -->
+<section class="pg" id="sobre">
 <h2>Sobre o Ovelia</h2>
 <div class="card side"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
-<p>O Ovelia será uma plataforma de fé, aprendizado e crescimento pessoal, com identidade cristã e fundamento católico, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores.</p>
+<p>O Ovelia é uma plataforma de fé, aprendizado e crescimento pessoal, com identidade cristã e fundamento católico, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Começamos por este site e, aos poucos, queremos chegar a um aplicativo.</p>
 <p>A ovelhinha é a companheira de caminhada. A pomba lembra a paz e a esperança.</p>
-<p>Começamos por um site e, aos poucos, queremos chegar a um aplicativo.</p>
 <p><b>Criado por Vxnnicio.</b></p></div></div>
+<div class="card"><h3>Transparência sobre os conteúdos</h3>
+<p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
+<p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
+<p><b>Liturgia e Bíblia:</b> só serão exibidas com fonte e licença de uso confirmadas.</p>
+<p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho apenas sua preferência de tamanho de letra e contraste. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
+<p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
 </main>
-<footer>Ovelia · Criado por Vxnnicio</footer>
-<nav class="bot" id="navBot" aria-label="Menu principal (celular)"></nav>
-
-<script>
-(function(){
-var tabs=[['home','Início','🏠'],['oracoes','Terço','📿'],['embreve','Em breve','🌱'],['sobre','Sobre','ℹ️']];
-var navTop=document.getElementById('navTop'),navBot=document.getElementById('navBot'),acc=document.getElementById('acc');
-navTop.innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'">'+x[1]+'</a>'}).join('');
-navBot.innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'"><span aria-hidden="true">'+x[2]+'</span>'+x[1]+'</a>'}).join('');
-function show(first){
-  var id=location.hash.slice(1);if(!document.querySelector('section[id="'+id+'"]'))id='home';
-  document.querySelectorAll('section').forEach(function(s){s.classList.toggle('on',s.id===id)});
-  document.querySelectorAll('nav a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
-  window.scrollTo(0,0);
-  if(!first){var h=document.querySelector('#'+id+' h1,#'+id+' h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
-}
-window.addEventListener('hashchange',function(){show(false)});
-function setBig(on){document.body.classList.toggle('big',on);acc.setAttribute('aria-pressed',on);acc.textContent=on?'A− Letra normal':'A+ Letra grande';try{localStorage.setItem('ovelia-big',on?'1':'0')}catch(e){}}
-acc.addEventListener('click',function(){setBig(!document.body.classList.contains('big'))});
-try{if(localStorage.getItem('ovelia-big')==='1')setBig(true)}catch(e){}
-/* Terço: 1 Pai-Nosso + 3 Ave-Marias + 5 x (Pai-Nosso + 10 Ave-Marias) = 59 contas */
-var steps=[{big:1,t:'Pai-Nosso (conta grande)'}],beadsEl=document.getElementById('beads'),pray=document.getElementById('pray'),n=0;
-for(var i=1;i<=3;i++)steps.push({big:0,t:'Ave-Maria '+i+' de 3'});
-for(var d=1;d<=5;d++){steps.push({big:1,t:'Dezena '+d+' · Pai-Nosso (conta grande)'});for(var k=1;k<=10;k++)steps.push({big:0,t:'Dezena '+d+' · Ave-Maria '+k+' de 10'})}
-var grp=['Gloriosos','Gozosos','Dolorosos','Gloriosos','Luminosos','Dolorosos','Gozosos'][new Date().getDay()];
-document.getElementById('mist').textContent='Hoje, pela distribuição tradicional por dia da semana: Mistérios '+grp+'.';
-function draw(){beadsEl.innerHTML=steps.map(function(s,i){return '<span class="bead'+(s.big?' big':'')+(i<n?' f':'')+'"></span>'}).join('');
-  pray.innerHTML=n===0?'Toque em <b>Próxima conta</b> para começar.':n>=steps.length?'<b>Terço concluído.</b>':'<b>Conta '+n+' de '+steps.length+':</b> '+steps[n-1].t}
-document.getElementById('nextB').addEventListener('click',function(){if(n<steps.length){n++;draw()}});
-document.getElementById('resetB').addEventListener('click',function(){n=0;draw()});
-draw();show(true);
-})();
-</script>
+<footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p></footer>
+<script src="dados/liturgia.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
