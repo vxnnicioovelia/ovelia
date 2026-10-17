@@ -1,0 +1,12 @@
+/* Ovelia Nível 3 — estilos complementares */
+.n3-lit-date{border:1px solid var(--line);border-left:4px solid var(--gold)}
+.n3-ref-list{display:grid;gap:8px;margin:12px 0}.n3-ref-row{padding:10px 12px;border-radius:10px;background:var(--sand,#E8E2D5)}.n3-ref-row p{margin:4px 0 0}
+.n3-reflection{margin-top:14px;padding:14px;border:1px solid var(--gold);border-radius:12px;background:var(--card)}
+.n3-muted{color:var(--mut);font-size:.93em}.n3-kids-library{margin-top:22px;padding-top:14px;border-top:2px solid var(--gold)}.n3-story-count{font-weight:800;color:var(--olive)}
+.n3-story-search{display:block;width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--card);color:var(--ink);margin:10px 0 14px}
+.n3-story-of-day{border-left:4px solid var(--gold);margin:14px 0}.n3-story-list{display:grid;gap:10px}.n3-story{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card)}.n3-story summary{font-weight:800;cursor:pointer;padding:4px 0}.n3-story p{line-height:1.65}
+.n3-story-done{display:flex;gap:10px;align-items:center;padding:10px 0;font-weight:700}.n3-story-done input{width:22px;height:22px}
+.n3-gamification{border-color:var(--gold)}.n3-gamification-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.n3-stat{display:flex;flex-direction:column;gap:4px;padding:12px 8px;border-radius:12px;background:var(--sand,#E8E2D5);text-align:center}.n3-stat strong{font-size:1.5em;color:var(--olive)}.n3-stat span{font-size:.88em}
+.n3-achievements{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.n3-achievement{padding:10px;border:1px solid var(--line);border-radius:10px;opacity:.72}.n3-achievement.is-earned{opacity:1;border-color:var(--gold);background:var(--sand,#E8E2D5)}.n3-achievement strong{display:block}.n3-achievement p{margin:5px 0 0;font-size:.9em}
+.n3-review{border-color:var(--olive)}.n3-review-options{display:grid;gap:8px;margin:12px 0}.n3-review-options .btn{text-align:left;justify-content:flex-start;min-height:46px;white-space:normal}.n3-review-options .btn:disabled{opacity:.6}.n3-review-feedback{padding:12px;border-left:4px solid var(--gold);background:var(--sand,#E8E2D5);border-radius:8px}
+@media(max-width:480px){.n3-gamification-stats,.n3-achievements{grid-template-columns:1fr}}

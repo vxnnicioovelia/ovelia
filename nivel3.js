@@ -1,0 +1,103 @@
+/* Ovelia Nível 3 — carregue depois de app.js */
+(function(){
+'use strict';
+var API='https://liturgia.up.railway.app/v2/',CNBB='https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php';
+var $=function(s,r){return(r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function node(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!==undefined)n.textContent=x;return n}
+var db={get:function(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function isoToday(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function dateOf(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');if(!m)return null;var d=new Date(+m[1],+m[2]-1,+m[3]);return d.getFullYear()===+m[1]&&d.getMonth()===+m[2]-1&&d.getDate()===+m[3]?d:null}
+function dateLong(d){return d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+var themes=[
+{keys:['perdo','miseric','compaix'],title:'Misericórdia e recomeço',text:'A misericórdia cristã abre espaço para reconhecer os erros, buscar reconciliação e recomeçar com verdade.',q:'Onde posso praticar misericórdia sem ignorar os limites necessários?',a:'Faça um gesto concreto de reconciliação, escuta ou ajuda.'},
+{keys:['amor','caridade','próximo','proximo','servi'],title:'Amar com atitudes',text:'O amor ao próximo aparece nas escolhas pequenas: escutar, cuidar, respeitar e ajudar sem esperar recompensa.',q:'Quem precisa que eu ofereça tempo e atenção?',a:'Pratique uma boa ação concreta e discreta.'},
+{keys:['fé','fe ','confian','crer'],title:'Fé em meio às dificuldades',text:'A fé não significa que tudo será fácil. Ela nos convida a procurar a presença de Deus e a dar o próximo passo possível.',q:'Que preocupação posso apresentar a Deus e que atitude responsável posso tomar?',a:'Faça uma oração breve e escolha um passo prático.'},
+{keys:['oração','oracao','orar','rez'],title:'Aprender a rezar',text:'Rezar é entrar em relação com Deus com sinceridade: agradecer, pedir ajuda, reconhecer falhas e reservar silêncio.',q:'Minha oração inclui agradecimento e escuta?',a:'Reze o Pai-Nosso devagar, prestando atenção em cada frase.'},
+{keys:['esperança','esperanca','ressurrei','alegria'],title:'Esperança que sustenta',text:'A esperança cristã não nega a dor. Ajuda a atravessar momentos difíceis sem perder de vista a dignidade e a possibilidade de recomeçar.',q:'Que palavra de esperança posso partilhar?',a:'Envie uma mensagem de apoio ou acompanhe alguém.'},
+{keys:['palavra','escritura','evangelho','salmo'],title:'Escutar e viver a Palavra',text:'A leitura bíblica amadurece quando compreendemos a mensagem e procuramos vivê-la nas escolhas diárias.',q:'O que esta passagem me convida a transformar?',a:'Leia a referência na sua Bíblia e anote uma atitude para hoje.'}];
+function themeFor(s){s=(s||'').toLocaleLowerCase('pt-BR');for(var t of themes)if(t.keys.some(function(k){return s.indexOf(k)>=0}))return t;return{title:'Deus no cotidiano',text:'A liturgia nos convida a escutar a Palavra e perceber como a fé orienta nossas escolhas e relações.',q:'Que atitude concreta pode aproximar minhas escolhas do Evangelho?',a:'Reserve alguns minutos para oração e escolha uma boa ação.'}}
+function ref(o){return typeof o==='string'?o:(o&&(o.referencia||o.ref||o.referenciaBiblica||o.titulo||o.nome)||'')}
+function setupLiturgy(){
+ var input=$('#litDataEscolhida'),dest=$('#litDia');if(!input||!dest||$('#n3Liturgy'))return;
+ var card=node('div','card n3-lit-date');card.id='n3Liturgy';card.appendChild(node('h3','','Liturgia da data escolhida'));
+ card.appendChild(node('p','n3-muted','Escolha uma data para consultar a celebração e suas referências. Os textos integrais continuam na fonte oficial enquanto a permissão de reprodução não estiver confirmada.'));
+ var status=node('p','n3-muted','Selecione uma data.');status.id='n3LitStatus';card.appendChild(status);var out=node('div');out.id='n3LitOutput';card.appendChild(out);dest.insertBefore(card,dest.firstChild);
+ function load(){var val=input.value||isoToday(),d=dateOf(val);if(!d){status.textContent='Escolha uma data válida.';return}status.textContent='Consultando referências…';out.innerHTML='';
+ fetch(API+'?dia='+d.getDate()+'&mes='+(d.getMonth()+1)+'&ano='+d.getFullYear(),{headers:{Accept:'application/json'}}).then(function(r){if(!r.ok)throw Error('HTTP');return r.json()}).then(function(data){
+ if(Array.isArray(data))data=data[0]||{};if(!data||(!data.leituras&&!data.liturgia&&!data.celebracao))throw Error('Formato');
+ out.appendChild(node('span','tag pd','Data selecionada'));out.appendChild(node('h3','',data.liturgia||data.celebracao||'Celebração litúrgica'));out.appendChild(node('p','n3-muted',data.data||dateLong(d)));if(data.cor)out.appendChild(node('p','','Cor litúrgica: '+data.cor));
+ var L=data.leituras||{},defs=[['Primeira leitura',L.primeiraLeitura],['Salmo responsorial',L.salmo],['Segunda leitura',L.segundaLeitura],['Aclamação ao Evangelho',L.aclamacao||L.aleluia],['Evangelho',L.evangelho]],count=0,list=node('div','n3-ref-list');
+ defs.forEach(function(pair){var arr=Array.isArray(pair[1])?pair[1]:(pair[1]?[pair[1]]:[]),vals=[];arr.forEach(function(x){var v=ref(x);if(v&&vals.indexOf(v)<0)vals.push(v)});if(vals.length){count++;var row=node('div','n3-ref-row');row.appendChild(node('strong','',pair[0]));row.appendChild(node('p','',vals.join(' / ')));list.appendChild(row)}});
+ if(count)out.appendChild(list);else out.appendChild(node('p','','Não foi possível identificar as referências. Consulte a fonte oficial.'));
+ out.appendChild(node('p','n3-muted','A Ovelia apresenta referências e reflexão editorial própria; não reproduz os textos integrais.'));
+ var a=node('a','btn lg','Ler textos completos na Edições CNBB ↗');a.href=CNBB;a.target='_blank';a.rel='noopener noreferrer';out.appendChild(a);
+ var t=themeFor(JSON.stringify({liturgia:data.liturgia,leituras:L})),box=node('div','n3-reflection');box.appendChild(node('span','tag pd','Reflexão original da Ovelia'));box.appendChild(node('h3','',t.title));box.appendChild(node('p','',t.text));box.appendChild(node('p','', 'Para refletir: '+t.q));box.appendChild(node('p','', 'Prática de hoje: '+t.a));out.appendChild(box);status.textContent='Referências carregadas para '+dateLong(d)+'.';
+ }).catch(function(){status.textContent='Não foi possível carregar esta data. A Ovelia não substituiu as leituras por dados de outro dia.';var a=node('a','btn lg','Abrir Igreja em Oração — CNBB ↗');a.href=CNBB;a.target='_blank';a.rel='noopener noreferrer';out.appendChild(a)});
+ }
+ input.addEventListener('change',load);load();
+}
+/* Histórias adicionais originais em paráfrase; a coleção de 365 será produzida e revisada em etapas. */
+var stories=[
+['abraao','Abraão confia na promessa','Gênesis 12; 15; 21','Deus chamou Abraão para deixar sua terra e caminhar rumo a um lugar que lhe mostraria. Abraão não conhecia todos os detalhes, mas decidiu confiar. Com o tempo, Deus renovou a promessa de uma grande família.','A fé pode começar com um passo, mesmo sem sabermos tudo.','Desenhe uma estrada e escreva nela um passo bom para esta semana.','Deus, ajuda-me a confiar em ti e a dar passos de bondade. Amém.'],
+['jose','José escolhe perdoar','Gênesis 37; 45; 50','José passou por momentos difíceis e foi afastado dos irmãos. Anos depois, quando pôde ajudá-los, escolheu não se vingar e cuidou de sua família durante a fome.','Perdoar não significa dizer que o erro foi certo; é procurar um caminho que não seja a vingança.','Pense numa forma segura de resolver um desentendimento com ajuda de um adulto.','Senhor, ensina-me a buscar a paz e a pedir ajuda quando estiver magoado. Amém.'],
+['moises','Moisés e o caminho pelo mar','Êxodo 14','O povo de Israel encontrou o mar diante de si e ficou com medo. Moisés encorajou o povo a confiar em Deus. A narrativa bíblica conta que Deus abriu um caminho e o povo atravessou em segurança.','Quando sentimos medo, podemos pedir ajuda e procurar o próximo passo.','Conte a um adulto de confiança uma situação em que precisa de ajuda.','Deus, fica comigo quando eu sentir medo. Amém.'],
+['samuel','Samuel aprende a escutar','1 Samuel 3','Samuel ouviu alguém chamá-lo durante a noite. Eli percebeu que poderia ser Deus chamando o menino e ensinou Samuel a responder com atenção. Samuel aprendeu a escutar.','Escutar com atenção é uma forma de aprender e amar.','Durante uma conversa hoje, escute sem interromper.','Senhor, dá-me um coração atento para escutar a tua Palavra e as pessoas. Amém.'],
+['ester','Ester tem coragem','Ester 4–7','Ester soube que seu povo corria perigo. Sentiu medo, pediu que rezassem e agiu com prudência diante do rei para buscar a salvação de seu povo.','Coragem é fazer o bem com prudência, mesmo quando sentimos medo.','Pense em como defender alguém tratado injustamente, buscando ajuda de um adulto.','Deus, dá-me coragem e sabedoria para proteger quem precisa. Amém.'],
+['daniel','Daniel continua a rezar','Daniel 6','Daniel rezava com fidelidade. Mesmo pressionado a parar, continuou a confiar em Deus. O relato conta que Deus o protegeu na cova dos leões.','A oração ajuda a manter o coração firme; diante de ameaças, procure ajuda.','Escolha um horário tranquilo para uma oração curta.','Senhor, ajuda-me a permanecer fiel ao bem. Amém.'],
+['jonas','Jonas aprende sobre misericórdia','Jonas 1–4','Jonas tentou fugir da missão de Deus. Depois de dificuldades, foi a Nínive e anunciou que o povo precisava mudar. Deus lhe ensinou que sua misericórdia alcança todos.','Deus nos chama a mudar e a desejar que os outros também possam recomeçar.','Escolha uma atitude sua que pode melhorar e pratique uma mudança.','Deus, ajuda-me a reconhecer meus erros e desejar o bem de todos. Amém.'],
+['rute','Rute cuida de Noemi','Rute 1–4','Rute decidiu acompanhar Noemi e não abandoná-la. Em Belém, trabalhou recolhendo espigas para que as duas tivessem alimento. Sua lealdade e bondade foram reconhecidas.','A lealdade e o cuidado aparecem nas pequenas ações.','Ajude alguém da família sem esperar que peçam.','Senhor, ensina-me a cuidar das pessoas com carinho. Amém.'],
+['zaqueu','Zaqueu decide mudar','Lucas 19,1-10','Zaqueu queria ver Jesus e subiu numa árvore. Jesus o chamou e foi à sua casa. Zaqueu decidiu repartir seus bens e reparar o que havia feito de errado.','Encontrar Jesus nos convida a reparar o mal e praticar a justiça.','Se errou, pense em como pedir desculpas e consertar o que for possível.','Jesus, ajuda-me a reconhecer meus erros e escolher o que é justo. Amém.'],
+['bartimeu','Bartimeu pede ajuda','Marcos 10,46-52','Bartimeu era cego e chamou por Jesus quando soube que ele passava. Apesar de tentarem silenciá-lo, continuou pedindo ajuda. Jesus o ouviu e o curou.','Toda pessoa merece ser ouvida com dignidade.','Escute com respeito alguém que costuma ficar de fora das conversas.','Jesus, abre meus olhos para perceber quem precisa de atenção. Amém.'],
+['criancas','Jesus acolhe as crianças','Marcos 10,13-16','Algumas pessoas levaram crianças até Jesus, mas os discípulos tentaram impedi-las. Jesus pediu que deixassem as crianças se aproximar e as acolheu com carinho.','As crianças são importantes e merecem cuidado, respeito e proteção.','Converse com um adulto sobre quem ajuda a manter você seguro.','Jesus, obrigado pelas pessoas que cuidam de mim. Amém.'],
+['paes','Partilhar os pães e os peixes','João 6,1-13','Uma multidão ouviu Jesus e ficou com fome. Um menino tinha cinco pães e dois peixes. Jesus agradeceu e repartiu o alimento, e todos comeram.','O que parece pouco pode ajudar muito quando é partilhado.','Escolha algo que possa partilhar com generosidade.','Jesus, ensina-me a partilhar e agradecer pelo alimento. Amém.'],
+['pentecostes','Os discípulos recebem o Espírito Santo','Atos 2,1-13','Os discípulos estavam reunidos quando ficaram cheios do Espírito Santo e começaram a anunciar as maravilhas de Deus em línguas que as pessoas entendiam.','O Espírito Santo fortalece a comunidade para anunciar o Evangelho e servir.','Peça coragem para praticar uma atitude de bondade.','Vinde, Espírito Santo, guia meus pensamentos e atitudes. Amém.']
+];
+function setupKids(){
+ var s=$('#infantil');if(!s||$('#n3KidsLibrary'))return;var old=$$('details',s),anchor=old.length?old[old.length-1]:null,box=node('div','n3-kids-library');box.id='n3KidsLibrary';
+ box.appendChild(node('h3','','📚 Biblioteca de histórias da Ovelinha'));
+ box.appendChild(node('p','n3-muted','Meta editorial: 365 histórias para um ano. Esta versão acrescenta 12 histórias com referência, lição, atividade e oração. A coleção completa será escrita e revisada por etapas; não estamos apresentando 365 textos como prontos.'));
+ var count=node('p','n3-story-count');count.id='n3StoryCount';box.appendChild(count);
+ var search=node('input','n3-story-search');search.type='search';search.placeholder='Buscar título ou referência bíblica';search.setAttribute('aria-label','Buscar histórias bíblicas');box.appendChild(search);
+ var day=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000),daily=stories[(day-1)%stories.length],today=node('div','card n3-story-of-day');
+ today.appendChild(node('span','tag pd','Sugestão para hoje'));today.appendChild(node('h4','',daily[1]));today.appendChild(node('p','',daily[4]));var open=node('a','btn g','Abrir história');open.href='#n3story-'+daily[0];today.appendChild(open);box.appendChild(today);
+ var list=node('div','n3-story-list');box.appendChild(list);
+ function render(filter){list.innerHTML='';var f=(filter||'').toLocaleLowerCase('pt-BR');stories.filter(function(x){return(x[1]+' '+x[2]+' '+x[4]).toLocaleLowerCase('pt-BR').indexOf(f)>=0}).forEach(function(x){
+ var d=node('details','n3-story');d.id='n3story-'+x[0];d.appendChild(node('summary','',x[1]+' — '+x[2]));d.appendChild(node('p','',x[3]));d.appendChild(node('p','', 'Pequena lição: '+x[4]));d.appendChild(node('p','', 'Atividade: '+x[5]));d.appendChild(node('p','', 'Oração: '+x[6]));
+ var lab=node('label','n3-story-done'),cb=node('input');cb.type='checkbox';cb.checked=!!db.get('ovelia-n3-story-'+x[0],false);cb.addEventListener('change',function(){db.set('ovelia-n3-story-'+x[0],cb.checked);refresh();});lab.appendChild(cb);lab.appendChild(document.createTextNode(' Concluí esta história'));d.appendChild(lab);list.appendChild(d);
+ });count.textContent='Histórias anteriores: '+old.length+' · Novas nesta etapa: '+stories.length+' · Meta: 365 histórias revisadas.'}
+ search.addEventListener('input',function(){render(search.value)});if(anchor)anchor.insertAdjacentElement('afterend',box);else s.appendChild(box);render('');
+}
+var review=[
+['O que significa ler uma passagem bíblica com atenção?',['Terminar rápido','Compreender a mensagem e pensar como vivê-la','Decorar tudo de uma vez'],1,'Ler com atenção inclui compreender, refletir e praticar.'],
+['Na parábola do Bom Samaritano, quem se tornou próximo?',['Quem cuidou do ferido','Quem passou sem olhar','Só quem o conhecia'],0,'Jesus destaca a compaixão que vira ação.'],
+['O que fazer diante de uma dúvida bíblica difícil?',['Inventar resposta','Desistir','Consultar fonte confiável e pedir orientação'],2,'Aprender inclui pesquisar e pedir orientação.'],
+['Como transformar oração em prática?',['Evitar responsabilidades','Escolher uma atitude de amor e justiça','Comparar-se com todos'],1,'A oração pode inspirar atitudes responsáveis.'],
+['Para que serve revisar um estudo?',['Ajudar a lembrar e compreender','Punir quem errou','Substituir a Bíblia'],0,'Revisar ajuda a fixar o conteúdo.']];
+var ri=0,rc=0,reviewFinished=false;
+function checkedProgress(){return $$('[data-progress]').filter(function(x){return x.checked}).length}
+function storiesDone(){return stories.filter(function(x){return !!db.get('ovelia-n3-story-'+x[0],false)}).length}
+function xp(){return checkedProgress()*10+storiesDone()*15+(+db.get('ovelia-n3-quizbest',0)||0)*2+(+db.get('ovelia-n3-reviewxp',0)||0)}
+function awards(points){return[
+['Primeiro passo','Concluir uma etapa de estudo',checkedProgress()>=1],
+['Estudante constante','Concluir quatro etapas de estudo',checkedProgress()>=4],
+['Amigo das histórias','Concluir três histórias Kids',storiesDone()>=3],
+['Pequeno catequista','Concluir seis histórias Kids',storiesDone()>=6],
+['Bom observador','Acertar ao menos cinco perguntas no quiz Kids',(+db.get('ovelia-n3-quizbest',0)||0)>=5],
+['Revisor atento','Concluir a revisão de cinco perguntas',!!db.get('ovelia-n3-reviewdone',false)],
+['Nível 2','Alcançar 100 pontos',points>=100]]}
+function refresh(){var xpNow=xp(),stats=$('#n3GamificationStats'),aw=$('#n3Awards');if(!stats||!aw)return;stats.innerHTML='';[[xpNow,'Pontos'],[Math.floor(xpNow/100)+1,'Nível'],[100-xpNow%100,'Para o próximo nível']].forEach(function(x){var d=node('div','n3-stat');d.appendChild(node('strong','',String(x[0])));d.appendChild(node('span','',x[1]));stats.appendChild(d)});aw.innerHTML='';awards(xpNow).forEach(function(a){var d=node('div','n3-achievement'+(a[2]?' is-earned':''));d.appendChild(node('strong','',(a[2]?'🏅 ':'🔒 ')+a[0]));d.appendChild(node('p','',a[1]));aw.appendChild(d)})}
+function setupGamification(){
+ var s=$('#estudos');if(!s||$('#n3Gamification'))return;var card=node('div','card n3-gamification');card.id='n3Gamification';card.appendChild(node('span','tag pd','Minha jornada'));card.appendChild(node('h3','','Pontos, níveis e conquistas'));var stats=node('div','n3-gamification-stats');stats.id='n3GamificationStats';card.appendChild(stats);var awardsBox=node('div','n3-achievements');awardsBox.id='n3Awards';card.appendChild(awardsBox);card.appendChild(node('p','n3-muted','Pontos calculados a partir das etapas concluídas, histórias Kids, melhor resultado do quiz e revisão. Progresso local, sem cadastro.'));
+ var trail=$('.trilha-adulto',s);if(trail)trail.insertAdjacentElement('beforebegin',card);else s.insertBefore(card,s.firstChild);
+ var rev=node('div','card n3-review');rev.id='n3Review';rev.appendChild(node('h3','','🧠 Revisão de aprendizado'));rev.appendChild(node('p','','Cinco perguntas para rever leitura bíblica, oração e vida cristã.'));var body=node('div');body.id='n3ReviewBody';rev.appendChild(body);var trail2=$('.trilha-adulto',s);if(trail2)trail2.insertAdjacentElement('afterend',rev);else s.appendChild(rev);
+ function draw(){body.innerHTML='';if(reviewFinished||ri>=review.length){body.appendChild(node('h4','','Revisão concluída!'));body.appendChild(node('p','', 'Você acertou '+rc+' de '+review.length+'. '+(rc>=4?'Excelente trabalho!':'Releia os estudos e tente novamente.')));var again=node('button','btn g','Refazer revisão');again.type='button';again.addEventListener('click',function(){ri=0;rc=0;reviewFinished=false;draw()});body.appendChild(again);return}
+ var q=review[ri];body.appendChild(node('p','n3-muted','Pergunta '+(ri+1)+' de '+review.length));body.appendChild(node('h4','',q[0]));var opts=node('div','n3-review-options');q[1].forEach(function(o,i){var b=node('button','btn g',o);b.type='button';b.addEventListener('click',function(){$$('button',opts).forEach(function(x){x.disabled=true});if(i===q[2])rc++;body.appendChild(node('p','n3-review-feedback',(i===q[2]?'Correto! ':'Vamos revisar. ')+q[3]));var next=node('button','btn','Próxima pergunta');next.type='button';next.addEventListener('click',function(){ri++;if(ri>=review.length){reviewFinished=true;db.set('ovelia-n3-reviewdone',true);db.set('ovelia-n3-reviewxp',Math.max(+db.get('ovelia-n3-reviewxp',0)||0,rc*4))}draw();refresh()});body.appendChild(next)});opts.appendChild(b)});body.appendChild(opts)}
+ draw();refresh()
+}
+function hook(){
+ $$('[data-progress]').forEach(function(cb){if(cb.dataset.n3hook)return;cb.dataset.n3hook='1';cb.addEventListener('change',refresh)});
+ var q=$('#quiz');if(q&&window.MutationObserver)new MutationObserver(function(){var m=/Você acertou\s+(\d+)\s+de\s+(\d+)/i.exec(q.textContent||'');if(m){var score=+m[1];if(score>(+db.get('ovelia-n3-quizbest',0)||0))db.set('ovelia-n3-quizbest',score);refresh()}}).observe(q,{childList:true,subtree:true,characterData:true})
+}
+function init(){setupLiturgy();setupKids();setupGamification();hook();refresh()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
