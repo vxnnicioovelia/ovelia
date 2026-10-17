@@ -19,9 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261017-integrada1">
-<link rel="stylesheet" href="nivel2.css?v=20261017-integrada1">
-<link rel="stylesheet" href="nivel3.css?v=20261017-integrada1">
+<link rel="stylesheet" href="estilo.css">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
@@ -139,10 +137,43 @@
 <!-- BÍBLIA -->
 <section class="pg" id="biblia">
 <h2>Bíblia</h2>
-<div class="aviso"><span class="tag">Texto bíblico ainda não integrado</span><p>O texto completo de uma tradução só será exibido aqui depois de confirmada a licença de uso. Até lá, esta página ajuda a se orientar na Bíblia católica. Leia o texto na sua Bíblia impressa ou em fonte autorizada pela sua paróquia ou diocese.</p></div>
+<div class="biblia-aviso aviso">
+  <strong>Bíblia Portuguesa Mundial (BPM)</strong>
+  <p>Tradução em revisão, disponibilizada pelo eBible.org como domínio público. Não é apresentada como tradução oficialmente aprovada pela Igreja Católica. O texto é carregado da fonte oficial e precisa de internet; esta versão não funciona offline.</p>
+  <p><a href="https://ebible.org/porbrbsl/" target="_blank" rel="noopener noreferrer">Fonte oficial e informações da tradução ↗</a></p>
+</div>
+<div id="bibliaLeitor" class="biblia-leitor card" aria-live="polite">
+  <div class="biblia-leitor-topo">
+    <div>
+      <span class="tag pd">Leitura bíblica</span>
+      <h3 id="bibliaTituloLivro">Escolha um livro</h3>
+      <p id="bibliaSubtitulo">Selecione um dos 73 livros abaixo para começar.</p>
+    </div>
+  </div>
+  <div class="biblia-controles">
+    <label for="bibliaCapitulo">Capítulo</label>
+    <div class="biblia-controles-linha">
+      <button class="btn g" type="button" id="bibliaAnterior" disabled>← Anterior</button>
+      <select id="bibliaCapitulo" disabled aria-label="Selecionar capítulo">
+        <option value="">Escolha um livro primeiro</option>
+      </select>
+      <button class="btn g" type="button" id="bibliaProximo" disabled>Próximo →</button>
+    </div>
+  </div>
+  <div id="bibliaStatus" class="biblia-status" role="status" aria-live="polite">A leitura será exibida aqui após selecionar um livro.</div>
+  <div class="biblia-frame-wrap" id="bibliaFrameWrap" hidden>
+    <iframe id="bibliaFrame" title="Texto da Bíblia Portuguesa Mundial" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+  <div class="row biblia-acoes">
+    <a id="bibliaAbrirFonte" class="btn g" href="https://ebible.org/porbrbsl/" target="_blank" rel="noopener noreferrer">Abrir texto na fonte ↗</a>
+    <button class="btn g" id="bibliaEscolherLivro" type="button">Voltar à lista de livros</button>
+  </div>
+  <p class="biblia-creditos">Texto e notas: eBible.org — Bíblia Portuguesa Mundial. Fonte e licença: domínio público, conforme a página oficial. A tradução permanece em revisão. A Ovelia não a apresenta como tradução oficialmente aprovada pela Igreja Católica.</p>
+</div>
+<div class="aviso"><span class="tag">Como usar</span><p>Escolha um livro na lista abaixo e toque nele para abrir a leitura. A navegação de capítulos fica no leitor acima. A leitura é carregada da fonte pública do eBible.org e requer conexão com a internet.</p></div>
 <div class="card">
 <h3>Escolha como consultar a Bíblia</h3>
-<p>O texto integral de traduções modernas pode ter direitos autorais. Até confirmarmos a licença para reproduzi-las dentro da Ovelia, você pode consultar a Bíblia em uma fonte externa e voltar aqui para estudar.</p>
+<p>A Ovelia utiliza a Bíblia Portuguesa Mundial, identificada claramente como tradução em revisão e disponibilizada como domínio público pelo eBible.org. O texto é exibido a partir da fonte original; não é armazenado localmente nesta versão.</p>
 <div class="row"><a class="btn" href="https://oraetlabora.com.br/biblia" target="_blank" rel="noopener noreferrer">Ler Bíblia católica online ↗</a><a class="btn g" href="https://www.biblicas.com.br/biblia" target="_blank" rel="noopener noreferrer">Consultar outra edição online ↗</a></div>
 <p class="muted-note">São fontes externas independentes. Antes de usar uma tradução para estudo formal ou catequese, confira a edição, a tradução e a orientação da sua paróquia. A leitura integral dentro da Ovelia dependerá de licença confirmada.</p>
 </div>
@@ -264,9 +295,7 @@
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
-<script src="liturgia.js?v=20261017-integrada1"></script>
-<script src="app.js?v=20261017-integrada1"></script>
-<script src="nivel2.js?v=20261017-integrada1"></script>
-<script src="nivel3.js?v=20261017-integrada1"></script>
+<script src="liturgia.js?v=20261016-release2"></script>
+<script src="app.js?v=20261016-release2"></script>
 </body>
 </html>

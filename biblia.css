@@ -1,0 +1,26 @@
+/* Leitor bíblico integrado à identidade existente da Ovelia */
+.biblia-aviso { margin: 12px 0 18px; }
+.biblia-leitor { scroll-margin-top: 110px; }
+.biblia-leitor-topo h3 { margin-top: 8px; font-size: 1.35rem; }
+.biblia-leitor-topo p { color: var(--mut); }
+.biblia-controles { margin: 14px 0; }
+.biblia-controles > label { display:block; font-weight:700; margin-bottom:6px; }
+.biblia-controles-linha { display:grid; grid-template-columns:auto minmax(110px,1fr) auto; gap:8px; align-items:center; }
+.biblia-controles select { min-width:0; width:100%; min-height:44px; padding:8px 10px; border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); font:inherit; }
+.biblia-controles button { padding:8px 12px; }
+.biblia-status { padding:10px 12px; border-radius:12px; background:var(--soft); color:var(--ink); margin:12px 0; }
+.biblia-frame-wrap { border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--card); }
+.biblia-frame-wrap iframe { display:block; width:100%; height:min(72vh,820px); min-height:520px; border:0; background:#fff; }
+.biblia-acoes { margin-top:12px; }
+.biblia-creditos { color:var(--mut); font-size:.88rem; margin-top:14px; }
+#livros .biblia-livro-clicavel { cursor:pointer; padding:5px 4px; border-radius:6px; }
+#livros .biblia-livro-clicavel:hover, #livros .biblia-livro-clicavel:focus-visible { background:var(--soft); outline:2px solid var(--gold); outline-offset:1px; }
+#bibliaFrameWrap[hidden], #bibliaStatus[hidden] { display:none !important; }
+@media(max-width:620px) {
+  .biblia-controles-linha { grid-template-columns:1fr 1fr; }
+  .biblia-controles-linha select { grid-column:1/-1; grid-row:1; }
+  .biblia-controles-linha #bibliaAnterior { grid-column:1; grid-row:2; }
+  .biblia-controles-linha #bibliaProximo { grid-column:2; grid-row:2; }
+  .biblia-frame-wrap iframe { height:70vh; min-height:480px; }
+  .biblia-acoes .btn { width:100%; text-align:center; }
+}
