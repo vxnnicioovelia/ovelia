@@ -1,0 +1,40 @@
+name: Atualizar Bíblia
+
+# Baixa a Bíblia Portuguesa Mundial (eBible.org, domínio público) e grava os capítulos
+# dentro do repositório, na pasta dados/biblia. Rode UMA vez (Actions → Atualizar Bíblia → Run workflow).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Baixar os arquivos USFM da BPM
+        run: |
+          mkdir -p /tmp/bpm && cd /tmp/bpm
+          ok=0
+          for u in \
+            "https://ebible.org/Scriptures/porbrbsl_usfm.zip" \
+            "https://ebible.org/Scriptures/porbrbsl_usfm.zip?download=1" \
+            "https://ebible.org/Scriptures/porbrbsl_readaloud.zip"; do
+            echo "Tentando $u"
+            if curl -fsSL --retry 3 -o bpm.zip "$u" && unzip -q -o bpm.zip -d usfm && [ -n "$(find usfm -iname '*.usfm' -o -iname '*.sfm' | head -1)" ]; then ok=1; break; fi
+            rm -rf usfm bpm.zip
+          done
+          if [ "$ok" != 1 ]; then echo "::error::Não consegui baixar os arquivos da BPM no eBible.org."; exit 1; fi
+          find usfm -type f | head -5
+      - name: Gerar os arquivos da Bíblia
+        run: node tools/gerar-biblia.mjs /tmp/bpm/usfm
+      - name: Salvar no repositório
+        run: |
+          git config user.name "ovelia-bot"
+          git config user.email "ovelia-bot@users.noreply.github.com"
+          git add dados/biblia
+          if git diff --cached --quiet; then echo "Nada mudou."; else git commit -m "Atualiza texto da Bíblia (BPM)" && git push; fi

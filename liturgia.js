@@ -1,5 +1,6 @@
-/* LITURGIA DIÁRIA — arquivo editado à mão.
-   O site NÃO busca a liturgia na internet. Só mostra o que estiver aqui, revisado por uma pessoa.
+/* LITURGIA DIÁRIA — arquivo manual (reserva).
+   A liturgia normal é automática: vem de dados/liturgia/AAAA-MM-DD.json, gravado todo dia pelo workflow "Liturgia diária".
+   Este arquivo só é usado quando NÃO existe o arquivo automático do dia nem a fonte ao vivo responde.
    Para cada dia, copie o bloco de exemplo abaixo (dentro de "dias") e preencha com texto de fonte autorizada.
    Não cole leituras sem conferir a permissão de uso da tradução. Se não houver bloco para a data de hoje, o site avisa isso ao visitante.
 

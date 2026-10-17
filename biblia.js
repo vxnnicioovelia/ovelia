@@ -1,10 +1,11 @@
 /* Ovelia — leitor bíblico integrado.
-   O texto é carregado da página pública do eBible.org; requer internet e não funciona offline.
+   O texto fica DENTRO do site (pasta dados/biblia, gerada pelo workflow "Atualizar Bíblia").
+   Nenhum quadro externo e nenhum redirecionamento: o capítulo é lido e exibido na própria página.
    A lista abaixo segue a ordem católica de 73 livros. Ester e Daniel usam páginas que incluem
    as porções gregas, conforme descrito pela fonte. */
 (function () {
   'use strict';
-  var BASE = 'https://ebible.org/porbrbsl/';
+  var BASE = 'dados/biblia/';
   var books = [
     {name:'Gênesis',code:'GEN',chapters:50,testament:'Antigo Testamento'},
     {name:'Êxodo',code:'EXO',chapters:40,testament:'Antigo Testamento'},
@@ -81,64 +82,96 @@
     {name:'Apocalipse',code:'REV',chapters:22,testament:'Novo Testamento'}
   ];
 
+
   var $ = function(id){ return document.getElementById(id); };
-  var frame = $('bibliaFrame'), frameWrap = $('bibliaFrameWrap');
+  var texto = $('bibliaTexto');
   var title = $('bibliaTituloLivro'), subtitle = $('bibliaSubtitulo');
   var chapterSelect = $('bibliaCapitulo'), prev = $('bibliaAnterior'), next = $('bibliaProximo');
-  var status = $('bibliaStatus'), openSource = $('bibliaAbrirFonte'), bookList = $('livros');
-  var selected = null, chapter = 1, lastUrl = BASE;
+  var prev2 = $('bibliaAnterior2'), next2 = $('bibliaProximo2'), nav2 = $('bibliaNavBaixo');
+  var status = $('bibliaStatus'), bookList = $('livros');
+  if (!texto || !chapterSelect) return;
+  var selected = null, chapter = 1, cache = {}, pedido = 0;
 
   function normalize(s) {
-    return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g,' ').trim();
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g,' ').trim();
   }
   function findBook(name) {
     var n = normalize(name);
-    var aliases = {'eclesiastico (siracida)':'eclesiastico (siracida)','filêmon':'filemon','cântico dos cânticos':'cantico dos canticos'};
-    n = aliases[n] || n;
     return books.find(function(b){return normalize(b.name)===n;}) || null;
   }
-  function urlFor(book, ch) {
-    var digits = book.code === 'PSA' ? 3 : 2;
-    return BASE + book.code + String(ch).padStart(digits, '0') + '.htm';
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
+  }
+  function carregarLivro(book) {
+    if (cache[book.code]) return Promise.resolve(cache[book.code]);
+    return fetch(BASE + book.code + '.json').then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function(d){
+      if (!d || !Array.isArray(d.chapters)) throw new Error('formato');
+      cache[book.code] = d; return d;
+    });
+  }
+  function desenhar(book, data, ch) {
+    var cap = data.chapters[ch - 1];
+    if (!cap || !cap.v || !cap.v.length) {
+      texto.innerHTML = '<p class="biblia-vazio">Este capítulo ainda não está disponível.</p>';
+      return;
+    }
+    var html = '', aberto = false;
+    if (cap.d) html += '<p class="biblia-titulo-salmo">' + esc(cap.d) + '</p>';
+    cap.v.forEach(function(v, i){
+      if (v.s) { if (aberto) { html += '</p>'; aberto = false; } html += '<h4 class="biblia-secao">' + esc(v.s) + '</h4>'; }
+      if (!aberto || v.p || v.s) { if (aberto) html += '</p>'; html += '<p class="biblia-par">'; aberto = true; }
+      html += '<span class="biblia-v"><sup class="biblia-n">' + esc(v.n) + '</sup>' + esc(v.t).replace(/\n/g, '<br>') + '</span> ';
+    });
+    if (aberto) html += '</p>';
+    texto.innerHTML = html;
   }
   function updateControls() {
-    chapterSelect.disabled = !selected;
-    prev.disabled = !selected || (chapter===1 && books.indexOf(selected)===0);
-    next.disabled = !selected || (chapter===selected.chapters && books.indexOf(selected)===books.length-1);
+    var off = !selected;
+    chapterSelect.disabled = off;
+    var antes = off || (chapter===1 && books.indexOf(selected)===0);
+    var depois = off || (chapter===selected.chapters && books.indexOf(selected)===books.length-1);
+    [prev, prev2].forEach(function(b){ if (b) b.disabled = antes; });
+    [next, next2].forEach(function(b){ if (b) b.disabled = depois; });
+    if (nav2) nav2.hidden = off;
     chapterSelect.value = selected ? String(chapter) : '';
   }
-  function loadChapter(nextChapter) {
-    if (!selected) return;
-    chapter = Math.max(1, Math.min(selected.chapters, Number(nextChapter)||1));
-    var url = urlFor(selected, chapter);
-    lastUrl = url;
-    title.textContent = selected.name + ' ' + chapter;
-    subtitle.textContent = selected.testament + (selected.note ? ' · ' + selected.note : '');
-    status.textContent = 'Carregando o capítulo ' + chapter + ' de ' + selected.name + ' da fonte oficial…';
-    status.hidden = false;
-    frameWrap.hidden = false;
-    frame.onload = function(){ status.hidden = true; };
-    frame.onerror = function(){
-      status.textContent = 'Não foi possível carregar este capítulo dentro da Ovelia. Use “Abrir texto na fonte” para continuar.';
-      status.hidden = false;
-    };
-    frame.src = url;
-    openSource.href = url;
-    chapterSelect.value = String(chapter);
-    updateControls();
-    var panel = $('bibliaLeitor');
-    if (panel && window.matchMedia && window.matchMedia('(max-width: 620px)').matches) {
-      panel.scrollIntoView({behavior:'smooth', block:'start'});
-    }
-  }
-  function selectBook(book) {
-    selected = book; chapter = 1;
+  function fillChapters(book) {
     chapterSelect.innerHTML = '';
     for (var i=1; i<=book.chapters; i++) {
       var opt = document.createElement('option');
       opt.value = String(i); opt.textContent = 'Capítulo ' + i;
       chapterSelect.appendChild(opt);
     }
+  }
+  function loadChapter(nextChapter) {
+    if (!selected) return;
+    chapter = Math.max(1, Math.min(selected.chapters, Number(nextChapter)||1));
+    var book = selected, ch = chapter, meu = ++pedido;
+    title.textContent = book.name + ' ' + ch;
+    subtitle.textContent = book.testament + (book.note ? ' · ' + book.note : '');
+    chapterSelect.value = String(ch);
+    updateControls();
+    status.textContent = 'Carregando ' + book.name + ' ' + ch + '…';
+    status.hidden = false;
+    carregarLivro(book).then(function(data){
+      if (meu !== pedido) return;
+      desenhar(book, data, ch);
+      status.hidden = true;
+    }).catch(function(){
+      if (meu !== pedido) return;
+      texto.innerHTML = '';
+      status.textContent = 'O texto deste livro ainda não está disponível neste site. Tente novamente mais tarde.';
+      status.hidden = false;
+    });
+    var panel = $('bibliaLeitor');
+    if (panel && panel.scrollIntoView) panel.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function selectBook(book) {
+    selected = book; chapter = 1;
+    fillChapters(book);
     loadChapter(1);
   }
   function move(delta) {
@@ -146,27 +179,18 @@
     var idx = books.indexOf(selected);
     var target = chapter + delta;
     if (target < 1 && idx > 0) {
-      selected = books[idx-1]; chapter = selected.chapters;
-      chapterSelect.innerHTML = '';
-      for (var i=1; i<=selected.chapters; i++) {
-        var o=document.createElement('option');o.value=String(i);o.textContent='Capítulo '+i;chapterSelect.appendChild(o);
-      }
-      loadChapter(chapter);
+      selected = books[idx-1]; fillChapters(selected); loadChapter(selected.chapters);
     } else if (target > selected.chapters && idx < books.length-1) {
-      selected = books[idx+1]; chapter = 1;
-      chapterSelect.innerHTML = '';
-      for (var j=1; j<=selected.chapters; j++) {
-        var p=document.createElement('option');p.value=String(j);p.textContent='Capítulo '+j;chapterSelect.appendChild(p);
-      }
-      loadChapter(1);
+      selected = books[idx+1]; fillChapters(selected); loadChapter(1);
     } else {
       loadChapter(target);
     }
   }
   chapterSelect.addEventListener('change', function(){loadChapter(chapterSelect.value);});
-  prev.addEventListener('click', function(){move(-1);});
-  next.addEventListener('click', function(){move(1);});
-  $('bibliaEscolherLivro').addEventListener('click', function(){
+  [prev, prev2].forEach(function(b){ if (b) b.addEventListener('click', function(){move(-1);}); });
+  [next, next2].forEach(function(b){ if (b) b.addEventListener('click', function(){move(1);}); });
+  var escolher = $('bibliaEscolherLivro');
+  if (escolher) escolher.addEventListener('click', function(){
     var search = $('buscaLivro');
     if (search) search.focus();
     if (bookList) bookList.scrollIntoView({behavior:'smooth',block:'start'});
@@ -203,9 +227,5 @@
       if (findBook(li.textContent)) {li.tabIndex=0;li.setAttribute('role','button');li.classList.add('biblia-livro-clicavel');}
     });
   }
-  if (books.length !== 73) {
-    status.textContent = 'Aviso de integridade: a lista de livros precisa de revisão.';
-    status.hidden = false;
-  }
-  window.OVELIA_BIBLIA = { books: books.map(function(b){return {name:b.name,chapters:b.chapters,testament:b.testament};}) };
+  window.OVELIA_BIBLIA = { abrir: function(code, cap){ var b = books.filter(function(x){return x.code===code;})[0]; if (b) { selected = b; fillChapters(b); loadChapter(cap||1); } }, books: books.map(function(b){return {name:b.name,chapters:b.chapters,testament:b.testament};}) };
 })();

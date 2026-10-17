@@ -1,0 +1,37 @@
+name: Liturgia diária
+
+# Atualiza a liturgia do dia (e dos próximos 7 dias) dentro do repositório, na pasta dados/liturgia.
+# Roda sozinho todo dia (00:10 e 06:00 no horário de Brasília) e também pode ser rodado à mão.
+on:
+  schedule:
+    - cron: '10 3 * * *'
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: liturgia-diaria
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Buscar a liturgia
+        env:
+          # Troque "sim" por "nao" para gravar somente as referências das leituras, sem o texto.
+          LITURGIA_INCLUIR_TEXTO: "sim"
+        run: node tools/gerar-liturgia.mjs
+      - name: Salvar no repositório
+        if: always()
+        run: |
+          git config user.name "ovelia-bot"
+          git config user.email "ovelia-bot@users.noreply.github.com"
+          git add dados/liturgia
+          if git diff --cached --quiet; then echo "Nada mudou."; else git commit -m "Liturgia diária $(date -u +%F)" && git pull --rebase -q && git push; fi

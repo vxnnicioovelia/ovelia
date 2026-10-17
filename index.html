@@ -20,6 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
 <link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="biblia.css?v=20261017">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
@@ -84,7 +85,7 @@
     <div class="card"><div class="senior-icon" aria-hidden="true">📖</div><h2>Liturgia diária</h2><p>Veja as leituras da celebração de hoje.</p><a class="btn lg" href="#liturgia">Abrir liturgia</a></div>
     <div class="card"><div class="senior-icon" aria-hidden="true">🙏</div><h2>Orações</h2><p>Encontre uma oração para o seu momento.</p><a class="btn lg" href="#oracoes">Abrir orações</a></div>
     <div class="card"><div class="senior-icon" aria-hidden="true">📿</div><h2>Rezar o terço</h2><p>Siga cada etapa, uma de cada vez.</p><a class="btn lg" href="#terco">Começar o terço</a></div>
-    <div class="card"><div class="senior-icon" aria-hidden="true">📚</div><h2>Bíblia</h2><p>Consulte os livros da Bíblia e orientações para a leitura.</p><a class="btn lg" href="#biblia">Abrir Bíblia</a></div>
+    <div class="card"><div class="senior-icon" aria-hidden="true">📚</div><h2>Bíblia</h2><p>Leia os 73 livros da Bíblia aqui mesmo, capítulo por capítulo.</p><a class="btn lg" href="#biblia">Abrir Bíblia</a></div>
   </div>
   <div class="card senior-help"><h2>Precisa de ajuda?</h2><ol><li>Escolha uma das opções acima.</li><li>Use o botão “Aumentar texto” se quiser letras maiores.</li><li>Toque em “Ouvir esta página” para escutar o conteúdo disponível.</li></ol><button class="btn g lg" type="button" id="seniorVoiceHelp">🔊 Ouvir estas orientações</button></div>
 </div>
@@ -97,7 +98,7 @@
 <div class="card"><h3>Terço passo a passo</h3><p>Avance e volte durante a oração, com as contas na tela.</p><a class="btn g" href="#terco">Abrir</a></div>
 <div class="card"><h3>Estudos bíblicos</h3><p>Passagem, contexto, perguntas e aplicação.</p><a class="btn g" href="#estudos">Abrir</a></div>
 <div class="card"><h3>Área infantil</h3><p>Histórias e um quiz para as crianças.</p><a class="btn g" href="#infantil">Abrir</a></div>
-<div class="card"><h3>Bíblia para começar</h3><p>Encontre os livros da Bíblia católica e consulte uma fonte online.</p><a class="btn g" href="#biblia">Abrir Bíblia</a></div>
+<div class="card"><h3>Bíblia para começar</h3><p>Leia os 73 livros da Bíblia católica aqui mesmo, sem sair da Ovelia.</p><a class="btn g" href="#biblia">Abrir Bíblia</a></div>
 <div class="card"><h3>Letra grande e contraste</h3><p>Use os botões A−, A+ e Contraste no topo, em qualquer página.</p></div>
 <div class="card side"><img src="pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba lembra a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
 </div>
@@ -108,9 +109,9 @@
 <h2>Liturgia Diária</h2>
 <div class="card calendario-liturgia">
   <h3>Consultar outra data</h3>
-  <p>Escolha um dia no calendário. A liturgia de hoje é atualizada automaticamente quando você abre a Ovelia; para consultar outra data, use o calendário da Canção Nova.</p>
-  <div class="calendario-controles"><label for="litDataEscolhida">Data da liturgia</label><input id="litDataEscolhida" type="date"><a class="btn lg" id="litAbrirData" href="https://liturgia.cancaonova.com/pb/liturgia/santo-inacio-de-antioquia-bispo-e-martir-memoria-sabado/?sDia=17&amp;sMes=10&amp;sAno=2026" target="_blank" rel="noopener noreferrer">Consultar data selecionada na Canção Nova ↗</a></div>
-  <p class="muted-note">A Canção Nova apresenta um calendário mensal e os textos da celebração selecionada. A Ovelia não reproduz os textos integrais de terceiros sem permissão confirmada.</p>
+  <p>A liturgia de hoje aparece aqui e é atualizada automaticamente todos os dias. Para ver outro dia, escolha a data ou use os botões.</p>
+  <div class="calendario-controles"><label for="litDataEscolhida">Data da liturgia</label><input id="litDataEscolhida" type="date">
+  <div class="row"><button class="btn g" type="button" id="litAnterior">← Dia anterior</button><button class="btn g" type="button" id="litHoje">Hoje</button><button class="btn g" type="button" id="litProximo">Dia seguinte →</button></div></div>
 </div>
 <p id="litData" style="font-weight:700"></p>
 <p id="litAtual" style="color:var(--mut)"></p>
@@ -119,12 +120,6 @@
 <div class="card" id="litReflexao" aria-live="polite"></div>
 <div id="litEstudoDia"></div>
 <div id="litSem">
-<div class="card liturgia-oficial">
-<h3>Leia os textos completos na fonte oficial</h3>
-<p>A Ovelia atualiza automaticamente a data, a celebração, a cor litúrgica e as referências bíblicas. Para ler o texto integral das leituras, abrimos o serviço <b>Igreja em Oração</b>, das Edições CNBB, que utiliza a tradução oficial dos textos litúrgicos no Brasil.</p>
-<a class="btn lg" href="https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php" target="_blank" rel="noopener noreferrer">Consultar liturgia de hoje na CNBB ↗</a>
-<p class="muted-note">A integração usa uma API comunitária para localizar as referências e pode ficar indisponível. A Ovelia não reproduz o texto integral sem licença confirmada; por isso, o botão acima sempre leva à fonte oficial.</p>
-</div>
 <div class="card"><h3>Como é a Liturgia da Palavra na Missa</h3>
 <p><b>Primeira leitura:</b> geralmente do Antigo Testamento (no Tempo Pascal, dos Atos dos Apóstolos).</p>
 <p><b>Salmo responsorial:</b> o povo responde à Palavra com um refrão e versos do livro dos Salmos.</p>
@@ -139,8 +134,7 @@
 <h2>Bíblia</h2>
 <div class="biblia-aviso aviso">
   <strong>Bíblia Portuguesa Mundial (BPM)</strong>
-  <p>Tradução em revisão, disponibilizada pelo eBible.org como domínio público. Não é apresentada como tradução oficialmente aprovada pela Igreja Católica. O texto é carregado da fonte oficial e precisa de internet; esta versão não funciona offline.</p>
-  <p><a href="https://ebible.org/porbrbsl/" target="_blank" rel="noopener noreferrer">Fonte oficial e informações da tradução ↗</a></p>
+  <p>Tradução em revisão, em domínio público. Não é apresentada como tradução oficialmente aprovada pela Igreja Católica. Os 73 livros ficam guardados dentro da própria Ovelia: você lê sem sair do site.</p>
 </div>
 <div id="bibliaLeitor" class="biblia-leitor card" aria-live="polite">
   <div class="biblia-leitor-topo">
@@ -161,22 +155,17 @@
     </div>
   </div>
   <div id="bibliaStatus" class="biblia-status" role="status" aria-live="polite">A leitura será exibida aqui após selecionar um livro.</div>
-  <div class="biblia-frame-wrap" id="bibliaFrameWrap" hidden>
-    <iframe id="bibliaFrame" title="Texto da Bíblia Portuguesa Mundial" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div id="bibliaTexto" class="biblia-texto"></div>
+  <div class="biblia-controles-linha biblia-nav-baixo" id="bibliaNavBaixo" hidden>
+    <button class="btn g" type="button" id="bibliaAnterior2" disabled>← Anterior</button>
+    <button class="btn g" type="button" id="bibliaProximo2" disabled>Próximo →</button>
   </div>
   <div class="row biblia-acoes">
-    <a id="bibliaAbrirFonte" class="btn g" href="https://ebible.org/porbrbsl/" target="_blank" rel="noopener noreferrer">Abrir texto na fonte ↗</a>
     <button class="btn g" id="bibliaEscolherLivro" type="button">Voltar à lista de livros</button>
   </div>
-  <p class="biblia-creditos">Texto e notas: eBible.org — Bíblia Portuguesa Mundial. Fonte e licença: domínio público, conforme a página oficial. A tradução permanece em revisão. A Ovelia não a apresenta como tradução oficialmente aprovada pela Igreja Católica.</p>
+  <p class="biblia-creditos">Bíblia Portuguesa Mundial (BPM), domínio público, conforme informado pelo eBible.org. A tradução permanece em revisão e não é apresentada como tradução oficialmente aprovada pela Igreja Católica.</p>
 </div>
-<div class="aviso"><span class="tag">Como usar</span><p>Escolha um livro na lista abaixo e toque nele para abrir a leitura. A navegação de capítulos fica no leitor acima. A leitura é carregada da fonte pública do eBible.org e requer conexão com a internet.</p></div>
-<div class="card">
-<h3>Escolha como consultar a Bíblia</h3>
-<p>A Ovelia utiliza a Bíblia Portuguesa Mundial, identificada claramente como tradução em revisão e disponibilizada como domínio público pelo eBible.org. O texto é exibido a partir da fonte original; não é armazenado localmente nesta versão.</p>
-<div class="row"><a class="btn" href="https://oraetlabora.com.br/biblia" target="_blank" rel="noopener noreferrer">Ler Bíblia católica online ↗</a><a class="btn g" href="https://www.biblicas.com.br/biblia" target="_blank" rel="noopener noreferrer">Consultar outra edição online ↗</a></div>
-<p class="muted-note">São fontes externas independentes. Antes de usar uma tradução para estudo formal ou catequese, confira a edição, a tradução e a orientação da sua paróquia. A leitura integral dentro da Ovelia dependerá de licença confirmada.</p>
-</div>
+<div class="aviso"><span class="tag">Como usar</span><p>Escolha um livro na lista abaixo e toque nele para abrir a leitura. Use os botões Anterior e Próximo, ou escolha o capítulo na lista.</p></div>
 <div class="card"><h3>Como ler a Bíblia (para iniciantes)</h3>
 <p>1. Comece por um Evangelho, por exemplo Marcos ou Lucas, e leia um trecho curto por dia.</p>
 <p>2. Os livros têm capítulos e versículos. Em “Lc 10,25-37”, Lc é Lucas, 10 é o capítulo e 25-37 são os versículos.</p>
@@ -289,13 +278,14 @@
 <div class="card"><h3>Transparência sobre os conteúdos</h3>
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
-<p><b>Liturgia:</b> a data, a celebração, a cor litúrgica e as referências são consultadas automaticamente; os textos integrais abrem na fonte oficial enquanto a licença de reprodução não estiver confirmada. <b>Bíblia:</b> o texto integral de traduções modernas depende de licença.</p>
+<p><b>Liturgia:</b> as leituras do dia (data, celebração, cor litúrgica e textos) são atualizadas automaticamente e exibidas aqui mesmo. <b>Bíblia:</b> usamos a Bíblia Portuguesa Mundial, em domínio público, guardada dentro do site.</p>
 <p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho o perfil escolhido, as preferências de tamanho de letra, contraste, voz e velocidade, além das etapas de estudo marcadas como concluídas. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
-<p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. A liturgia atualiza os metadados quando a página é aberta; não envia notificações nem atualiza a tela em segundo plano.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
+<p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. A liturgia é atualizada uma vez por dia no servidor do site; a Ovelia não envia notificações.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
-<script src="liturgia.js?v=20261016-release2"></script>
-<script src="app.js?v=20261016-release2"></script>
+<script src="liturgia.js?v=20261017"></script>
+<script src="app.js?v=20261017-interno"></script>
+<script src="biblia.js?v=20261017"></script>
 </body>
 </html>

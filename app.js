@@ -114,19 +114,6 @@ cb.addEventListener('click',function(){var on=body.classList.toggle('contraste')
 applyPrefs();
 
 
-/* ---------- Calendário da liturgia: data escolhida e consulta da fonte ---------- */
-(function(){
-  var input=$('#litDataEscolhida'),link=$('#litAbrirData');if(!input||!link)return;
-  var hoje=new Date(),pad=function(n){return String(n).padStart(2,'0')};
-  input.value=hoje.getFullYear()+'-'+pad(hoje.getMonth()+1)+'-'+pad(hoje.getDate());
-  function atualizar(){var p=(input.value||'').split('-');if(p.length!==3)return;var ano=+p[0],mes=+p[1],dia=+p[2];if(!ano||!mes||!dia)return;
-    var url=new URL('https://liturgia.cancaonova.com/pb/liturgia/santo-inacio-de-antioquia-bispo-e-martir-memoria-sabado/');
-    url.searchParams.set('sDia',String(dia));url.searchParams.set('sMes',String(mes));url.searchParams.set('sAno',String(ano));link.href=url.toString();
-    link.textContent='Consultar '+pad(dia)+'/'+pad(mes)+'/'+ano+' na Canção Nova ↗';
-  }
-  input.addEventListener('change',atualizar);atualizar();
-})();
-
 /* ---------- Leitura em voz alta: compatibilidade reforçada com Safari/iPhone ---------- */
 var Voz=(function(){
   var ok=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0,current=null,startTimer=null,watchdog=null;
@@ -293,13 +280,20 @@ function drawLivros(q){q=norm(q||'');var total=0;
   $('#livros').innerHTML=h||'<p>Nenhum livro encontrado com esse nome.</p>';$('#livrosN').textContent=total+' livro'+(total===1?'':'s')+' exibido'+(total===1?'':'s')+' (de 73)'}
 $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)});drawLivros('');
 
-/* ---------- Liturgia diária automática: metadados e referências, sem copiar textos integrais ---------- */
-var hoje=new Date(),iso=hoje.getFullYear()+'-'+('0'+(hoje.getMonth()+1)).slice(-2)+'-'+('0'+hoje.getDate()).slice(-2);
-var dataBR=hoje.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+/* ---------- Liturgia diária automática, dentro da Ovelia ----------
+   Fonte principal: dados/liturgia/AAAA-MM-DD.json (gravado todo dia pelo workflow "Liturgia diária").
+   Se o arquivo do dia não existir, tenta a API comunitária ao vivo; por último, o arquivo manual liturgia.js.
+   Tudo é exibido nesta página: não há botões que levem a outros sites. */
+var hoje=new Date();
+function pad2(n){return ('0'+n).slice(-2)}
+function isoDe(dt){return dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate())}
+function dataDeIso(t){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(t||'');if(!m)return null;var d=new Date(+m[1],+m[2]-1,+m[3]);return(d.getFullYear()===+m[1]&&d.getMonth()===+m[2]-1&&d.getDate()===+m[3])?d:null}
+function dataLonga(dt){return dt.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+var iso=isoDe(hoje),dataBR=dataLonga(hoje),litSeq=0;
 var litStatus=$('#litStatus'),litDia=$('#litDia'),litSem=$('#litSem'),litReflexao=$('#litReflexao'),litEstudoDia=$('#litEstudoDia'),estudoLiturgia=$('#estudoLiturgia');
 $('#litData').textContent=dataBR;
-$('#litAtual').textContent='A Ovelia tenta atualizar as referências automaticamente quando você abre esta página.';
-var CNBB_URL='https://liturgiadiaria.edicoescnbb.com.br/app/user/user/UserView.php';
+$('#litAtual').textContent='';
+var LIT_API='https://liturgia.up.railway.app/v2/';
 var temasEstudo=[
  {id:'misericordia',palavras:['misericórdia','misericordia','perdo','compaix','perdão'],titulo:'Misericórdia e perdão',versos:['Lucas 15,11-32','Efésios 4,32','Salmo 103,8-13'],reflexao:'A misericórdia de Deus nos convida a recomeçar e a tratar os outros com compaixão.',pergunta:'A quem posso oferecer perdão, escuta ou uma nova oportunidade?',acao:'Faça um gesto concreto de reconciliação, respeitando também os limites necessários.'},
  {id:'amor',palavras:['amor','amar','caridade','próximo','proximo'],titulo:'Amar a Deus e ao próximo',versos:['Lucas 10,25-37','João 13,34-35','1 Coríntios 13,4-7'],reflexao:'O amor cristão aparece em escolhas concretas: cuidar, escutar, servir e respeitar.',pergunta:'Quem precisa que eu pare e lhe dê atenção hoje?',acao:'Pratique um ato de caridade discreto, sem esperar recompensa.'},
@@ -316,32 +310,58 @@ function escolherTema(d){var texto=textoDados(d),melhor=null,pontos=0;temasEstud
 function renderEstudo(tema,leituras,origem){var refs=leituras.map(function(x){return x.titulo+': '+x.ref}).filter(function(x){return x.indexOf(': ')>0});var html='<span class="tag pd">Trilha de estudo da Ovelia</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p>';
  if(refs.length)html+='<h4>Leituras litúrgicas de hoje</h4><ul>'+refs.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';
  html+='<h4>Outros versículos para estudar o mesmo tema</h4><p class="versos">'+tema.versos.map(esc).join(' · ')+'</p><p><b>Pergunta para meditar:</b> '+esc(tema.pergunta)+'</p><p><b>Prática de hoje:</b> '+esc(tema.acao)+'</p><p class="muted-note">Leia as referências na sua Bíblia católica. A seleção é uma sugestão de estudo editorial da Ovelia, não uma nota oficial da liturgia.</p>';
- if(origem)html+='<p class="muted-note">Referências consultadas automaticamente em uma API comunitária; confirme sempre a celebração na fonte oficial.</p>';else if(!refs.length)html+='<p class="muted-note">A conexão automática não está disponível neste momento. Este é um tema geral de estudo e não está confirmado como relacionado à liturgia de hoje.</p>';
+ if(origem)html+='<p class="muted-note">Referências obtidas automaticamente; confirme a celebração com a sua paróquia.</p>';else if(!refs.length)html+='<p class="muted-note">A conexão automática não está disponível neste momento. Este é um tema geral de estudo e não está confirmado como relacionado à liturgia de hoje.</p>';
  if(estudoLiturgia)estudoLiturgia.innerHTML=html;if(litEstudoDia)litEstudoDia.innerHTML='<div class="card estudo-do-dia"><span class="tag">Estudo relacionado</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p><p class="versos">'+tema.versos.map(esc).join(' · ')+'</p><a class="btn g" href="#estudos">Abrir estudo guiado</a></div>';
  litReflexao.innerHTML='<span class="tag pd">Reflexão da Ovelia · conteúdo original</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p><p><b>Para refletir:</b> '+esc(tema.pergunta)+'</p><p><b>Para colocar em prática:</b> '+esc(tema.acao)+'</p>';
 }
-function renderLiturgy(d,origem){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[];
- defs.forEach(function(def){var arr=Array.isArray(def[1])?def[1]:(def[1]?[def[1]]:[]);if(arr.length){var unique=[];arr.forEach(function(o){var r=refLeitura(o);if(r&&unique.indexOf(r)<0)unique.push(r)});if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})}});
- var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';var dataApi=d.data||dataBR;
- $('#litData').textContent=dataApi+' · '+dataBR;
- $('#litAtual').textContent=origem?'Referências atualizadas automaticamente nesta visita.':'Referências consultadas a partir dos dados disponíveis.';
- var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Atualização automática</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
- if(refs.length)html+='<div class="liturgia-referencias">'+refs.map(function(x){return '<div class="ref-item"><b>'+esc(x.titulo)+'</b><br>'+esc(x.ref)+'</div>'}).join('')+'</div>';
- else html+='<p>Não foi possível identificar as referências nesta resposta. Consulte a fonte oficial.</p>';
- html+='<p class="muted-note">Para preservar a fidelidade e os direitos das traduções, a Ovelia mostra aqui as referências e abre os textos integrais na fonte oficial.</p><a class="btn lg" href="'+CNBB_URL+'" target="_blank" rel="noopener noreferrer">Ler os textos completos na Edições CNBB ↗</a><p class="muted-note">Fonte dos metadados: API comunitária Liturgia Diária (<a href="https://github.com/Dancrf/liturgia-diaria" target="_blank" rel="noopener noreferrer">projeto e documentação</a>). Confira a fonte oficial antes de usar em celebrações.</p></div>';
- litDia.innerHTML=html;litStatus.textContent='Liturgia do dia carregada.';
- var tema=escolherTema(d);renderEstudo(tema,refs,origem);
+function textoHtml(t){return String(t||'').split(/\n+/).map(function(p){return p.trim()}).filter(Boolean).map(function(p){return '<p>'+esc(p)+'</p>'}).join('')}
+function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[],blocos='',temTexto=false;
+ defs.forEach(function(def){var arr=Array.isArray(def[1])?def[1]:(def[1]?[def[1]]:[]);if(!arr.length)return;var unique=[];
+  arr.forEach(function(o){var r=refLeitura(o);if(r&&unique.indexOf(r)<0)unique.push(r);
+   var tx=o&&o.texto?textoHtml(o.texto):'';if(tx)temTexto=true;
+   blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+(o&&o.refrao?'<p class="lit-refrao"><b>Refrão:</b> '+esc(o.refrao)+'</p>':'')+(tx?'<div class="lit-texto">'+tx+'</div>':'')+'</section>'});
+  if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})});
+ var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
+ $('#litData').textContent=dataLonga(dt);
+ $('#litAtual').textContent=origem==='arquivo'?'Liturgia atualizada automaticamente todos os dias.':(origem==='api'?'Liturgia consultada agora, diretamente da fonte automática.':'Liturgia cadastrada pela equipe da Ovelia.');
+ var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Liturgia do dia</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
+ if(blocos)html+='<div class="liturgia-leituras">'+blocos+'</div>';
+ else html+='<p>Não foi possível identificar as leituras desta data.</p>';
+ if(blocos&&!temTexto)html+='<p class="muted-note">Para esta data estão disponíveis apenas as referências das leituras. Abra a Bíblia da Ovelia para ler cada passagem.</p>';
+ html+='<p class="muted-note">Textos do lecionário usado no Brasil, obtidos por serviço automático. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
+ litDia.innerHTML=html;litStatus.style.display='none';
+ if(isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para ler as leituras de hoje.';
+ var tema=escolherTema(d);renderEstudo(tema,refs,origem==='arquivo'||origem==='api');
 }
-function fallbackLiturgy(){var L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===iso})[0];
- if(manual){var conv=function(x){return x?[{referencia:x.ref||x.referencia||'',texto:x.texto||''}]:[]};renderLiturgy({data:iso,liturgia:manual.celebracao,leituras:{primeiraLeitura:conv(manual.primeiraLeitura),salmo:conv(manual.salmo),segundaLeitura:conv(manual.segundaLeitura),evangelho:conv(manual.evangelho)},cor:''},false);return}
- litStatus.textContent='Não foi possível atualizar automaticamente as referências agora. Você ainda pode consultar a liturgia na fonte oficial.';
- litDia.innerHTML='<div class="card"><span class="tag">Modo de segurança</span><h3>Consulte as leituras de hoje</h3><p>A conexão com a fonte automática pode estar indisponível. Não vamos inventar nem mostrar referências de outro dia.</p><a class="btn lg" href="'+CNBB_URL+'" target="_blank" rel="noopener noreferrer">Abrir Igreja em Oração — Edições CNBB ↗</a></div>';
- var n=Math.floor((new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate())-new Date(hoje.getFullYear(),0,0))/86400000);var tema=temasEstudo[n%temasEstudo.length];renderEstudo(tema,[],false);
+function fallbackLiturgy(dt){var dtIso=isoDe(dt),L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===dtIso})[0];
+ if(manual){var conv=function(x){return x?[{referencia:x.ref||x.referencia||'',texto:x.texto||'',refrao:x.refrao||''}]:[]};renderLiturgy({data:dtIso,liturgia:manual.celebracao,leituras:{primeiraLeitura:conv(manual.primeiraLeitura),salmo:conv(manual.salmo),segundaLeitura:conv(manual.segundaLeitura),aclamacao:conv(manual.aclamacao),evangelho:conv(manual.evangelho)},cor:''},'manual',dt);return}
+ litStatus.style.display='';litStatus.textContent='A liturgia desta data ainda não está disponível.';
+ litDia.innerHTML='<div class="card"><span class="tag">Sem dados</span><h3>Liturgia indisponível agora</h3><p>Não vamos inventar nem mostrar leituras de outro dia. A liturgia é atualizada automaticamente todos os dias; tente novamente mais tarde ou escolha outra data.</p></div>';
+ var n=Math.floor((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())-new Date(dt.getFullYear(),0,0))/86400000);renderEstudo(temasEstudo[n%temasEstudo.length],[],false);
 }
+function comTimeout(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(new Error('tempo esgotado'))},ms)})])}
+function buscaJson(url){return comTimeout(fetch(url,{cache:'no-cache',headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),9000)}
+function mesmaData(txt,dt){var t=String(txt||''),m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(t),ano,mes,dia;if(m){dia=+m[1];mes=+m[2];ano=+m[3]}else{m=/(\d{4})-(\d{2})-(\d{2})/.exec(t);if(!m)return isoDe(dt)===iso;ano=+m[1];mes=+m[2];dia=+m[3]}return ano===dt.getFullYear()&&mes===dt.getMonth()+1&&dia===dt.getDate()}
+function leiturasOk(d){return d&&d.leituras&&(d.liturgia||d.celebracao)}
+function apiAoVivo(dt){var hojeSim=isoDe(dt)===iso,url=hojeSim?LIT_API:LIT_API+'?dia='+dt.getDate()+'&mes='+(dt.getMonth()+1)+'&ano='+dt.getFullYear();
+ return buscaJson(url).then(function(d){if(Array.isArray(d))d=d[0];if(!leiturasOk(d)||!mesmaData(d.data,dt))throw new Error('resposta inesperada');return d})}
+function carregarLiturgia(isoSel){var dt=dataDeIso(isoSel)||new Date(),seq=++litSeq;isoSel=isoDe(dt);
+ litStatus.style.display='';litStatus.textContent='Buscando a liturgia de '+dt.toLocaleDateString('pt-BR')+'…';
+ $('#litData').textContent=dataLonga(dt);
+ buscaJson('dados/liturgia/'+isoSel+'.json').then(function(d){if(!leiturasOk(d)||!mesmaData(d.data||isoSel,dt))throw new Error('arquivo inválido');return{d:d,o:'arquivo'}})
+  .catch(function(){return apiAoVivo(dt).then(function(d){return{d:d,o:'api'}})})
+  .then(function(r){if(seq!==litSeq)return;renderLiturgy(r.d,r.o,dt)})
+  .catch(function(){if(seq!==litSeq)return;fallbackLiturgy(dt)});
+}
+(function(){var input=$('#litDataEscolhida');if(!input)return;input.value=iso;
+ function ir(t){if(!dataDeIso(t))return;input.value=t;carregarLiturgia(t)}
+ function deslocar(n){var dt=dataDeIso(input.value)||new Date();dt.setDate(dt.getDate()+n);ir(isoDe(dt))}
+ input.addEventListener('change',function(){ir(input.value)});
+ var h=$('#litHoje'),a=$('#litAnterior'),p=$('#litProximo');
+ if(h)h.addEventListener('click',function(){ir(iso)});if(a)a.addEventListener('click',function(){deslocar(-1)});if(p)p.addEventListener('click',function(){deslocar(1)});
+})();
 $('#homeLit').textContent='Consulte a liturgia de hoje e o estudo relacionado na Ovelia.';
-/* A API fornece conteúdo completo; a Ovelia usa apenas os metadados e referências nesta tela.
-   Os textos integrais são lidos na fonte oficial enquanto a licença de reprodução não for confirmada. */
-Promise.race([fetch('https://liturgia.up.railway.app/v2/',{cache:'no-store',headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),new Promise(function(_,reject){setTimeout(function(){reject(new Error('Tempo limite ao consultar a liturgia'))},9000)})]).then(function(d){if(!d||!d.leituras||!d.liturgia)throw new Error('Formato de resposta inesperado');renderLiturgy(d,true)}).catch(function(){fallbackLiturgy()});
+carregarLiturgia(iso);
 
 /* ---------- Infantil: histórias em detalhes + quiz sem coleta de dados ---------- */
 var Q=[

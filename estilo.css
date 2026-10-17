@@ -218,3 +218,14 @@ body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:#E8E2D5;c
 .calendario-controles label{font-weight:700}
 .calendario-controles input[type="date"]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;min-height:48px;width:100%;box-sizing:border-box}
 @media(min-width:620px){.calendario-controles{grid-template-columns:minmax(180px,.7fr) minmax(260px,1.3fr);align-items:end}.calendario-controles label{grid-column:1/-1}}
+
+/* Liturgia exibida dentro da Ovelia */
+.liturgia-leituras .lit-bloco{border-top:1px solid var(--line);padding:14px 0}
+.liturgia-leituras .lit-bloco:first-child{border-top:0}
+.liturgia-leituras h4{margin:0 0 4px}
+.lit-titulo{margin:0;color:var(--mut)}
+.lit-ref{margin:0 0 6px;font-weight:700}
+.lit-refrao{background:var(--soft);padding:8px 10px;border-radius:10px}
+.lit-texto{font-family:'Fraunces',Georgia,serif;font-size:1.1rem;line-height:1.75}
+.lit-texto p{margin:0 0 .8em}
+.calendario-controles .row{margin-top:8px}
