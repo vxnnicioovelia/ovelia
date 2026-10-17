@@ -11,6 +11,8 @@ var profile='';
 try{profile=localStorage.getItem('ovelia-perfil')||''}catch(e){}
 /* Migra a escolha antiga sem obrigar a pessoa a selecionar o perfil novamente. */
 if(profile==='easy')profile='senior';
+/* Evita que um valor antigo/inválido deixe a tela inicial sem escolha de perfil. */
+if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
@@ -53,16 +55,36 @@ function applyProfile(){
   }
 }
 function chooseProfile(p){
+  if(['kids','adult','senior'].indexOf(p)<0)return;
   var old=profile;
   if(p==='senior'&&old!=='senior'){try{localStorage.setItem('ovelia-letra-normal',String(tam))}catch(e){}}
   if(p==='adult'&&old==='senior'){try{tam=+(localStorage.getItem('ovelia-letra-normal')||0)}catch(e){tam=0}}
   profile=p;applyProfile();if(location.hash!=='#home')location.hash='home';else show(false);
 }
 $$('[data-profile]').forEach(function(b){b.addEventListener('click',function(){chooseProfile(b.getAttribute('data-profile'))})});
-perfilBtn.addEventListener('click',function(){perfilInicio.hidden=false;var first=$('[data-profile]',perfilInicio);if(first)first.focus()});
+function openProfileChooser(){
+  perfilInicio.hidden=false;
+  var first=$('[data-profile]',perfilInicio);if(first)first.focus();
+}
+perfilBtn.addEventListener('click',openProfileChooser);
+/* Mantém o foco dentro do seletor enquanto ele estiver aberto. */
+perfilInicio.addEventListener('keydown',function(e){
+  if(perfilInicio.hidden)return;
+  if(e.key==='Escape'){
+    if(profile){e.preventDefault();perfilInicio.hidden=true;perfilBtn.focus()}
+    else e.preventDefault();
+    return;
+  }
+  if(e.key!=='Tab')return;
+  var itens=$$('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])',perfilInicio).filter(function(el){return !el.hidden});
+  if(!itens.length)return;
+  var first=itens[0],last=itens[itens.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+});
 menuBtn.addEventListener('click',function(){var o=menu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o)});
 renderMenu();
-if(!profile)perfilInicio.hidden=false;
+if(!profile){perfilInicio.hidden=false;var firstProfile=$('[data-profile]',perfilInicio);if(firstProfile)firstProfile.focus()}
 function show(first){
   var id=location.hash.slice(1);if(!$('section.pg[id="'+id+'"]'))id='home';
   if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
