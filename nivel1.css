@@ -1,0 +1,9 @@
+/* Ovelia — estilos incrementais do Nível 1 */
+.nivel1-section-nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 16px;padding:10px 0 12px;border-bottom:1px solid var(--line,#ddd)}
+.nivel1-section-nav .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.nivel1-social{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.nivel1-social a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:9px 12px;border-radius:12px}
+.nivel1-footer-social{justify-content:center;margin:12px auto}
+.nivel1-footer-social a{color:var(--olive,#526B55);font-weight:700}
+.nivel1-section-nav a:focus-visible,.nivel1-section-nav button:focus-visible,.nivel1-social a:focus-visible{outline:3px solid var(--gold,#D6B77A);outline-offset:3px}
+@media(max-width:480px){.nivel1-section-nav .btn,.nivel1-social a{flex:1 1 100%;text-align:center}.nivel1-footer-social{flex-direction:column;align-items:stretch}}
