@@ -284,7 +284,8 @@ $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)
    Fonte principal: dados/liturgia/AAAA-MM-DD.json (gravado todo dia pelo workflow "Liturgia diária").
    Se o arquivo do dia não existir, tenta a API comunitária ao vivo; por último, o arquivo manual liturgia.js.
    Tudo é exibido nesta página: não há botões que levem a outros sites. */
-var hoje=new Date();
+function dataHojeSaoPaulo(){var p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(p);if(m)return new Date(+m[1],+m[2]-1,+m[3],12);var parts=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};parts.forEach(function(x){o[x.type]=x.value});return new Date(+o.year,+o.month-1,+o.day,12)}
+var hoje=dataHojeSaoPaulo();
 function pad2(n){return ('0'+n).slice(-2)}
 function isoDe(dt){return dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate())}
 function dataDeIso(t){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(t||'');if(!m)return null;var d=new Date(+m[1],+m[2]-1,+m[3]);return(d.getFullYear()===+m[1]&&d.getMonth()===+m[2]-1&&d.getDate()===+m[3])?d:null}

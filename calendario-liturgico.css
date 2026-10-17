@@ -1,0 +1,16 @@
+/* Calendário mensal da Ovelia — complemento responsivo, sem substituir os estilos existentes. */
+.cal-mensal{margin:1rem 0;padding:1rem;border:1px solid var(--borda, #ded8c9);border-radius:1rem;background:var(--card, #fffdf8)}
+.cal-mensal-topo{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.cal-mensal-titulo{font-size:1.15rem;font-weight:800;margin:.25rem 0}
+.cal-mensal-nav{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
+.cal-mensal-nav select{max-width:100%;min-height:42px;border-radius:.6rem;padding:.45rem;background:var(--fundo, #fff);color:inherit;border:1px solid var(--borda, #cfc8b8)}
+.cal-mensal-grade{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.3rem;margin-top:.8rem}
+.cal-mensal-dia-semana{text-align:center;font-size:.78rem;font-weight:800;padding:.35rem 0;color:var(--mut, #666)}
+.cal-mensal-dia{min-width:0;min-height:42px;padding:.35rem .1rem;border-radius:.65rem;border:1px solid var(--borda, #ded8c9);background:transparent;color:inherit;font:inherit;font-weight:650;cursor:pointer}
+.cal-mensal-dia:hover,.cal-mensal-dia:focus-visible{outline:2px solid var(--olive, #526b55);outline-offset:1px}
+.cal-mensal-dia.hoje{box-shadow:inset 0 0 0 2px var(--gold, #d6b77a)}
+.cal-mensal-dia.selecionado{background:var(--olive, #526b55);color:#fff;border-color:var(--olive, #526b55)}
+.cal-mensal-dia.vazio{visibility:hidden}
+.cal-mensal-legenda{font-size:.86rem;color:var(--mut, #666);margin:.75rem 0 0}
+@media(max-width:420px){.cal-mensal{padding:.7rem}.cal-mensal-grade{gap:.2rem}.cal-mensal-dia{min-height:38px;font-size:.9rem}.cal-mensal-nav{width:100%}.cal-mensal-nav select{flex:1}}
+@media(prefers-reduced-motion:reduce){.cal-mensal *{scroll-behavior:auto!important;transition:none!important}}
