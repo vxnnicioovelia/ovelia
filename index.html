@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261018-recup2">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261018-recup1">
 <link rel="stylesheet" href="inicio.css?v=20261018-inicio1">
+<link rel="stylesheet" href="estudos/estudos.css?v=20261018-jornada1">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
@@ -209,7 +210,13 @@
 
 <!-- ESTUDOS -->
 <section class="pg" id="estudos">
-<h2>Estudos bíblicos</h2>
+<h2 id="jornadaTitulo">Sua jornada bíblica</h2>
+<noscript><div class="aviso">A jornada de estudos precisa de JavaScript ativado.</div></noscript>
+<div id="jornada"><p class="jr-carregando">Preparando a sua jornada…</p></div>
+<div id="licaoAberta" hidden></div>
+<div class="jr-anteriores" id="estudosAnterioresBox">
+<button class="btn g" type="button" id="estudosAnterioresBtn" aria-expanded="false" aria-controls="estudosAnteriores">Estudos avulsos e materiais anteriores</button>
+<div id="estudosAnteriores" hidden>
 <div id="estudoLiturgia" class="card estudo-do-dia" aria-live="polite"><span class="tag">Estudo do dia</span><h3>Preparando o estudo a partir da liturgia…</h3><p>Vamos relacionar as leituras do dia com outras passagens da Bíblia.</p></div>
 <div class="card trilha-adulto"><h3>Minha trajetória de estudo</h3><p>Marque as etapas concluídas. O progresso fica salvo somente neste aparelho, sem cadastro.</p><div class="trilha-lista"><label><input type="checkbox" data-progress="adult-biblia"> Conhecer os 73 livros da Bíblia católica</label><label><input type="checkbox" data-progress="adult-salmo23"> Estudar o Salmo 23</label><label><input type="checkbox" data-progress="adult-bomsamaritano"> Estudar a parábola do Bom Samaritano</label><label><input type="checkbox" data-progress="adult-oracao"> Praticar a leitura orante</label></div></div>
 <div class="aviso"><b>Como ler estes estudos:</b> a <b>passagem</b> indicada é o texto bíblico, que você deve ler na sua Bíblia. A <b>explicação</b> e as <b>perguntas</b> são conteúdo editorial da Ovelia, para iniciantes, e não substituem a catequese nem o ensinamento da Igreja.</div>
@@ -225,6 +232,8 @@
 <h3>Explicação <span class="tag pd">editorial</span></h3><p>Na parábola, duas pessoas passam por um homem ferido e seguem adiante; o texto não explica o motivo. Um samaritano para, cuida dele e paga pela sua recuperação. No final, Jesus muda a pergunta: em vez de “quem merece minha ajuda?”, ele pergunta de qual deles o ferido se tornou próximo, e conclui com um convite: “Vai e faze tu também”.</p>
 <h3>Perguntas para reflexão</h3><ol><li>Quem está “ferido na estrada” perto de mim?</li><li>Que desculpas costumo dar para não parar?</li><li>Que gesto concreto de cuidado posso ter esta semana?</li></ol>
 <h3>Aplicação prática</h3><p>Escolha uma pessoa que precise de atenção (um vizinho, um familiar, um colega) e faça por ela um gesto simples: uma visita, uma ligação, uma ajuda.</p></details>
+</div>
+</div>
 </section>
 
 <!-- INFANTIL -->
@@ -286,5 +295,10 @@
 <script src="biblia.js?v=20261017"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261018-inicio1"></script>
+<script src="estudos/regras.js?v=20261018-jornada1"></script>
+<script src="estudos/dados/trilha.js?v=20261018-jornada1"></script>
+<script src="estudos/progresso.js?v=20261018-jornada1"></script>
+<script src="estudos/interface.js?v=20261018-jornada1"></script>
+<script>(function(){var b=document.getElementById('estudosAnterioresBtn'),c=document.getElementById('estudosAnteriores');if(b&&c)b.addEventListener('click',function(){var o=c.hidden;c.hidden=!o;b.setAttribute('aria-expanded',String(o))})})();</script>
 </body>
 </html>
