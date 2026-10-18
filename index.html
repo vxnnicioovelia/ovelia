@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="biblia.css?v=20261017">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261018-recup2">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261018-recup1">
+<link rel="stylesheet" href="inicio.css?v=20261018-inicio1">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
@@ -78,36 +79,23 @@
 <div class="perfil-atual" id="perfilAtual" role="status"></div>
 <div class="profile-home kids-home" id="kidsHome" hidden>
   <div class="kids kids-welcome">
-    <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha, amiga das crianças"><div><span class="tag pd">Cantinho da Ovelinha</span><h1>Oi, amiguinho! 🐑</h1><p>Vamos conhecer as histórias de Deus, conversar com Jesus e aprender brincando?</p><a class="btn lg kids-main-btn" href="#infantil">Vamos brincar e aprender!</a></div></div>
+    <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha, amiga das crianças"><div><span class="tag pd">Cantinho da Ovelinha</span><h1 id="kidsSaudacao">Oi, amiguinho! 🐑</h1><p>Que bom que você chegou! Use os botões lá embaixo para ouvir histórias, rezar e brincar com o quiz.</p></div></div>
   </div>
-  <div class="grid c2 kids-home-actions">
-    <div class="card"><div class="kids-emoji" aria-hidden="true">📚</div><h2>Histórias e quiz</h2><p>Conheça Noé, Davi e outras histórias da Bíblia. Depois, teste o que aprendeu!</p><a class="btn lg" href="#infantil">Entrar nas histórias</a></div>
-    <div class="card"><div class="kids-emoji" aria-hidden="true">🙏</div><h2>Minhas orações</h2><p>Orações curtinhas para agradecer, pedir ajuda e conversar com Deus.</p><a class="btn lg" href="#oracoes">Escolher uma oração</a></div>
-  </div>
-  <div class="card kids-message"><h2>Uma lembrança para hoje 💛</h2><p>Deus ama você. Seja gentil, diga a verdade e, quando errar, peça desculpas e tente de novo.</p><p><b>Desafio:</b> faça hoje uma coisa boa por alguém da sua família.</p></div>
+  <div class="card kids-message"><h2>Uma lembrança para hoje 💛</h2><p id="kidsMsgDia">Deus ama você. Seja gentil, diga a verdade e, quando errar, peça desculpas e tente de novo.</p><p><b>Desafio:</b> <span id="kidsDesafioDia">faça hoje uma coisa boa por alguém da sua família.</span></p></div>
 </div>
 <div class="profile-home senior-home" id="seniorHome" hidden>
-  <div class="senior-welcome"><span class="tag">Ovelia 60+</span><h1>Bem-vindo(a) à Ovelia</h1><p>Escolha o que deseja fazer. Deixamos os caminhos principais em destaque, com letras grandes e instruções simples.</p><p class="senior-tip">🔊 Você também pode tocar em <b>“Ouvir esta página”</b> para escutar o conteúdo.</p></div>
-  <div class="grid c2 senior-actions">
-    <div class="card"><div class="senior-icon" aria-hidden="true">📖</div><h2>Liturgia diária</h2><p>Veja as leituras da celebração de hoje.</p><a class="btn lg" href="#liturgia">Abrir liturgia</a></div>
-    <div class="card"><div class="senior-icon" aria-hidden="true">🙏</div><h2>Orações</h2><p>Encontre uma oração para o seu momento.</p><a class="btn lg" href="#oracoes">Abrir orações</a></div>
-    <div class="card"><div class="senior-icon" aria-hidden="true">📿</div><h2>Rezar o terço</h2><p>Siga cada etapa, uma de cada vez.</p><a class="btn lg" href="#terco">Começar o terço</a></div>
-    <div class="card"><div class="senior-icon" aria-hidden="true">📚</div><h2>Bíblia</h2><p>Leia os 73 livros da Bíblia aqui mesmo, capítulo por capítulo.</p><a class="btn lg" href="#biblia">Abrir Bíblia</a></div>
-  </div>
-  <div class="card senior-help"><h2>Precisa de ajuda?</h2><ol><li>Escolha uma das opções acima.</li><li>Use o botão “Aumentar texto” se quiser letras maiores.</li><li>Toque em “Ouvir esta página” para escutar o conteúdo disponível.</li></ol><button class="btn g lg" type="button" id="seniorVoiceHelp">🔊 Ouvir estas orientações</button></div>
+  <div class="card senior-help"><h2>Precisa de ajuda?</h2><ol><li>Use a barra de baixo para ir à Liturgia, à Bíblia ou às orações. O toque em “Mais” mostra o restante.</li><li>Use o botão “Aumentar texto” se quiser letras maiores.</li><li>Toque em “Ouvir esta página” para escutar o conteúdo disponível.</li></ol><button class="btn g lg" type="button" id="seniorVoiceHelp">🔊 Ouvir estas orientações</button></div>
 </div>
-<div class="hero"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote do Ovelia, abraçando uma Bíblia">
-<div><h1>Fé para o dia a dia</h1><p>Plataforma católica gratuita de fé e aprendizado, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Sem cadastro, sem anúncios.</p>
-<div class="row" style="margin-top:12px"><a class="btn lg" href="#terco">Rezar o terço</a><a class="btn g lg" href="#oracoes">Ver orações</a></div></div></div>
-<div class="card" style="border-color:var(--gold)"><span class="tag pd">Hoje</span><h2 style="margin-top:8px">Leitura e liturgia do dia</h2><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a> <a class="btn g" href="#biblia">Abrir a Bíblia</a></div>
-<div class="grid c3">
-<div class="card"><h3>Orações</h3><p>Orações tradicionais para ler e copiar.</p><a class="btn g" href="#oracoes">Abrir</a></div>
-<div class="card"><h3>Terço passo a passo</h3><p>Avance e volte durante a oração, com as contas na tela.</p><a class="btn g" href="#terco">Abrir</a></div>
-<div class="card"><h3>Estudos bíblicos</h3><p>Passagem, contexto, perguntas e aplicação.</p><a class="btn g" href="#estudos">Abrir</a></div>
-<div class="card"><h3>Área infantil</h3><p>Histórias e um quiz para as crianças.</p><a class="btn g" href="#infantil">Abrir</a></div>
-<div class="card"><h3>Bíblia para começar</h3><p>Leia os 73 livros da Bíblia católica aqui mesmo, sem sair da Ovelia.</p><a class="btn g" href="#biblia">Abrir Bíblia</a></div>
-<div class="card"><h3>Letra grande e contraste</h3><p>Use os botões A−, A+ e Contraste no topo, em qualquer página.</p></div>
-<div class="card side"><img src="pomba.png" width="425" height="520" alt="Pomba, mascote secundário do Ovelia"><div><h3>Paz e esperança</h3><p>A pomba lembra a paz do Espírito Santo.</p><a class="btn g" href="#sobre">Conheça o Ovelia</a></div></div>
+<div class="home-novo" id="homeNovo">
+  <div class="home-saudacao">
+    <div class="home-mascotes"><img class="home-ovelha" src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote da Ovelia, abraçando uma Bíblia"><img class="home-pomba" src="pomba.png" width="425" height="520" alt="" aria-hidden="true"></div>
+    <div class="home-texto"><h1 id="homeSaudacao">Olá!</h1><p id="homeMsg">Que bom ter você aqui! Reserve alguns minutos para se aproximar de Deus.</p><p class="home-data" id="homeData"></p></div>
+  </div>
+  <section class="card palavra-dia" aria-labelledby="palavraDiaTitulo">
+    <div class="pd-topo"><h2 id="palavraDiaTitulo">Palavra do dia</h2><span class="pd-data" id="palavraDiaData"></span></div>
+    <div id="palavraDiaConteudo"><p class="pd-sub">Uma palavra de esperança para acompanhar seu dia</p></div>
+  </section>
+  <div class="home-lit"><span class="home-lit-rotulo">Liturgia de hoje</span><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a></div>
 </div>
 </section>
 
@@ -291,10 +279,12 @@
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
+<script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261017"></script>
 <script src="app.js?v=20261018-recup1"></script>
 <script src="navegacao-inferior.js?v=20261018-recup1" defer></script>
 <script src="biblia.js?v=20261017"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
+<script src="inicio.js?v=20261018-inicio1"></script>
 </body>
 </html>

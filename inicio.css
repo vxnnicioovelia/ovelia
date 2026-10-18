@@ -1,0 +1,37 @@
+/* Ovelia — página inicial minimalista. Usa as variáveis de tema; não define cores fixas de texto sobre fundo variável. */
+.home-novo{display:grid;gap:16px;max-width:760px;margin:0 auto}
+.home-saudacao{display:flex;gap:22px;align-items:center;background:var(--hero);color:#fff;border-radius:26px;padding:24px}
+.home-saudacao p{color:#F7F4EC;margin:.4em 0}
+.home-saudacao h1{color:#fff;margin:0 0 .15em}
+.home-mascotes{position:relative;flex:0 0 190px;width:190px}
+.home-ovelha{width:190px;background:#F7F4EC;border-radius:22px;padding:8px}
+.home-pomba{position:absolute;right:-12px;bottom:-10px;width:62px;background:#F7F4EC;border-radius:50%;padding:6px;border:2px solid var(--gold)}
+.home-data{font-size:.95em;font-weight:700;opacity:1}
+.palavra-dia{border-color:var(--gold);border-width:2px}
+.pd-topo{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.pd-topo h2{margin:0}
+.pd-data{color:var(--mut);font-weight:700;font-size:.95em}
+.pd-sub{font-family:Fraunces,Georgia,serif;font-size:1.15em;margin:.6em 0 .3em}
+.pd-ref{font-weight:800;margin:.4em 0}
+.pd-rotulo{color:var(--mut);font-weight:700}
+.pd-texto{margin:.6em 0;padding:8px 0 8px 14px;border-left:4px solid var(--gold);font-family:Fraunces,Georgia,serif;font-size:1.1em}
+.pd-credito,.pd-aviso{color:var(--mut);font-size:.9em;margin:.4em 0}
+.pd-reflexao{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.pd-reflexao p{margin:.5em 0 0}
+.home-lit{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:12px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink)}
+.home-lit-rotulo{font-weight:800;flex:0 0 100%}
+.home-lit p{flex:1 1 220px;margin:0;color:var(--mut)}
+/* Perfis: Kids e 60+ têm seus próprios blocos de boas-vindas. */
+body.perfil-kids .home-novo{display:none}
+body.perfil-kids #home .kids-home{display:block}
+body.perfil-senior .home-saudacao{padding:26px}
+body.perfil-senior .home-lit .btn{min-height:60px}
+body.perfil-senior #home .home-novo{display:grid}
+body.perfil-senior #home .senior-home{display:block}
+body.perfil-senior .senior-help{margin-top:16px}
+@media(max-width:600px){
+  .home-saudacao{flex-direction:column;text-align:center;padding:20px}
+  .home-mascotes{flex:none;width:150px}
+  .home-ovelha{width:150px}
+}
+@media(min-width:901px){.home-novo{max-width:820px}}
