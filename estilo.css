@@ -21,7 +21,6 @@ header{background:var(--card);border-bottom:1px solid var(--line);position:stick
 .brand img{width:42px;height:42px}
 .tools{margin-left:auto;display:flex;gap:6px;align-items:center}
 .tools .btn{padding:6px 12px;font-size:.9rem}
-#menuBtn{display:inline-block}
 nav{width:100%}
 nav ul{list-style:none;margin:0;padding:6px 0;display:none;flex-direction:column;gap:2px}
 nav ul.open{display:flex}

@@ -39,11 +39,10 @@
     }).join('');
     var more=inner.querySelector('.ovelia-bottom-nav__more');
     if(more)more.addEventListener('click',function(){
-      if(window.matchMedia('(min-width: 900px)').matches){
-        var first=menu.querySelector('a');
-        if(first){first.focus();first.scrollIntoView({block:'nearest'});}
-        menu.classList.add('open');
-      }else if(menuBtn){menuBtn.click();menuBtn.focus();}
+      if(window.OveliaMainMenu){
+        var opened=window.OveliaMainMenu.toggle();
+        if(opened){var first=menu.querySelector('a');if(first)first.focus();}
+      }else{menu.classList.toggle('open');var firstFallback=menu.querySelector('a');if(firstFallback)firstFallback.focus();}
     });
   }
   window.addEventListener('hashchange',render);

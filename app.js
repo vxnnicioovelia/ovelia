@@ -82,7 +82,9 @@ perfilInicio.addEventListener('keydown',function(e){
   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
 });
-menuBtn.addEventListener('click',function(){var o=menu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o)});
+function toggleMainMenu(force){var o=typeof force==='boolean'?force:!menu.classList.contains('open');menu.classList.toggle('open',o);if(menuBtn)menuBtn.setAttribute('aria-expanded',String(o));return o;}
+if(menuBtn)menuBtn.addEventListener('click',function(){toggleMainMenu()});
+window.OveliaMainMenu={toggle:toggleMainMenu,close:function(){toggleMainMenu(false)}};
 renderMenu();
 if(!profile){perfilInicio.hidden=false;var firstProfile=$('[data-profile]',perfilInicio);if(firstProfile)firstProfile.focus()}
 function show(first){
@@ -90,7 +92,7 @@ function show(first){
   if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
   $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
-  menu.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');
+  menu.classList.remove('open');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
   window.scrollTo(0,0);
   var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Ovelia Kids — histórias e orações':profile==='senior'?'Ovelia 60+ — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
