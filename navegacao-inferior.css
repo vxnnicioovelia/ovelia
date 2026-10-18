@@ -16,3 +16,34 @@ footer{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
  footer{padding-bottom:140px}
 }
 @media(prefers-reduced-motion:reduce){.ovelia-bottom-nav *{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Ajuste isolado — perfil Ovelia 60+: nomes completos e alvos de toque maiores. */
+.ovelia-bottom-nav--senior .ovelia-bottom-nav__item{
+  overflow-wrap:normal;
+  word-break:normal;
+  hyphens:none;
+  font-size:1rem;
+  line-height:1.2;
+  min-height:60px;
+  padding:8px 4px;
+  gap:5px;
+}
+.ovelia-bottom-nav--senior .ovelia-bottom-nav__item span{white-space:nowrap}
+.ovelia-bottom-nav--senior .ovelia-bottom-nav__item svg{width:24px;height:24px}
+@media(max-width:899px){
+  .ovelia-bottom-nav--senior{padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px))}
+  .ovelia-bottom-nav--senior .ovelia-bottom-nav__inner{gap:4px}
+  .ovelia-bottom-nav--senior .ovelia-bottom-nav__item{min-height:62px;font-size:1rem}
+  body.perfil-senior main{padding-bottom:calc(176px + env(safe-area-inset-bottom,0px))}
+  body.perfil-senior footer{padding-bottom:calc(184px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:370px){
+  .ovelia-bottom-nav--senior .ovelia-bottom-nav__item{font-size:.88rem;padding-left:1px;padding-right:1px}
+  .ovelia-bottom-nav--senior .ovelia-bottom-nav__item svg{width:22px;height:22px}
+}
+@media(min-width:900px){
+  .ovelia-bottom-nav--senior .ovelia-bottom-nav__inner{grid-template-columns:repeat(6,minmax(0,1fr))}
+  body.perfil-senior main{padding-bottom:120px}
+  body.perfil-senior footer{padding-bottom:140px}
+}

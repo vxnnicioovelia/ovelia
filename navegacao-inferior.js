@@ -32,7 +32,13 @@
   function currentId(){var id=(location.hash||'#home').slice(1);return id||'home'}
   function render(){
     var id=currentId(),items=destinations();
-    inner.style.gridTemplateColumns='repeat('+items.length+', minmax(0, 1fr))';
+    // No perfil 60+, em telas estreitas, organize os seis destinos em duas linhas
+    // para manter os nomes inteiros e os alvos de toque confortáveis.
+    var senior=profile()==='senior';
+    var compactSenior=senior && window.matchMedia('(max-width: 899px)').matches;
+    inner.style.gridTemplateColumns='repeat('+(compactSenior?3:items.length)+', minmax(0, 1fr))';
+    nav.classList.toggle('ovelia-bottom-nav--senior',senior);
+    nav.classList.toggle('ovelia-bottom-nav--senior-mobile',compactSenior);
     inner.innerHTML=items.map(function(d){
       if(d.id==='mais')return '<button type="button" class="ovelia-bottom-nav__item ovelia-bottom-nav__more" aria-label="Mais opções de navegação" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true">'+icons.mais+'</svg><span>Mais</span></button>';
       return '<a class="ovelia-bottom-nav__item" href="#'+d.id+'"'+(id===d.id?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+icons[d.icon]+'</svg><span>'+d.label+'</span></a>';
@@ -46,6 +52,7 @@
     });
   }
   window.addEventListener('hashchange',render);
+  window.addEventListener('resize',render);
   window.addEventListener('storage',function(e){if(e.key==='ovelia-perfil')render()});
   document.querySelectorAll('[data-profile]').forEach(function(b){b.addEventListener('click',function(){window.setTimeout(render,0)})});
   if(menu&&window.MutationObserver)new MutationObserver(render).observe(menu,{childList:true});
