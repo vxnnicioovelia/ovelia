@@ -44,8 +44,11 @@
 <div class="bar">
 <a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="icone-128.png" width="42" height="42" alt="">Ovelia</a>
 <div class="tools" role="group" aria-label="Opções de leitura">
-<button class="btn g" id="aMenos" type="button" aria-label="Diminuir letra">A−</button>
-<button class="btn g" id="aMais" type="button" aria-label="Aumentar letra">A+</button>
+<button class="btn g controle-compacto" id="temaBtn" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Tema claro/escuro"><span aria-hidden="true" id="temaIcone">☾</span></button>
+<button class="btn g controle-compacto" id="textoBtn" type="button" aria-label="Ajustar tamanho do texto" aria-expanded="false" aria-controls="painelTexto"><span aria-hidden="true">Aa</span></button>
+<div id="painelTexto" class="painel-texto" hidden role="region" aria-label="Tamanho do texto"><label for="textoRange">Tamanho do texto</label><input id="textoRange" type="range" min="0" max="2" step="1" value="0"><p id="textoPreview">Este é um exemplo de leitura.</p><div class="painel-texto-acoes"><button class="btn g" id="textoPadrao" type="button">Restaurar padrão</button><button class="btn g" id="altoContrasteBtn" type="button" aria-pressed="false">Alto contraste</button></div></div>
+<button class="btn g" id="aMenos" type="button" aria-label="Diminuir tamanho do texto">A−</button>
+<button class="btn g" id="aMais" type="button" aria-label="Aumentar tamanho do texto">A+</button>
 <button class="btn g" id="aCont" type="button" aria-pressed="false">Contraste</button>
 <button class="btn g" id="perfilBtn" type="button">Trocar perfil</button>
 
@@ -58,6 +61,8 @@
 <noscript><div class="aviso">Este site precisa de JavaScript ativado para funcionar.</div></noscript>
 
 <div class="vozbar" role="region" aria-label="Leitura em voz alta">
+<button class="btn g voz-toggle" id="vozToggle" type="button" aria-expanded="false" aria-controls="vozControles">🔊 Ouvir</button>
+<div id="vozControles" class="voz-controles">
 <div class="row"><strong>🔊 Ouvir o site</strong>
 <button class="btn" id="vozPag" type="button">Ouvir esta página</button><button class="btn g" id="vozDiagnostico" type="button">Testar áudio</button>
 <button class="btn g" id="vozPausa" type="button">Pausar</button>
@@ -66,7 +71,7 @@
 <div id="vozOpc" hidden><label for="vozSel">Voz disponível no seu aparelho</label><select id="vozSel"></select><p class="muted-note">As vozes variam conforme o iPhone ou navegador. Escolha entre as opções disponíveis; o site não consegue garantir três vozes nem identificar com segurança se são masculinas ou femininas.</p>
 <button class="btn" id="vozTestar" type="button">▶ Testar voz</button><p class="muted-note">Toque em “Testar voz” para confirmar o áudio antes de ouvir uma página inteira.</p><label for="vozVel">Velocidade da leitura</label><input type="range" id="vozVel" min="0.6" max="1.4" step="0.05" value="0.85"></div>
 <p id="vozStatus" role="status" aria-live="polite" style="margin:6px 0 0;color:var(--mut);font-size:.9rem"></p>
-</div>
+</div></div>
 
 <!-- INÍCIO -->
 <section class="pg on" id="home">

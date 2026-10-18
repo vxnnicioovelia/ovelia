@@ -228,3 +228,18 @@ body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:#E8E2D5;c
 .lit-texto{font-family:'Fraunces',Georgia,serif;font-size:1.1rem;line-height:1.75}
 .lit-texto p{margin:0 0 .8em}
 .calendario-controles .row{margin-top:8px}
+
+/* Refinamento acessível dos controles: tema manual, texto e áudio */
+body.tema-claro{color-scheme:light;--bg:#F7F4EC;--card:#FFFFFF;--ink:#454A40;--mut:#62685B;--line:#E8E2D5;--soft:#E8E2D5;--hero:#526B55}
+body.tema-escuro{color-scheme:dark;--bg:#20251F;--card:#2B3129;--ink:#F7F4EC;--mut:#D3D7CC;--line:#485044;--soft:#394236;--hero:#394B3B;--kid:#2B3129;--kidink:#F7F4EC}
+body.tema-escuro .hero p{color:#F7F4EC}
+.controle-compacto{min-width:44px;min-height:44px;padding:8px 12px!important;font-size:1rem!important}
+.painel-texto{position:absolute;right:12px;top:calc(100% + 6px);z-index:30;width:min(340px,calc(100vw - 24px));padding:16px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px #0002}
+.painel-texto[hidden],.voz-controles[hidden]{display:none!important}
+.painel-texto label{display:block;font-weight:800}.painel-texto input[type=range]{width:100%;min-height:36px}.painel-texto p{margin:10px 0}.painel-texto-acoes{display:flex;flex-wrap:wrap;gap:8px}.painel-texto-acoes .btn{flex:1 1 auto;white-space:normal}
+.bar{position:relative}.voz-toggle{display:none}.voz-controles{display:block}
+body.perfil-adult .voz-toggle{display:inline-block}body.perfil-adult .vozbar{padding:8px 12px}body.perfil-adult .voz-controles{display:none}body.perfil-adult .voz-controles.voz-aberto{display:block}
+body.perfil-senior .voz-toggle{display:none}body.perfil-senior .voz-controles{display:block}
+body.perfil-kids .temaBtn,body.perfil-kids #temaBtn,body.perfil-kids #textoBtn{display:none!important}
+@media(max-width:600px){.bar{gap:6px;padding:6px 10px}.brand img{width:36px;height:36px}.brand{font-size:1.2rem}.tools{width:auto!important;flex-wrap:nowrap!important;gap:4px}.tools .btn{flex:0 0 auto!important;padding:6px 9px!important}.painel-texto{right:0}.vozbar{margin-bottom:10px}}
+@media(min-width:601px){.painel-texto{right:10px}}

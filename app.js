@@ -30,11 +30,15 @@ function setProfileControls(){
   $('#aMenos').setAttribute('aria-label','Diminuir tamanho do texto');
   $('#aMais').setAttribute('aria-label','Aumentar tamanho do texto');
   $('#aCont').setAttribute('aria-label','Ativar ou desativar alto contraste');
-  if(kids){$('#aMenos').hidden=true;$('#aMais').hidden=true;$('#aCont').hidden=true}
-  else{$('#aMenos').hidden=false;$('#aMais').hidden=false;$('#aCont').hidden=false}
+  var compact=profile==='adult';
+  $('#textoBtn').hidden=!compact;$('#temaBtn').hidden=kids;
+  $('#aMenos').hidden=kids||compact;$('#aMais').hidden=kids||compact;$('#aCont').hidden=kids||compact;
+  $('#perfilBtn').hidden=kids;
+  if(compact){$('#aCont').hidden=true;$('#aMenos').hidden=true;$('#aMais').hidden=true}
 }
 function applyProfile(){
-  document.body.classList.remove('perfil-kids','perfil-senior','perfil-easy');
+  document.body.classList.remove('perfil-kids','perfil-senior','perfil-easy','perfil-adult');
+  if(profile==='adult')document.body.classList.add('perfil-adult');
   if(profile==='kids')document.body.classList.add('perfil-kids');
   if(profile==='senior')document.body.classList.add('perfil-senior');
   perfilAtual.textContent=profile?'Experiência ativa: '+PROFILE_NAMES[profile]+'. Para mudar, toque em “Trocar perfil”.':'';
@@ -103,9 +107,19 @@ document.addEventListener('click',function(e){
   var g=e.target.closest('[data-scroll]');if(g){var el=document.getElementById(g.getAttribute('data-scroll'));if(el){el.scrollIntoView();el.setAttribute('tabindex','-1');el.focus({preventScroll:true})}}
 });
 
+/* ---------- Tema claro/escuro e controle único de texto ---------- */
+var temaBtn=$('#temaBtn'),temaIcone=$('#temaIcone'),textoBtn=$('#textoBtn'),painelTexto=$('#painelTexto'),textoRange=$('#textoRange'),textoPreview=$('#textoPreview'),altoContrasteBtn=$('#altoContrasteBtn');
+function temaAtual(){return document.body.classList.contains('tema-escuro')?'dark':'light'}
+function aplicarTema(tema,guardar){document.body.classList.toggle('tema-escuro',tema==='dark');document.body.classList.toggle('tema-claro',tema==='light');temaIcone.textContent=tema==='dark'?'☀':'☾';temaBtn.setAttribute('aria-label',tema==='dark'?'Ativar tema claro':'Ativar tema escuro');temaBtn.setAttribute('aria-pressed',String(tema==='dark'));if(guardar){try{localStorage.setItem('ovelia-tema',tema)}catch(e){}}}
+var temaGuardado=null;try{temaGuardado=localStorage.getItem('ovelia-tema')}catch(e){};aplicarTema(temaGuardado==='dark'?'dark':temaGuardado==='light'?'light':(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),false);
+temaBtn.addEventListener('click',function(){aplicarTema(temaAtual()==='dark'?'light':'dark',true)});
+textoBtn.addEventListener('click',function(){var abrir=painelTexto.hidden; painelTexto.hidden=!abrir;textoBtn.setAttribute('aria-expanded',String(abrir));if(abrir)textoRange.focus()});
+textoRange.addEventListener('input',function(){tam=+textoRange.value;applyPrefs();textoPreview.className='';textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam]});
+$('#textoPadrao').addEventListener('click',function(){tam=0;textoRange.value='0';applyPrefs();textoPreview.style.fontSize='1rem'});
+altoContrasteBtn.addEventListener('click',function(){var on=body.classList.toggle('contraste');altoContrasteBtn.setAttribute('aria-pressed',String(on));$('#aCont').setAttribute('aria-pressed',String(on));applyPrefs()});
 /* ---------- Acessibilidade: letra e contraste (só preferências locais) ---------- */
 var tam=0,body=document.body;
-function applyPrefs(){body.classList.remove('t1','t2');if(tam)body.classList.add('t'+tam);$('#aMais').disabled=tam>=2;$('#aMenos').disabled=tam<=0;
+function applyPrefs(){body.classList.remove('t1','t2');if(tam)body.classList.add('t'+tam);$('#aMais').disabled=tam>=2;$('#aMenos').disabled=tam<=0;if(textoRange)textoRange.value=String(tam);if(textoPreview)textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam];if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed',String(body.classList.contains('contraste')));
   try{localStorage.setItem('ovelia-letra',tam);localStorage.setItem('ovelia-contraste',body.classList.contains('contraste')?'1':'0')}catch(e){}}
 try{tam=+localStorage.getItem('ovelia-letra')||0;if(localStorage.getItem('ovelia-contraste')==='1'){body.classList.add('contraste')}}catch(e){}
 if(window.matchMedia&&window.matchMedia('(prefers-contrast: more)').matches&&!body.classList.contains('contraste')){try{if(localStorage.getItem('ovelia-contraste')===null)body.classList.add('contraste')}catch(e){}}
@@ -161,6 +175,7 @@ var Voz=(function(){
     try{next(id)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar a leitura neste aparelho: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
   $('#vozPag').addEventListener('click',function(){var s=$('section.pg.on');if(!s){st.textContent='Abra uma seção para ouvir o conteúdo.';return}var h=s.querySelector('h1,h2');falar(texto(s),h?h.textContent:'página')});
+  var vozToggle=$('#vozToggle'),vozControles=$('#vozControles');if(vozToggle&&vozControles){vozToggle.addEventListener('click',function(){var abrir=vozControles.hidden;vozControles.hidden=!abrir;vozToggle.setAttribute('aria-expanded',String(abrir));if(abrir)$('#vozPag').focus()})}
   var testar=$('#vozTestar');if(testar)testar.addEventListener('click',function(){falar('Olá! Esta é a voz da Ovelia. Se você está ouvindo esta mensagem, a leitura por áudio está funcionando.','teste de áudio')});
   var diagnostico=$('#vozDiagnostico');if(diagnostico)diagnostico.addEventListener('click',function(){diagnosticar()});
   pz.addEventListener('click',function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}else if(window.speechSynthesis.speaking){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}});
