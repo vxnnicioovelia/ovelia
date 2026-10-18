@@ -243,3 +243,9 @@ body.perfil-senior .voz-toggle{display:none}body.perfil-senior .voz-controles{di
 body.perfil-kids .temaBtn,body.perfil-kids #temaBtn,body.perfil-kids #textoBtn{display:none!important}
 @media(max-width:600px){.bar{gap:6px;padding:6px 10px}.brand img{width:36px;height:36px}.brand{font-size:1.2rem}.tools{width:auto!important;flex-wrap:nowrap!important;gap:4px}.tools .btn{flex:0 0 auto!important;padding:6px 9px!important}.painel-texto{right:0}.vozbar{margin-bottom:10px}}
 @media(min-width:601px){.painel-texto{right:10px}}
+/* Recuperação: no perfil 60+ os controles do cabeçalho quebram em linhas, sem rolagem horizontal. */
+@media(max-width:600px){
+ body.perfil-senior .bar{flex-wrap:wrap}
+ body.perfil-senior .tools{width:100%!important;flex-wrap:wrap!important;gap:8px!important}
+ body.perfil-senior .tools .btn{flex:1 1 44%!important;min-height:48px;padding:8px 10px!important;font-size:.85em}
+}

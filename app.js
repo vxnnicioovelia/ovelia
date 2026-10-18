@@ -33,7 +33,7 @@ function setProfileControls(){
   var compact=profile==='adult';
   $('#textoBtn').hidden=!compact;$('#temaBtn').hidden=kids;
   $('#aMenos').hidden=kids||compact;$('#aMais').hidden=kids||compact;$('#aCont').hidden=kids||compact;
-  $('#perfilBtn').hidden=kids;
+  $('#perfilBtn').hidden=false; /* Kids precisa sempre ter caminho de volta. */
   if(compact){$('#aCont').hidden=true;$('#aMenos').hidden=true;$('#aMais').hidden=true}
 }
 function applyProfile(){
@@ -67,6 +67,7 @@ function chooseProfile(p){
 }
 $$('[data-profile]').forEach(function(b){b.addEventListener('click',function(){chooseProfile(b.getAttribute('data-profile'))})});
 function openProfileChooser(){
+  if(profile==='kids'&&!window.confirm('Sair do modo infantil? Peça ajuda a um adulto.'))return;
   perfilInicio.hidden=false;
   var first=$('[data-profile]',perfilInicio);if(first)first.focus();
 }
