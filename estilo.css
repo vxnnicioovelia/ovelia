@@ -249,3 +249,28 @@ body.perfil-kids .temaBtn,body.perfil-kids #temaBtn,body.perfil-kids #textoBtn{d
  body.perfil-senior .tools{width:100%!important;flex-wrap:wrap!important;gap:8px!important}
  body.perfil-senior .tools .btn{flex:1 1 44%!important;min-height:48px;padding:8px 10px!important;font-size:.85em}
 }
+
+/* ===== Camada consolidada de contraste =====
+   Causa do problema: cartões, botões e estados tinham cor de fundo fixa (#fff, #E8E2D5, #DDE7D8) enquanto o texto
+   usava variáveis de tema. No tema escuro o texto ficava claro sobre fundo claro. Agora superfícies e texto
+   usam sempre as mesmas variáveis (--card, --soft, --ink), que mudam juntas em cada tema. */
+:root{--on-olive:#FFFFFF;--ok-bg:#DDE7D8;--ok-line:#304B33;--bad-bg:#F4E1DD;--bad-line:#743D35;--on-gold:#30352C}
+body.tema-escuro{--on-olive:#20251F;--olive:#9AAF91;--ok-bg:#2F4A33;--ok-line:#B7CBAE;--bad-bg:#553632;--bad-line:#F0B3A8;--kid:#2B3129;--kidink:#F7F4EC}
+body.contraste{--ok-bg:#fff;--ok-line:#000;--bad-bg:#fff;--bad-line:#000}
+.kids .card,.kids-trilha,
+body.perfil-kids .kids-home-actions .card,body.perfil-kids .kids-message,.kids-message,.kids-home-actions .card,
+body.perfil-kids #listaOracoes .kids-cat details,body.perfil-kids #infantil details{background:var(--card);color:var(--ink)}
+.kids-home .kids-welcome{background:var(--kid)}
+.kids-home .kids-welcome h1,.kids-home .kids-welcome p,.kids-home-actions h2,.kids-message h2,
+body.perfil-kids .kids-home-actions h2,body.perfil-kids .kids-message h2{color:var(--ink)}
+.kids .btn.g,.opcoes .btn,body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:var(--soft);color:var(--ink)}
+.opcoes .btn.certo{background:var(--ok-bg);color:var(--ink);outline:3px solid var(--ok-line)}
+.opcoes .btn.errado{background:var(--bad-bg);color:var(--ink);outline:3px dashed var(--bad-line)}
+.opcoes .btn:disabled{opacity:1;cursor:default}
+.kids-home-actions .btn,.kids-main-btn,.btn{color:var(--on-gold)}
+.btn.g,.kids .btn.g{color:var(--ink)}
+.senior-welcome{background:var(--soft);color:var(--ink);border-color:var(--line)}
+.senior-welcome h1,.senior-welcome p,.senior-tip{color:var(--ink)}
+.kids-story summary,.kids-story small,.versos,.card .versos{color:var(--olive)}
+body.contraste .kids-story summary,body.contraste .versos{color:#000}
+.btn:focus-visible,summary:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
