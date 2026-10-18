@@ -110,7 +110,7 @@
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
-    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261018-jornada2';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
+    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261018-jornada1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
     carregando[src].then(function(){if(E.licoes[id])cb(E.licoes[id]);else erro()},erro);
   }
   var atual=null;
@@ -238,23 +238,7 @@
     if(b)b.disabled=!ok;if(s)s.textContent=ok?'Atividade concluída! Toque em Continuar.':'Responda corretamente a todas as perguntas para continuar.';
   }
 
-  function iniciarJornada(){
-    try{
-      if(!E||!R||!T||!P||!Array.isArray(T.licoes)||!T.licoes.length){
-        throw new Error('Dependências da jornada ausentes.');
-      }
-      desenhar();
-    }catch(err){
-      console.error('[Ovelia Estudos] Falha ao iniciar a jornada:',err);
-      raiz.textContent='';
-      var erro=h('div','card jr-erro-inicializacao');
-      erro.appendChild(h('h3',null,'Não foi possível abrir a jornada agora'));
-      erro.appendChild(h('p',null,'A tela de Estudos encontrou um problema ao iniciar. Recarregue a página; se continuar, atualize os arquivos da Ovelia no GitHub Pages.'));
-      erro.appendChild(btn('Tentar novamente',null,function(){iniciarJornada()}));
-      raiz.appendChild(erro);
-    }
-  }
-  iniciarJornada();
-  window.OveliaJornada={abrir:abrir,fechar:fechar,desenhar:iniciarJornada};
+  desenhar();
+  window.OveliaJornada={abrir:abrir,fechar:fechar,desenhar:desenhar};
   window.addEventListener('hashchange',function(){if(location.hash==='#estudos'&&!licaoBox.hidden){/* mantém a lição aberta */}});
 })();
