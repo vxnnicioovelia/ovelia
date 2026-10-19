@@ -19,13 +19,14 @@
     estudos:'<path d="M2 5.5A2.5 2.5 0 0 1 4.5 3H12v17H4.5A2.5 2.5 0 0 0 2 22zM22 5.5A2.5 2.5 0 0 0 19.5 3H12v17h7.5A2.5 2.5 0 0 1 22 22z"/>',
     terco:'<circle cx="12" cy="5" r="2"/><circle cx="7" cy="9" r="1.5"/><circle cx="17" cy="9" r="1.5"/><circle cx="6" cy="14" r="1.5"/><circle cx="18" cy="14" r="1.5"/><path d="M12 8v5m0 0-2 2m2-2 2 2m-2 0v5m-2-2h4"/>',
     infantil:'<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="M8 12h.01M16 12h.01M9 15c1.5 1.5 4.5 1.5 6 0"/>',
+    criatividade:'<path d="M12 19 5 12a4 4 0 0 1 5.7-5.6L12 7.7l1.3-1.3A4 4 0 0 1 19 12z"/><path d="M4 21h16"/>',
     mais:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
   };
   function profile(){try{return localStorage.getItem('ovelia-perfil')||'adult'}catch(e){return 'adult'}}
   function item(id,label,icon){return {id:id,label:label,icon:icon}}
   function destinations(){
     var p=profile();
-    if(p==='kids')return [item('home','Início','home'),item('infantil','Histórias','infantil'),item('oracoes','Orações','oracoes'),item('mais','Mais','mais')];
+    if(p==='kids')return [item('home','Início','home'),item('infantil','Histórias','infantil'),item('criatividade','Criar','criatividade'),item('oracoes','Orações','oracoes'),item('mais','Mais','mais')];
     if(p==='senior')return [item('home','Início','home'),item('liturgia','Liturgia','liturgia'),item('biblia','Bíblia','biblia'),item('oracoes','Orações','oracoes'),item('mais','Mais','mais')];
     return [item('home','Início','home'),item('liturgia','Liturgia','liturgia'),item('biblia','Bíblia','biblia'),item('oracoes','Oração','oracoes'),item('estudos','Estudos','estudos'),item('mais','Mais','mais')];
   }

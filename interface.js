@@ -106,11 +106,11 @@
 
   /* ---------- Lição em passos ---------- */
   var carregando={};
-  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'licoes-'+p(a)+'-'+p(z)+'.js'}
+  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'estudos/dados/licoes-'+p(a)+'-'+p(z)+'.js'}
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
-    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261019-biblia1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
+    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261018-jornada1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
     carregando[src].then(function(){if(E.licoes[id])cb(E.licoes[id]);else erro()},erro);
   }
   var atual=null;
@@ -160,7 +160,7 @@
             alvo.textContent='';
             resultado.versiculos.forEach(function(v){var par=h('p','jr-versiculo-texto');par.appendChild(h('sup','jr-num-verso',String(v.numero)+' '));par.appendChild(document.createTextNode(v.texto));alvo.appendChild(par)});
             alvo.appendChild(h('p','pd-credito','Bíblia Portuguesa Mundial (BPM) · domínio público informado pelo eBible.org · tradução em revisão.'));
-          }).catch(function(){alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Este trecho ainda não carregou. A Bíblia integrada depende da primeira sincronização dos arquivos bíblicos no repositório. Tente novamente quando a atualização terminar.'));var ir=btn('Abrir leitor da Bíblia','g',function(){location.hash='#biblia'});alvo.appendChild(ir)})})(vv.ref,leitura);
+          }).catch(function(){alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Este trecho ainda não carregou. A Bíblia integrada depende da primeira sincronização dos arquivos bíblicos no repositório. Tente novamente quando a atualização terminar.'));var ir=btn('Abrir leitor da Bíblia','g',function(){var link=document.querySelector('[data-page="biblia"],a[href="#biblia"],button[data-go="biblia"]');if(link)link.click();else{location.hash='#biblia';window.scrollTo(0,0)}});alvo.appendChild(ir)})})(vv.ref,leitura);
         } else {leitura.textContent='O leitor bíblico ainda está inicializando. Recarregue a página e tente novamente.';}
         d.appendChild(h('p',null,vv.explicacao));corpo.appendChild(d);
       });

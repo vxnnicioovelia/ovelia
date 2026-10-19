@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Ovelia">
-<link rel="manifest" href="./manifest.webmanifest?v=20261019-purple2">
+<link rel="manifest" href="./manifest.webmanifest?v=20261019-kidscreativity2">
 <meta name="author" content="Vxnnicio">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -23,11 +23,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261019-kidsaudio1">
+<link rel="stylesheet" href="estilo.css?v=20261019-kidscreativity1">
 <link rel="stylesheet" href="biblia.css?v=20261017">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261019-recup3">
-<link rel="stylesheet" href="navegacao-inferior.css?v=20261019-recup3">
-<link rel="stylesheet" href="inicio.css?v=20261018-inicio1">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261019-apple1">
+<link rel="stylesheet" href="inicio.css?v=20261019-home2">
 <link rel="stylesheet" href="estudos.css?v=20261019-estudos4">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
 </head>
@@ -102,6 +102,11 @@
     <div id="palavraDiaConteudo"><p class="pd-sub">Uma palavra de esperança para acompanhar seu dia</p></div>
   </section>
   <div class="home-lit"><span class="home-lit-rotulo">Liturgia de hoje</span><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a></div>
+  <div class="home-acessos" aria-label="Acessos rápidos">
+    <a class="home-atalho" href="#terco"><span class="home-atalho-icone" aria-hidden="true">✝</span><span><strong>Rezar o terço</strong><small>Um passo de cada vez</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#oracoes"><span class="home-atalho-icone" aria-hidden="true">♡</span><span><strong>Encontrar uma oração</strong><small>Para cada momento do dia</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#estudos"><span class="home-atalho-icone" aria-hidden="true">▤</span><span><strong>Continuar meus estudos</strong><small>Aprenda no seu ritmo</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+  </div>
 </div>
 
 <div class="card ovelia-install-card">
@@ -275,7 +280,24 @@
     <p id="kidsQuestionText"></p><div id="kidsQuestionChoices" class="kids-choices"></div><p id="kidsQuestionFeedback" role="status" aria-live="polite"></p>
   </div>
 </div>
-<h3 id="pinturaKidsTitulo">🎨 Vamos colorir!</h3>
+
+
+<h3>🎲 Quiz da Ovelinha</h3>
+<div class="card" id="quiz"></div>
+<h3>Desafio da semana</h3>
+<div class="card"><p>Faça uma boa ação em casa sem ninguém pedir, como arrumar a cama ou ajudar a guardar os brinquedos. E, antes de dormir, reze com um adulto o <a href="#oracoes">Santo Anjo</a>.</p></div>
+</div>
+</section>
+
+
+<!-- CRIATIVIDADE KIDS -->
+<section class="pg kids-creativity-page" id="criatividade" aria-labelledby="criatividadeTitulo">
+  <div class="kids-creativity-hero">
+    <span class="kids-creativity-symbol" aria-hidden="true">🎨</span>
+    <div><p class="tag pd">Cantinho criativo</p><h1 id="criatividadeTitulo">Vamos criar e colorir!</h1><p>Escolha um desenho, use suas cores favoritas e guarde sua criação neste aparelho.</p></div>
+  </div>
+  <div class="kids-creativity-tip"><span aria-hidden="true">💡</span><p>Não existe desenho perfeito. O mais importante é se divertir e usar a imaginação!</p></div>
+  <h3 id="pinturaKidsTitulo">🎨 Vamos colorir!</h3>
 <p>Escolha um desenho, uma cor e pinte com o dedo ou com o mouse. A atividade funciona neste aparelho e não envia seus desenhos para a internet.</p>
 <div class="kids-paint-controls">
   <label for="kidsDrawingSelect">Desenho</label>
@@ -291,14 +313,9 @@
 </div>
 <div class="kids-canvas-wrap"><canvas id="kidsCanvas" width="900" height="650" aria-label="Área de desenho para colorir"></canvas></div>
 <p id="kidsPaintStatus" role="status" aria-live="polite"></p>
-
-<h3>🎲 Quiz da Ovelinha</h3>
-<div class="card" id="quiz"></div>
-<h3>Desafio da semana</h3>
-<div class="card"><p>Faça uma boa ação em casa sem ninguém pedir, como arrumar a cama ou ajudar a guardar os brinquedos. E, antes de dormir, reze com um adulto o <a href="#oracoes">Santo Anjo</a>.</p></div>
-</div>
+  <p class="muted-note">Os desenhos e as pinturas ficam neste aparelho. Não são enviados para a internet.</p>
+  <p><a class="btn g" href="#infantil">Voltar às histórias</a></p>
 </section>
-
 
 <!-- INSTALAR OVELIA -->
 <section class="pg" id="instalarOvelia" aria-labelledby="instalarOveliaTitulo">
@@ -355,7 +372,7 @@
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261017"></script>
 <script src="app.js?v=20261019-audio2"></script>
-<script src="navegacao-inferior.js?v=20261019-recup3" defer></script>
+<script src="navegacao-inferior.js?v=20261019-apple1" defer></script>
 <script src="biblia.js?v=20261019-integrada1"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261018-inicio1"></script>
@@ -365,7 +382,7 @@
 <script src="licoes-001-010.js?v=20261019-estudos4"></script>
 <script src="interface.js?v=20261019-biblia1"></script>
 
-<script src="./ovelia-kids.js?v=20261019-1"></script>
+<script src="./ovelia-kids.js?v=20261019-draw2"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>
 </body>
 </html>

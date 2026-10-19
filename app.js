@@ -16,7 +16,7 @@ if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
-  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['oracoes','Orações infantis'],['instalarOvelia','Instalar Ovelia']];
+  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['instalarOvelia','Instalar Ovelia']];
   if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Orações'],['terco','Rezar o terço'],['biblia','Bíblia'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
   return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Orações'],['terco','Terço'],['estudos','Estudos bíblicos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
 }
@@ -240,7 +240,7 @@ var CATS=[
  {t:'Orações básicas',o:'tradicional',ids:['sinal','sinalLongo','pai','ave','gloria','credo']},
  {t:'Orações a Maria, ao Anjo e ao Espírito Santo',o:'tradicional',ids:['salve','anjo','espirito','miguel']},
  {t:'Orações da Ovelia para o dia a dia',o:'original',ids:['manha','noite','agradecimento','familias','dificeis']},
- {t:'Orações para crianças',o:'kids',ids:['criancaManha','criancaNoite']}
+ {t:'Orações para crianças',o:'kids',ids:['criancaManha','criancaRefeicao','criancaNoite']}
 ];
 var ORIG={
  manha:{n:'Para a manhã',t:'Senhor, obrigado por este novo dia.\nGuia os meus passos, os meus pensamentos e as minhas palavras.\nQue eu viva hoje com amor e com coragem. Amém.'},
@@ -249,7 +249,8 @@ var ORIG={
  familias:{n:'Pelas famílias',t:'Senhor, abençoa a nossa família.\nDá-nos paciência, respeito e perdão uns com os outros.\nQue a nossa casa seja lugar de paz e de oração. Amém.'},
  dificeis:{n:'Para momentos difíceis',t:'Senhor, estou cansado e preciso da tua ajuda.\nSegura-me quando eu não tiver forças\ne coloca no meu caminho pessoas que me apoiem.\nEu confio em ti. Amém.'},
  criancaManha:{n:'Oração da criança pela manhã',t:'Bom dia, meu Deus!\nObrigado por este novo dia.\nAjuda-me a aprender, brincar e tratar todos com carinho.\nAbençoa minha família e meus amigos. Amém.'},
- criancaNoite:{n:'Oração da criança antes de dormir',t:'Meu Deus, obrigado por este dia.\nCuida da minha família e de todas as crianças.\nPerdoa quando eu erro e ajuda-me a fazer o bem amanhã.\nSanto Anjo, fica comigo. Amém.'}
+ criancaNoite:{n:'Oração da criança antes de dormir',t:'Meu Deus, obrigado por este dia.\nCuida da minha família e de todas as crianças.\nPerdoa quando eu erro e ajuda-me a fazer o bem amanhã.\nSanto Anjo, fica comigo. Amém.'},
+ criancaRefeicao:{n:'Oração da criança antes do almoço',t:'Papai do Céu, obrigado por este alimento,\npelas pessoas que o prepararam\ne por todos que vão partilhar esta refeição.\nAbençoa quem tem fome e ensina-nos a repartir.\nAmém.'}
 };
 for(var k in ORIG)P[k]=ORIG[k];
 var lo=$('#listaOracoes');

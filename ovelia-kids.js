@@ -56,20 +56,35 @@ function setupCanvas(){
  ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='#27212f';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';
  var type=select?select.value:'sheep';
  if(type==='sheep'){
-  // Cordeirinho original em traço simples para colorir
-  ellipse(420,340,190,145);ellipse(610,300,95,78);ellipse(680,310,26,32);ellipse(585,240,38,34);ellipse(638,224,34,30);ellipse(690,242,31,29);ellipse(718,283,24,25);
-  ellipse(625,294,7,8);ellipse(687,294,7,8);line([[644,327],[654,337],[665,327]]);
-  line([[300,445],[300,535],[360,535],[360,450]]);line([[455,450],[455,535],[515,535],[515,445]]);
-  ellipse(245,260,44,40);ellipse(310,240,44,40);ellipse(365,260,44,40);ellipse(420,245,44,40);ellipse(475,265,44,40);ellipse(520,295,44,40);
-  line([[185,535],[600,535]]);ellipse(180,535,18,18);ellipse(605,535,18,18);
+  // Cordeirinho com silhueta legível: lã, rosto, orelhas e quatro patas.
+  ctx.beginPath();ctx.moveTo(205,340);ctx.bezierCurveTo(165,300,190,245,240,250);ctx.bezierCurveTo(250,190,325,190,350,225);ctx.bezierCurveTo(390,180,455,200,470,240);ctx.bezierCurveTo(525,225,570,270,550,315);ctx.bezierCurveTo(585,365,545,420,495,420);ctx.lineTo(265,420);ctx.bezierCurveTo(220,420,185,385,205,340);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(515,290);ctx.bezierCurveTo(545,245,610,245,650,280);ctx.bezierCurveTo(700,270,735,305,725,350);ctx.bezierCurveTo(715,390,670,405,625,390);ctx.bezierCurveTo(580,405,535,375,515,340);ctx.closePath();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(575,285);ctx.quadraticCurveTo(550,250,570,235);ctx.quadraticCurveTo(600,230,615,275);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(670,285);ctx.quadraticCurveTo(700,245,720,270);ctx.quadraticCurveTo(730,290,700,310);ctx.stroke();
+  ellipse(625,320,7,9);ellipse(690,320,7,9);line([[645,350],[658,360],[671,350]]);
+  line([[285,415],[280,515],[325,515],[330,415]]);line([[435,415],[440,515],[485,515],[480,415]]);line([[255,515],[335,515]]);line([[425,515],[495,515]]);
+  // Pequenos cachos separados deixam áreas de pintura mais claras.
+  ellipse(225,305,29,28);ellipse(280,255,29,27);ellipse(330,235,28,25);ellipse(390,235,29,25);ellipse(445,260,28,26);ellipse(490,300,27,27);
  }else if(type==='boat'){
-  line([[150,390],[740,390],[650,500],[260,500],[150,390]]);line([[445,150],[445,390]]);line([[445,170],[610,350],[445,350]]);line([[420,210],[280,350],[420,350]]);line([[150,535],[740,535]]);line([[190,560],[700,560]]);
-  ellipse(300,390,22,18);ellipse(400,390,22,18);ellipse(500,390,22,18);ellipse(600,390,22,18);
+  // Barco com casco, mastro central, vela triangular e pequenas vigias.
+  line([[145,390],[755,390],[700,455],[640,500],[255,500],[195,455],[145,390]]);
+  line([[445,135],[445,390]]);
+  line([[425,165],[270,350],[425,350],[425,165]]);
+  line([[465,185],[625,350],[465,350],[465,185]]);
+  line([[130,535],[770,535]]);line([[190,565],[710,565]]);
+  ellipse(300,425,17,15);ellipse(390,425,17,15);ellipse(500,425,17,15);ellipse(590,425,17,15);
+  // Bandeirinha no topo do mastro.
+  line([[445,135],[495,155],[445,175]]);
  }else{
-  // Pomba original em linhas geométricas simples
-  line([[180,320],[320,300],[430,230],[500,170],[480,270],[620,230],[760,260],[670,340],[770,390],[620,400],[510,460],[390,440],[300,490],[330,400],[180,320]]);
-  line([[430,230],[455,350],[390,440]]);line([[480,270],[560,335],[670,340]]);line([[180,320],[115,285],[135,340],[180,320]]);
-  ellipse(505,300,8,8);line([[520,305],[550,315],[520,322]]);
+  // Pomba em voo com cabeça, bico, cauda aberta, asa com penas e ramo de oliveira.
+  ctx.beginPath();ctx.moveTo(255,350);ctx.quadraticCurveTo(220,315,255,280);ctx.quadraticCurveTo(290,250,325,280);ctx.lineTo(360,305);ctx.quadraticCurveTo(420,260,475,210);ctx.quadraticCurveTo(525,170,555,180);ctx.quadraticCurveTo(535,225,515,270);ctx.quadraticCurveTo(590,235,655,245);ctx.quadraticCurveTo(720,255,765,295);ctx.quadraticCurveTo(700,305,655,330);ctx.quadraticCurveTo(710,350,735,390);ctx.quadraticCurveTo(660,400,610,385);ctx.quadraticCurveTo(555,435,485,435);ctx.quadraticCurveTo(415,440,365,405);ctx.quadraticCurveTo(320,405,285,385);ctx.closePath();ctx.stroke();
+  // Asa em arco, com penas separadas e legíveis.
+  ctx.beginPath();ctx.moveTo(350,310);ctx.quadraticCurveTo(420,220,515,205);ctx.quadraticCurveTo(480,270,465,320);ctx.quadraticCurveTo(435,350,405,375);ctx.stroke();
+  line([[385,320],[430,285],[448,330]]);line([[410,345],[455,310],[470,350]]);line([[438,365],[480,330],[495,370]]);line([[465,385],[510,350],[530,385]]);
+  // Olho e bico claramente separados do contorno.
+  ellipse(292,298,7,7);line([[252,320],[220,330],[255,340]]);
+  // Ramo de oliveira no bico.
+  line([[225,332],[160,300],[125,270]]);ctx.beginPath();ctx.ellipse(150,285,15,7,-.6,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(180,305,15,7,.6,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(130,270,12,6,-.7,0,Math.PI*2);ctx.stroke();
  }
  ctx.strokeStyle='#27212f';ctx.lineWidth=5;
  try{var saved=localStorage.getItem('ovelia-kids-paint-'+type);if(saved){var im=new Image();im.onload=function(){ctx.drawImage(im,0,0,canvas.width,canvas.height)};im.src=saved}}catch(e){}

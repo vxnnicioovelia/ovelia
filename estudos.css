@@ -82,29 +82,7 @@
 .jr-anteriores{margin-top:24px;max-width:760px;margin-left:auto;margin-right:auto}
 #estudosAnteriores{margin-top:12px}
 .jr-carregando{color:var(--mut)}
-/* Alto contraste: cartões de lições bloqueadas precisam manter texto legível. */
-body.contraste .jr-no.is-bloqueada {
-  background: #111 !important;
-  color: #fff !important;
-  border-color: #fff !important;
-  opacity: 1 !important;
-}
-body.contraste .jr-no.is-bloqueada *,
-body.contraste .jr-no.is-bloqueada .jr-no-t,
-body.contraste .jr-no.is-bloqueada .jr-no-e {
-  color: #fff !important;
-  opacity: 1 !important;
-}
-body.contraste .jr-no.is-bloqueada .jr-no-n {
-  background: #000 !important;
-  color: #ffdf70 !important;
-  border: 2px solid #fff !important;
-}
-body.contraste .jr-no.is-bloqueada:focus-visible {
-  outline: 3px solid #ffdf70 !important;
-  outline-offset: 3px;
-}
-body.contraste .jr-dia.is-feito { background: #000; color: #fff; }
+body.contraste .jr-no.is-bloqueada{background:#fff}body.contraste .jr-dia.is-feito{background:#000;color:#fff}
 body.perfil-senior .jr-no{min-height:84px}
 body.perfil-senior .jr-no-n{flex-basis:64px;width:64px;height:64px}
 @media(max-width:480px){.jr-conq-lista{grid-template-columns:1fr}.jr-ovelha{flex-basis:68px;width:68px}.jr-stats{gap:6px}.jr-pos1,.jr-pos3{margin-left:2%}.jr-pos2{margin-left:4%}}
