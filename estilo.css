@@ -1,7 +1,7 @@
 /* Ovelia — estilos. Cores oficiais ficam nas variáveis de :root. */
-:root{--bg:#F7F4EC;--card:#FFFFFF;--ink:#454A40;--mut:#62685B;--gold:#D6B77A;--olive:#526B55;--line:#E8E2D5;--soft:#E8E2D5;--hero:#526B55;--kid:#F7F4EC;--kidink:#454A40;--fs:17px;
+:root{--bg:#F8F5FC;--card:#FFFFFF;--ink:#292238;--mut:#5F566D;--gold:#D7C1F2;--olive:#6B4FA1;--line:#E4D9F0;--soft:#F0E8F8;--hero:#62458F;--kid:#F8F5FC;--kidink:#292238;--fs:17px;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root{--bg:#20251F;--card:#2B3129;--ink:#F7F4EC;--mut:#D3D7CC;--gold:#D6B77A;--olive:#9AAF91;--line:#485044;--soft:#394236;--hero:#394B3B}}
+@media (prefers-color-scheme:dark){:root{--bg:#17131F;--card:#241D30;--ink:#F7F2FC;--mut:#D1C6DF;--gold:#D7C1F2;--olive:#BDA3E8;--line:#493B5B;--soft:#332742;--hero:#3E2D58}}
 body.contraste{--bg:#fff;--card:#fff;--ink:#000;--mut:#1a1a1a;--line:#000;--soft:#f0f0f0;--hero:#000;--kid:#fff;--kidink:#000}
 body.contraste .btn{border:2px solid #000}
 body.contraste a:not(.btn){text-decoration:underline}
@@ -13,7 +13,7 @@ h1{font-size:2rem}h2{font-size:1.6rem}h3{font-size:1.15rem}p{margin:.5em 0;max-w
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 [tabindex="-1"]:focus{outline:none}
-.skip{position:absolute;left:-999px;top:8px;background:var(--gold);color:#454A40;padding:10px 16px;border-radius:99px;z-index:20;font-weight:700}
+.skip{position:absolute;left:-999px;top:8px;background:var(--gold);color:#292238;padding:10px 16px;border-radius:99px;z-index:20;font-weight:700}
 .skip:focus{left:8px}
 header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
 .bar{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -33,7 +33,7 @@ main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .hero{display:flex;gap:22px;align-items:center;background:var(--hero);color:#fff;border-radius:26px;padding:24px;margin-bottom:16px}
 body.contraste .hero p{color:#fff}
 .hero p{color:#F7F4EC}.hero img{flex:0 0 200px;width:200px;background:#F7F4EC;border-radius:22px;padding:8px}
-.btn{font:inherit;font-weight:700;border:0;border-radius:99px;padding:10px 18px;background:var(--gold);color:#454A40;cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:99px;padding:10px 18px;background:var(--gold);color:#292238;cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
 .btn.g{background:var(--soft);color:var(--ink)}
 .btn.lg{font-size:1.15rem;padding:14px 26px;min-height:56px}
 .btn[aria-pressed="true"]{outline:3px solid var(--ink)}
@@ -274,3 +274,13 @@ body.perfil-kids .kids-home-actions h2,body.perfil-kids .kids-message h2{color:v
 .kids-story summary,.kids-story small,.versos,.card .versos{color:var(--olive)}
 body.contraste .kids-story summary,body.contraste .versos{color:#000}
 .btn:focus-visible,summary:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+
+/* Identidade visual roxa Ovelia — refinamento conservador da base existente. */
+:root{color-scheme:light}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark}}
+body{accent-color:#7655A8}
+.btn.g{border-color:var(--line)}
+.btn.g:hover{border-color:var(--olive)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--olive);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

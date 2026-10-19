@@ -1,10 +1,10 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v1';
+var CACHE='ovelia-shell-v2-purple';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261019-recup3','./biblia.css?v=20261017',
-  './calendario-liturgico.css?v=20261019-recup3','./navegacao-inferior.css?v=20261019-recup3',
+  './estilo.css?v=20261019-purple2','./biblia.css?v=20261017',
+  './calendario-liturgico.css?v=20261019-recup3','./navegacao-inferior.css?v=20261019-purple2',
   './inicio.css?v=20261018-inicio1','./estudos.css?v=20261019-estudos4','./ovelia-pwa.css?v=20261019-1',
   './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261017','./app.js?v=20261019-pwa1',
   './navegacao-inferior.js?v=20261019-recup3','./biblia.js?v=20261017',
@@ -13,7 +13,7 @@ var SHELL=[
   './progresso.js?v=20261019-estudos4','./licoes-001-010.js?v=20261019-estudos4',
   './interface.js?v=20261019-estudos4','./ovelia-pwa.js?v=20261019-1',
   './icone-128.png','./favicon-64.png','./apple-touch-icon.png',
-  './pwa-192.png','./pwa-512.png','./manifest.webmanifest'
+  './pwa-192.png','./pwa-512.png','./manifest.webmanifest?v=20261019-purple2'
 ]
 self.addEventListener('install',function(event){
   event.waitUntil(caches.open(CACHE).then(function(cache){return Promise.all(SHELL.map(function(url){return cache.add(url).catch(function(){/* Um recurso opcional ausente não deve cancelar o cache dos demais. */});}));}).then(function(){return self.skipWaiting();}));
