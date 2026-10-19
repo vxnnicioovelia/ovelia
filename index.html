@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261019-recup3">
+<link rel="stylesheet" href="estilo.css?v=20261019-kidsaudio1">
 <link rel="stylesheet" href="biblia.css?v=20261017">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261019-recup3">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261019-recup3">
@@ -258,6 +258,40 @@
 <p>Jesus contou sobre um pastor que tinha cem ovelhas. Quando uma se perdeu, ele foi procurá-la e ficou muito feliz quando a encontrou. Jesus usou essa história para mostrar como cada pessoa é preciosa para Deus.</p><p><b>Pequena lição:</b> cada pessoa tem valor, e podemos acolher com carinho quem está triste ou se sente sozinho.</p></details>
 <details class="kids-story"><summary>Jesus partilha o pão <small>(João 6,1-13)</small></summary>
 <p>Uma grande multidão foi ouvir Jesus. Havia pouca comida, mas um menino ofereceu cinco pães e dois peixes. Jesus agradeceu a Deus e repartiu o alimento, e todos comeram. Ainda sobraram cestos cheios.</p><p><b>Pequena lição:</b> quando partilhamos o que temos, mesmo que pareça pouco, podemos fazer diferença na vida de outras pessoas.</p></details>
+
+<h3 id="bibliotecaKidsTitulo">📚 Biblioteca de histórias</h3>
+<p>Escolha uma história para ler ou ouvir. Cada história tem uma pergunta para você pensar.</p>
+<div class="kids-library" id="kidsLibrary" aria-labelledby="bibliotecaKidsTitulo"></div>
+<div class="card kids-story-reader" id="kidsStoryReader" aria-live="polite">
+  <h3 id="kidsStoryTitle">Escolha uma história</h3>
+  <p id="kidsStoryRef" class="muted-note"></p>
+  <div id="kidsStoryText"><p>Toque em uma história da biblioteca para começar.</p></div>
+  <div class="row kids-actions">
+    <button class="btn g" type="button" id="kidsStoryListen">🔊 Ouvir história</button>
+    <button class="btn g" type="button" id="kidsStoryPrev">Anterior</button>
+    <button class="btn g" type="button" id="kidsStoryNext">Próxima</button>
+  </div>
+  <div class="kids-question" id="kidsStoryQuestion" hidden>
+    <p id="kidsQuestionText"></p><div id="kidsQuestionChoices" class="kids-choices"></div><p id="kidsQuestionFeedback" role="status" aria-live="polite"></p>
+  </div>
+</div>
+<h3 id="pinturaKidsTitulo">🎨 Vamos colorir!</h3>
+<p>Escolha um desenho, uma cor e pinte com o dedo ou com o mouse. A atividade funciona neste aparelho e não envia seus desenhos para a internet.</p>
+<div class="kids-paint-controls">
+  <label for="kidsDrawingSelect">Desenho</label>
+  <select id="kidsDrawingSelect"><option value="sheep">Ovelinha</option><option value="boat">Barquinho de Jesus</option><option value="dove">Pombinha da paz</option></select>
+  <label for="kidsColor">Cor do pincel</label><input id="kidsColor" type="color" value="#7c4dba" aria-label="Escolher cor do pincel">
+  <label for="kidsBrush">Tamanho do pincel</label><input id="kidsBrush" type="range" min="3" max="28" value="10">
+  <div class="row kids-actions">
+    <button class="btn g" type="button" id="kidsEraser">Borracha</button>
+    <button class="btn g" type="button" id="kidsBrushMode">Pincel</button>
+    <button class="btn g" type="button" id="kidsClear">Limpar desenho</button>
+    <button class="btn" type="button" id="kidsSave">Salvar imagem</button>
+  </div>
+</div>
+<div class="kids-canvas-wrap"><canvas id="kidsCanvas" width="900" height="650" aria-label="Área de desenho para colorir"></canvas></div>
+<p id="kidsPaintStatus" role="status" aria-live="polite"></p>
+
 <h3>🎲 Quiz da Ovelinha</h3>
 <div class="card" id="quiz"></div>
 <h3>Desafio da semana</h3>
@@ -320,7 +354,7 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261017"></script>
-<script src="app.js?v=20261019-recup3"></script>
+<script src="app.js?v=20261019-audio1"></script>
 <script src="navegacao-inferior.js?v=20261019-recup3" defer></script>
 <script src="biblia.js?v=20261017"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
@@ -331,6 +365,7 @@
 <script src="licoes-001-010.js?v=20261019-estudos4"></script>
 <script src="interface.js?v=20261019-estudos4"></script>
 
-<script src="./ovelia-pwa.js?v=20261019-1"></script>
+<script src="./ovelia-kids.js?v=20261019-1"></script>
+<script src="./ovelia-pwa.js?v=20261019-2"></script>
 </body>
 </html>

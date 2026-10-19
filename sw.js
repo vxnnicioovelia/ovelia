@@ -1,17 +1,17 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v2-purple';
+var CACHE='ovelia-shell-v3-kids-audio';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261019-purple2','./biblia.css?v=20261017',
-  './calendario-liturgico.css?v=20261019-recup3','./navegacao-inferior.css?v=20261019-purple2',
+  './estilo.css?v=20261019-kidsaudio1','./biblia.css?v=20261017',
+  './calendario-liturgico.css?v=20261019-recup3','./navegacao-inferior.css?v=20261019-recup3',
   './inicio.css?v=20261018-inicio1','./estudos.css?v=20261019-estudos4','./ovelia-pwa.css?v=20261019-1',
-  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261017','./app.js?v=20261019-pwa1',
+  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261017','./app.js?v=20261019-audio1',
   './navegacao-inferior.js?v=20261019-recup3','./biblia.js?v=20261017',
   './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261018-inicio1',
   './regras.js?v=20261019-estudos4','./trilha.js?v=20261019-estudos4',
   './progresso.js?v=20261019-estudos4','./licoes-001-010.js?v=20261019-estudos4',
-  './interface.js?v=20261019-estudos4','./ovelia-pwa.js?v=20261019-1',
+  './interface.js?v=20261019-estudos4','./ovelia-pwa.js?v=20261019-2','./ovelia-kids.js?v=20261019-1',
   './icone-128.png','./favicon-64.png','./apple-touch-icon.png',
   './pwa-192.png','./pwa-512.png','./manifest.webmanifest?v=20261019-purple2'
 ]

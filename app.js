@@ -138,19 +138,37 @@ var Voz=(function(){
   if(!ok){document.body.classList.add('sem-voz');st.textContent='A leitura por voz não é compatível com este navegador. Atualize o Safari ou tente outro navegador.';return {falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
   function carregar(){
     try{voices=window.speechSynthesis.getVoices()||[]}catch(e){voices=[]}
-    var pt=voices.filter(function(v){return /^pt([_-]|$)/i.test(v.lang)});
-    var lista=pt.length?pt:voices;
-    function qualidade(v){var n=(v.name||'').toLowerCase(),s=0;if(/^pt[-_]br$/i.test(v.lang))s+=100;if(/natural|enhanced|premium|neural|luciana|fernanda|francisca|siri/i.test(n))s+=20;if(/compact|basic|default/i.test(n))s-=10;return s}
-    lista.sort(function(a,b){return qualidade(b)-qualidade(a)});
-    var old=sel.value;sel.innerHTML=lista.map(function(v,i){return '<option value="'+i+'">'+esc(v.name+' ('+v.lang+')')+'</option>'}).join('');
-    voices=lista;var chosen=-1;voices.forEach(function(v,i){if(prefV&&v.name===prefV)chosen=i});
-    if(chosen>=0)sel.value=String(chosen);else if(old&&+old<voices.length)sel.value=old;else if(voices.length)sel.value='0';
-    if(!voices.length)st.textContent='O Safari ainda não listou as vozes. Você pode tocar em “Testar voz” ou “Ouvir esta página”; tentaremos usar a voz padrão do aparelho.';
+    function rank(v){
+      var lang=(v.lang||'').replace('_','-').toLowerCase(),name=(v.name||'').toLowerCase(),score=0;
+      if(lang==='pt-br')score+=300;
+      else if(lang.indexOf('pt-')===0||lang==='pt')score+=200;
+      if(/natural|enhanced|premium|neural/i.test(name))score+=20;
+      if(/compact|basic/i.test(name))score-=10;
+      return score;
+    }
+    voices.sort(function(a,b){return rank(b)-rank(a)});
+    var old=sel.value,html='';
+    voices.forEach(function(v,i){html+='<option value="'+i+'">'+esc((v.name||'Voz')+' ('+(v.lang||'idioma não informado')+')')+'</option>'});
+    sel.innerHTML=html;
+    var chosen=-1;
+    voices.forEach(function(v,i){if(prefV&&(v.name+'|'+v.lang)===prefV)chosen=i});
+    if(chosen<0)voices.forEach(function(v,i){if(chosen<0&&prefV&&v.name===prefV)chosen=i});
+    if(chosen>=0)sel.value=String(chosen);
+    else if(voices.length){sel.value='0';try{prefV=voices[0].name+'|'+voices[0].lang}catch(e){}}
+    sel.disabled=!voices.length;
+    var hasPt=voices.some(function(v){return /^pt([_-]|$)/i.test(v.lang||'')});
+    if(!voices.length){
+      st.textContent='O navegador ainda não disponibilizou vozes. Aguarde um instante ou confira as vozes instaladas nas configurações do aparelho.';
+    } else if(!hasPt){
+      st.textContent='Não há voz em português disponível neste aparelho. Você pode escolher uma voz listada, mas a pronúncia em português pode não ser correta.';
+    } else {
+      st.textContent='Vozes disponíveis no aparelho. As vozes em português aparecem primeiro.';
+    }
   }
   carregar();
   if(window.speechSynthesis.addEventListener)window.speechSynthesis.addEventListener('voiceschanged',carregar);
   window.speechSynthesis.onvoiceschanged=carregar;
-  sel.addEventListener('change',function(){try{var v=voices[+sel.value];if(v){prefV=v.name;localStorage.setItem('ovelia-voz',v.name)}}catch(e){}});
+  sel.addEventListener('change',function(){try{var v=voices[+sel.value];if(v){prefV=v.name+'|'+v.lang;localStorage.setItem('ovelia-voz',prefV)}}catch(e){}});
   vel.addEventListener('input',function(){try{localStorage.setItem('ovelia-vel',vel.value)}catch(e){}});
   function parar(silent){var was=active||window.speechSynthesis.speaking||window.speechSynthesis.paused;runId++;queue=[];active=false;current=null;if(startTimer){clearTimeout(startTimer);startTimer=null}if(watchdog){clearTimeout(watchdog);watchdog=null}try{window.speechSynthesis.cancel()}catch(e){}pz.textContent='Pausar';if(!silent)st.textContent=was?'Leitura interrompida.':''}
   function next(id){
@@ -170,13 +188,13 @@ var Voz=(function(){
   function partir(t){var r=t.match(/[^.!?;:\n]+[.!?;:]?\s*/g)||[t],o=[],c='';r.forEach(function(x){if((c+x).length>160&&c){o.push(c);c=x}else c+=x});if(c)o.push(c);return o}
   function falar(txt,tit){
     txt=(txt||'').replace(/\s+/g,' ').trim();if(!txt){st.textContent='Não há texto para ler nesta seção.';return}
-    carregar();var precisaCancelar=active||window.speechSynthesis.speaking||window.speechSynthesis.pending||window.speechSynthesis.paused;runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Toque recebido. Preparando áudio: '+(tit||'texto')+'.';
+    carregar();if(!voices.length){st.textContent='Nenhuma voz foi disponibilizada pelo navegador. Abra as configurações de voz do aparelho ou tente novamente quando as vozes terminarem de carregar.';return}var precisaCancelar=active||window.speechSynthesis.speaking||window.speechSynthesis.pending||window.speechSynthesis.paused;runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Toque recebido. Preparando áudio: '+(tit||'texto')+'.';
     if(startTimer){clearTimeout(startTimer);startTimer=null}if(precisaCancelar){try{window.speechSynthesis.cancel()}catch(e){}}pz.textContent='Pausar';
     /* Inicia a primeira fala dentro do toque do usuário; no Safari móvel, adiar speak() pode bloquear o áudio. */
     try{next(id)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar a leitura neste aparelho: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
   $('#vozPag').addEventListener('click',function(){var s=$('section.pg.on');if(!s){st.textContent='Abra uma seção para ouvir o conteúdo.';return}var h=s.querySelector('h1,h2');falar(texto(s),h?h.textContent:'página')});
-  var vozToggle=$('#vozToggle'),vozControles=$('#vozControles');if(vozToggle&&vozControles){vozToggle.addEventListener('click',function(){var abrir=vozControles.hidden;vozControles.hidden=!abrir;vozToggle.setAttribute('aria-expanded',String(abrir));if(abrir)$('#vozPag').focus()})}
+  var vozToggle=$('#vozToggle'),vozControles=$('#vozControles');if(vozToggle&&vozControles){vozToggle.addEventListener('click',function(){var abrir=vozControles.hidden;vozControles.hidden=!abrir;vozToggle.setAttribute('aria-expanded',String(abrir));vozControles.classList.toggle('voz-aberto',abrir);if(abrir)$('#vozPag').focus()})}
   var testar=$('#vozTestar');if(testar)testar.addEventListener('click',function(){falar('Olá! Esta é a voz da Ovelia. Se você está ouvindo esta mensagem, a leitura por áudio está funcionando.','teste de áudio')});
   var diagnostico=$('#vozDiagnostico');if(diagnostico)diagnostico.addEventListener('click',function(){diagnosticar()});
   pz.addEventListener('click',function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}else if(window.speechSynthesis.speaking){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}});
@@ -201,7 +219,7 @@ var Voz=(function(){
       setTimeout(function(){if(id!==runId||started||ended)return;if(!window.speechSynthesis.speaking){st.textContent='O botão foi acionado, mas o Safari não iniciou a voz. Recarregue a página e teste novamente; se persistir, será preciso usar áudio pré-gravado em vez da voz do navegador.'}},3000);
     }catch(e){st.textContent='Falha ao iniciar o teste: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
-  return {falar:falar,parar:function(){parar(false)},texto:texto,diagnosticar:diagnosticar};
+  return {falar:falar,parar:function(){parar(false)},pausar:function(){if(window.speechSynthesis.speaking&&!window.speechSynthesis.paused){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}},continuar:function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}},texto:texto,diagnosticar:diagnosticar};
 })();
 
 /* ---------- Orações (textos tradicionais em uso no Brasil — ver LEIA-ME, pendência de revisão) ---------- */

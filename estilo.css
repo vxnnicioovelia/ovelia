@@ -284,3 +284,27 @@ body{accent-color:#7655A8}
 .btn.g:hover{border-color:var(--olive)}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--olive);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Ovelia Kids: biblioteca e pintura — identidade roxa, toque e foco acessível */
+.kids-library{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:12px 0 20px}
+.kids-story-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;text-align:left;padding:16px;border:2px solid #d8c8ee;border-radius:18px;background:#fff;color:#302342;font:inherit;cursor:pointer;min-height:110px}
+.kids-story-card:focus-visible,.kids-actions button:focus-visible,.kids-choices button:focus-visible{outline:3px solid #7c4dba;outline-offset:3px}
+.kids-story-card.selected{border-color:#7c4dba;background:#f3edfb;box-shadow:0 0 0 2px #7c4dba22}
+.kids-story-card strong{font-size:1.05em}.kids-story-card small,.kids-story-number{color:#59466f}.kids-story-number{font-size:.82em;font-weight:800}
+.kids-done{color:#3e2860;font-weight:800}.kids-story-reader{border-color:#d8c8ee}.kids-question{margin-top:18px;padding-top:14px;border-top:1px solid #d8c8ee}
+.kids-choices{display:grid;grid-template-columns:1fr;gap:8px}.kids-choices .btn{white-space:normal;text-align:left;min-height:46px}
+.kids-answer-correct{border:2px solid #4c2e78!important;background:#eee5fa!important;color:#2e1c43!important}
+.kids-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.kids-actions .btn{min-height:44px}
+.kids-paint-controls{display:grid;grid-template-columns:minmax(110px,auto) minmax(120px,1fr);gap:10px 14px;align-items:center;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.kids-paint-controls label{font-weight:800}.kids-paint-controls select,.kids-paint-controls input{max-width:100%;width:100%;min-height:42px}
+.kids-canvas-wrap{margin-top:12px;border:2px solid #d8c8ee;border-radius:18px;overflow:hidden;background:#fff;touch-action:none}
+#kidsCanvas{display:block;width:100%;height:auto;aspect-ratio:18/13;touch-action:none;cursor:crosshair;background:#fff}
+#kidsPaintStatus{min-height:1.5em;color:var(--mut)}
+body.perfil-senior .vozbar .row{display:flex;flex-wrap:wrap;gap:8px}
+body.perfil-senior .vozbar .row .btn{min-height:48px;white-space:normal}
+body.perfil-senior .vozbar select,body.perfil-senior .vozbar input[type=range]{min-height:48px}
+body.perfil-senior .vozbar label{margin-top:14px}
+body.perfil-kids .vozbar .row{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:480px){.kids-paint-controls{grid-template-columns:1fr;gap:8px}.kids-story-card{min-height:0}.kids-actions .btn{flex:1 1 42%}.kids-library{grid-template-columns:1fr}}
+
+body.perfil-senior #vozOpc{display:block!important}body.perfil-senior #vozCfg{display:none!important}
