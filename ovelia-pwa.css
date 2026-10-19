@@ -1,0 +1,7 @@
+/* Ovelia PWA — ajustes pequenos e responsivos, respeitando os componentes existentes. */
+.ovelia-install-card{margin:1.25rem 0;border:1px solid var(--line);background:var(--card);border-radius:1.25rem;padding:clamp(1rem,3vw,1.5rem)}
+#instalarOvelia .card{margin:1rem 0}
+#instalarOvelia ol{padding-left:1.5rem}
+#instalarOvelia li{padding:.2rem 0}
+#instalarOvelia .muted-note{color:var(--mut)}
+#pwaPromptBtn[hidden]{display:none}

@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ovelia — Bíblia, Liturgia Diária e orações católicas</title>
 <meta name="description" content="Ovelia: plataforma católica gratuita de fé e aprendizado, com orações, terço passo a passo, estudos bíblicos e uma área infantil. Sem cadastro.">
-<meta name="theme-color" content="#526B55">
+<meta name="theme-color" content="#6650A4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ovelia">
+<link rel="manifest" href="./manifest.webmanifest">
 <meta name="author" content="Vxnnicio">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -19,12 +23,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261018-recup2">
+<link rel="stylesheet" href="estilo.css?v=20261019-recup3">
 <link rel="stylesheet" href="biblia.css?v=20261017">
-<link rel="stylesheet" href="calendario-liturgico.css?v=20261018-recup2">
-<link rel="stylesheet" href="navegacao-inferior.css?v=20261018-recup1">
+<link rel="stylesheet" href="calendario-liturgico.css?v=20261019-recup3">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261019-recup3">
 <link rel="stylesheet" href="inicio.css?v=20261018-inicio1">
-<link rel="stylesheet" href="estudos.css?v=20261018-estudos3">
+<link rel="stylesheet" href="estudos.css?v=20261019-estudos4">
+<link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
@@ -97,6 +102,13 @@
     <div id="palavraDiaConteudo"><p class="pd-sub">Uma palavra de esperança para acompanhar seu dia</p></div>
   </section>
   <div class="home-lit"><span class="home-lit-rotulo">Liturgia de hoje</span><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a></div>
+</div>
+
+<div class="card ovelia-install-card">
+  <h2>Leve a Ovelia para a sua tela inicial</h2>
+  <p>Você pode adicionar a Ovelia ao celular ou computador como um aplicativo web, sem precisar baixar pela loja.</p>
+  <button class="btn g lg" id="instalarOveliaBtn" type="button">Instalar Ovelia</button>
+  <p id="instalarOveliaStatus" role="status" aria-live="polite"></p>
 </div>
 </section>
 
@@ -214,26 +226,7 @@
 <noscript><div class="aviso">A jornada de estudos precisa de JavaScript ativado.</div></noscript>
 <div id="jornada"><p class="jr-carregando">Preparando a sua jornada…</p></div>
 <div id="licaoAberta" hidden></div>
-<div class="jr-anteriores" id="estudosAnterioresBox">
-<button class="btn g" type="button" id="estudosAnterioresBtn" aria-expanded="false" aria-controls="estudosAnteriores">Estudos avulsos e materiais anteriores</button>
-<div id="estudosAnteriores" hidden>
-<div id="estudoLiturgia" class="card estudo-do-dia" aria-live="polite"><span class="tag">Estudo do dia</span><h3>Preparando o estudo a partir da liturgia…</h3><p>Vamos relacionar as leituras do dia com outras passagens da Bíblia.</p></div>
-<div class="card trilha-adulto"><h3>Minha trajetória de estudo</h3><p>Marque as etapas concluídas. O progresso fica salvo somente neste aparelho, sem cadastro.</p><div class="trilha-lista"><label><input type="checkbox" data-progress="adult-biblia"> Conhecer os 73 livros da Bíblia católica</label><label><input type="checkbox" data-progress="adult-salmo23"> Estudar o Salmo 23</label><label><input type="checkbox" data-progress="adult-bomsamaritano"> Estudar a parábola do Bom Samaritano</label><label><input type="checkbox" data-progress="adult-oracao"> Praticar a leitura orante</label></div></div>
-<div class="aviso"><b>Como ler estes estudos:</b> a <b>passagem</b> indicada é o texto bíblico, que você deve ler na sua Bíblia. A <b>explicação</b> e as <b>perguntas</b> são conteúdo editorial da Ovelia, para iniciantes, e não substituem a catequese nem o ensinamento da Igreja.</div>
-<details open><summary>1. O Senhor é meu pastor — Salmo 23</summary>
-<p><span class="tag pd">Passagem</span> Sl 23 (leia o salmo inteiro antes de continuar).</p>
-<h3>Contexto</h3><p>O Salmo 23 é um dos salmos mais conhecidos. Tradicionalmente é atribuído a Davi, que foi pastor de ovelhas antes de ser rei. O salmo usa a imagem do pastor que cuida do rebanho para falar da confiança em Deus.</p>
-<h3>Explicação <span class="tag pd">editorial</span></h3><p>O pastor conduz, protege e acompanha. A ovelha não precisa ter tudo sob controle: precisa ficar perto do pastor. O salmo não promete uma vida sem dificuldades, e fala até de caminhar por vales escuros, mas afirma que Deus está presente nesses momentos.</p>
-<h3>Perguntas para reflexão</h3><ol><li>Em que momento da minha vida senti que alguém cuidava de mim?</li><li>O que me impede de confiar mais em Deus?</li><li>Que “vale escuro” eu atravesso hoje e o que quero pedir nele?</li></ol>
-<h3>Aplicação prática</h3><p>Nesta semana, reze o salmo uma vez por dia, devagar. Escolha um versículo que mais falou ao seu coração e leve-o consigo durante o dia.</p></details>
-<details><summary>2. Quem é o meu próximo? — Lucas 10,25-37</summary>
-<p><span class="tag pd">Passagem</span> Lc 10,25-37 (a parábola do Bom Samaritano).</p>
-<h3>Contexto</h3><p>Um especialista na Lei pergunta a Jesus o que fazer para herdar a vida eterna e, depois, “quem é o meu próximo”. Jesus responde com uma parábola. Na época, muitos judeus tinham desconfiança dos samaritanos, e por isso a escolha do personagem é surpreendente.</p>
-<h3>Explicação <span class="tag pd">editorial</span></h3><p>Na parábola, duas pessoas passam por um homem ferido e seguem adiante; o texto não explica o motivo. Um samaritano para, cuida dele e paga pela sua recuperação. No final, Jesus muda a pergunta: em vez de “quem merece minha ajuda?”, ele pergunta de qual deles o ferido se tornou próximo, e conclui com um convite: “Vai e faze tu também”.</p>
-<h3>Perguntas para reflexão</h3><ol><li>Quem está “ferido na estrada” perto de mim?</li><li>Que desculpas costumo dar para não parar?</li><li>Que gesto concreto de cuidado posso ter esta semana?</li></ol>
-<h3>Aplicação prática</h3><p>Escolha uma pessoa que precise de atenção (um vizinho, um familiar, um colega) e faça por ela um gesto simples: uma visita, uma ligação, uma ajuda.</p></details>
-</div>
-</div>
+
 </section>
 
 <!-- INFANTIL -->
@@ -272,6 +265,43 @@
 </div>
 </section>
 
+
+<!-- INSTALAR OVELIA -->
+<section class="pg" id="instalarOvelia" aria-labelledby="instalarOveliaTitulo">
+  <h1 id="instalarOveliaTitulo">Instalar a Ovelia</h1>
+  <p>A Ovelia pode ser adicionada à tela inicial como um <strong>aplicativo web</strong>. Isso não a transforma em um aplicativo nativo de loja; a disponibilidade depende do navegador e do sistema.</p>
+  <div class="card">
+    <h2>iPhone e iPad</h2>
+    <ol>
+      <li>Abra esta página no Safari.</li>
+      <li>Toque em <strong>Compartilhar</strong> (o quadrado com a seta para cima).</li>
+      <li>Escolha <strong>Adicionar à Tela de Início</strong>. Se aparecer a opção de abrir como app web, habilite-a.</li>
+      <li>Toque em <strong>Adicionar</strong> e abra a Ovelia pelo novo ícone.</li>
+    </ol>
+    <p class="muted-note">Os nomes e a posição das opções podem variar conforme a versão do iOS/iPadOS. Se estiver usando outro navegador, talvez seja necessário abrir a página no Safari.</p>
+  </div>
+  <div class="card">
+    <h2>Android</h2>
+    <ol>
+      <li>Abra a Ovelia em um navegador compatível, como o Chrome.</li>
+      <li>Abra o menu do navegador.</li>
+      <li>Escolha <strong>Instalar aplicativo</strong> ou <strong>Adicionar à tela inicial</strong>, conforme a opção exibida.</li>
+      <li>Confirme e abra a Ovelia pelo ícone criado.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h2>Computador</h2>
+    <p>Em navegadores compatíveis, procure o ícone ou comando <strong>Instalar Ovelia</strong> na barra de endereço ou no menu do navegador. Se não houver essa opção, adicione a página aos favoritos ou crie um atalho pelo próprio navegador.</p>
+  </div>
+  <div class="card">
+    <h2>Instalação neste navegador</h2>
+    <p id="pwaInstrucaoStatus" role="status" aria-live="polite">Verificando se este navegador oferece instalação direta…</p>
+    <button class="btn g" id="pwaPromptBtn" type="button" hidden>Instalar agora</button>
+    <p class="muted-note">A instalação depende do navegador. O progresso e as preferências da Ovelia continuam guardados localmente neste aparelho e podem não ser sincronizados com outros dispositivos.</p>
+  </div>
+  <p><a class="btn g" href="#home">Voltar ao início</a></p>
+</section>
+
 <!-- SOBRE -->
 <section class="pg" id="sobre">
 <h2>Sobre o Ovelia</h2>
@@ -290,16 +320,17 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261017"></script>
-<script src="app.js?v=20261018-recup1"></script>
-<script src="navegacao-inferior.js?v=20261018-recup1" defer></script>
+<script src="app.js?v=20261019-recup3"></script>
+<script src="navegacao-inferior.js?v=20261019-recup3" defer></script>
 <script src="biblia.js?v=20261017"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261018-inicio1"></script>
-<script src="regras.js?v=20261018-estudos3"></script>
-<script src="trilha.js?v=20261018-estudos3"></script>
-<script src="progresso.js?v=20261018-estudos3"></script>
-<script src="licoes-001-010.js?v=20261018-estudos3"></script>
-<script src="interface.js?v=20261018-estudos3"></script>
-<script>(function(){var b=document.getElementById('estudosAnterioresBtn'),c=document.getElementById('estudosAnteriores');if(b&&c)b.addEventListener('click',function(){var o=c.hidden;c.hidden=!o;b.setAttribute('aria-expanded',String(o))})})();</script>
+<script src="regras.js?v=20261019-estudos4"></script>
+<script src="trilha.js?v=20261019-estudos4"></script>
+<script src="progresso.js?v=20261019-estudos4"></script>
+<script src="licoes-001-010.js?v=20261019-estudos4"></script>
+<script src="interface.js?v=20261019-estudos4"></script>
+
+<script src="./ovelia-pwa.js?v=20261019-1"></script>
 </body>
 </html>
