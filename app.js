@@ -162,7 +162,7 @@ var Voz=(function(){
     } else if(!hasPt){
       st.textContent='Não há voz em português disponível neste aparelho. Você pode escolher uma voz listada, mas a pronúncia em português pode não ser correta.';
     } else {
-      st.textContent='Vozes disponíveis no aparelho. As vozes em português aparecem primeiro.';
+      st.textContent='Vozes disponíveis no aparelho; português brasileiro aparece primeiro. A Ovelia só lista vozes reais fornecidas pelo dispositivo. Se a página estiver traduzida pelo navegador, escolha uma voz do idioma traduzido.';
     }
   }
   carregar();
@@ -175,7 +175,7 @@ var Voz=(function(){
     if(id!==runId)return;
     if(!queue.length){active=false;current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
     var part=queue.shift(),u=new SpeechSynthesisUtterance(part),v=voices[+sel.value];current=u;
-    u.lang=(v&&/^pt[-_]br$/i.test(v.lang)&&v.lang)||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||0.85;u.pitch=1;u.volume=1;
+    /* A língua da fala deve acompanhar a voz escolhida. Isso permite que vozes inglesas/espanholas leiam páginas traduzidas pelo navegador; para texto em português, prefira uma voz pt-BR. */u.lang=(v&&v.lang)||document.documentElement.lang||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||0.85;u.pitch=1;u.volume=1;
     u.onstart=function(){if(id!==runId)return;if(watchdog){clearTimeout(watchdog);watchdog=null}st.textContent='Reproduzindo áudio…';};
     u.onend=function(){if(id===runId){current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}var fim=(part.slice(-1)==='?'||part.slice(-1)==='!')?380:(part.slice(-1)==='.'?300:180);startTimer=setTimeout(function(){next(id)},fim)}};
     u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;if(watchdog){clearTimeout(watchdog);watchdog=null}active=false;current=null;st.textContent='O navegador informou que não conseguiu reproduzir a voz ('+(e.error||'erro')+'). Verifique o volume e as vozes do iPhone.'};

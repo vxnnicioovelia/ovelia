@@ -227,5 +227,25 @@
       if (findBook(li.textContent)) {li.tabIndex=0;li.setAttribute('role','button');li.classList.add('biblia-livro-clicavel');}
     });
   }
-  window.OVELIA_BIBLIA = { abrir: function(code, cap){ var b = books.filter(function(x){return x.code===code;})[0]; if (b) { selected = b; fillChapters(b); loadChapter(cap||1); } }, books: books.map(function(b){return {name:b.name,chapters:b.chapters,testament:b.testament};}) };
+  function textoReferencia(ref) {
+    var original=String(ref||'').trim(), raw=original.replace(/^Salmo\s+/i,'Salmos '), norm=normalize(raw), book=null, resto='';
+    var ordenados=books.slice().sort(function(a,b){return normalize(b.name).length-normalize(a.name).length;});
+    for(var i=0;i<ordenados.length;i++){
+      var nome=normalize(ordenados[i].name);
+      if(norm.indexOf(nome)===0 && (norm.length===nome.length || /\s/.test(norm.charAt(nome.length)))){
+        book=ordenados[i];resto=raw.slice(ordenados[i].name.length).trim();break;
+      }
+    }
+    if(!book) return Promise.reject(new Error('Livro não reconhecido na referência: '+raw));
+    var m=/^(\d+)\s*,\s*(\d+)(?:\s*[-–]\s*(\d+))?$/.exec(resto);
+    if(!m) return Promise.reject(new Error('Formato de referência não reconhecido: '+raw));
+    var capNum=+m[1], de=+m[2], ate=+(m[3]||m[2]);
+    return carregarLivro(book).then(function(data){
+      var cap=data.chapters[capNum-1]; if(!cap) throw new Error('Capítulo ausente');
+      var vs=cap.v.filter(function(v){var n=parseInt(v.n,10);return n>=de&&n<=ate;});
+      if(!vs.length) throw new Error('Versículos ausentes');
+      return {livro:book,capitulo:capNum,referencia:original,versiculos:vs.map(function(v){return {numero:v.n,texto:v.t};})};
+    });
+  }
+  window.OVELIA_BIBLIA = { abrir: function(code, cap){ var b = books.filter(function(x){return x.code===code;})[0]; if (b) { selected = b; fillChapters(b); loadChapter(cap||1); } }, textoReferencia:textoReferencia, books: books.map(function(b){return {name:b.name,code:b.code,chapters:b.chapters,testament:b.testament};}) };
 })();

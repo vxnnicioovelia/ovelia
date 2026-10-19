@@ -106,11 +106,11 @@
 
   /* ---------- Lição em passos ---------- */
   var carregando={};
-  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'estudos/dados/licoes-'+p(a)+'-'+p(z)+'.js'}
+  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'licoes-'+p(a)+'-'+p(z)+'.js'}
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
-    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261018-jornada1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
+    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261019-biblia1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
     carregando[src].then(function(){if(E.licoes[id])cb(E.licoes[id]);else erro()},erro);
   }
   var atual=null;
@@ -149,11 +149,19 @@
       add(corpo,h('h4',null,'Objetivo de aprendizagem'),h('p',null,l.objetivo));
       var m=h('p','jr-nota','Neste estudo: 3 passagens, uma atividade e um resumo.');corpo.appendChild(m);
     }else if(p===1){
-      corpo.appendChild(h('p','jr-nota','Leia cada passagem na sua Bíblia. As explicações abaixo são conteúdo original da Ovelia.'));
+      corpo.appendChild(h('p','jr-nota','Leia o trecho bíblico diretamente aqui. Os textos são carregados da Bíblia Portuguesa Mundial (BPM), tradução em revisão e em domínio público conforme informado pelo eBible.org.'));
       l.versiculos.forEach(function(vv,i){
         var d=h('section','jr-verso');d.appendChild(h('h4',null,(i+1)+'. '+vv.ref));
-        if(vv.texto&&vv.traducao&&vv.licenca&&vv.fonte){d.appendChild(h('blockquote','pd-texto',vv.texto));d.appendChild(h('p','pd-credito',vv.traducao+' · '+vv.licenca+' · Fonte: '+vv.fonte))}
-        else d.appendChild(h('p','jr-sem-texto','O texto bíblico completo ainda não está disponível aqui. Leia a passagem na sua Bíblia.'));
+        var leitura=h('div','jr-texto-biblico',null,{'aria-live':'polite'});
+        leitura.appendChild(h('p','jr-sem-texto','Buscando o trecho na Bíblia da Ovelia…'));
+        d.appendChild(leitura);
+        if(window.OVELIA_BIBLIA&&typeof window.OVELIA_BIBLIA.textoReferencia==='function'){
+          (function(ref,alvo){window.OVELIA_BIBLIA.textoReferencia(ref).then(function(resultado){
+            alvo.textContent='';
+            resultado.versiculos.forEach(function(v){var par=h('p','jr-versiculo-texto');par.appendChild(h('sup','jr-num-verso',String(v.numero)+' '));par.appendChild(document.createTextNode(v.texto));alvo.appendChild(par)});
+            alvo.appendChild(h('p','pd-credito','Bíblia Portuguesa Mundial (BPM) · domínio público informado pelo eBible.org · tradução em revisão.'));
+          }).catch(function(){alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Este trecho ainda não carregou. A Bíblia integrada depende da primeira sincronização dos arquivos bíblicos no repositório. Tente novamente quando a atualização terminar.'));var ir=btn('Abrir leitor da Bíblia','g',function(){location.hash='#biblia'});alvo.appendChild(ir)})})(vv.ref,leitura);
+        } else {leitura.textContent='O leitor bíblico ainda está inicializando. Recarregue a página e tente novamente.';}
         d.appendChild(h('p',null,vv.explicacao));corpo.appendChild(d);
       });
     }else if(p===2){

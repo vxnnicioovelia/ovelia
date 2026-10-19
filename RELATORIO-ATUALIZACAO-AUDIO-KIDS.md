@@ -1,33 +1,10 @@
-# Relatório técnico — Ovelia: áudio e Kids
 
-## Alterações
-- Corrigida a abertura do painel de áudio no perfil Adulto: o CSS ocultava os controles mesmo quando o atributo `hidden` era removido; agora a classe `voz-aberto` acompanha o estado do botão.
-- Lista de vozes construída a partir de `speechSynthesis.getVoices()`; prioriza `pt-BR`, depois outras vozes em português, sem criar opções fictícias.
-- Preferência de voz salva por nome e idioma; velocidade continua salva localmente.
-- Mensagens mais claras quando o navegador ainda não disponibilizou vozes ou não há voz em português.
-- Controles de voz mantidos expostos no perfil 60+, com seletor e velocidade visíveis e botões maiores.
-- Adicionado `ovelia-kids.js`: 12 histórias originais curtas, referências bíblicas, pergunta de compreensão por história, correção explicada e progresso local sem cadastro.
-- Adicionada pintura funcional com três desenhos vetoriais próprios (ovelha, barco e pomba), cor, tamanho do pincel, borracha, reinício, salvamento local e exportação PNG.
-- Cache PWA versionado para incluir o novo módulo Kids e os scripts atualizados.
-- Identidade roxa e navegação existentes preservadas.
 
-## Testes executados
-- Integridade do ZIP de entrada: aprovada.
-- `node --check` em 23 arquivos JavaScript: sem erros.
-- Referências locais `src`/`href` do HTML: nenhuma ausente.
-- IDs HTML duplicados: nenhum.
-- Manifesto PWA e ícones declarados: válidos/presentes.
-- Referências locais no shell do service worker: nenhuma ausente.
-- Estrutura do módulo Kids: 12 histórias verificadas por inspeção do código; canvas e controles presentes.
+## Atualização incremental seguinte — Bíblia integrada aos estudos e idioma do áudio (2026-10-19)
 
-## Testes pendentes / limitações
-- Não foi possível executar teste de navegador automatizado: Chromium headless falhou ao iniciar corretamente neste ambiente.
-- Vozes reais, pausa/retomada e pronúncia dependem das vozes fornecidas pelo dispositivo/navegador; não houve teste físico em iPhone, Android ou computador.
-- A renderização visual e interação tátil não foram validadas em aparelhos reais.
-- Os desenhos são traços vetoriais simples originais, não uma biblioteca de 100 desenhos.
-- A biblioteca inicial tem 12 histórias, não 365; nenhuma história vazia foi criada para completar a meta.
-- A pintura salva no armazenamento local do navegador quando possível; a exportação PNG depende das permissões do navegador.
-- Bíblia e Liturgia mantêm as dependências de dados já registradas em versões anteriores; esta atualização não acrescenta traduções bíblicas nem leituras litúrgicas protegidas.
-
-## Publicação
-Envie somente o conteúdo da pasta `ovelia/` para a raiz do repositório GitHub Pages. Não publique `_backup_original/`. Não houve publicação automática.
+- O leitor bíblico continua usando arquivos locais `dados/biblia/*.json`, mas o ZIP não continha esses dados. O workflow `Atualizar Bíblia` agora também dispara após mudanças de código na branch `main` ou `master` (exceto quando a mudança é apenas nos próprios dados gerados ou em documentação), além de permitir execução manual.
+- O passo de passagens dos estudos tenta resolver cada referência na Bíblia local e exibe os versículos diretamente no estudo. Quando os dados ainda não existem ou a geração falha, mostra uma mensagem explícita e um atalho para o leitor bíblico.
+- O idioma da fala agora acompanha o idioma real da voz selecionada, em vez de forçar sempre `pt-BR`. Isso permite testar uma voz inglesa se o navegador tiver traduzido o conteúdo para inglês.
+- Limitação: não é possível adicionar vozes de português brasileiro que o aparelho não disponibiliza apenas com JavaScript. Para garantir múltiplas vozes em todos os dispositivos, seria necessário um serviço TTS externo ou áudio gravado autorizado.
+- Fonte bíblica configurada: Bíblia Portuguesa Mundial (BPM), eBible.org, declarada como domínio público pela fonte, mas ainda em revisão. A interface não afirma aprovação oficial da Igreja Católica.
+- Validações locais: sintaxe JavaScript verificada; testes reais de reprodução, GitHub Actions e visualização em dispositivos ainda precisam ocorrer após publicação.
