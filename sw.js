@@ -1,6 +1,6 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v9-auditoria13';
+var CACHE='ovelia-shell-v10-limpeza-final1';
 var SHELL=[
   './','./index.html',
   './estilo.css?v=20261020-auditoria13','./biblia.css?v=20261017',
