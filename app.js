@@ -362,10 +362,13 @@ function renderEstudo(tema,leituras,origem){var refs=leituras.map(function(x){re
 }
 function textoHtml(t){return String(t||'').split(/\n+/).map(function(p){return p.trim()}).filter(Boolean).map(function(p){return '<p>'+esc(p)+'</p>'}).join('')}
 function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[],blocos='';
+ /* Texto integral só é renderizado se o próprio registro declarar autorização e identificar a licença. */
+ var textoIntegralLiberado=d.textoIntegralAutorizado===true&&typeof d.licencaTexto==='string'&&d.licencaTexto.trim().length>=8;
  defs.forEach(function(def){var arr=Array.isArray(def[1])?def[1]:(def[1]?[def[1]]:[]);if(!arr.length)return;var unique=[];
   arr.forEach(function(o){var r=refLeitura(o);if(r&&unique.indexOf(r)<0)unique.push(r);
-    /* A API pode devolver textos integrais; até haver autorização confirmada, ignoramos esses campos. */
-    blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+'</section>'});
+    var texto=textoIntegralLiberado&&o&&typeof o.texto==='string'?o.texto.trim():'';
+    var refrao=textoIntegralLiberado&&o&&typeof o.refrao==='string'?o.refrao.trim():'';
+    blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+(refrao?'<p class="lit-refrao"><strong>Refrão:</strong> '+esc(refrao)+'</p>':'')+(texto?'<div class="lit-texto">'+esc(texto).replace(/\\r?\\n/g,'<br>')+'</div>':'')+'</section>'});
   if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})});
  var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
  $('#litData').textContent=dataLonga(dt);
@@ -373,8 +376,9 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
  var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Liturgia do dia</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
  if(blocos)html+='<div class="liturgia-leituras">'+blocos+'</div>';
  else html+='<p>Não foi possível identificar as leituras desta data.</p>';
- if(blocos)html+='<p class="muted-note">Esta tela mostra as referências das leituras. Os textos integrais estão pendentes de autorização editorial e não são substituídos por outra tradução.</p>';
- html+='<p class="muted-note">Referências consultadas por serviço automático. A Ovelia não exibe aqui textos integrais sem autorização editorial confirmada. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
+ if(blocos&&!textoIntegralLiberado)html+='<p class="muted-note">O texto integral destas leituras ainda não está disponível nesta versão porque a autorização editorial para sua reprodução não foi confirmada. As referências são mantidas para consulta; a Ovelia não substitui a tradução pretendida por outra.</p>';
+ if(blocos&&textoIntegralLiberado)html+='<p class="muted-note">Texto exibido conforme a licença identificada: '+esc(d.licencaTexto)+'.</p>';
+ html+='<p class="muted-note">As referências vêm de um serviço automático. A permissão de acesso à API não comprova, por si só, permissão para redistribuir os textos das leituras. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
  if(isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para ler as leituras de hoje.';
  var tema=escolherTema(d);renderEstudo(tema,refs,origem==='arquivo'||origem==='api');

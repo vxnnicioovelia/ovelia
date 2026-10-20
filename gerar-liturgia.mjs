@@ -7,7 +7,9 @@
      LITURGIA_API            endereço da API (padrão: https://liturgia.up.railway.app/v2/)
      LITURGIA_DIAS_ADIANTE   quantos dias à frente buscar (padrão 7)
      LITURGIA_DIAS_ATRAS     quantos dias para trás buscar (padrão 2)
-     LITURGIA_INCLUIR_TEXTO  "sim" grava o texto das leituras somente se houver autorização; padrão "nao" grava só as referências
+     LITURGIA_INCLUIR_TEXTO  "sim" solicita incluir texto; padrão "nao"
+     LITURGIA_TEXTO_AUTORIZADO "sim" somente após licença escrita confirmada; padrão "nao"
+     LITURGIA_TEXTO_LICENCA   identificação/termos da licença documentada; obrigatória para incluir texto
      LITURGIA_GUARDAR_DIAS   por quantos dias manter arquivos antigos (padrão 90)
      SAIDA_LITURGIA          pasta de saída (padrão dados/liturgia) */
 import fs from 'node:fs';
@@ -16,7 +18,11 @@ import path from 'node:path';
 const API = process.env.LITURGIA_API || 'https://liturgia.up.railway.app/v2/';
 const ADIANTE = Number(process.env.LITURGIA_DIAS_ADIANTE ?? 7);
 const ATRAS = Number(process.env.LITURGIA_DIAS_ATRAS ?? 2);
-const INCLUIR_TEXTO = !/^(nao|não|false|0)$/i.test(process.env.LITURGIA_INCLUIR_TEXTO || 'nao');
+const SOLICITA_TEXTO = /^sim$/i.test(process.env.LITURGIA_INCLUIR_TEXTO || 'nao');
+const TEXTO_AUTORIZADO = /^sim$/i.test(process.env.LITURGIA_TEXTO_AUTORIZADO || 'nao');
+const TEXTO_LICENCA = String(process.env.LITURGIA_TEXTO_LICENCA || '').trim();
+// Dupla trava: um simples "sim" no parâmetro antigo nunca basta para publicar leituras integrais.
+const INCLUIR_TEXTO = SOLICITA_TEXTO && TEXTO_AUTORIZADO && TEXTO_LICENCA.length >= 8;
 const GUARDAR = Number(process.env.LITURGIA_GUARDAR_DIAS ?? 90);
 const SAIDA = process.env.SAIDA_LITURGIA || path.join('dados', 'liturgia');
 
@@ -87,7 +93,9 @@ function normaliza(d, dt) {
     liturgia: s(d.liturgia || d.celebracao),
     cor: s(d.cor || d.corLiturgica),
     leituras,
-    atualizadoEm: new Date().toISOString()
+    atualizadoEm: new Date().toISOString(),
+    textoIntegralAutorizado: INCLUIR_TEXTO,
+    ...(INCLUIR_TEXTO ? { licencaTexto: TEXTO_LICENCA } : {})
   };
 }
 const temLeituras = o => ['primeiraLeitura', 'salmo', 'evangelho'].some(k => o.leituras[k].length);

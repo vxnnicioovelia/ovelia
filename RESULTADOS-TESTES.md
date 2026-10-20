@@ -1,37 +1,13 @@
-# Testes automatizados
+# Resultados dos testes — Atualização 1.1
 
-Arquivos JS/MJS verificados: 25
-
-- APROVADO — `app.js`
-- APROVADO — `biblia.js`
-- APROVADO — `calendario-liturgico.js`
-- APROVADO — `estudos/dados/licoes-001-010.js`
-- APROVADO — `estudos/dados/trilha.js`
-- APROVADO — `estudos/interface.js`
-- APROVADO — `estudos/progresso.js`
-- APROVADO — `estudos/regras.js`
-- APROVADO — `inicio-dados.js`
-- APROVADO — `inicio.js`
-- APROVADO — `interface.js`
-- APROVADO — `licoes-001-010.js`
-- APROVADO — `liturgia.js`
-- APROVADO — `navegacao-inferior.js`
-- APROVADO — `nivel1.js`
-- APROVADO — `nivel2.js`
-- APROVADO — `nivel3.js`
-- APROVADO — `ovelia-kids.js`
-- APROVADO — `ovelia-pwa.js`
-- APROVADO — `progresso.js`
-- APROVADO — `regras.js`
-- APROVADO — `sw.js`
-- APROVADO — `tools/gerar-biblia.mjs`
-- APROVADO — `tools/gerar-liturgia.mjs`
-- APROVADO — `trilha.js`
-
-HTML refs: 32; ausentes: []
-IDs: 129; duplicados: []
-Service worker refs: 30; ausentes: []
-Manifesto válido; ícones: [('./pwa-192.png', True), ('./pwa-512.png', True)]
-Histórias: 12; IDs únicos=True; títulos únicos=True; referências únicas=True
-
-Não testados: reprodução de voz real em dispositivo físico, interação ponta a ponta visual dos três perfis e teste em produção.
+- **APROVADO:** `node --check` em 25 arquivos JS/MJS, sem erros.
+- **APROVADO:** 37 referências locais de HTML verificadas, sem destinos ausentes.
+- **APROVADO:** manifesto JSON válido e ícones 192/512 presentes.
+- **APROVADO:** 30 referências locais do service worker, sem arquivos ausentes.
+- **APROVADO:** gerador com API simulada para cinco datas distintas, com datas conferidas.
+- **APROVADO:** a trava dupla remove textos/refrões quando `LITURGIA_INCLUIR_TEXTO=sim` mas a autorização está `nao`.
+- **APROVADO:** código de renderização só exibe textos se houver `textoIntegralAutorizado: true` e identificação de licença.
+- **APROVADO:** integridade do ZIP final.
+- **NÃO TESTADO:** renderização visual completa, responsividade visual do site completo, navegação real de calendário em navegador e teste físico em iPhone/Android.
+- **NÃO TESTADO:** execução real do GitHub Actions e consulta de dados reais da API para três datas. Os testes de datas foram feitos com fixture local, não com conteúdo litúrgico real.
+- **DEPENDÊNCIA EXTERNA:** autorização escrita para redistribuição integral dos textos.

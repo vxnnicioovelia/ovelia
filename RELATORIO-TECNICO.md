@@ -1,46 +1,86 @@
-# Ovelia — Atualização 1: estabilidade e correções críticas
+# Ovelia — Atualização 1.1: recuperação segura da Liturgia
+**Data:** 20/10/2026  
+**ZIP-base efetivamente usado:** `ovelia-atualizacao1-estabilidade.zip` (é o pacote Atualização 1 disponível no ambiente; a cópia exata foi preservada em `BACKUP/`).  
+**Publicação no GitHub:** não realizada.
 
-**ZIP-base usado:** `ovelia-atualizacao-final-qualidade-verificada.zip` (pacote mais recente disponível antes desta atualização).  
-**Escopo:** correção pequena e incremental; sem redesenho, sem expansão de conteúdo e sem publicação automática.  
-**Pasta publicável:** `PUBLICAR/`.
+## Conclusão executiva
+A atualização identificou duas causas diretas para os textos não aparecerem: (1) o workflow define `LITURGIA_INCLUIR_TEXTO: "nao"` e o gerador remove `texto` e `refrao` dos dados; (2) a função `renderLiturgy()` da interface também descartava os campos de texto, mesmo que eles estivessem presentes no JSON. Portanto, mudar apenas a variável não seria suficiente.
 
-## Correção implementada
+A API configurada no projeto é `https://liturgia.up.railway.app/v2/`. A documentação pública do projeto comunitário descreve a API como fornecedora das orações e leituras da Missa, mas a inspeção da documentação não confirmou uma licença que autorize redistribuir os textos integrais em um site público: https://github.com/Dancrf/liturgia-diaria. O acesso técnico à API não comprova autorização de reprodução da tradução/conteúdo.
 
-- **Áudio de histórias no Kids:** o botão agora chama o mecanismo `Voz.falar()` mesmo quando a lista de vozes ainda não foi carregada. Antes, a verificação prévia `Voz.disponivel()` podia bloquear a tentativa inicial, justamente no momento em que o navegador ainda estava carregando as vozes. O mecanismo existente passa a tentar atualizar a lista e apresenta seu estado de indisponibilidade se nenhuma voz estiver disponível. Não foram adicionados serviços externos nem dependências.
+**Resultado editorial:** os textos integrais não foram restaurados nem importados. A autorização da Editora Ave-Maria continua pendente, e não foi encontrada licença documentada que autorize a reprodução integral da fonte atual. As referências, o calendário e a navegação permanecem. A interface continua informando a pendência sem substituir a tradução por outra.
 
-## Preservação
+## Alterações implementadas
 
-- Mantidos os 12 registros de histórias existentes, sem expansão de biblioteca.
-- Mantidos o leitor e a estrutura dos 73 livros; a importação automática bíblica permanece desativada enquanto a autorização editorial está pendente.
-- Mantidos os controles e a arquitetura da pintura em camadas, a navegação dos perfis e o service worker.
-- O ZIP-base está guardado em `BACKUP/`, fora da pasta publicável. Também são preservados os backups anteriores encontrados no pacote-base.
+1. `PUBLICAR/.github/workflows/liturgia-diaria.yml`
+   - Mantém `LITURGIA_INCLUIR_TEXTO: "nao"`.
+   - Acrescenta `LITURGIA_TEXTO_AUTORIZADO: "nao"` e campo de licença vazio.
+   - Atualiza os comentários para deixar explícito que não basta mudar a variável antiga.
+
+2. `PUBLICAR/tools/gerar-liturgia.mjs`
+   - Adiciona uma trava dupla: só permite texto integral quando a inclusão é solicitada, a autorização é explicitamente marcada e há identificação de licença preenchida.
+   - O JSON registra `textoIntegralAutorizado` e `licencaTexto` somente no modo explicitamente autorizado.
+   - Com as configurações atuais do workflow, o gerador grava apenas referências e metadados.
+
+3. `PUBLICAR/app.js`
+   - A interface só renderiza texto/refrão quando o próprio registro contém `textoIntegralAutorizado: true` e uma identificação de licença.
+   - Dados da API ao vivo, sem metadados de autorização, continuam mostrando referências e aviso editorial.
+   - Mensagem explica que acesso à API não prova direito de redistribuição.
+
+4. `PUBLICAR/estilo.css`
+   - Adiciona estilos responsivos e legíveis para parágrafos longos de leituras caso a integração autorizada seja ativada no futuro.
+
+5. `PUBLICAR/index.html` e `PUBLICAR/sw.js`
+   - Atualiza os parâmetros de cache dos arquivos alterados e a versão do cache para `ovelia-shell-v7-liturgia11`.
+
+## Arquivos alterados
+- `.github/workflows/liturgia-diaria.yml`
+- `tools/gerar-liturgia.mjs`
+- `app.js`
+- `estilo.css`
+- `index.html`
+- `sw.js`
+
+Não foram alterados áudio, Kids, pintura, Bíblia, Terço, Estudos, XP, progresso ou arquitetura. O backup original foi preservado fora de `PUBLICAR/`.
 
 ## Testes e resultados
 
-- **Aprovado:** `node --check` em 25 arquivos JavaScript/MJS; falhas: 0.
-- **Aprovado:** 32 referências locais `src`/`href` examinadas no HTML; destinos ausentes: 0.
-- **Aprovado:** 129 IDs no HTML; IDs duplicados: 0.
-- **Aprovado:** manifesto JSON válido; ícones declarados existem: True.
-- **Aprovado:** 30 caminhos locais identificados no shell do service worker; ausentes: 0.
-- **Aprovado:** workflow de importação bíblica existe somente como `.yml.disabled`; workflow executável `atualizar-biblia.yml` ausente.
-- **Aprovado:** não há diretório `dados/biblia/` com arquivos JSON integrais na pasta publicável.
-- **Aprovado:** 12 histórias encontradas; IDs, títulos e referências são únicos: True.
-- **Aprovado:** integridade do ZIP de saída conferida após empacotamento.
-- **Não testado:** síntese de voz real no Safari/iPhone ou Android. A validação automatizada de sintaxe não comprova reprodução sonora.
-- **Não testado:** interação ponta a ponta de todos os perfis em navegador visual. Esta atualização limitou-se à falha identificada no caminho do botão de áudio Kids e às verificações estáticas.
-- **Pendente externo:** autorização escrita da Editora Ave-Maria para publicação de texto bíblico integral.
+### APROVADO
+- Integridade do ZIP-base: verificada.
+- `node --check` nos 25 arquivos `.js`/`.mjs`: sem erros de sintaxe.
+- Caminhos locais do HTML: 37 referências verificadas, nenhum destino ausente.
+- Manifesto PWA: JSON válido; ícones 192×192 e 512×512 existem.
+- Service worker: 30 referências locais examinadas, nenhum arquivo ausente.
+- Gerador com servidor de teste local e dados sintéticos para cinco datas distintas: gravou as datas corretas e preservou referências.
+- Trava dupla: mesmo solicitando `LITURGIA_INCLUIR_TEXTO=sim`, sem autorização explícita o gerador descartou os textos e refrões fictícios.
+- Inspeção estática da interface: textos não são exibidos sem marcador de autorização e identificação de licença.
+- ZIP final: verificado com teste de integridade sem erros.
 
-## Teste manual recomendado no celular
+### NÃO TESTADO
+- Teste completo de interface no navegador com navegação de calendário e renderização visual da página inteira.
+- Responsividade visual da página completa em 320, 360, 390, 412 px e desktop.
+- Teste em iPhone/Android e instalação PWA real.
+- Execução real do workflow no GitHub Actions.
+- Dados reais da API para três datas: o gerador foi testado em ambiente controlado com fixtures; não se declara validação litúrgica dos conteúdos simulados.
 
-1. Publique manualmente os arquivos da pasta `PUBLICAR/` somente depois de revisar o diff.
-2. Abra a Ovelia no Safari atualizado (iPhone) ou Chrome (Android) e selecione o perfil Kids.
-3. Abra uma história e toque em **Ouvir história** imediatamente após abrir o site. Se as vozes ainda estiverem carregando, aguarde alguns segundos e tente novamente.
-4. Confirme que a leitura começa; toque em **Parar áudio** e confirme que a voz para.
-5. Abra o perfil Adulto, abra o painel **Ouvir**, feche e abra novamente, e teste iniciar/pausar/retomar/parar.
-6. Troque de perfil enquanto uma leitura estiver tocando e confirme que a leitura anterior não continua indevidamente.
-7. Confira o perfil 60+ e confirme que os controles permanecem grandes e visíveis.
-8. Se não houver voz pt-BR, confira as vozes instaladas no sistema. A Ovelia não pode fornecer uma voz que o dispositivo não disponibiliza.
+### DEPENDÊNCIA EXTERNA
+- Licença escrita para redistribuir os textos integrais da fonte/API ou autorização da Editora Ave-Maria.
+- Teste final no domínio publicado, após publicação manual.
 
-## Limitações
+## Instruções de validação manual no celular
+1. Publique manualmente apenas o conteúdo de `PUBLICAR/` na raiz do site.
+2. Abra a Ovelia no Safari/Chrome e entre em **Liturgia Diária**.
+3. Confira a data atual, os títulos e as referências.
+4. Escolha três datas diferentes (ontem, hoje e amanhã); confirme que a data exibida acompanha a seleção e que não há leitura de uma data aparecendo em outra.
+5. Sem dados disponíveis, confirme que aparece uma mensagem de indisponibilidade, não uma leitura inventada.
+6. Confirme que o aviso editorial informa a pendência do texto integral e que a leitura não troca silenciosamente de tradução.
+7. Aumente o tamanho da fonte e teste os temas claro/escuro, especialmente em um iPhone estreito.
+8. Após publicação, se aparecer uma versão antiga, feche a PWA e reabra o site para o service worker instalar o cache novo.
 
-Não foi executado teste em aparelho físico, nem teste sonoro real. Não se declara esta versão 100% validada em produção. Não houve publicação no GitHub.
+## Situação da licença e origem
+- Fonte configurada: `https://liturgia.up.railway.app/v2/`, API comunitária referenciada no README público do projeto Dancrf.
+- Conteúdo integral: a API pode fornecer campos de texto, mas a permissão de redistribuição desses textos não foi comprovada.
+- Editora Ave-Maria: autorização pendente.
+- Nenhum texto integral foi adicionado ao pacote publicável nesta atualização.
+
+**Estado:** correção segura concluída; a leitura integral não foi restaurada porque a licença não está confirmada. A integração futura está preparada para exigir metadados de autorização, sem ativar a publicação agora.

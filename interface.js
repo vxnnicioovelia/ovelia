@@ -106,11 +106,11 @@
 
   /* ---------- Lição em passos ---------- */
   var carregando={};
-  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'estudos/dados/licoes-'+p(a)+'-'+p(z)+'.js'}
+  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'licoes-'+p(a)+'-'+p(z)+'.js'}
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
-    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261018-jornada1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
+    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261019-biblia1';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
     carregando[src].then(function(){if(E.licoes[id])cb(E.licoes[id]);else erro()},erro);
   }
   var atual=null;
