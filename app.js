@@ -376,7 +376,7 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
  var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Liturgia do dia</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
  if(blocos)html+='<div class="liturgia-leituras">'+blocos+'</div>';
  else html+='<p>Não foi possível identificar as leituras desta data.</p>';
- if(blocos&&!textoIntegralLiberado)html+='<p class="muted-note">O texto integral destas leituras ainda não está disponível nesta versão porque a autorização editorial para sua reprodução não foi confirmada. As referências são mantidas para consulta; a Ovelia não substitui a tradução pretendida por outra.</p>';
+ if(blocos&&!textoIntegralLiberado)html+='<p class="muted-note">O texto integral destas leituras ainda não está disponível nesta versão porque a autorização editorial para sua reprodução não foi confirmada. As referências são mantidas para consulta; a Ovelia não substitui a tradução pretendida por outra.</p><p><a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></p>';
  if(blocos&&textoIntegralLiberado)html+='<p class="muted-note">Texto exibido conforme a licença identificada: '+esc(d.licencaTexto)+'.</p>';
  html+='<p class="muted-note">As referências vêm de um serviço automático. A permissão de acesso à API não comprova, por si só, permissão para redistribuir os textos das leituras. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
@@ -386,7 +386,7 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
 function fallbackLiturgy(dt){var dtIso=isoDe(dt),L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===dtIso})[0];
  if(manual){var conv=function(x){return x?[{referencia:x.ref||x.referencia||'',texto:x.texto||'',refrao:x.refrao||''}]:[]};renderLiturgy({data:dtIso,liturgia:manual.celebracao,leituras:{primeiraLeitura:conv(manual.primeiraLeitura),salmo:conv(manual.salmo),segundaLeitura:conv(manual.segundaLeitura),aclamacao:conv(manual.aclamacao),evangelho:conv(manual.evangelho)},cor:''},'manual',dt);return}
  litStatus.style.display='';litStatus.textContent='A liturgia desta data ainda não está disponível.';
-  litDia.innerHTML='<div class="card"><span class="tag">Sem dados</span><h3>Liturgia indisponível agora</h3><p>Não há dados confirmados para esta data. Não vamos inventar nem mostrar leituras de outro dia.</p><button class="btn g" type="button" id="litTentarNovamente">Tentar novamente</button></div>';
+  litDia.innerHTML='<div class="card"><span class="tag">Sem dados</span><h3>Liturgia indisponível agora</h3><p>Não há dados confirmados para esta data. Não vamos inventar nem mostrar leituras de outro dia.</p><button class="btn g" type="button" id="litTentarNovamente">Tentar novamente</button><p><a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></p></div>';
   var retry=$('#litTentarNovamente');if(retry)retry.addEventListener('click',function(){carregarLiturgia(dtIso)});
  var n=Math.floor((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())-new Date(dt.getFullYear(),0,0))/86400000);renderEstudo(temasEstudo[n%temasEstudo.length],[],false);
 }
