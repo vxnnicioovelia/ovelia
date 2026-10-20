@@ -1,11 +1,11 @@
 /* Ovelia — leitor bíblico integrado.
-   O texto fica DENTRO do site (pasta dados/biblia, gerada pelo workflow "Atualizar Bíblia").
-   Nenhum quadro externo e nenhum redirecionamento: o capítulo é lido e exibido na própria página.
-   A lista abaixo segue a ordem católica de 73 livros. Ester e Daniel usam páginas que incluem
-   as porções gregas, conforme descrito pela fonte. */
+   Mantém a navegação pelos 73 livros. Os textos integrais só podem ser publicados após
+   confirmação da autorização editorial e validação dos arquivos da tradução licenciada. */
 (function () {
   'use strict';
   var BASE = 'dados/biblia/';
+  /* Só alterar para true após autorização editorial documentada e validação da tradução. */
+  var LICENCA_TEXTO_CONFIRMADA = false;
   var books = [
     {name:'Gênesis',code:'GEN',chapters:50,testament:'Antigo Testamento'},
     {name:'Êxodo',code:'EXO',chapters:40,testament:'Antigo Testamento'},
@@ -103,6 +103,7 @@
     return String(s).replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
   }
   function carregarLivro(book) {
+    if (!LICENCA_TEXTO_CONFIRMADA) return Promise.reject(new Error('Autorização editorial pendente'));
     if (cache[book.code]) return Promise.resolve(cache[book.code]);
     return fetch(BASE + book.code + '.json').then(function(r){
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -163,7 +164,8 @@
     }).catch(function(){
       if (meu !== pedido) return;
       texto.innerHTML = '';
-      status.textContent = 'O texto deste livro ainda não está disponível neste site. Tente novamente mais tarde.';
+      status.innerHTML = 'Os textos integrais estão temporariamente indisponíveis enquanto aguardamos autorização editorial. A estrutura dos livros e a navegação continuam disponíveis; a Ovelia não substitui esta edição por outra tradução. <button type="button" class="btn g" id="bibliaTentarNovamente">Tentar novamente</button>';
+       var retry = $('bibliaTentarNovamente'); if (retry) retry.addEventListener('click', function(){ loadChapter(ch); });
       status.hidden = false;
     });
     var panel = $('bibliaLeitor');
@@ -247,5 +249,5 @@
       return {livro:book,capitulo:capNum,referencia:original,versiculos:vs.map(function(v){return {numero:v.n,texto:v.t};})};
     });
   }
-  window.OVELIA_BIBLIA = { abrir: function(code, cap){ var b = books.filter(function(x){return x.code===code;})[0]; if (b) { selected = b; fillChapters(b); loadChapter(cap||1); } }, textoReferencia:textoReferencia, books: books.map(function(b){return {name:b.name,code:b.code,chapters:b.chapters,testament:b.testament};}) };
+  window.OVELIA_BIBLIA = { licencaTextoConfirmada: LICENCA_TEXTO_CONFIRMADA, abrir: function(code, cap){ var b = books.filter(function(x){return x.code===code;})[0]; if (b) { selected = b; fillChapters(b); loadChapter(cap||1); } }, textoReferencia:textoReferencia, books: books.map(function(b){return {name:b.name,code:b.code,chapters:b.chapters,testament:b.testament};}) };
 })();

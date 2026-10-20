@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Ovelia">
-<link rel="manifest" href="./manifest.webmanifest?v=20261019-kidscreativity2">
+<link rel="manifest" href="./manifest.webmanifest?v=20261019-quality1">
 <meta name="author" content="Vxnnicio">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261019-kidscreativity1">
+<link rel="stylesheet" href="estilo.css?v=20261019-quality1">
 <link rel="stylesheet" href="biblia.css?v=20261017">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261019-recup3">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261019-apple1">
@@ -69,7 +69,7 @@
 
 <div class="vozbar" role="region" aria-label="Leitura em voz alta">
 <button class="btn g voz-toggle" id="vozToggle" type="button" aria-expanded="false" aria-controls="vozControles">🔊 Ouvir</button>
-<div id="vozControles" class="voz-controles">
+<div id="vozControles" class="voz-controles" hidden>
 <div class="row"><strong>🔊 Ouvir o site</strong>
 <button class="btn" id="vozPag" type="button">Ouvir esta página</button><button class="btn g" id="vozDiagnostico" type="button">Testar áudio</button>
 <button class="btn g" id="vozPausa" type="button">Pausar</button>
@@ -146,8 +146,8 @@
 <section class="pg" id="biblia">
 <h2>Bíblia</h2>
 <div class="biblia-aviso aviso">
-  <strong>Bíblia Portuguesa Mundial (BPM)</strong>
-  <p>Tradução em revisão, em domínio público. Não é apresentada como tradução oficialmente aprovada pela Igreja Católica. Os 73 livros ficam guardados dentro da própria Ovelia: você lê sem sair do site.</p>
+  <strong>Leitor bíblico · autorização editorial pendente</strong>
+  <p>A Ovelia mantém a navegação pelos 73 livros, capítulos e referências. A exibição dos textos integrais aguarda autorização editorial. Não usamos outra tradução para preencher a interface e não declaramos a Bíblia completa enquanto a edição licenciada não estiver disponível e validada.</p>
 </div>
 <div id="bibliaLeitor" class="biblia-leitor card" aria-live="polite">
   <div class="biblia-leitor-topo">
@@ -176,7 +176,7 @@
   <div class="row biblia-acoes">
     <button class="btn g" id="bibliaEscolherLivro" type="button">Voltar à lista de livros</button>
   </div>
-  <p class="biblia-creditos">Bíblia Portuguesa Mundial (BPM), domínio público, conforme informado pelo eBible.org. A tradução permanece em revisão e não é apresentada como tradução oficialmente aprovada pela Igreja Católica.</p>
+  <p class="biblia-creditos">A estrutura dos 73 livros está disponível para navegação. A exibição dos textos integrais está temporariamente pendente de autorização editorial. A Ovelia não substitui o texto por outra tradução nem apresenta referências como se fossem versículos completos.</p>
 </div>
 <div class="aviso"><span class="tag">Como usar</span><p>Escolha um livro na lista abaixo e toque nele para abrir a leitura. Use os botões Anterior e Próximo, ou escolha o capítulo na lista.</p></div>
 <div class="card"><h3>Como ler a Bíblia (para iniciantes)</h3>
@@ -238,7 +238,7 @@
 <section class="pg" id="infantil">
 <div class="kids">
 <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Vamos aprender brincando!</h2><p>Aqui tem histórias, orações e um quiz para você aprender sobre Deus. Você não precisa escrever seu nome nem fazer cadastro.</p></div></div>
-<h3 style="margin-top:14px">🌟 Meu desafio de hoje</h3>
+<h3 id="desafiosKidsTitulo" style="margin-top:14px">🌟 Desafios</h3><h4>Meu desafio de hoje</h4>
 <div class="kids-trilha">
 <label><input type="checkbox" data-progress="kids-historia"> Ler ou ouvir uma história bíblica</label>
 <label><input type="checkbox" data-progress="kids-oracao"> Fazer uma oração curta</label>
@@ -246,25 +246,7 @@
 </div>
 <h3 style="margin-top:14px">🙏 Vamos conversar com Deus</h3>
 <p>Você pode agradecer pelo dia, pedir ajuda ou rezar antes de dormir. <a class="btn lg" href="#oracoes">Ver orações infantis</a></p>
-<h3 style="margin-top:14px">Histórias</h3>
-<details><summary>Noé e a arca <small>(Gênesis 6 a 9)</small></summary>
-<p>Havia um homem chamado Noé, que amava a Deus e confiava nele. Deus pediu que ele construísse uma grande arca. Noé obedeceu, mesmo quando muita gente achava estranho. Quando a chuva veio, Noé, a família e os animais ficaram a salvo dentro da arca. Depois da chuva, Deus colocou o arco-íris no céu, como sinal de sua promessa.</p>
-<p><b>Pequena lição:</b> confiar em Deus ajuda a fazer o que é certo, mesmo quando é difícil.</p></details>
-<details><summary>Davi, o pastorzinho <small>(1 Samuel 16 e 17)</small></summary>
-<p>Davi era um jovem que cuidava das ovelhas do pai. Ele era corajoso e rezava muito. Um dia, um gigante chamado Golias assustava todo o povo. Davi não tinha armadura nem espada, mas confiava em Deus. Com uma funda e uma pedra, ele venceu o gigante.</p>
-<p><b>Pequena lição:</b> a coragem vem de confiar em Deus, e não de ser o maior ou o mais forte.</p></details>
-<details class="kids-story"><summary>O nascimento de Jesus <small>(Lucas 2,1-20)</small></summary>
-<p>Maria e José viajaram até Belém. Como não encontraram lugar na hospedaria, Jesus nasceu e foi colocado numa manjedoura. Anjos anunciaram a boa notícia a pastores, que foram visitar o menino e ficaram cheios de alegria.</p><p><b>Pequena lição:</b> Deus veio ao nosso encontro com humildade e amor. Podemos acolher Jesus com um coração simples.</p></details>
-<details class="kids-story"><summary>Jesus acalma a tempestade <small>(Marcos 4,35-41)</small></summary>
-<p>Jesus e seus discípulos estavam num barco quando uma tempestade começou. Os discípulos ficaram com medo, mas Jesus se levantou e mandou o vento e o mar ficarem quietos. Tudo se acalmou, e eles perceberam que podiam confiar nele.</p><p><b>Pequena lição:</b> quando sentimos medo, podemos rezar, pedir ajuda a um adulto de confiança e lembrar que não estamos sozinhos.</p></details>
-<details class="kids-story"><summary>O bom samaritano <small>(Lucas 10,25-37)</small></summary>
-<p>Um homem foi ferido no caminho. Algumas pessoas passaram sem ajudar, mas um samaritano parou, cuidou dele e procurou um lugar seguro para que se recuperasse. Jesus contou essa história para ensinar quem é o nosso próximo.</p><p><b>Pequena lição:</b> amar o próximo é perceber quem precisa de ajuda e fazer o bem com respeito e cuidado.</p></details>
-<details class="kids-story"><summary>A ovelha perdida <small>(Lucas 15,3-7)</small></summary>
-<p>Jesus contou sobre um pastor que tinha cem ovelhas. Quando uma se perdeu, ele foi procurá-la e ficou muito feliz quando a encontrou. Jesus usou essa história para mostrar como cada pessoa é preciosa para Deus.</p><p><b>Pequena lição:</b> cada pessoa tem valor, e podemos acolher com carinho quem está triste ou se sente sozinho.</p></details>
-<details class="kids-story"><summary>Jesus partilha o pão <small>(João 6,1-13)</small></summary>
-<p>Uma grande multidão foi ouvir Jesus. Havia pouca comida, mas um menino ofereceu cinco pães e dois peixes. Jesus agradeceu a Deus e repartiu o alimento, e todos comeram. Ainda sobraram cestos cheios.</p><p><b>Pequena lição:</b> quando partilhamos o que temos, mesmo que pareça pouco, podemos fazer diferença na vida de outras pessoas.</p></details>
-
-<h3 id="bibliotecaKidsTitulo">📚 Biblioteca de histórias</h3>
+<h3 id="bibliotecaKidsTitulo">📚 Histórias bíblicas</h3>
 <p>Escolha uma história para ler ou ouvir. Cada história tem uma pergunta para você pensar.</p>
 <div class="kids-library" id="kidsLibrary" aria-labelledby="bibliotecaKidsTitulo"></div>
 <div class="card kids-story-reader" id="kidsStoryReader" aria-live="polite">
@@ -273,9 +255,11 @@
   <div id="kidsStoryText"><p>Toque em uma história da biblioteca para começar.</p></div>
   <div class="row kids-actions">
     <button class="btn g" type="button" id="kidsStoryListen">🔊 Ouvir história</button>
+    <button class="btn g" type="button" id="kidsStoryStop">■ Parar áudio</button>
     <button class="btn g" type="button" id="kidsStoryPrev">Anterior</button>
     <button class="btn g" type="button" id="kidsStoryNext">Próxima</button>
   </div>
+  <p id="kidsStoryAudioStatus" role="status" aria-live="polite" class="muted-note"></p>
   <div class="kids-question" id="kidsStoryQuestion" hidden>
     <p id="kidsQuestionText"></p><div id="kidsQuestionChoices" class="kids-choices"></div><p id="kidsQuestionFeedback" role="status" aria-live="polite"></p>
   </div>
@@ -285,7 +269,7 @@
 <h3>🎲 Quiz da Ovelinha</h3>
 <div class="card" id="quiz"></div>
 <h3>Desafio da semana</h3>
-<div class="card"><p>Faça uma boa ação em casa sem ninguém pedir, como arrumar a cama ou ajudar a guardar os brinquedos. E, antes de dormir, reze com um adulto o <a href="#oracoes">Santo Anjo</a>.</p></div>
+<div class="card"><p>Faça uma boa ação em casa sem ninguém pedir, como arrumar a cama ou ajudar a guardar os brinquedos. E, antes de dormir, reze com um adulto o <a href="#oracoes">Santo Anjo</a>.</p><label><input type="checkbox" data-progress-week="kids-desafio-semana"> Concluí o desafio desta semana</label></div>
 </div>
 </section>
 
@@ -311,7 +295,10 @@
     <button class="btn" type="button" id="kidsSave">Salvar imagem</button>
   </div>
 </div>
-<div class="kids-canvas-wrap"><canvas id="kidsCanvas" width="900" height="650" aria-label="Área de desenho para colorir"></canvas></div>
+<div class="kids-canvas-wrap" aria-label="Desenho para colorir">
+   <canvas id="kidsCanvas" width="900" height="650" aria-label="Área de pintura. Use o dedo ou o mouse para colorir."></canvas>
+   <canvas id="kidsOutlineCanvas" width="900" height="650" aria-hidden="true"></canvas>
+ </div>
 <p id="kidsPaintStatus" role="status" aria-live="polite"></p>
   <p class="muted-note">Os desenhos e as pinturas ficam neste aparelho. Não são enviados para a internet.</p>
   <p><a class="btn g" href="#infantil">Voltar às histórias</a></p>
@@ -363,26 +350,26 @@
 <div class="card"><h3>Transparência sobre os conteúdos</h3>
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
-<p><b>Liturgia:</b> as leituras do dia (data, celebração, cor litúrgica e textos) são atualizadas automaticamente e exibidas aqui mesmo. <b>Bíblia:</b> usamos a Bíblia Portuguesa Mundial, em domínio público, guardada dentro do site.</p>
+<p><b>Liturgia:</b> quando os dados estão disponíveis, mostramos data, celebração, cor litúrgica e referências das leituras; a presença de referências não significa que o texto integral esteja disponível. <b>Bíblia:</b> o leitor mantém os 73 livros e a navegação, mas os textos integrais aguardam autorização editorial. Não declaramos uma edição completa antes da validação da licença e dos arquivos.</p>
 <p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho o perfil escolhido, as preferências de tamanho de letra, contraste, voz e velocidade, além das etapas de estudo marcadas como concluídas. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
-<p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. A liturgia é atualizada uma vez por dia no servidor do site; a Ovelia não envia notificações.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
+<p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. As referências litúrgicas dependem dos dados disponíveis no servidor; textos integrais só serão exibidos com autorização confirmada. A Ovelia não envia notificações.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261017"></script>
-<script src="app.js?v=20261019-audio2"></script>
-<script src="navegacao-inferior.js?v=20261019-apple1" defer></script>
-<script src="biblia.js?v=20261019-integrada1"></script>
+<script src="app.js?v=20261019-quality1"></script>
+<script src="navegacao-inferior.js?v=20261019-quality1" defer></script>
+<script src="biblia.js?v=20261019-quality1"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261018-inicio1"></script>
 <script src="regras.js?v=20261019-estudos4"></script>
 <script src="trilha.js?v=20261019-estudos4"></script>
 <script src="progresso.js?v=20261019-estudos4"></script>
 <script src="licoes-001-010.js?v=20261019-estudos4"></script>
-<script src="interface.js?v=20261019-biblia1"></script>
+<script src="interface.js?v=20261019-quality1"></script>
 
-<script src="./ovelia-kids.js?v=20261019-draw2"></script>
+<script src="./ovelia-kids.js?v=20261019-quality1"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>
 </body>
 </html>

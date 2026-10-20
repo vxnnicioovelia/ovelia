@@ -31,6 +31,8 @@ function setProfileControls(){
   $('#aMais').setAttribute('aria-label','Aumentar tamanho do texto');
   $('#aCont').setAttribute('aria-label','Ativar ou desativar alto contraste');
   var compact=profile==='adult';
+  var voicePanel=$('#vozControles'),voiceToggle=$('#vozToggle');
+  if(voicePanel&&voiceToggle){voicePanel.hidden=profile!=='senior';voicePanel.classList.remove('voz-aberto');voiceToggle.setAttribute('aria-expanded','false')}
   $('#textoBtn').hidden=!compact;$('#temaBtn').hidden=kids;
   $('#aMenos').hidden=kids||compact;$('#aMais').hidden=kids||compact;$('#aCont').hidden=kids||compact;
   $('#perfilBtn').hidden=false; /* Kids precisa sempre ter caminho de volta. */
@@ -135,7 +137,7 @@ applyPrefs();
 var Voz=(function(){
   var ok=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voices=[],sel=$('#vozSel'),vel=$('#vozVel'),st=$('#vozStatus'),pz=$('#vozPausa'),prefV=null,queue=[],active=false,runId=0,current=null,startTimer=null,watchdog=null;
   try{prefV=localStorage.getItem('ovelia-voz');vel.value=localStorage.getItem('ovelia-vel')||'0.85'}catch(e){}
-  if(!ok){document.body.classList.add('sem-voz');st.textContent='A leitura por voz não é compatível com este navegador. Atualize o Safari ou tente outro navegador.';return {falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
+  if(!ok){document.body.classList.add('sem-voz');st.textContent='A leitura por voz não é compatível com este navegador. Atualize o Safari ou tente outro navegador.';return {disponivel:function(){return false},falar:function(){st.textContent='A leitura por voz não está disponível neste navegador.'},parar:function(){},texto:function(){return ''}}}
   function carregar(){
     try{voices=window.speechSynthesis.getVoices()||[]}catch(e){voices=[]}
     function rank(v){
@@ -219,7 +221,7 @@ var Voz=(function(){
       setTimeout(function(){if(id!==runId||started||ended)return;if(!window.speechSynthesis.speaking){st.textContent='O botão foi acionado, mas o Safari não iniciou a voz. Recarregue a página e teste novamente; se persistir, será preciso usar áudio pré-gravado em vez da voz do navegador.'}},3000);
     }catch(e){st.textContent='Falha ao iniciar o teste: '+(e&&e.message?e.message:'erro do navegador')+'.'}
   }
-  return {falar:falar,parar:function(){parar(false)},pausar:function(){if(window.speechSynthesis.speaking&&!window.speechSynthesis.paused){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}},continuar:function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}},texto:texto,diagnosticar:diagnosticar};
+  return {disponivel:function(){return voices.length>0},falar:falar,parar:function(){parar(false)},pausar:function(){if(window.speechSynthesis.speaking&&!window.speechSynthesis.paused){window.speechSynthesis.pause();pz.textContent='Continuar';st.textContent='Leitura pausada.'}},continuar:function(){if(window.speechSynthesis.paused){window.speechSynthesis.resume();pz.textContent='Pausar';st.textContent='Leitura retomada.'}},texto:texto,diagnosticar:diagnosticar};
 })();
 
 /* ---------- Orações (textos tradicionais em uso no Brasil — ver LEIA-ME, pendência de revisão) ---------- */
@@ -240,7 +242,11 @@ var CATS=[
  {t:'Orações básicas',o:'tradicional',ids:['sinal','sinalLongo','pai','ave','gloria','credo']},
  {t:'Orações a Maria, ao Anjo e ao Espírito Santo',o:'tradicional',ids:['salve','anjo','espirito','miguel']},
  {t:'Orações da Ovelia para o dia a dia',o:'original',ids:['manha','noite','agradecimento','familias','dificeis']},
- {t:'Orações para crianças',o:'kids',ids:['criancaManha','criancaRefeicao','criancaNoite']}
+ {t:'Ao acordar',o:'kids',ids:['criancaManha']},
+ {t:'Antes das refeições',o:'kids',ids:['criancaRefeicao']},
+ {t:'Antes de estudar',o:'kids',ids:['criancaEstudo']},
+ {t:'Quando sentir medo ou tristeza',o:'kids',ids:['criancaMedo']},
+ {t:'Antes de dormir',o:'kids',ids:['criancaNoite']}
 ];
 var ORIG={
  manha:{n:'Para a manhã',t:'Senhor, obrigado por este novo dia.\nGuia os meus passos, os meus pensamentos e as minhas palavras.\nQue eu viva hoje com amor e com coragem. Amém.'},
@@ -250,7 +256,9 @@ var ORIG={
  dificeis:{n:'Para momentos difíceis',t:'Senhor, estou cansado e preciso da tua ajuda.\nSegura-me quando eu não tiver forças\ne coloca no meu caminho pessoas que me apoiem.\nEu confio em ti. Amém.'},
  criancaManha:{n:'Oração da criança pela manhã',t:'Bom dia, meu Deus!\nObrigado por este novo dia.\nAjuda-me a aprender, brincar e tratar todos com carinho.\nAbençoa minha família e meus amigos. Amém.'},
  criancaNoite:{n:'Oração da criança antes de dormir',t:'Meu Deus, obrigado por este dia.\nCuida da minha família e de todas as crianças.\nPerdoa quando eu erro e ajuda-me a fazer o bem amanhã.\nSanto Anjo, fica comigo. Amém.'},
- criancaRefeicao:{n:'Oração da criança antes do almoço',t:'Papai do Céu, obrigado por este alimento,\npelas pessoas que o prepararam\ne por todos que vão partilhar esta refeição.\nAbençoa quem tem fome e ensina-nos a repartir.\nAmém.'}
+ criancaRefeicao:{n:'Oração da criança antes do almoço',t:'Papai do Céu, obrigado por este alimento,\npelas pessoas que o prepararam\ne por todos que vão partilhar esta refeição.\nAbençoa quem tem fome e ensina-nos a repartir.\nAmém.'},
+  criancaEstudo:{n:'Oração da criança antes de estudar',t:'Jesus, ajuda-me a prestar atenção, ter paciência e aprender com alegria.\nAbençoa meus professores e colegas.\nAjuda-me a usar o que aprendo para fazer o bem. Amém.'},
+  criancaMedo:{n:'Oração da criança quando sentir medo ou tristeza',t:'Jesus, estou com medo ou com o coração triste.\nFica perto de mim e ajuda-me a conversar com um adulto em quem confio.\nDá-me coragem, consolo e esperança. Amém.'}
 };
 for(var k in ORIG)P[k]=ORIG[k];
 var lo=$('#listaOracoes');
@@ -353,11 +361,11 @@ function renderEstudo(tema,leituras,origem){var refs=leituras.map(function(x){re
  litReflexao.innerHTML='<span class="tag pd">Reflexão da Ovelia · conteúdo original</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p><p><b>Para refletir:</b> '+esc(tema.pergunta)+'</p><p><b>Para colocar em prática:</b> '+esc(tema.acao)+'</p>';
 }
 function textoHtml(t){return String(t||'').split(/\n+/).map(function(p){return p.trim()}).filter(Boolean).map(function(p){return '<p>'+esc(p)+'</p>'}).join('')}
-function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[],blocos='',temTexto=false;
+function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[],blocos='';
  defs.forEach(function(def){var arr=Array.isArray(def[1])?def[1]:(def[1]?[def[1]]:[]);if(!arr.length)return;var unique=[];
   arr.forEach(function(o){var r=refLeitura(o);if(r&&unique.indexOf(r)<0)unique.push(r);
-   var tx=o&&o.texto?textoHtml(o.texto):'';if(tx)temTexto=true;
-   blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+(o&&o.refrao?'<p class="lit-refrao"><b>Refrão:</b> '+esc(o.refrao)+'</p>':'')+(tx?'<div class="lit-texto">'+tx+'</div>':'')+'</section>'});
+    /* A API pode devolver textos integrais; até haver autorização confirmada, ignoramos esses campos. */
+    blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+'</section>'});
   if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})});
  var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
  $('#litData').textContent=dataLonga(dt);
@@ -365,8 +373,8 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
  var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Liturgia do dia</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
  if(blocos)html+='<div class="liturgia-leituras">'+blocos+'</div>';
  else html+='<p>Não foi possível identificar as leituras desta data.</p>';
- if(blocos&&!temTexto)html+='<p class="muted-note">Para esta data estão disponíveis apenas as referências das leituras. Abra a Bíblia da Ovelia para ler cada passagem.</p>';
- html+='<p class="muted-note">Textos do lecionário usado no Brasil, obtidos por serviço automático. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
+ if(blocos)html+='<p class="muted-note">Esta tela mostra as referências das leituras. Os textos integrais estão pendentes de autorização editorial e não são substituídos por outra tradução.</p>';
+ html+='<p class="muted-note">Referências consultadas por serviço automático. A Ovelia não exibe aqui textos integrais sem autorização editorial confirmada. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
  if(isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para ler as leituras de hoje.';
  var tema=escolherTema(d);renderEstudo(tema,refs,origem==='arquivo'||origem==='api');
@@ -374,7 +382,8 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
 function fallbackLiturgy(dt){var dtIso=isoDe(dt),L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===dtIso})[0];
  if(manual){var conv=function(x){return x?[{referencia:x.ref||x.referencia||'',texto:x.texto||'',refrao:x.refrao||''}]:[]};renderLiturgy({data:dtIso,liturgia:manual.celebracao,leituras:{primeiraLeitura:conv(manual.primeiraLeitura),salmo:conv(manual.salmo),segundaLeitura:conv(manual.segundaLeitura),aclamacao:conv(manual.aclamacao),evangelho:conv(manual.evangelho)},cor:''},'manual',dt);return}
  litStatus.style.display='';litStatus.textContent='A liturgia desta data ainda não está disponível.';
- litDia.innerHTML='<div class="card"><span class="tag">Sem dados</span><h3>Liturgia indisponível agora</h3><p>Não vamos inventar nem mostrar leituras de outro dia. A liturgia é atualizada automaticamente todos os dias; tente novamente mais tarde ou escolha outra data.</p></div>';
+  litDia.innerHTML='<div class="card"><span class="tag">Sem dados</span><h3>Liturgia indisponível agora</h3><p>Não há dados confirmados para esta data. Não vamos inventar nem mostrar leituras de outro dia.</p><button class="btn g" type="button" id="litTentarNovamente">Tentar novamente</button></div>';
+  var retry=$('#litTentarNovamente');if(retry)retry.addEventListener('click',function(){carregarLiturgia(dtIso)});
  var n=Math.floor((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())-new Date(dt.getFullYear(),0,0))/86400000);renderEstudo(temasEstudo[n%temasEstudo.length],[],false);
 }
 function comTimeout(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(new Error('tempo esgotado'))},ms)})])}
@@ -431,7 +440,7 @@ if(seniorVoiceHelp)seniorVoiceHelp.addEventListener('click',function(){Voz.falar
 
 $$('details').forEach(function(d){var s=d.querySelector('summary'),b=document.createElement('button');b.type='button';b.className='btn g voz-btn';b.textContent='🔊 Ouvir';b.setAttribute('aria-label','Ouvir: '+s.textContent.trim());b.addEventListener('click',function(){Voz.falar(Voz.texto(d,true),s.textContent.trim())});s.insertAdjacentElement('afterend',b)});
 /* ---------- Progresso local das trilhas (somente neste aparelho) ---------- */
-$$('[data-progress]').forEach(function(c){var key='ovelia-progresso-'+c.getAttribute('data-progress');try{c.checked=localStorage.getItem(key)==='1'}catch(e){}c.addEventListener('change',function(){try{localStorage.setItem(key,c.checked?'1':'0')}catch(e){}})});
+$$('[data-progress]:not([data-progress^="kids-"])').forEach(function(c){var key='ovelia-progresso-'+c.getAttribute('data-progress');try{c.checked=localStorage.getItem(key)==='1'}catch(e){}c.addEventListener('change',function(){try{localStorage.setItem(key,c.checked?'1':'0')}catch(e){}})});
 /* Ajustes finais de cada perfil: telas, navegação e acessibilidade próprias. */
 applyProfile();
 $('#ano').textContent=new Date().getFullYear();

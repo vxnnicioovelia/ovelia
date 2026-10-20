@@ -1,15 +1,20 @@
 #!/usr/bin/env node
 /* Ovelia — gera os arquivos da Bíblia (dados/biblia/*.json) a partir dos arquivos USFM
-   da Bíblia Portuguesa Mundial (eBible.org, porbrbsl).
+   de uma edição fornecida manualmente, com autorização editorial confirmada.
 
    Uso:  node tools/gerar-biblia.mjs <pasta-com-os-arquivos-usfm> [--parcial]
 
-   Sem --parcial, o script SÓ grava os dados se os 73 livros e os 1.334 capítulos
+   Sem --parcial, o script só grava os dados se os 73 livros e todos os capítulos esperados
    estiverem presentes e com versículos. Se algo faltar, ele termina com erro e
    não altera nada no site (assim nunca publicamos uma Bíblia incompleta sem aviso).
-   Roda no GitHub Actions (workflow "Atualizar Bíblia"), sem precisar de computador. */
+   O workflow automático está desativado; este gerador exige confirmação explícita de autorização editorial. */
 import fs from 'node:fs';
 import path from 'node:path';
+
+const AUTORIZADO = process.env.OVELIA_TEXTO_AUTORIZADO === 'sim';
+const TRADUCAO = (process.env.BIBLIA_TRADUCAO || '').trim();
+const FONTE = (process.env.BIBLIA_FONTE || '').trim();
+const LICENCA = (process.env.BIBLIA_LICENCA || '').trim();
 
 const LIVROS = [
   ['GEN','Gênesis',50],['EXO','Êxodo',40],['LEV','Levítico',27],['NUM','Números',36],['DEU','Deuteronômio',34],
@@ -131,6 +136,14 @@ function main() {
   const entrada = args.find(a => !a.startsWith('--'));
   const saida = process.env.SAIDA_BIBLIA || path.join('dados', 'biblia');
   if (!entrada || !fs.existsSync(entrada)) { console.error('Informe a pasta com os arquivos USFM.'); process.exit(2); }
+  if (!AUTORIZADO || !TRADUCAO || !FONTE || !LICENCA) {
+    console.error('Geração bloqueada por segurança editorial. Só prossiga com autorização documentada e informe OVELIA_TEXTO_AUTORIZADO=sim, BIBLIA_TRADUCAO, BIBLIA_FONTE e BIBLIA_LICENCA.');
+    process.exit(2);
+  }
+  if (parcial) {
+    console.error('O modo parcial está desativado para evitar a publicação acidental de uma Bíblia incompleta.');
+    process.exit(2);
+  }
 
   const arquivos = listarUsfm(entrada);
   console.log('Arquivos USFM encontrados:', arquivos.length);
@@ -144,10 +157,6 @@ function main() {
     livros.set(r.codigo, r);
   }
 
-  // Se a tradução usar o código comum no lugar do código com porções gregas, aceita como substituto.
-  for (const [de, para] of [['DAN', 'DAG'], ['EST', 'ESG']]) {
-    if (!livros.has(para)) { const r = lerUsfmCache.get(de); if (r) livros.set(para, { ...r, codigo: para }); }
-  }
   const problemas = [];
   for (const [cod, nome, esperado] of LIVROS) {
     const l = livros.get(cod);
@@ -192,9 +201,9 @@ function main() {
     indice.push({ code: cod, name: nome, chapters: esperado });
   }
   fs.writeFileSync(path.join(saida, 'index.json'), JSON.stringify({
-    traducao: 'Bíblia Portuguesa Mundial (BPM)',
-    fonte: 'https://ebible.org/porbrbsl/',
-    licenca: 'Domínio público, conforme informado pelo eBible.org; tradução em revisão.',
+    traducao: TRADUCAO,
+    fonte: FONTE,
+    licenca: LICENCA,
     geradoEm: new Date().toISOString(),
     livros: indice
   }));

@@ -16,7 +16,7 @@ var stories=[
 {id:'zacheu',title:'Zaqueu encontra Jesus',ref:'Lucas 19,1–10',text:'Zaqueu queria ver Jesus e subiu em uma árvore porque era baixinho e havia muita gente. Jesus o viu e quis ficar em sua casa. Zaqueu decidiu corrigir seus erros e repartir seus bens. O encontro com Jesus pode nos inspirar a mudar e reparar o mal que fizemos.',q:'O que Zaqueu decidiu fazer?',choices:['Corrigir seus erros e repartir','Continuar enganando as pessoas','Nunca mais falar com ninguém'],correct:0,why:'Muito bem! Zaqueu decidiu mudar suas atitudes e reparar seus erros.'},
 {id:'pentecostes',title:'O Espírito Santo vem',ref:'Atos dos Apóstolos 2,1–11',text:'Os discípulos estavam reunidos quando o Espírito Santo veio sobre eles. Eles ganharam coragem para anunciar a mensagem de Jesus a pessoas de muitos lugares. A festa de Pentecostes recorda a presença do Espírito Santo e o nascimento missionário da Igreja.',q:'O que os discípulos receberam?',choices:['Coragem para anunciar Jesus','Uma ordem para nunca sair de casa','Um mapa do Egito'],correct:0,why:'Isso! O Espírito Santo fortaleceu os discípulos para anunciar Jesus.'}
 ];
-var list=$('#kidsLibrary'),title=$('#kidsStoryTitle'),ref=$('#kidsStoryRef'),text=$('#kidsStoryText'),qbox=$('#kidsStoryQuestion'),qt=$('#kidsQuestionText'),choices=$('#kidsQuestionChoices'),feedback=$('#kidsQuestionFeedback');
+var list=$('#kidsLibrary'),title=$('#kidsStoryTitle'),ref=$('#kidsStoryRef'),text=$('#kidsStoryText'),qbox=$('#kidsStoryQuestion'),qt=$('#kidsQuestionText'),choices=$('#kidsQuestionChoices'),feedback=$('#kidsQuestionFeedback'),audioStatus=$('#kidsStoryAudioStatus');
 var current=0, answered={};
 try{answered=JSON.parse(localStorage.getItem('ovelia-kids-quiz-v1')||'{}')||{}}catch(e){answered={}}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -30,30 +30,40 @@ function renderStory(i){
  if(text)text.innerHTML='<p>'+esc(st.text)+'</p><p><strong>Para guardar no coração:</strong> '+esc(st.why)+'</p>';
  if(qt)qt.textContent=st.q;if(choices){choices.innerHTML=st.choices.map(function(c,j){return '<button class="btn g" type="button" data-choice="'+j+'">'+esc(c)+'</button>'}).join('')}
  if(qbox)qbox.hidden=false;
- if(feedback){var old=answered[st.id];feedback.textContent=old?(old.correct?'Você já respondeu corretamente. Muito bem!':'Você já respondeu esta pergunta. Leia a explicação e tente a próxima história.'):'Escolha uma resposta.'}
+ if(feedback){var old=answered[st.id];feedback.textContent=old&&old.correct?'Você já acertou esta pergunta. '+st.why:'Escolha uma resposta para esta história.'}
+ if(choices){Array.prototype.forEach.call(choices.querySelectorAll('button'),function(btn,j){btn.disabled=!!(answered[st.id]&&answered[st.id].correct);if(answered[st.id]&&answered[st.id].correct&&j===st.correct)btn.classList.add('kids-answer-correct')})}
  renderList();
 }
 if(list){renderList();list.addEventListener('click',function(e){var b=e.target.closest('[data-story]');if(b)renderStory(+b.getAttribute('data-story'))})}
 if(choices)choices.addEventListener('click',function(e){
  var b=e.target.closest('[data-choice]');if(!b)return;var st=stories[current],n=+b.getAttribute('data-choice'),correct=n===st.correct;
- if(answered[st.id]){feedback.textContent='Esta pergunta já foi respondida. '+st.why;return}
- answered[st.id]={correct:correct,at:new Date().toISOString()};
- try{localStorage.setItem('ovelia-kids-quiz-v1',JSON.stringify(answered))}catch(e){}
- Array.prototype.forEach.call(choices.querySelectorAll('button'),function(btn,i){btn.disabled=true;if(i===st.correct)btn.classList.add('kids-answer-correct')});
- feedback.textContent=(correct?'🎉 Muito bem! ':'Quase! A resposta certa é: '+st.choices[st.correct]+'. ')+st.why;
- renderList();
+ if(answered[st.id]&&answered[st.id].correct){feedback.textContent='Você já acertou esta pergunta. '+st.why;return}
+ if(correct){
+  answered[st.id]={correct:true,at:new Date().toISOString()};
+  try{localStorage.setItem('ovelia-kids-quiz-v1',JSON.stringify(answered))}catch(e){}
+  Array.prototype.forEach.call(choices.querySelectorAll('button'),function(btn,i){btn.disabled=true;if(i===st.correct)btn.classList.add('kids-answer-correct')});
+  feedback.textContent='🎉 Muito bem! '+st.why;
+  renderList();
+ }else{
+  feedback.textContent='Quase! A resposta certa é: '+st.choices[st.correct]+'. '+st.why+' Você pode tentar outra vez.';
+ }
 });
 $('#kidsStoryPrev')?.addEventListener('click',function(){renderStory(current-1)});
 $('#kidsStoryNext')?.addEventListener('click',function(){renderStory(current+1)});
-$('#kidsStoryListen')?.addEventListener('click',function(){var st=stories[current];if(window.Voz&&Voz.falar)Voz.falar(st.title+'. Referência bíblica: '+st.ref+'. '+st.text+' Para guardar no coração: '+st.why,st.title);else if($('#kidsPaintStatus'))$('#kidsPaintStatus').textContent='A leitura em voz alta não está disponível neste navegador.'});
+$('#kidsStoryListen')?.addEventListener('click',function(){var st=stories[current];if(window.Voz&&typeof Voz.falar==='function'){if(audioStatus)audioStatus.textContent='Solicitando a leitura em voz alta…';/* Deixe Voz.falar tentar atualizar a lista: no Safari, as vozes podem chegar depois do primeiro carregamento. */Voz.falar(st.title+'. Referência bíblica: '+st.ref+'. '+st.text+' Ensinamento: '+st.why,st.title)}else if(audioStatus)audioStatus.textContent='A leitura por voz não está disponível neste navegador. Tente atualizar o navegador ou confira as vozes instaladas no aparelho.'});
+ $('#kidsStoryStop')?.addEventListener('click',function(){if(window.Voz&&Voz.parar){Voz.parar();if(audioStatus)audioStatus.textContent='Leitura interrompida.'}else if(audioStatus)audioStatus.textContent='O controle de áudio não está disponível neste navegador.'});
 /* Pintura em canvas: desenhos vetoriais próprios desenhados localmente. */
-var canvas=$('#kidsCanvas'),ctx=canvas&&canvas.getContext('2d'),drawing=false,last=null,eraser=false;
+var canvas=$('#kidsCanvas'),ctx=canvas&&canvas.getContext('2d'),paintCtx=ctx,
+     outlineCanvas=$('#kidsOutlineCanvas'),outlineCtx=outlineCanvas&&outlineCanvas.getContext('2d'),
+     drawing=false,last=null,eraser=false;
 var select=$('#kidsDrawingSelect'),color=$('#kidsColor'),brush=$('#kidsBrush'),status=$('#kidsPaintStatus');
 function line(points){ctx.beginPath();points.forEach(function(p,i){if(!i)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1])});ctx.stroke()}
 function ellipse(x,y,rx,ry){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.stroke()}
 function setupCanvas(){
- if(!ctx)return;
- ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='#27212f';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';
+ if(!ctx||!outlineCtx)return;
+ /* O contorno é uma camada independente; a borracha só atua na camada de pintura. */
+ ctx=outlineCtx;ctx.clearRect(0,0,outlineCanvas.width,outlineCanvas.height);
+ ctx.strokeStyle='#27212f';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';
  var type=select?select.value:'sheep';
  if(type==='sheep'){
   // Cordeirinho com silhueta legível: lã, rosto, orelhas e quatro patas.
@@ -86,21 +96,41 @@ function setupCanvas(){
   // Ramo de oliveira no bico.
   line([[225,332],[160,300],[125,270]]);ctx.beginPath();ctx.ellipse(150,285,15,7,-.6,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(180,305,15,7,.6,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(130,270,12,6,-.7,0,Math.PI*2);ctx.stroke();
  }
- ctx.strokeStyle='#27212f';ctx.lineWidth=5;
- try{var saved=localStorage.getItem('ovelia-kids-paint-'+type);if(saved){var im=new Image();im.onload=function(){ctx.drawImage(im,0,0,canvas.width,canvas.height)};im.src=saved}}catch(e){}
+ /* Restaura apenas a pintura salva, nunca os contornos. */
+ ctx=paintCtx;ctx.clearRect(0,0,canvas.width,canvas.height);
+ try{
+   var newKey='ovelia-kids-paint-v2-'+type,oldKey='ovelia-kids-paint-'+type,saved=localStorage.getItem(newKey),migrar=false;
+   if(!saved){saved=localStorage.getItem(oldKey);migrar=!!saved}
+   if(saved){var im=new Image();im.onload=function(){if(select&&select.value!==type)return;paintCtx.drawImage(im,0,0,canvas.width,canvas.height);if(migrar){try{localStorage.setItem(newKey,canvas.toDataURL('image/png'));localStorage.removeItem(oldKey)}catch(e){}}};im.src=saved}
+ }catch(e){}
 }
 function pos(e){var r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
 function down(e){if(!ctx)return;drawing=true;last=pos(e);canvas.setPointerCapture&&canvas.setPointerCapture(e.pointerId);e.preventDefault()}
-function move(e){if(!drawing||!ctx)return;var p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.strokeStyle=eraser?'#ffffff':(color?color.value:'#7c4dba');ctx.lineWidth=(brush?+brush.value:10)*(canvas.width/canvas.getBoundingClientRect().width);ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();last=p;e.preventDefault()}
-function up(){if(!drawing)return;drawing=false;last=null;try{localStorage.setItem('ovelia-kids-paint-'+(select?select.value:'sheep'),canvas.toDataURL('image/png'));if(status)status.textContent='Desenho guardado neste aparelho.'}catch(e){if(status)status.textContent='O desenho está pronto. Use “Salvar imagem” para guardar uma cópia.'}}
+function move(e){if(!drawing||!ctx)return;var p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.globalCompositeOperation=eraser?'destination-out':'source-over';ctx.strokeStyle=color?color.value:'#7c4dba';ctx.lineWidth=(brush?+brush.value:10)*(canvas.width/canvas.getBoundingClientRect().width);ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();ctx.globalCompositeOperation='source-over';last=p;e.preventDefault()}
+function up(){if(!drawing)return;drawing=false;last=null;try{localStorage.setItem('ovelia-kids-paint-v2-'+(select?select.value:'sheep'),canvas.toDataURL('image/png'));if(status)status.textContent='Desenho guardado neste aparelho.'}catch(e){if(status)status.textContent='O desenho está pronto. Use “Salvar imagem” para guardar uma cópia.'}}
 if(canvas){canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);setupCanvas()}
 if(select)select.addEventListener('change',setupCanvas);
 $('#kidsEraser')?.addEventListener('click',function(){eraser=true;if(status)status.textContent='Borracha selecionada.'});
 $('#kidsBrushMode')?.addEventListener('click',function(){eraser=false;if(status)status.textContent='Pincel selecionado.'});
-$('#kidsClear')?.addEventListener('click',function(){if(select){try{localStorage.removeItem('ovelia-kids-paint-'+select.value)}catch(e){}setupCanvas();if(status)status.textContent='Desenho reiniciado.'}});
-$('#kidsSave')?.addEventListener('click',function(){if(!canvas)return;try{var a=document.createElement('a');a.download='ovelia-desenho-'+(select?select.value:'kids')+'.png';a.href=canvas.toDataURL('image/png');a.click();if(status)status.textContent='Imagem pronta para salvar.'}catch(e){if(status)status.textContent='Não foi possível exportar neste navegador.'}});
+$('#kidsClear')?.addEventListener('click',function(){if(select){try{localStorage.removeItem('ovelia-kids-paint-v2-'+select.value)}catch(e){}setupCanvas();if(status)status.textContent='Desenho reiniciado.'}});
+$('#kidsSave')?.addEventListener('click',function(){if(!canvas||!outlineCanvas)return;try{
+  var out=document.createElement('canvas');out.width=canvas.width;out.height=canvas.height;var outCtx=out.getContext('2d');
+  outCtx.fillStyle='#fff';outCtx.fillRect(0,0,out.width,out.height);
+  outCtx.drawImage(canvas,0,0);outCtx.drawImage(outlineCanvas,0,0);
+  var a=document.createElement('a');a.download='ovelia-desenho-'+(select?select.value:'kids')+'.png';a.href=out.toDataURL('image/png');a.click();if(status)status.textContent='Imagem pronta para salvar.'}catch(e){if(status)status.textContent='Não foi possível exportar neste navegador.'}});
 /* Progresso diário sem nomes, cadastro ou envio externo. */
-var progressBoxes=document.querySelectorAll('[data-progress]');
-progressBoxes.forEach(function(el){try{el.checked=localStorage.getItem('ovelia-'+el.dataset.progress)==='1'}catch(e){}el.addEventListener('change',function(){try{localStorage.setItem('ovelia-'+el.dataset.progress,el.checked?'1':'0')}catch(e){}})});
+function localISODate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function isoWeek(d){var x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));x.setUTCDate(x.getUTCDate()+4-(x.getUTCDay()||7));var y=new Date(Date.UTC(x.getUTCFullYear(),0,1));return x.getUTCFullYear()+'-W'+String(Math.ceil((((x-y)/86400000)+1)/7)).padStart(2,'0')}
+var progressBoxes=document.querySelectorAll('[data-progress],[data-progress-week]');
+progressBoxes.forEach(function(el){
+ var daily=el.dataset.progress,weekly=el.dataset.progressWeek,legacy=daily?'ovelia-'+daily:null,legacyApp=daily?'ovelia-progresso-'+daily:null;
+ var key=daily?'ovelia-kids-dia-'+localISODate(new Date())+'-'+daily:'ovelia-kids-semana-'+isoWeek(new Date())+'-'+weekly;
+ try{
+   var saved=localStorage.getItem(key);
+   if(saved===null&&legacy&&(localStorage.getItem(legacy)==='1'||(legacyApp&&localStorage.getItem(legacyApp)==='1'))){saved='1';localStorage.setItem(key,'1');localStorage.removeItem(legacy);if(legacyApp)localStorage.removeItem(legacyApp)}
+   el.checked=saved==='1';
+ }catch(e){}
+ el.addEventListener('change',function(){try{localStorage.setItem(key,el.checked?'1':'0')}catch(e){if(status)status.textContent='Não foi possível guardar o progresso neste aparelho.'}});
+});
 renderStory(0);
 })();

@@ -22,7 +22,12 @@
     criatividade:'<path d="M12 19 5 12a4 4 0 0 1 5.7-5.6L12 7.7l1.3-1.3A4 4 0 0 1 19 12z"/><path d="M4 21h16"/>',
     mais:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
   };
-  function profile(){try{return localStorage.getItem('ovelia-perfil')||'adult'}catch(e){return 'adult'}}
+  function profile(){
+    if(document.body.classList.contains('perfil-kids'))return 'kids';
+    if(document.body.classList.contains('perfil-senior'))return 'senior';
+    if(document.body.classList.contains('perfil-adult'))return 'adult';
+    try{return localStorage.getItem('ovelia-perfil')||'adult'}catch(e){return 'adult'}
+  }
   function item(id,label,icon){return {id:id,label:label,icon:icon}}
   function destinations(){
     var p=profile();

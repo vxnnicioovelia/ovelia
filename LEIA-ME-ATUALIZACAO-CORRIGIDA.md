@@ -1,3 +1,5 @@
+> **AVISO DE VERSÃO — DOCUMENTO HISTÓRICO:** este arquivo preserva decisões e instruções de uma etapa anterior. A atualização de qualidade de 19/10/2026 substitui as instruções sobre importação automática da Bíblia. O workflow de Bíblia está desativado e os textos integrais aguardam autorização editorial confirmada. Não execute os passos antigos deste documento para importar ou publicar uma tradução.
+
 # Ovelia — pacote completo corrigido
 
 Este pacote foi preparado a partir do ZIP enviado para revisão. Ele mantém a estrutura e os recursos existentes e acrescenta um calendário mensal integrado à seção Liturgia.
