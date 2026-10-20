@@ -1,17 +1,17 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v8-auditoria12';
+var CACHE='ovelia-shell-v9-auditoria13';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261020-liturgia11','./biblia.css?v=20261017',
+  './estilo.css?v=20261020-auditoria13','./biblia.css?v=20261017',
   './calendario-liturgico.css?v=20261019-recup3','./navegacao-inferior.css?v=20261019-apple1',
   './inicio.css?v=20261019-home2','./estudos.css?v=20261019-estudos4','./ovelia-pwa.css?v=20261019-1',
-  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261020-auditoria12',
+  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261020-auditoria13',
   './navegacao-inferior.js?v=20261019-quality1','./biblia.js?v=20261019-quality1',
   './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261018-inicio1',
   './regras.js?v=20261019-estudos4','./trilha.js?v=20261019-estudos4',
-  './progresso.js?v=20261019-estudos4','./licoes-001-010.js?v=20261019-estudos4',
-  './interface.js?v=20261019-quality1','./ovelia-pwa.js?v=20261019-2','./ovelia-kids.js?v=20261019-quality1',
+  './progresso.js?v=20261019-estudos4','./estudos/dados/licoes-001-010.js?v=20261020-auditoria13',
+  './interface.js?v=20261020-auditoria13','./ovelia-pwa.js?v=20261019-2','./ovelia-kids.js?v=20261019-quality1',
   './icone-128.png','./favicon-64.png','./apple-touch-icon.png',
   './pwa-192.png','./pwa-512.png','./manifest.webmanifest?v=20261019-quality1'
 ]
@@ -27,7 +27,7 @@ self.addEventListener('fetch',function(event){
   if(req.method!=='GET')return;
   var url=new URL(req.url);
   if(url.origin!==self.location.origin)return;
-  if(url.pathname.endsWith('.json')||url.pathname.indexOf('/dados/')!==-1)return;
+  if(url.pathname.endsWith('.json'))return;
   if(req.mode==='navigate'){
     event.respondWith(fetch(req).then(function(response){
       if(response&&response.ok){var copy=response.clone();caches.open(CACHE).then(function(cache){cache.put('./index.html',copy);});}

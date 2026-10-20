@@ -328,7 +328,7 @@ $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)
 /* ---------- Liturgia diária automática, dentro da Ovelia ----------
    Fonte principal: dados/liturgia/AAAA-MM-DD.json (gravado todo dia pelo workflow "Liturgia diária").
    Se o arquivo do dia não existir, tenta a API comunitária ao vivo; por último, o arquivo manual liturgia.js.
-   Tudo é exibido nesta página: não há botões que levem a outros sites. */
+   Referências e metadados podem aparecer sem o texto integral. Sem autorização editorial confirmada, a interface oferece consulta externa identificada. */
 function dataHojeSaoPaulo(){var p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(p);if(m)return new Date(+m[1],+m[2]-1,+m[3],12);var parts=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};parts.forEach(function(x){o[x.type]=x.value});return new Date(+o.year,+o.month-1,+o.day,12)}
 var hoje=dataHojeSaoPaulo();
 function pad2(n){return ('0'+n).slice(-2)}
@@ -372,7 +372,7 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
   if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})});
  var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
  $('#litData').textContent=dataLonga(dt);
- $('#litAtual').textContent=origem==='arquivo'?'Liturgia atualizada automaticamente todos os dias.':(origem==='api'?'Liturgia consultada agora, diretamente da fonte automática.':'Liturgia cadastrada pela equipe da Ovelia.');
+ $('#litAtual').textContent=origem==='arquivo'?'Dados litúrgicos carregados do arquivo local; a atualização depende da rotina de dados.':(origem==='api'?'Dados consultados agora na fonte externa; a disponibilidade depende do serviço.':'Dados litúrgicos cadastrados manualmente pela equipe da Ovelia.');
  var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Liturgia do dia</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
  if(blocos)html+='<div class="liturgia-leituras">'+blocos+'</div>';
  else html+='<p>Não foi possível identificar as leituras desta data.</p>';
@@ -380,7 +380,7 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
  if(blocos&&textoIntegralLiberado)html+='<p class="muted-note">Texto exibido conforme a licença identificada: '+esc(d.licencaTexto)+'.</p>';
  html+='<p class="muted-note">As referências vêm de um serviço automático. A permissão de acesso à API não comprova, por si só, permissão para redistribuir os textos das leituras. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
- if(isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para ler as leituras de hoje.';
+ if(isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para consultar os dados e referências da liturgia de hoje.';
  var tema=escolherTema(d);renderEstudo(tema,refs,origem==='arquivo'||origem==='api');
 }
 function fallbackLiturgy(dt){var dtIso=isoDe(dt),L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===dtIso})[0];
