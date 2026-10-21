@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Ovelia">
-<link rel="manifest" href="./manifest.webmanifest?v=20261021-org1">
+<link rel="manifest" href="./manifest.webmanifest?v=20261019-quality1">
 <meta name="author" content="Vxnnicio">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -17,24 +17,24 @@
 <meta property="og:title" content="Ovelia — fé para o dia a dia">
 <meta property="og:description" content="Orações, terço passo a passo, estudos bíblicos e área infantil. Gratuito e sem cadastro.">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="img/favicon-64.png" type="image/png">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="icon" href="favicon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="css/estilo.css?v=20261021-org1">
-<link rel="stylesheet" href="css/biblia.css?v=20261021-org1">
-<link rel="stylesheet" href="css/calendario-liturgico.css?v=20261021-org1">
-<link rel="stylesheet" href="css/navegacao-inferior.css?v=20261021-org1">
-<link rel="stylesheet" href="css/inicio.css?v=20261021-org1">
-<link rel="stylesheet" href="css/estudos.css?v=20261021-org1">
-<link rel="stylesheet" href="css/ovelia-pwa.css?v=20261021-org1">
+<link rel="stylesheet" href="estilo.css?v=20261021-fix1">
+<link rel="stylesheet" href="biblia.css?v=20261017">
+<link rel="stylesheet" href="calendario-liturgico.css?v=20261021-fix1">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261019-apple1">
+<link rel="stylesheet" href="inicio.css?v=20261021-fix1">
+<link rel="stylesheet" href="estudos.css?v=20261019-estudos4">
+<link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
   <div class="perfil-card">
-    <img src="img/ovelha-biblia.png" width="112" height="148" alt="Ovelinha, mascote da Ovelia">
+    <img src="ovelha-biblia.png" width="112" height="148" alt="Ovelinha, mascote da Ovelia">
     <p class="tag pd">Bem-vindo à Ovelia</p>
     <h1 id="perfilTitulo">Qual experiência combina com você?</h1>
     <p>A Ovelia adapta a apresentação para cada público. Você pode trocar de perfil a qualquer momento, sem cadastro.</p>
@@ -49,7 +49,7 @@
 <a class="skip" href="#conteudo" onclick="event.preventDefault();document.getElementById('conteudo').focus()">Pular para o conteúdo</a>
 <header>
 <div class="bar">
-<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="img/icone-128.png" width="42" height="42" alt="">Ovelia</a>
+<a class="brand" href="#home" aria-label="Ovelia, ir para o início"><img src="icone-128.png" width="42" height="42" alt="">Ovelia</a>
 <div class="tools" role="group" aria-label="Opções de leitura">
 <button class="btn g controle-compacto" id="temaBtn" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Tema claro/escuro"><span aria-hidden="true" id="temaIcone">☾</span></button>
 <button class="btn g controle-compacto" id="textoBtn" type="button" aria-label="Ajustar tamanho do texto" aria-expanded="false" aria-controls="painelTexto"><span aria-hidden="true">Aa</span></button>
@@ -85,7 +85,7 @@
 <div class="perfil-atual" id="perfilAtual" role="status"></div>
 <div class="profile-home kids-home" id="kidsHome" hidden>
   <div class="kids kids-welcome">
-    <div class="side"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha, amiga das crianças"><div><span class="tag pd">Cantinho da Ovelinha</span><h1 id="kidsSaudacao">Oi, amiguinho! 🐑</h1><p>Que bom que você chegou! Use os botões lá embaixo para ouvir histórias, rezar e brincar com o quiz.</p></div></div>
+    <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha, amiga das crianças"><div><span class="tag pd">Cantinho da Ovelinha</span><h1 id="kidsSaudacao">Oi, amiguinho! 🐑</h1><p>Que bom que você chegou! Use os botões lá embaixo para ouvir histórias, rezar e brincar com o quiz.</p></div></div>
   </div>
   <div class="card kids-message"><h2>Uma lembrança para hoje 💛</h2><p id="kidsMsgDia">Deus ama você. Seja gentil, diga a verdade e, quando errar, peça desculpas e tente de novo.</p><p><b>Desafio:</b> <span id="kidsDesafioDia">faça hoje uma coisa boa por alguém da sua família.</span></p></div>
 </div>
@@ -94,7 +94,7 @@
 </div>
 <div class="home-novo" id="homeNovo">
   <div class="home-saudacao">
-    <div class="home-mascotes"><img class="home-ovelha" src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote da Ovelia, abraçando uma Bíblia"><img class="home-pomba" src="img/pomba.png" width="425" height="520" alt="" aria-hidden="true"></div>
+    <div class="home-mascotes"><img class="home-ovelha" src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote da Ovelia, abraçando uma Bíblia"><img class="home-pomba" src="pomba.png" width="425" height="520" alt="" aria-hidden="true"></div>
     <div class="home-texto"><h1 id="homeSaudacao">Olá!</h1><p id="homeMsg">Que bom ter você aqui! Reserve alguns minutos para se aproximar de Deus.</p><p class="home-data" id="homeData"></p></div>
   </div>
   <section class="card palavra-dia" aria-labelledby="palavraDiaTitulo">
@@ -200,7 +200,7 @@
 
 <!-- TERÇO -->
 <section class="pg" id="terco">
-<div class="side" style="margin-bottom:12px"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>O terço tem cinco dezenas. Em cada uma medita-se um mistério da vida de Jesus e de Maria, rezando 1 Pai-Nosso, 10 Ave-Marias e 1 Glória.</p></div></div>
+<div class="side" style="margin-bottom:12px"><img src="ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>O terço tem cinco dezenas. Em cada uma medita-se um mistério da vida de Jesus e de Maria, rezando 1 Pai-Nosso, 10 Ave-Marias e 1 Glória.</p></div></div>
 <div class="card"><h3>Rezar o terço, passo a passo</h3>
 <label for="selMist" style="font-weight:700">Mistérios</label><br>
 <select id="selMist" style="font:inherit;padding:10px;border-radius:12px;margin:6px 0 10px;max-width:100%"></select>
@@ -237,7 +237,7 @@
 <!-- INFANTIL -->
 <section class="pg" id="infantil">
 <div class="kids">
-<div class="side"><img src="img/ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Vamos aprender brincando!</h2><p>Aqui tem histórias, orações e um quiz para você aprender sobre Deus. Você não precisa escrever seu nome nem fazer cadastro.</p></div></div>
+<div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Vamos aprender brincando!</h2><p>Aqui tem histórias, orações e um quiz para você aprender sobre Deus. Você não precisa escrever seu nome nem fazer cadastro.</p></div></div>
 <h3 id="desafiosKidsTitulo" style="margin-top:14px">🌟 Desafios</h3><h4>Meu desafio de hoje</h4>
 <div class="kids-trilha">
 <label><input type="checkbox" data-progress="kids-historia"> Ler ou ouvir uma história bíblica</label>
@@ -343,7 +343,7 @@
 <!-- SOBRE -->
 <section class="pg" id="sobre">
 <h2>Sobre o Ovelia</h2>
-<div class="card side"><img src="img/ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
+<div class="card side"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
 <p>O Ovelia é uma plataforma de fé, aprendizado e crescimento pessoal, com identidade cristã e fundamento católico, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Começamos por este site e, aos poucos, queremos chegar a um aplicativo.</p>
 <p>A ovelhinha é a companheira de caminhada. A pomba lembra a paz e a esperança.</p>
 <p><b>Criado por Vxnnicio.</b></p><p><a class="btn g" href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer" aria-label="Abrir o Instagram oficial da Ovelia em nova aba">Acompanhe a Ovelia no Instagram ↗</a></p></div></div>
@@ -356,19 +356,19 @@
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
-<script src="js/inicio-dados.js?v=20261021-org1"></script>
-<script src="js/liturgia.js?v=20261021-org1"></script>
-<script src="js/app.js?v=20261021-org1"></script>
-<script src="js/navegacao-inferior.js?v=20261021-org1" defer></script>
-<script src="js/biblia.js?v=20261021-org1"></script>
-<script src="js/calendario-liturgico.js?v=20261021-org1"></script>
-<script src="js/inicio.js?v=20261021-org1"></script>
-<script src="js/regras.js?v=20261021-org1"></script>
-<script src="js/trilha.js?v=20261021-org1"></script>
-<script src="js/progresso.js?v=20261021-org1"></script>
-<script src="js/interface.js?v=20261021-org1"></script>
+<script src="inicio-dados.js?v=20261018-inicio1"></script>
+<script src="liturgia.js?v=20261020-liturgia11"></script>
+<script src="app.js?v=20261020-auditoria13"></script>
+<script src="navegacao-inferior.js?v=20261019-quality1" defer></script>
+<script src="biblia.js?v=20261019-quality1"></script>
+<script src="calendario-liturgico.js?v=20261017-1"></script>
+<script src="inicio.js?v=20261018-inicio1"></script>
+<script src="regras.js?v=20261019-estudos4"></script>
+<script src="trilha.js?v=20261019-estudos4"></script>
+<script src="progresso.js?v=20261019-estudos4"></script>
+<script src="interface.js?v=20261021-fix2"></script>
 
-<script src="js/ovelia-kids.js?v=20261021-org1"></script>
-<script src="js/ovelia-pwa.js?v=20261021-org1"></script>
+<script src="./ovelia-kids.js?v=20261019-quality1"></script>
+<script src="./ovelia-pwa.js?v=20261019-2"></script>
 </body>
 </html>

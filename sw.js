@@ -1,19 +1,19 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v12-20261021-org1';
+var CACHE='ovelia-shell-v13-restaura';
 var SHELL=[
   './','./index.html',
-  './css/estilo.css?v=20261021-org1','./css/biblia.css?v=20261021-org1',
-  './css/calendario-liturgico.css?v=20261021-org1','./css/navegacao-inferior.css?v=20261021-org1',
-  './css/inicio.css?v=20261021-org1','./css/estudos.css?v=20261021-org1','./css/ovelia-pwa.css?v=20261021-org1',
-  './js/inicio-dados.js?v=20261021-org1','./js/liturgia.js?v=20261021-org1','./js/app.js?v=20261021-org1',
-  './js/navegacao-inferior.js?v=20261021-org1','./js/biblia.js?v=20261021-org1',
-  './js/calendario-liturgico.js?v=20261021-org1','./js/inicio.js?v=20261021-org1',
-  './js/regras.js?v=20261021-org1','./js/trilha.js?v=20261021-org1',
-  './js/progresso.js?v=20261021-org1','./estudos/dados/licoes-001-010.js?v=20261021-org1',
-  './js/interface.js?v=20261021-org1','./js/ovelia-pwa.js?v=20261021-org1','./js/ovelia-kids.js?v=20261021-org1',
-  './img/icone-128.png','./img/favicon-64.png','./img/apple-touch-icon.png',
-  './img/pwa-192.png','./img/pwa-512.png','./manifest.webmanifest?v=20261021-org1'
+  './estilo.css?v=20261021-fix1','./biblia.css?v=20261017',
+  './calendario-liturgico.css?v=20261021-fix1','./navegacao-inferior.css?v=20261019-apple1',
+  './inicio.css?v=20261021-fix1','./estudos.css?v=20261019-estudos4','./ovelia-pwa.css?v=20261019-1',
+  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261020-auditoria13',
+  './navegacao-inferior.js?v=20261019-quality1','./biblia.js?v=20261019-quality1',
+  './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261018-inicio1',
+  './regras.js?v=20261019-estudos4','./trilha.js?v=20261019-estudos4',
+  './progresso.js?v=20261019-estudos4','./licoes-001-010.js?v=20261020-auditoria13',
+  './interface.js?v=20261021-fix2','./ovelia-pwa.js?v=20261019-2','./ovelia-kids.js?v=20261019-quality1',
+  './icone-128.png','./favicon-64.png','./apple-touch-icon.png',
+  './pwa-192.png','./pwa-512.png','./manifest.webmanifest?v=20261019-quality1'
 ]
 self.addEventListener('install',function(event){
   event.waitUntil(caches.open(CACHE).then(function(cache){return Promise.all(SHELL.map(function(url){return cache.add(url).catch(function(){/* Um recurso opcional ausente não deve cancelar o cache dos demais. */});}));}).then(function(){return self.skipWaiting();}));

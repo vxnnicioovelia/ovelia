@@ -20,7 +20,7 @@
     var prox=P.proxima(),xp=P.xp(),niv=P.nivelDe(xp),falta=R.XP_POR_NIVEL-(xp%R.XP_POR_NIVEL);
     var c=h('section','card jr-topo',null,{'aria-label':'Resumo da sua jornada'});
     var cab=h('div','jr-cab');
-    var img=h('img','jr-ovelha',null,{src:'img/ovelha.png',alt:'',width:'486',height:'640'});
+    var img=h('img','jr-ovelha',null,{src:'ovelha.png',alt:'',width:'486',height:'640'});
     var bal=h('div','jr-balao');
     bal.appendChild(h('strong',null,'Olá! Vamos caminhar juntos?'));
     bal.appendChild(h('p',null,prox?(P.feitas()===0?'A primeira lição está esperando por você.':'Sua próxima lição: '+prox.id+'. '+prox.curto+'.'):'Você concluiu todos os estudos disponíveis. Revise quando quiser; novos estudos virão!'));
@@ -69,7 +69,7 @@
       abrir(l.id);
     });
     li.appendChild(b);
-    if(atual){var o=h('img','jr-ovelha-trilha',null,{src:'img/ovelha.png',alt:'',width:'486',height:'640'});li.appendChild(o)}
+    if(atual){var o=h('img','jr-ovelha-trilha',null,{src:'ovelha.png',alt:'',width:'486',height:'640'});li.appendChild(o)}
     return li;
   }
   function trilha(){
@@ -106,7 +106,7 @@
 
   /* ---------- Lição em passos ---------- */
   var carregando={};
-  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'estudos/dados/licoes-'+p(a)+'-'+p(z)+'.js'}
+  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'licoes-'+p(a)+'-'+p(z)+'.js'}
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
@@ -145,7 +145,7 @@
     var tit=h('h3',null,l.titulo,{id:'jrLicTit',tabindex:'-1'});c.appendChild(tit);
     var corpo=h('div','jr-corpo');
     if(p===0){
-      var intro=h('div','jr-fala');intro.appendChild(h('img','jr-ovelha-fala',null,{src:'img/ovelha.png',alt:'',width:'486',height:'640'}));intro.appendChild(h('p',null,l.intro));corpo.appendChild(intro);
+      var intro=h('div','jr-fala');intro.appendChild(h('img','jr-ovelha-fala',null,{src:'ovelha.png',alt:'',width:'486',height:'640'}));intro.appendChild(h('p',null,l.intro));corpo.appendChild(intro);
       add(corpo,h('h4',null,'Objetivo de aprendizagem'),h('p',null,l.objetivo));
       var m=h('p','jr-nota','Neste estudo: 3 passagens, uma atividade e um resumo.');corpo.appendChild(m);
     }else if(p===1){
