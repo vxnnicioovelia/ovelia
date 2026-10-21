@@ -4,8 +4,8 @@
 .n2-social{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
 .n2-social a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:9px 12px;border-radius:12px}
 .n2-footer-social{justify-content:center;margin:12px auto}
-.n2-footer-social a{color:var(--olive,#526B55);font-weight:700}
-.n2-section-nav a:focus-visible,.n2-section-nav button:focus-visible,.n2-social a:focus-visible{outline:3px solid var(--gold,#D6B77A);outline-offset:3px}
+.n2-footer-social a{color:var(--olive,#62458F);font-weight:700}
+.n2-section-nav a:focus-visible,.n2-section-nav button:focus-visible,.n2-social a:focus-visible{outline:3px solid var(--gold,#D7C1F2);outline-offset:3px}
 .n2-profile-blocked{display:none!important}
 .n2-calendar-shell{border:1px solid var(--line)}
 .n2-calendar-toolbar{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:14px}

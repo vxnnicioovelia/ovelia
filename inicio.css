@@ -1,11 +1,11 @@
 /* Ovelia — página inicial minimalista. Usa as variáveis de tema; não define cores fixas de texto sobre fundo variável. */
 .home-novo{display:grid;gap:16px;max-width:760px;margin:0 auto}
 .home-saudacao{display:flex;gap:22px;align-items:center;background:var(--hero);color:#fff;border-radius:26px;padding:24px}
-.home-saudacao p{color:#F7F4EC;margin:.4em 0}
+.home-saudacao p{color:#F8F5FC;margin:.4em 0}
 .home-saudacao h1{color:#fff;margin:0 0 .15em}
 .home-mascotes{position:relative;flex:0 0 190px;width:190px}
-.home-ovelha{width:190px;background:#F7F4EC;border-radius:22px;padding:8px}
-.home-pomba{position:absolute;right:-12px;bottom:-10px;width:62px;background:#F7F4EC;border-radius:50%;padding:6px;border:2px solid var(--gold)}
+.home-ovelha{width:190px;background:#F8F5FC;border-radius:22px;padding:8px}
+.home-pomba{position:absolute;right:-12px;bottom:-10px;width:62px;background:#F8F5FC;border-radius:50%;padding:6px;border:2px solid var(--gold)}
 .home-data{font-size:.95em;font-weight:700;opacity:1}
 .palavra-dia{border-color:var(--gold);border-width:2px}
 .pd-topo{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
