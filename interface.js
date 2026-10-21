@@ -106,7 +106,7 @@
 
   /* ---------- Lição em passos ---------- */
   var carregando={};
-  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'estudos/dados/licoes-'+p(a)+'-'+p(z)+'.js'}
+  function nomeLote(id){var a=Math.floor((id-1)/10)*10+1,z=a+9;function p(n){return('000'+n).slice(-3)}return'licoes-'+p(a)+'-'+p(z)+'.js'}
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
