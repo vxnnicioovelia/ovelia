@@ -1,13 +1,25 @@
-# Resultados dos testes — Atualização 1.1
+# Resultados dos testes — revisão de branch Ovelia
 
-- **APROVADO:** `node --check` em 25 arquivos JS/MJS, sem erros.
-- **APROVADO:** 37 referências locais de HTML verificadas, sem destinos ausentes.
-- **APROVADO:** manifesto JSON válido e ícones 192/512 presentes.
-- **APROVADO:** 30 referências locais do service worker, sem arquivos ausentes.
-- **APROVADO:** gerador com API simulada para cinco datas distintas, com datas conferidas.
-- **APROVADO:** a trava dupla remove textos/refrões quando `LITURGIA_INCLUIR_TEXTO=sim` mas a autorização está `nao`.
-- **APROVADO:** código de renderização só exibe textos se houver `textoIntegralAutorizado: true` e identificação de licença.
-- **APROVADO:** integridade do ZIP final.
-- **NÃO TESTADO:** renderização visual completa, responsividade visual do site completo, navegação real de calendário em navegador e teste físico em iPhone/Android.
-- **NÃO TESTADO:** execução real do GitHub Actions e consulta de dados reais da API para três datas. Os testes de datas foram feitos com fixture local, não com conteúdo litúrgico real.
-- **DEPENDÊNCIA EXTERNA:** autorização escrita para redistribuição integral dos textos.
+Data da revisão: 2026-10-21
+
+## Verificações executadas nesta revisão
+
+- Integridade dos ZIPs de revisão: aprovada.
+- Sintaxe dos arquivos JavaScript/MJS: aprovada; nenhum arquivo reportou erro em `node --check`.
+- `manifest.webmanifest`: JSON válido; dois ícones declarados.
+- HTML: 129 IDs encontrados, sem duplicações.
+- Referências locais `src`/`href` em `index.html`: nenhuma referência ausente detectada.
+- Workflow da Liturgia: configuração estática revisada; texto integral permanece desabilitado e o passo de gravação só executa após sucesso.
+- Gerador da Liturgia, teste de integração isolado com servidor HTTP simulado: aprovado. O gerador gravou os metadados e as referências para 2026-10-21, criou o índice e não incluiu os textos de teste quando `LITURGIA_INCLUIR_TEXTO=sim` mas `LITURGIA_TEXTO_AUTORIZADO=nao` e a licença estava vazia.
+
+## Limites dos testes
+
+- O servidor HTTP usado no teste de integração foi simulado localmente; isso não comprova disponibilidade nem formato atual da API pública.
+- Não foi executado o GitHub Actions real nem foi feito push para o GitHub.
+- Não foi executado teste visual em navegador/Safari/iPhone.
+- Não foram testados integralmente os fluxos interativos de Terço, Orações, Estudos, Kids, pintura, áudio, preferências ou instalação PWA.
+- A autorização editorial para distribuir textos integrais da Liturgia ou da Bíblia continua pendente. A configuração permanece fechada por padrão.
+
+## Estado de publicação
+
+Este pacote é para revisão. Nenhuma alteração foi enviada à `main` e nenhum site foi publicado por esta etapa.

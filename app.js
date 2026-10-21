@@ -6,7 +6,7 @@ var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){retu
 function esc(t){var d=document.createElement('div');d.textContent=t==null?'':t;return d.innerHTML}
 
 /* ---------- Perfis e navegação ---------- */
-var PROFILE_NAMES={kids:'Modo infantil',adult:'Modo normal',senior:'Ovelia 60+'};
+var PROFILE_NAMES={kids:'Pequenas Ovelias',adult:'Ovelias em Caminhada',senior:'Ovelias Sábias'};
 var profile='';
 try{profile=localStorage.getItem('ovelia-perfil')||''}catch(e){}
 /* Migra a escolha antiga sem obrigar a pessoa a selecionar o perfil novamente. */
@@ -102,7 +102,7 @@ function show(first){
   menu.classList.remove('open');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
   window.scrollTo(0,0);
-  var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Ovelia Kids — histórias e orações':profile==='senior'?'Ovelia 60+ — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
+  var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Pequenas Ovelias — histórias e orações':profile==='senior'?'Ovelias Sábias — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
   if(!first){var h=$('#'+id+' h1,#'+id+' h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
 }
 window.addEventListener('hashchange',function(){show(false)});
@@ -329,8 +329,8 @@ $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)
    Fonte principal: dados/liturgia/AAAA-MM-DD.json (gravado todo dia pelo workflow "Liturgia diária").
    Se o arquivo do dia não existir, tenta a API comunitária ao vivo; por último, o arquivo manual liturgia.js.
    Referências e metadados podem aparecer sem o texto integral. Sem autorização editorial confirmada, a interface oferece consulta externa identificada. */
-/* CHAVE DO DONO DO SITE: true = mostra o texto das leituras vindo da fonte ao vivo (como antes); false = só referências e link externo. */
-var LIT_MOSTRAR_TEXTO=true;
+/* Trava editorial: texto vindo de API não é redistribuído sem licença documentada. */
+var LIT_MOSTRAR_TEXTO=false;
 function dataHojeSaoPaulo(){var p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(p);if(m)return new Date(+m[1],+m[2]-1,+m[3],12);var parts=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};parts.forEach(function(x){o[x.type]=x.value});return new Date(+o.year,+o.month-1,+o.day,12)}
 var hoje=dataHojeSaoPaulo();
 function pad2(n){return ('0'+n).slice(-2)}
