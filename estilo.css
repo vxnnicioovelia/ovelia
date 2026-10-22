@@ -420,7 +420,8 @@ body.tema-escuro .perfil-card{background:var(--noite-800)}
 }
 
 /* Alto contraste vale em qualquer tema (vence as variáveis de tema claro/escuro) */
-body.contraste,body.contraste.tema-claro,body.contraste.tema-escuro{--bg:var(--branco);--card:var(--branco);--ink:var(--preto);--mut:var(--contraste-mut);--line:var(--preto);--soft:var(--cinza-100);--hero:var(--preto);--kid:var(--branco);--kidink:var(--preto);--creme:var(--branco);--foco:var(--preto);--titulo:var(--preto);--btn-bg:var(--preto);--btn-ink:var(--branco);--btn-bg-hover:var(--contraste-mut);--olive:var(--preto);--on-olive:var(--branco)}
+body.contraste.tema-claro{--bg:#FFFFFF;--card:#FFFFFF;--ink:#000000;--mut:#1A1A1A;--line:#000000;--soft:#F0F0F0;--hero:#000000;--kid:#FFFFFF;--kidink:#000000;--creme:#FFFFFF;--foco:#000000;--titulo:#000000;--btn-bg:#000000;--btn-ink:#FFFFFF;--btn-bg-hover:#1A1A1A;--olive:#000000;--on-olive:#FFFFFF}
+body.contraste.tema-escuro{--bg:#000000;--card:#111111;--ink:#FFFFFF;--mut:#F0F0F0;--line:#FFFFFF;--soft:#1A1A1A;--hero:#000000;--kid:#111111;--kidink:#FFFFFF;--creme:#111111;--foco:#FFFFFF;--titulo:#FFFFFF;--btn-bg:#FFFFFF;--btn-ink:#000000;--btn-bg-hover:#E6E6E6;--olive:#FFFFFF;--on-olive:#000000}
 
 /* Telas estreitas (320 px): sem rolagem horizontal com letras ampliadas */
 @media(max-width:400px){
@@ -481,5 +482,9 @@ body:has(#perfilInicio:not([hidden])){overflow:hidden}
 .painel-texto{width:min( min(92vw, 390px), 390px);max-height:min(78vh,720px);overflow:auto;z-index:1000;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--txt);box-shadow:0 10px 35px var(--sombra-cor-suave)}
 .painel-texto .painel-titulo{font-size:1.15rem;margin:0 0 12px}.painel-texto label,.painel-texto legend{display:block;font-weight:700;margin:10px 0 5px}.painel-texto select,.painel-texto input[type=range]{width:100%;min-height:44px}.painel-texto select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--txt)}.painel-texto .filtro-quente-controles{margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:12px}.painel-texto .filtro-toggle{display:flex;align-items:center;gap:10px;min-height:44px}.painel-texto .filtro-toggle input{width:22px;height:22px}.filtro-preview{padding:12px;border-radius:10px;background:var(--card);color:var(--txt);line-height:1.65}.filtro-preview.preview-quente{background:color-mix(in srgb,var(--card),#f5c879 var(--preview-calor-percent, 20%))}
 body.fonte-legivel,body.fonte-legivel *{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
-body.filtro-quente-ativo .liturgia-leituras,body.filtro-quente-ativo #bibliaTexto,body.filtro-quente-ativo #licaoAberta,body.filtro-quente-ativo #litEstudoDia,body.filtro-quente-ativo #listaOracoes .oracao,body.filtro-quente-ativo #palavraDiaConteudo,body.filtro-quente-ativo #kidsStoryText{background-color:color-mix(in srgb,var(--card),#f5c879 var(--ovelia-filtro-quente-percent, 20%));border-radius:10px;padding:8px}
+/* Filtro quente uniforme sobre toda a interface, sem bloquear toques. */
+body.filtro-quente-ativo::after{content:"";position:fixed;inset:0;z-index:9990;pointer-events:none;background:rgba(255,166,66,var(--ovelia-filtro-quente-opacidade,0));mix-blend-mode:soft-light}
+body.filtro-quente-ativo{isolation:isolate}
+body.contraste.tema-escuro .btn.g,body.contraste.tema-escuro .kids .btn.g{background:#111111;color:#FFFFFF;border-color:#FFFFFF}
+body.contraste.tema-escuro a:not(.btn){color:#FFFFFF}
 .painel-texto-acoes .btn{min-height:44px}@media(max-width:520px){.painel-texto{position:fixed;top:calc(env(safe-area-inset-top) + 62px);right:4vw;left:4vw;width:auto;max-width:none}.tools{gap:5px}}
