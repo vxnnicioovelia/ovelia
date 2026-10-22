@@ -24,7 +24,7 @@ Este pacote foi feito para aplicar navegação, redes oficiais e nomes de menu s
 ## Teste recomendado
 - Abra `#home`, entre em Liturgia e depois em Bíblia; toque em Voltar e confirme que retorna à seção anterior.
 - Toque em Início e confirme que retorna à página inicial.
-- Confira os nomes do menu nos perfis normal, infantil e 60+.
+- Confira os nomes do menu nos perfis Ovelias em Caminhada, Pequenas Ovelias e Ovelias Sábias.
 - Abra Instagram e canal do WhatsApp e confirme que os endereços oficiais abrem.
 
 O pacote é incremental para reduzir o risco de substituir uma versão mais recente do site. O funcionamento final deve ser confirmado após a publicação no Safari.

@@ -10,7 +10,8 @@ var PROFILE_NAMES={kids:'Pequenas Ovelias',adult:'Ovelias em Caminhada',senior:'
 var profile='';
 try{profile=localStorage.getItem('ovelia-perfil')||''}catch(e){}
 /* Migra a escolha antiga sem obrigar a pessoa a selecionar o perfil novamente. */
-if(profile==='easy')profile='senior';
+var PERFIL_ANTIGO={easy:'senior','60+':'senior','60':'senior',idoso:'senior',normal:'adult',adulto:'adult',infantil:'kids',crianca:'kids','criança':'kids'};
+if(PERFIL_ANTIGO[profile])profile=PERFIL_ANTIGO[profile];
 /* Evita que um valor antigo/inválido deixe a tela inicial sem escolha de perfil. */
 if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
@@ -43,7 +44,8 @@ function applyProfile(){
   if(profile==='adult')document.body.classList.add('perfil-adult');
   if(profile==='kids')document.body.classList.add('perfil-kids');
   if(profile==='senior')document.body.classList.add('perfil-senior');
-  perfilAtual.textContent=profile?'Experiência ativa: '+PROFILE_NAMES[profile]+'. Para mudar, toque em “Trocar perfil”.':'';
+  $$('[data-profile]',perfilInicio).forEach(function(b){var on=b.getAttribute('data-profile')===profile;b.setAttribute('aria-pressed',String(on));b.classList.toggle('selecionado',on)});
+  perfilAtual.textContent=profile?'Perfil ativo: '+PROFILE_NAMES[profile]+'. Para mudar, toque em “Trocar perfil”.':'';
   renderMenu();setProfileControls();
   if(kidsHome)kidsHome.hidden=profile!=='kids';
   if(seniorHome)seniorHome.hidden=profile!=='senior';
@@ -69,9 +71,9 @@ function chooseProfile(p){
 }
 $$('[data-profile]').forEach(function(b){b.addEventListener('click',function(){chooseProfile(b.getAttribute('data-profile'))})});
 function openProfileChooser(){
-  if(profile==='kids'&&!window.confirm('Sair do modo infantil? Peça ajuda a um adulto.'))return;
+  if(profile==='kids'&&!window.confirm('Sair das Pequenas Ovelias? Peça ajuda a um adulto.'))return;
   perfilInicio.hidden=false;
-  var first=$('[data-profile]',perfilInicio);if(first)first.focus();
+  var first=$('[data-profile].selecionado',perfilInicio)||$('[data-profile]',perfilInicio);if(first)first.focus();
 }
 perfilBtn.addEventListener('click',openProfileChooser);
 /* Mantém o foco dentro do seletor enquanto ele estiver aberto. */

@@ -1,12 +1,12 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v18-base1';
+var CACHE='ovelia-shell-v19-perfis1';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261022-base1','./biblia.css?v=20261022-base1',
+  './estilo.css?v=20261022-perfis1','./biblia.css?v=20261022-base1',
   './calendario-liturgico.css?v=20261022-base1','./navegacao-inferior.css?v=20261022-base1',
   './inicio.css?v=20261022-base1','./estudos.css?v=20261022-base1','./ovelia-pwa.css?v=20261019-1',
-  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261022-liturgia3',
+  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261022-perfis1',
   './navegacao-inferior.js?v=20261019-quality1','./biblia.js?v=20261019-quality1',
   './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261018-inicio1',
   './regras.js?v=20261019-estudos4','./trilha.js?v=20261019-estudos4',

@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261022-base1">
+<link rel="stylesheet" href="estilo.css?v=20261022-perfis1">
 <link rel="stylesheet" href="biblia.css?v=20261022-base1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-base1">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-base1">
@@ -32,18 +32,18 @@
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
 </head>
 <body>
-<div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" hidden>
+<div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" aria-describedby="perfilIntro" hidden>
   <div class="perfil-card">
-    <img src="ovelha-biblia.png" width="112" height="148" alt="Ovelinha, mascote da Ovelia">
+    <img class="perfil-logo" src="icone-128.png" width="64" height="64" alt="">
     <p class="tag pd">Bem-vindo à Ovelia</p>
     <h1 id="perfilTitulo">Como você deseja viver sua fé hoje?</h1>
-    <p>A Ovelia adapta a apresentação para cada público. Você pode trocar de perfil a qualquer momento, sem cadastro.</p>
+    <p id="perfilIntro" class="perfil-intro">A Ovelia adapta a apresentação a cada momento da sua caminhada. Você pode trocar de perfil quando quiser, sem cadastro e sem perder seu progresso.</p>
     <div class="perfil-opcoes">
-      <button class="perfil-opcao perfil-kids-choice" type="button" data-profile="kids"><span aria-hidden="true">🐑</span><strong>Pequenas Ovelias</strong><small>Aprender e descobrir o amor de Jesus por meio de histórias, brincadeiras e orações.</small></button>
-      <button class="perfil-opcao" type="button" data-profile="adult"><span aria-hidden="true">📖</span><strong>Ovelias em Caminhada</strong><small>Crescer na fé todos os dias com a Bíblia, a liturgia, as orações e os estudos.</small></button>
-      <button class="perfil-opcao perfil-senior-choice" type="button" data-profile="senior"><span aria-hidden="true">🌷</span><strong>Ovelias Sábias</strong><small>Viver a fé com conforto, tranquilidade e uma experiência de leitura mais acessível.</small></button>
+      <button class="perfil-opcao perfil-kids-choice" type="button" data-profile="kids" aria-pressed="false"><img class="perfil-ilu" src="ovelha.png" width="486" height="640" alt=""><span class="perfil-texto"><strong>Pequenas Ovelias</strong><small>Aprender e descobrir o amor de Jesus por meio de histórias, brincadeiras e orações.</small></span><span class="perfil-cta" aria-hidden="true"><span class="perfil-cta-escolher">Escolher ›</span><span class="perfil-cta-atual">✓ Seu perfil</span></span></button>
+      <button class="perfil-opcao" type="button" data-profile="adult" aria-pressed="false"><img class="perfil-ilu" src="ovelha-biblia.png" width="485" height="640" alt=""><span class="perfil-texto"><strong>Ovelias em Caminhada</strong><small>Crescer na fé todos os dias com a Bíblia, a liturgia, as orações e os estudos.</small></span><span class="perfil-cta" aria-hidden="true"><span class="perfil-cta-escolher">Escolher ›</span><span class="perfil-cta-atual">✓ Seu perfil</span></span></button>
+      <button class="perfil-opcao perfil-senior-choice" type="button" data-profile="senior" aria-pressed="false"><img class="perfil-ilu" src="pomba.png" width="425" height="520" alt=""><span class="perfil-texto"><strong>Ovelias Sábias</strong><small>Viver a fé com conforto, tranquilidade e uma experiência de leitura mais acessível.</small></span><span class="perfil-cta" aria-hidden="true"><span class="perfil-cta-escolher">Escolher ›</span><span class="perfil-cta-atual">✓ Seu perfil</span></span></button>
     </div>
-    <p class="perfil-nota">Escolha livremente a experiência que for mais confortável para você.</p>
+    <p class="perfil-nota">Qualquer pessoa pode escolher qualquer perfil, em qualquer idade. Sua escolha fica salva neste aparelho.</p>
   </div>
 </div>
 <a class="skip" href="#conteudo" onclick="event.preventDefault();document.getElementById('conteudo').focus()">Pular para o conteúdo</a>
@@ -346,6 +346,7 @@
 <div class="card side"><img src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha com uma Bíblia"><div>
 <p>O Ovelia é uma plataforma de fé, aprendizado e crescimento pessoal, com identidade cristã e fundamento católico, feita para aproximar as pessoas de Deus com conteúdos acessíveis, didáticos e acolhedores. Começamos por este site e, aos poucos, queremos chegar a um aplicativo.</p>
 <p>A ovelhinha é a companheira de caminhada. A pomba lembra a paz e a esperança.</p>
+<p><b>Três perfis, um só caminho:</b> <b>Pequenas Ovelias</b> (histórias, brincadeiras e orações para crianças), <b>Ovelias em Caminhada</b> (Bíblia, liturgia, orações e estudos) e <b>Ovelias Sábias</b> (leitura confortável, letras maiores e navegação simplificada). Qualquer pessoa pode escolher qualquer perfil e trocar quando quiser pelo botão “Trocar perfil”.</p>
 <p><b>Criado por Vxnnicio.</b></p><p><a class="btn g" href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer" aria-label="Abrir o Instagram oficial da Ovelia em nova aba">Acompanhe a Ovelia no Instagram ↗</a></p></div></div>
 <div class="card"><h3>Transparência sobre os conteúdos</h3>
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
@@ -358,7 +359,7 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261022-liturgia3"></script>
+<script src="app.js?v=20261022-perfis1"></script>
 <script src="navegacao-inferior.js?v=20261019-quality1" defer></script>
 <script src="biblia.js?v=20261019-quality1"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>

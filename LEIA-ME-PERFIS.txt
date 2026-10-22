@@ -1,0 +1,4 @@
+PARTE 3 - PERFIS
+SUBSTITUIR (raiz, Add file > Upload files): index.html, app.js, estilo.css, sw.js, README.md, LEIA-ME.md
+NOVOS: nenhum.  APAGAR: nenhum.
+Depois de publicar, feche e reabra o app no iPhone (cache v19-perfis1).
