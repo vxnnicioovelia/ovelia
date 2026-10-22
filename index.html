@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261022-usabilidade1">
+<link rel="stylesheet" href="estilo.css?v=20261022-usabilidade2">
 <link rel="stylesheet" href="biblia.css?v=20261022-base1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-base1">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-base1">
@@ -53,8 +53,7 @@
 <div class="tools" role="group" aria-label="Opções de leitura">
 <button class="btn g controle-compacto" id="temaBtn" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Tema claro/escuro"><span aria-hidden="true" id="temaIcone">☾</span></button>
 <button class="btn g controle-compacto" id="textoBtn" type="button" aria-label="Ajustar tamanho do texto" aria-expanded="false" aria-controls="painelTexto"><span aria-hidden="true">Aa</span></button>
-<div id="painelTexto" class="painel-texto" hidden role="region" aria-label="Leitura confortável" aria-describedby="leituraAviso"><h2 class="painel-titulo">Leitura confortável</h2><label for="textoRange">Tamanho da fonte</label><input id="textoRange" type="range" min="0" max="2" step="1" value="0" aria-label="Tamanho da fonte, três níveis"><p id="textoPreview">Este é um exemplo de leitura.</p><label for="fonteSelect">Fonte</label><select id="fonteSelect"><option value="padrao">Padrão</option><option value="legivel">Mais legível (system-ui)</option></select><label for="temaSelect">Tema</label><select id="temaSelect"><option value="auto">Automático</option><option value="light">Claro</option><option value="dark">Escuro</option></select><button class="btn g" id="altoContrasteBtn" type="button" aria-pressed="false">Alto contraste</button><fieldset class="filtro-quente-controles"><legend>Filtro quente</legend><label class="filtro-toggle" for="filtroQuente"><input id="filtroQuente" type="checkbox"> Ativar filtro quente</label><label for="filtroIntensidade">Intensidade</label><input id="filtroIntensidade" type="range" min="0" max="45" step="5" value="20" aria-label="Intensidade do filtro quente"><p id="filtroPreview" class="filtro-preview">Pré-visualização: texto de leitura confortável.</p></fieldset><p id="leituraAviso" class="muted-note">Muda a aparência da leitura na Ovelia; não controla a luz do aparelho.</p><div class="painel-texto-acoes"><button class="btn g" id="textoPadrao" type="button">Restaurar padrão</button></div></div>
-<button class="btn g" id="aCont" type="button" aria-pressed="false">Contraste</button>
+<div id="painelTexto" class="painel-texto" hidden role="region" aria-label="Leitura confortável" aria-describedby="leituraAviso"><h2 class="painel-titulo">Leitura confortável</h2><label for="textoRange">Tamanho da fonte</label><input id="textoRange" type="range" min="0" max="2" step="1" value="0" aria-label="Tamanho da fonte, três níveis"><p id="textoPreview">Este é um exemplo de leitura.</p><label for="fonteSelect">Fonte</label><select id="fonteSelect"><option value="padrao">Padrão</option><option value="legivel">Mais legível (system-ui)</option></select><label for="temaSelect">Tema</label><select id="temaSelect"><option value="auto">Automático</option><option value="light">Claro</option><option value="dark">Escuro</option></select><button class="btn g" id="altoContrasteBtn" type="button" aria-pressed="false">Contraste / alto contraste</button><fieldset class="filtro-quente-controles"><legend>Reduzir luz azul (filtro quente)</legend><label class="filtro-toggle" for="filtroQuente"><input id="filtroQuente" type="checkbox"> Ativar filtro de leitura quente</label><label for="filtroIntensidade">Intensidade</label><input id="filtroIntensidade" type="range" min="0" max="45" step="5" value="20" aria-label="Intensidade do filtro quente"><p id="filtroPreview" class="filtro-preview">Pré-visualização: texto de leitura confortável.</p></fieldset><p id="leituraAviso" class="muted-note">Aplica um filtro de cor sobre a página para deixar a leitura mais quente. Não altera a luz azul emitida pelo aparelho.</p><div class="painel-texto-acoes"><button class="btn g" id="textoPadrao" type="button">Restaurar padrão</button></div></div>
 <button class="btn g" id="perfilBtn" type="button">Trocar perfil</button>
 
 </div>
@@ -254,7 +253,7 @@
 <h3 id="bibliotecaKidsTitulo">📚 Histórias bíblicas</h3>
 <p>Escolha uma história para ler ou ouvir. Cada história tem uma pergunta para você pensar.</p>
 <div class="kids-library" id="kidsLibrary" aria-labelledby="bibliotecaKidsTitulo"></div>
-<div class="card kids-story-reader" id="kidsStoryReader" aria-live="polite">
+<div class="card kids-story-reader" id="kidsStoryReader" aria-live="polite" hidden>
   <div class="kids-story-progress"><span id="kidsStoryPageCount">1/12</span><progress id="kidsStoryProgress" max="12" value="1" aria-label="Progresso da história"></progress></div>
   <div id="kidsStoryScene" class="kids-story-scene" role="img" aria-label="Ilustração provisória da história"><span aria-hidden="true">📖</span><small>Ilustração provisória</small></div>
   <h3 id="kidsStoryTitle">Escolha uma história</h3>
@@ -263,10 +262,11 @@
   <div class="row kids-actions">
     <button class="btn g" type="button" id="kidsStoryListen">🔊 Ouvir (voz do aparelho)</button>
     <button class="btn g" type="button" id="kidsStoryParents">👨‍👩‍👧 Ler com meus pais</button>
-    <button class="btn g" type="button" id="kidsStoryStop">■ Parar voz</button>
+    <button class="btn g" type="button" id="kidsStoryQuestionToggle" aria-expanded="false" aria-controls="kidsStoryQuestion">💡 Pergunta da história</button>
+    <button class="btn g" type="button" id="kidsStoryStop" hidden>■ Parar voz</button>
     <button class="btn g" type="button" id="kidsStoryPrev">← Anterior</button>
     <button class="btn g" type="button" id="kidsStoryNext">Próxima →</button>
-    <button class="btn g" type="button" id="kidsStoryBack">Voltar à biblioteca</button>
+    <button class="btn g" type="button" id="kidsStoryBack">← Voltar à biblioteca</button>
   </div>
   <p id="kidsStoryAudioStatus" role="status" aria-live="polite" class="muted-note"></p>
   <div class="kids-question" id="kidsStoryQuestion" hidden>
@@ -368,7 +368,7 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261022-usabilidade1"></script>
+<script src="app.js?v=20261022-usabilidade2"></script>
 <script src="navegacao-inferior.js?v=20261019-quality1" defer></script>
 <script src="biblia.js?v=20261019-quality1"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
@@ -378,7 +378,7 @@
 <script src="progresso.js?v=20261019-estudos4"></script>
 <script src="interface.js?v=20261021-fix2"></script>
 
-<script src="./ovelia-kids.js?v=20261022-usabilidade1"></script>
+<script src="./ovelia-kids.js?v=20261022-usabilidade2"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>
 </body>
 </html>

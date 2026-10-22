@@ -25,15 +25,14 @@ var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
 function setProfileControls(){
   var senior=profile==='senior',kids=profile==='kids';
-  $('#aCont').textContent=senior?'Alto contraste':'Contraste';
-  $('#aCont').setAttribute('aria-label','Ativar ou desativar alto contraste');
+  var contrasteTopo=$('#aCont');if(contrasteTopo){contrasteTopo.textContent=senior?'Alto contraste':'Contraste';contrasteTopo.setAttribute('aria-label','Ativar ou desativar alto contraste');}
   var compact=profile==='adult';
   var voicePanel=$('#vozControles'),voiceToggle=$('#vozToggle');
   if(voicePanel&&voiceToggle){voicePanel.hidden=profile!=='senior';voicePanel.classList.remove('voz-aberto');voiceToggle.setAttribute('aria-expanded','false')}
   $('#textoBtn').hidden=false;$('#temaBtn').hidden=false;
-  $('#aCont').hidden=kids||compact;
+  var contrasteTopo=$('#aCont');if(contrasteTopo)contrasteTopo.hidden=true;
   $('#perfilBtn').hidden=false; /* Kids precisa sempre ter caminho de volta. */
-  if(compact){$('#aCont').hidden=true}
+  /* O contraste fica concentrado no painel Aa para evitar dois botões com a mesma função. */
 }
 function applyProfile(){
   document.body.classList.remove('perfil-kids','perfil-senior','perfil-easy','perfil-adult');
@@ -87,7 +86,8 @@ perfilInicio.addEventListener('keydown',function(e){
   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
 });
-function toggleMainMenu(force){var o=typeof force==='boolean'?force:!menu.classList.contains('open');menu.classList.toggle('open',o);if(menuBtn)menuBtn.setAttribute('aria-expanded',String(o));return o;}
+var menuNav=menu?menu.closest('nav[aria-label="Menu principal"]'):null;
+function toggleMainMenu(force){var o=typeof force==='boolean'?force:!menu.classList.contains('open');menu.classList.toggle('open',o);if(menuNav)menuNav.classList.toggle('menu-aberto',o);if(menuBtn)menuBtn.setAttribute('aria-expanded',String(o));return o;}
 if(menuBtn)menuBtn.addEventListener('click',function(){toggleMainMenu()});
 var menuVoltar=$('#menuVoltar');if(menuVoltar)menuVoltar.addEventListener('click',function(){toggleMainMenu(false);if(menuBtn)menuBtn.focus()});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open')){toggleMainMenu(false);if(menuBtn)menuBtn.focus()}});
 window.OveliaMainMenu={toggle:toggleMainMenu,close:function(){toggleMainMenu(false)}};
@@ -98,7 +98,7 @@ function show(first){
   if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
   $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
-  menu.classList.remove('open');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
+  menu.classList.remove('open');if(menuNav)menuNav.classList.remove('menu-aberto');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
   window.scrollTo(0,0);
   var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Pequenas Ovelias — histórias e orações':profile==='senior'?'Ovelias Sábias — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
@@ -124,16 +124,15 @@ if(filtroQuente)filtroQuente.addEventListener('change',aplicarFiltro);if(filtroI
 if(fonteSelect){try{fonteSelect.value=localStorage.getItem('ovelia-fonte-legivel')==='1'?'legivel':'padrao'}catch(e){};document.body.classList.toggle('fonte-legivel',fonteSelect.value==='legivel');fonteSelect.addEventListener('change',function(){document.body.classList.toggle('fonte-legivel',fonteSelect.value==='legivel');try{localStorage.setItem('ovelia-fonte-legivel',fonteSelect.value==='legivel'?'1':'0')}catch(e){}})}
 textoBtn.addEventListener('click',function(){var abrir=painelTexto.hidden; painelTexto.hidden=!abrir;textoBtn.setAttribute('aria-expanded',String(abrir));if(abrir)textoRange.focus()});
 textoRange.addEventListener('input',function(){tam=+textoRange.value;applyPrefs();textoPreview.className='';textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam]});
-$('#textoPadrao').addEventListener('click',function(){tam=0;textoRange.value='0';applyPrefs();textoPreview.style.fontSize='1rem';if(fonteSelect)fonteSelect.value='padrao';document.body.classList.remove('fonte-legivel');if(filtroQuente)filtroQuente.checked=false;if(filtroIntensidade)filtroIntensidade.value='20';if(fonteSelect){try{localStorage.setItem('ovelia-fonte-legivel','0')}catch(e){}}body.classList.remove('contraste');$('#aCont').setAttribute('aria-pressed','false');if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed','false');aplicarPrefs();aplicarFiltro();aplicarTema('auto',true)});
-altoContrasteBtn.addEventListener('click',function(){var on=body.classList.toggle('contraste');altoContrasteBtn.setAttribute('aria-pressed',String(on));$('#aCont').setAttribute('aria-pressed',String(on));applyPrefs()});
+$('#textoPadrao').addEventListener('click',function(){tam=0;textoRange.value='0';applyPrefs();textoPreview.style.fontSize='1rem';if(fonteSelect)fonteSelect.value='padrao';document.body.classList.remove('fonte-legivel');if(filtroQuente)filtroQuente.checked=false;if(filtroIntensidade)filtroIntensidade.value='20';if(fonteSelect){try{localStorage.setItem('ovelia-fonte-legivel','0')}catch(e){}}body.classList.remove('contraste');var ct=$('#aCont');if(ct)ct.setAttribute('aria-pressed','false');if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed','false');aplicarPrefs();aplicarFiltro();aplicarTema('auto',true)});
+altoContrasteBtn.addEventListener('click',function(){var on=body.classList.toggle('contraste');altoContrasteBtn.setAttribute('aria-pressed',String(on));var ct=$('#aCont');if(ct)ct.setAttribute('aria-pressed',String(on));applyPrefs()});
 /* ---------- Acessibilidade: letra e contraste (só preferências locais) ---------- */
 var tam=0,body=document.body;
 function applyPrefs(){body.classList.remove('t1','t2');if(tam)body.classList.add('t'+tam);if(textoRange)textoRange.value=String(tam);if(textoPreview)textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam];if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed',String(body.classList.contains('contraste')));
   try{localStorage.setItem('ovelia-letra',tam);localStorage.setItem('ovelia-contraste',body.classList.contains('contraste')?'1':'0')}catch(e){}}
 try{tam=+localStorage.getItem('ovelia-letra')||0;if(localStorage.getItem('ovelia-contraste')==='1'){body.classList.add('contraste')}}catch(e){}
 if(window.matchMedia&&window.matchMedia('(prefers-contrast: more)').matches&&!body.classList.contains('contraste')){try{if(localStorage.getItem('ovelia-contraste')===null)body.classList.add('contraste')}catch(e){}}
-var cb=$('#aCont');cb.setAttribute('aria-pressed',body.classList.contains('contraste'));
-cb.addEventListener('click',function(){var on=body.classList.toggle('contraste');cb.setAttribute('aria-pressed',on);applyPrefs()});
+var cb=$('#aCont');if(cb){cb.setAttribute('aria-pressed',body.classList.contains('contraste'));cb.addEventListener('click',function(){var on=body.classList.toggle('contraste');cb.setAttribute('aria-pressed',on);applyPrefs()});}
 applyPrefs();
 
 
@@ -358,7 +357,7 @@ var litStatus=$('#litStatus'),litDia=$('#litDia'),litSem=$('#litSem'),litReflexa
 $('#litData').textContent=dataBR;
 $('#litAtual').textContent='';
 var LIT_API='https://liturgia.up.railway.app/v2/';
-/* 2ª tentativa na mesma API pública (versão v3, documentada no repositório Dancrf/liturgia-diaria). Não existe, até onde pudemos verificar, outra fonte pública estável e independente. */
+/* Segunda versão do mesmo serviço público. */
 var LIT_API_V3='https://liturgia.up.railway.app/v3/';
 var temasEstudo=[
  {id:'misericordia',palavras:['misericórdia','misericordia','perdo','compaix','perdão'],titulo:'Misericórdia e perdão',versos:['Lucas 15,11-32','Efésios 4,32','Salmo 103,8-13'],reflexao:'A misericórdia de Deus nos convida a recomeçar e a tratar os outros com compaixão.',pergunta:'A quem posso oferecer perdão, escuta ou uma nova oportunidade?',acao:'Faça um gesto concreto de reconciliação, respeitando também os limites necessários.'},
@@ -395,7 +394,7 @@ function renderLiturgy(d,origem,dt,opts){var antiga=!!(opts&&opts.antiga),pedida
  var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
  $('#litData').textContent=dataLonga(antiga&&pedida?pedida:dt);
  var atualizado='';try{if(d.atualizadoEm)atualizado=' · atualizado em '+new Date(d.atualizadoEm).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){}
- var qualFonte=origem==='arquivo'?'arquivo salvo pela Ovelia':(origem==='api'?'consulta ao vivo a um serviço público de liturgia':'cadastro manual da Ovelia');
+ var qualFonte=d.origemDados|| (origem==='arquivo'?'arquivo salvo pela Ovelia':(origem==='api'?'consulta ao vivo a um serviço público de liturgia':'cadastro manual da Ovelia'));
  $('#litAtual').textContent='Fonte: '+qualFonte+' · dados de '+dt.toLocaleDateString('pt-BR')+(origem==='arquivo'?atualizado:'')+(antiga?' (anteriores à data pedida)':'')+'.';
  $('#litAtual').style.fontSize='.88rem';
  var aviso=antiga?'<div class="aviso" role="alert"><p><strong>Atenção: esta NÃO é a liturgia de '+(pedida?pedida.toLocaleDateString('pt-BR'):'hoje')+'.</strong></p><p>Não conseguimos carregar os dados desse dia agora. Abaixo está a última liturgia salva, de '+dataLonga(dt)+'. Não use estas leituras como as de hoje.</p><button class="btn g" type="button" id="litTentarNovamente">Tentar novamente</button> <a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></div>':'';
@@ -455,7 +454,7 @@ function carregarLiturgia(isoSel){var dt=dataDeIso(isoSel)||new Date(),seq=++lit
  var fArq=function(){return arquivoDoDia(dt).then(function(d){return{d:d,o:'arquivo'}})};
  var fApi=function(){return apiAoVivo(dt).then(function(d){return{d:d,o:'api'}})};
  (LIT_MOSTRAR_TEXTO?fApi():fArq())
-  .catch(function(){return LIT_MOSTRAR_TEXTO?fArq():fApi()})
+  .catch(function(){return (LIT_MOSTRAR_TEXTO?fArq():fApi())})
   .then(function(r){clearTimeout(lento);if(seq!==litSeq)return;renderLiturgy(r.d,r.o,dt)},function(){clearTimeout(lento);if(seq!==litSeq)return;fallbackLiturgy(dt,seq)});
 }
 (function(){var input=$('#litDataEscolhida');if(!input)return;input.value=iso;

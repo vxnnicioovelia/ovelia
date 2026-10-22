@@ -515,3 +515,47 @@ body.tema-escuro .kids-story-scene,body.dark .kids-story-scene{background:#29233
 .kids-story-card{min-height:140px;padding:20px}
 .kids-story-card .kids-story-art,.kids-story-card svg,.kids-story-card img{width:min(100%,180px);height:auto;max-height:180px;align-self:center;object-fit:contain}
 .kids-story-card:focus-visible{outline:3px solid var(--roxo-500);outline-offset:3px}
+
+
+/* Ajustes de usabilidade — revisão de 22/10/2026 */
+/* O botão de retorno pertence ao menu aberto; nunca deve ficar solto na página. */
+nav[aria-label="Menu principal"] .menu-voltar{display:none!important}
+nav[aria-label="Menu principal"].menu-aberto .menu-voltar{display:block!important;min-height:44px;margin:8px 0 10px}
+/* Contraste e filtro de leitura ficam agrupados no painel Aa. */
+.painel-texto #altoContrasteBtn{display:block;width:100%;margin:10px 0;min-height:44px}
+.painel-texto .filtro-quente-controles{margin-top:10px}
+
+/* Perfil infantil: tipografia e navegação compactas em telas pequenas. */
+body.perfil-kids{--fs:16.5px}
+body.perfil-kids #infantil .kids{font-size:1em;line-height:1.55}
+body.perfil-kids #infantil h2{font-size:1.3rem;line-height:1.25}
+body.perfil-kids #infantil h3{font-size:1.08rem;line-height:1.3;margin:.8em 0 .35em}
+body.perfil-kids #infantil h4{font-size:.98rem;margin:.55em 0 .35em}
+body.perfil-kids #infantil .side{gap:12px;align-items:center}
+body.perfil-kids #infantil .side img{flex:0 0 76px;width:76px;max-height:96px;object-fit:contain}
+body.perfil-kids #infantil .kids-feature-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0}
+body.perfil-kids #infantil .kids-feature-tab{min-height:42px;padding:7px 4px;font-size:.83rem;border-width:1px;border-radius:12px}
+body.perfil-kids #infantil .kids-trilha label{padding:8px 4px;gap:8px}
+body.perfil-kids #infantil .kids-trilha input{width:21px;height:21px}
+body.perfil-kids #infantil .kids-story-card{padding:12px;min-height:0;gap:4px;border-width:1px}
+body.perfil-kids #infantil .kids-story-card strong{font-size:.98rem;line-height:1.3}
+body.perfil-kids #infantil .kids-story-card small{font-size:.78rem}
+body.perfil-kids #infantil .kids-actions{gap:6px;margin:8px 0}
+body.perfil-kids #infantil .kids-actions .btn{flex:1 1 42%;min-height:42px;padding:8px 10px;font-size:.84rem;line-height:1.25;white-space:normal}
+body.perfil-kids #infantil .kids-story-reader{padding:14px;margin:0 0 16px}
+body.perfil-kids #infantil .kids-story-progress{font-size:.82rem;margin-bottom:8px}
+body.perfil-kids #infantil .kids-story-scene{min-height:92px;padding:10px;margin:6px 0 10px;gap:4px}
+body.perfil-kids #infantil .kids-story-scene span{font-size:2.25rem}
+body.perfil-kids #infantil #kidsStoryText{font-size:1rem;line-height:1.65}
+body.perfil-kids #infantil #kidsStoryText p{margin:.65em 0}
+body.perfil-kids #infantil #kidsStoryQuestion{margin-top:10px;padding-top:10px}
+body.perfil-kids #infantil.kids-story-open .kids>:not(#kidsStoryReader){display:none!important}
+body.perfil-kids #infantil.kids-story-open #kidsStoryReader{display:block!important}
+body.perfil-kids #infantil.kids-story-open #kidsStoryTitle{font-size:1.35rem;margin-bottom:.35em}
+body.perfil-kids #infantil.kids-story-open #kidsStoryBack{flex-basis:100%;margin-inline-start:0}
+body.perfil-kids #infantil #kidsStoryReader[hidden],body.perfil-kids #infantil #kidsStoryQuestion[hidden],body.perfil-kids #infantil .kids-actions .btn[hidden]{display:none!important}
+@media(max-width:380px){
+  body.perfil-kids #infantil .kids-feature-tab{font-size:.76rem;padding:6px 2px}
+  body.perfil-kids #infantil .kids-story-reader{padding:11px}
+  body.perfil-kids #infantil .kids-actions .btn{font-size:.79rem;padding:7px 8px}
+}

@@ -16,7 +16,7 @@ var stories=[
 {id:'zacheu',title:'Zaqueu encontra Jesus',ref:'Lucas 19,1–10',text:'Zaqueu queria ver Jesus e subiu em uma árvore porque era baixinho e havia muita gente. Jesus o viu e quis ficar em sua casa. Zaqueu decidiu corrigir seus erros e repartir seus bens. O encontro com Jesus pode nos inspirar a mudar e reparar o mal que fizemos.',q:'O que Zaqueu decidiu fazer?',choices:['Corrigir seus erros e repartir','Continuar enganando as pessoas','Nunca mais falar com ninguém'],correct:0,why:'Muito bem! Zaqueu decidiu mudar suas atitudes e reparar seus erros.'},
 {id:'pentecostes',title:'O Espírito Santo vem',ref:'Atos dos Apóstolos 2,1–11',text:'Os discípulos estavam reunidos quando o Espírito Santo veio sobre eles. Eles ganharam coragem para anunciar a mensagem de Jesus a pessoas de muitos lugares. A festa de Pentecostes recorda a presença do Espírito Santo e o nascimento missionário da Igreja.',q:'O que os discípulos receberam?',choices:['Coragem para anunciar Jesus','Uma ordem para nunca sair de casa','Um mapa do Egito'],correct:0,why:'Isso! O Espírito Santo fortaleceu os discípulos para anunciar Jesus.'}
 ];
-var list=$('#kidsLibrary'),title=$('#kidsStoryTitle'),ref=$('#kidsStoryRef'),text=$('#kidsStoryText'),qbox=$('#kidsStoryQuestion'),qt=$('#kidsQuestionText'),choices=$('#kidsQuestionChoices'),feedback=$('#kidsQuestionFeedback'),audioStatus=$('#kidsStoryAudioStatus'),scene=$('#kidsStoryScene'),pageCount=$('#kidsStoryPageCount'),pageProgress=$('#kidsStoryProgress');
+var list=$('#kidsLibrary'),reader=$('#kidsStoryReader'),kidsSection=$('#infantil'),questionToggle=$('#kidsStoryQuestionToggle'),title=$('#kidsStoryTitle'),ref=$('#kidsStoryRef'),text=$('#kidsStoryText'),qbox=$('#kidsStoryQuestion'),qt=$('#kidsQuestionText'),choices=$('#kidsQuestionChoices'),feedback=$('#kidsQuestionFeedback'),audioStatus=$('#kidsStoryAudioStatus'),scene=$('#kidsStoryScene'),pageCount=$('#kidsStoryPageCount'),pageProgress=$('#kidsStoryProgress');
 var sceneIcons=['🌍','🌈','🧭','🌊','🛡️','⭐','⛵','🤝','🐑','🍞','🌳','🕊️'];
 var current=0, answered={};
 try{answered=JSON.parse(localStorage.getItem('ovelia-kids-quiz-v1')||'{}')||{}}catch(e){answered={}}
@@ -25,19 +25,20 @@ function renderList(){
  if(!list)return;
  list.innerHTML=stories.map(function(story,i){return '<button class="kids-story-card'+(i===current?' selected':'')+'" type="button" data-story="'+i+'" aria-pressed="'+(i===current)+'"><span class="kids-story-number">História '+(i+1)+'</span><strong>'+esc(story.title)+'</strong><small>'+esc(story.ref)+'</small>'+(answered[story.id]&&answered[story.id].correct?'<span class="kids-done">✓ Aprendida</span>':'')+'</button>'}).join('');
 }
+function setStoryMode(open){if(kidsSection)kidsSection.classList.toggle('kids-story-open',!!open);if(reader)reader.hidden=!open;var back=$('#kidsStoryBack');if(back)back.hidden=!open;if(questionToggle){questionToggle.setAttribute('aria-expanded','false');questionToggle.textContent='💡 Pergunta da história'}if(qbox)qbox.hidden=true}
 function renderStory(i){
- current=(i+stories.length)%stories.length;var st=stories[current];
+ current=(i+stories.length)%stories.length;var st=stories[current];if(reader)reader.classList.remove('kids-read-together');setStoryMode(true);
  if(title)title.textContent=st.title;if(ref)ref.textContent='Referência bíblica: '+st.ref;
  if(pageCount)pageCount.textContent=(current+1)+'/'+stories.length;if(pageProgress){pageProgress.max=stories.length;pageProgress.value=current+1}
  if(scene){scene.innerHTML='<span aria-hidden="true">'+sceneIcons[current%sceneIcons.length]+'</span><strong>'+esc(st.title)+'</strong><small>Ilustração provisória — arte final pendente</small>';scene.setAttribute('aria-label','Ilustração provisória: '+st.title)}
  if(text)text.innerHTML='<p>'+esc(st.text)+'</p><p><strong>Para guardar no coração:</strong> '+esc(st.why)+'</p>';
  if(qt)qt.textContent=st.q;if(choices){choices.innerHTML=st.choices.map(function(c,j){return '<button class="btn g" type="button" data-choice="'+j+'">'+esc(c)+'</button>'}).join('')}
- if(qbox)qbox.hidden=false;
+ if(qbox)qbox.hidden=true;
  if(feedback){var old=answered[st.id];feedback.textContent=old&&old.correct?'Você já acertou esta pergunta. '+st.why:'Escolha uma resposta para esta história.'}
  if(choices){Array.prototype.forEach.call(choices.querySelectorAll('button'),function(btn,j){btn.disabled=!!(answered[st.id]&&answered[st.id].correct);if(answered[st.id]&&answered[st.id].correct&&j===st.correct)btn.classList.add('kids-answer-correct')})}
  renderList();
 }
-if(list){renderList();list.addEventListener('click',function(e){var b=e.target.closest('[data-story]');if(b)renderStory(+b.getAttribute('data-story'))})}
+if(list){renderList();setStoryMode(false);list.addEventListener('click',function(e){var b=e.target.closest('[data-story]');if(b){renderStory(+b.getAttribute('data-story'));if(reader){reader.scrollIntoView({behavior:'smooth',block:'start'});var h=$('#kidsStoryTitle');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}}})}
 if(choices)choices.addEventListener('click',function(e){
  var b=e.target.closest('[data-choice]');if(!b)return;var st=stories[current],n=+b.getAttribute('data-choice'),correct=n===st.correct;
  if(answered[st.id]&&answered[st.id].correct){feedback.textContent='Você já acertou esta pergunta. '+st.why;return}
@@ -53,10 +54,11 @@ if(choices)choices.addEventListener('click',function(e){
 });
 $('#kidsStoryPrev')?.addEventListener('click',function(){renderStory(current-1)});
 $('#kidsStoryParents')?.addEventListener('click',function(){if(window.Voz&&Voz.parar)Voz.parar();if(audioStatus)audioStatus.textContent='Modo “Ler com meus pais”: texto ampliado, sem áudio.';var reader=$('#kidsStoryReader');if(reader){reader.classList.add('kids-read-together');reader.scrollIntoView({behavior:'smooth',block:'start'})}});
-$('#kidsStoryBack')?.addEventListener('click',function(){if(window.Voz&&Voz.parar)Voz.parar();var lib=$('#kidsLibrary');if(lib)lib.scrollIntoView({behavior:'smooth',block:'start'});if(audioStatus)audioStatus.textContent='Biblioteca de histórias.'});
+$('#kidsStoryBack')?.addEventListener('click',function(){if(window.Voz&&Voz.parar)Voz.parar();var parar=$('#kidsStoryStop');if(parar)parar.hidden=true;if(reader)reader.classList.remove('kids-read-together');setStoryMode(false);var lib=$('#kidsLibrary');if(lib){lib.scrollIntoView({behavior:'smooth',block:'start'});var h=$('#bibliotecaKidsTitulo');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}if(audioStatus)audioStatus.textContent='Biblioteca de histórias.'});
+questionToggle?.addEventListener('click',function(){var open=!!(qbox&&qbox.hidden);if(qbox)qbox.hidden=!open;questionToggle.setAttribute('aria-expanded',String(open));questionToggle.textContent=open?'✕ Fechar pergunta':'💡 Pergunta da história';if(open&&qbox)qbox.scrollIntoView({behavior:'smooth',block:'nearest'})});
 $('#kidsStoryNext')?.addEventListener('click',function(){renderStory(current+1)});
-$('#kidsStoryListen')?.addEventListener('click',function(){var st=stories[current];var reader=$('#kidsStoryReader');if(reader)reader.classList.remove('kids-read-together');if(window.Voz&&typeof Voz.falar==='function'){if(audioStatus)audioStatus.textContent='Solicitando a leitura em voz alta…';/* Deixe Voz.falar tentar atualizar a lista: no Safari, as vozes podem chegar depois do primeiro carregamento. */Voz.falar(st.title+'. Referência bíblica: '+st.ref+'. '+st.text+' Ensinamento: '+st.why,st.title)}else if(audioStatus)audioStatus.textContent='A leitura por voz não está disponível neste navegador. Tente atualizar o navegador ou confira as vozes instaladas no aparelho.'});
- $('#kidsStoryStop')?.addEventListener('click',function(){if(window.Voz&&Voz.parar){Voz.parar();if(audioStatus)audioStatus.textContent='Leitura interrompida.'}else if(audioStatus)audioStatus.textContent='O controle de áudio não está disponível neste navegador.'});
+$('#kidsStoryListen')?.addEventListener('click',function(){var st=stories[current];var reader=$('#kidsStoryReader');if(reader)reader.classList.remove('kids-read-together');if(window.Voz&&typeof Voz.falar==='function'){var parar=$('#kidsStoryStop');if(parar)parar.hidden=false;if(audioStatus)audioStatus.textContent='Solicitando a leitura em voz alta…';/* Deixe Voz.falar tentar atualizar a lista: no Safari, as vozes podem chegar depois do primeiro carregamento. */Voz.falar(st.title+'. Referência bíblica: '+st.ref+'. '+st.text+' Ensinamento: '+st.why,st.title)}else if(audioStatus)audioStatus.textContent='A leitura por voz não está disponível neste navegador. Tente atualizar o navegador ou confira as vozes instaladas no aparelho.'});
+ $('#kidsStoryStop')?.addEventListener('click',function(){if(window.Voz&&Voz.parar){Voz.parar();if(audioStatus)audioStatus.textContent='Leitura interrompida.';var parar=$('#kidsStoryStop');if(parar)parar.hidden=true}else if(audioStatus)audioStatus.textContent='O controle de áudio não está disponível neste navegador.'});
 /* Pintura em canvas: desenhos vetoriais próprios desenhados localmente. */
 var canvas=$('#kidsCanvas'),ctx=canvas&&canvas.getContext('2d'),paintCtx=ctx,
      outlineCanvas=$('#kidsOutlineCanvas'),outlineCtx=outlineCanvas&&outlineCanvas.getContext('2d'),
