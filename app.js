@@ -272,68 +272,63 @@ var ORIG={
 for(var k in ORIG)P[k]=ORIG[k];
 var lo=$('#listaOracoes');
 lo.innerHTML=CATS.map(function(c){return '<div class="categoria-oracao '+(c.o==='kids'?'kids-cat':c.o==='original'?'original-cat':'trad-cat')+'"><h3>'+esc(c.t)+'</h3>'+(c.o==='original'||c.o==='kids'?'<p class="aviso"><b>'+(c.o==='kids'?'Orações infantis originais da Ovelia.':'Composições originais da Ovelia.')+'</b> Não são textos oficiais da Igreja.</p>':'')+c.ids.map(function(id){var p=P[id];
-  return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Texto tradicional · em conferência')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
+  return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Oração tradicional')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
 lo.addEventListener('click',function(e){var b=e.target.closest('[data-copiar]');if(!b)return;var t=P[b.getAttribute('data-copiar')].t,st=b.parentNode.querySelector('.sr');
   function ok(){st.textContent='Texto copiado.'}function fail(){st.textContent='Não foi possível copiar. Selecione o texto e copie manualmente.'}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fail)}else fail()});
 
-/* Busca de orações por título, texto e categoria; mantém as categorias existentes. */
-var buscaOracoes=$('#buscaOracoes'),oracoesStatus=$('#oracoesStatus');
-if(buscaOracoes)buscaOracoes.addEventListener('input',function(){
- var q=buscaOracoes.value.trim().toLocaleLowerCase('pt-BR'),shown=0;
- $$('#listaOracoes .categoria-oracao').forEach(function(cat){var count=0;
-  $$('.categoria-oracao details',cat).forEach(function(d){var match=!q||(d.textContent||'').toLocaleLowerCase('pt-BR').indexOf(q)>=0;d.hidden=!match;if(match){count++;shown++}});
-  cat.hidden=count===0;
- });
- if(oracoesStatus)oracoesStatus.textContent=q?(shown+' oração(ões) encontrada(s).'):'Todas as orações disponíveis.';
-});
-
-/* ---------- Terço: contador passo a passo (o progresso NÃO é salvo) ---------- */
+/* ---------- Terço: passos, meditações originais e progresso local ---------- */
 var MIST={
  Gozosos:['A Anunciação do Anjo a Maria','A Visitação de Maria a Isabel','O Nascimento de Jesus em Belém','A Apresentação de Jesus no Templo','A Perda e o Encontro de Jesus no Templo'],
  Luminosos:['O Batismo de Jesus no Jordão','A auto-revelação de Jesus nas Bodas de Caná','O anúncio do Reino de Deus e o convite à conversão','A Transfiguração de Jesus','A instituição da Eucaristia'],
  Dolorosos:['A Agonia de Jesus no Horto','A Flagelação de Jesus','A Coroação de espinhos','Jesus carrega a cruz até o Calvário','A Crucificação e Morte de Jesus'],
  Gloriosos:['A Ressurreição de Jesus','A Ascensão de Jesus ao Céu','A vinda do Espírito Santo sobre os Apóstolos','A Assunção de Maria ao Céu','A Coroação de Maria no Céu']
 };
+var MEDITACOES={
+ Gozosos:['Maria acolhe a vontade de Deus com confiança. Que passo de confiança posso dar hoje, mesmo sem conhecer todo o caminho?','Maria vai ao encontro de Isabel. Quem precisa hoje da minha presença, escuta ou ajuda concreta?','Jesus nasce na simplicidade. Como posso abrir espaço para Deus e para quem precisa de acolhida?','Maria e José apresentam Jesus ao Senhor. O que desejo colocar hoje nas mãos de Deus?','Maria e José procuram Jesus com perseverança. Quando me sinto perdido, onde posso voltar a procurá-lo?'],
+ Luminosos:['Jesus entra nas águas e assume sua missão. Como posso viver com fidelidade minha vocação cotidiana?','Em Caná, Maria aponta para Jesus. Que situação precisa da minha confiança e de uma atitude generosa?','Jesus anuncia o Reino e chama à conversão. Qual pequena mudança pode aproximar minhas atitudes do Evangelho?','Os discípulos contemplam a glória de Jesus. Que luz da fé pode me sustentar nas dificuldades de hoje?','Jesus se entrega como alimento. Como posso oferecer meu tempo e meus dons para alimentar a esperança de alguém?'],
+ Dolorosos:['No Horto, Jesus enfrenta a angústia em oração. O que preciso entregar a Deus e quem posso procurar para não sofrer sozinho?','Jesus é flagelado. Como posso respeitar a dignidade de quem sofre e evitar causar feridas com minhas palavras?','Jesus é humilhado com espinhos. Como respondo às injustiças sem abandonar a dignidade e a caridade?','Jesus carrega a cruz. Que peso posso ajudar alguém a carregar hoje?','Jesus entrega a vida por amor. Como posso praticar um amor que se traduz em serviço e perdão?'],
+ Gloriosos:['A Ressurreição anuncia que a morte não tem a última palavra. Onde preciso reacender a esperança?','Jesus retorna ao Pai e confia uma missão aos discípulos. Que responsabilidade posso assumir com amor?','O Espírito Santo fortalece a comunidade. Peço coragem para falar e agir com verdade, bondade e sabedoria.','Maria participa plenamente da promessa de Deus. Como posso caminhar com esperança e fidelidade?','A glória de Maria aponta para a promessa de Deus ao seu povo. Como posso celebrar o bem sem inveja e servir com humildade?']
+};
 var DIAS={0:'Gloriosos',1:'Gozosos',2:'Dolorosos',3:'Gloriosos',4:'Luminosos',5:'Dolorosos',6:'Gozosos'};
-var grp=DIAS[new Date().getDay()],steps=[],n=0;
-var TERCO_KEY='ovelia-terco-progresso-v1';
-var meditacoes={Gozosos:['Acolha a vontade de Deus com confiança.','Peça a graça de reconhecer Jesus nas pessoas próximas.','Contemple a simplicidade do nascimento de Jesus.','Peça respeito pela vida e fidelidade a Deus.','Busque Jesus com perseverança quando se sentir perdido.'],Luminosos:['Renove as promessas do batismo e escolha o bem.','Peça atenção aos sinais de Deus na vida cotidiana.','Peça coragem para viver e anunciar o Evangelho.','Reserve espaço para o silêncio e a oração.','Agradeça o dom da Eucaristia e a presença de Cristo.'],Dolorosos:['Entregue a Deus suas angústias e peça serenidade.','Reze por quem sofre violência e humilhação.','Peça humildade e respeito por toda pessoa.','Encontre força para carregar as dificuldades sem perder a esperança.','Reze por quem sofre e por todos os que cuidam deles.'],Gloriosos:['Renove a esperança na vida nova em Cristo.','Peça que suas escolhas tenham direção e propósito.','Peça abertura ao Espírito Santo e seus dons.','Contemple a esperança cristã e a dignidade humana.','Peça perseverança na fé e na caridade.']};
-try{var savedTerco=JSON.parse(localStorage.getItem(TERCO_KEY)||'null');if(savedTerco&&MIST[savedTerco.grupo]&&Number.isInteger(savedTerco.passo)){grp=savedTerco.grupo;n=Math.max(0,Math.min(steps.length||1000,savedTerco.passo));}}catch(e){}
+var TERCO_KEY='ovelia-terco-progresso',grp=DIAS[new Date().getDay()],steps=[],n=0;
+try{var savedTerco=JSON.parse(localStorage.getItem(TERCO_KEY)||'null');if(savedTerco&&MIST[savedTerco.grupo]){grp=savedTerco.grupo;n=Math.max(0,Math.min(Number(savedTerco.passo)||0,999));}}catch(e){}
+function saveTerco(){try{localStorage.setItem(TERCO_KEY,JSON.stringify({grupo:grp,passo:n,atualizado:new Date().toISOString()}));}catch(e){}}
 function buildSteps(){
-  steps=[{p:'sinal',x:'Sinal da Cruz. Segurando o crucifixo.',b:0},{p:'credo',x:'Reze o Credo, ainda no crucifixo.',b:0},{p:'pai',x:'Primeira conta grande.',b:1}];
-  for(var i=1;i<=3;i++)steps.push({p:'ave',x:'Ave-Maria '+i+' de 3, nas três contas pequenas seguintes.',b:1});
-  steps.push({p:'gloria',x:'Glória ao Pai, antes de iniciar a primeira dezena.',b:0});
-  for(var d=1;d<=5;d++){var m=MIST[grp][d-1];
-    steps.push({p:null,x:d+'º mistério: '+m+'. Medite um instante.',b:0,m:1});
-    steps.push({p:'pai',x:d+'ª dezena · conta grande.',b:1});
-    for(var k=1;k<=10;k++)steps.push({p:'ave',x:d+'ª dezena · Ave-Maria '+k+' de 10.',b:1});
-    steps.push({p:'gloria',x:'Ao fim da dezena, reze o Glória. Se quiser, acrescente a jaculatória de Fátima.',b:0})}
-  steps.push({p:'salve',x:'Ao terminar as cinco dezenas, reze a Salve-Rainha.',b:0});
-  steps.push({p:'sinal',x:'Conclua com o Sinal da Cruz. Terço concluído.',b:0});
+ steps=[{p:'sinal',x:'Faça o Sinal da Cruz, segurando o crucifixo.',b:0},{p:'credo',x:'Reze o Credo no crucifixo.',b:0},{p:'pai',x:'Reze um Pai-Nosso na primeira conta grande.',b:1}];
+ for(var i=1;i<=3;i++)steps.push({p:'ave',x:'Reze a Ave-Maria '+i+' de 3, pedindo fé, esperança e caridade.',b:1});
+ steps.push({p:'gloria',x:'Reze o Glória ao Pai antes das cinco dezenas.',b:0});
+ for(var d=1;d<=5;d++){var m=MIST[grp][d-1];
+  steps.push({p:null,x:d+'º mistério: '+m+'.',b:0,m:d,med:MEDITACOES[grp][d-1]});
+  steps.push({p:'pai',x:d+'ª dezena: reze o Pai-Nosso na conta grande.',b:1,m:d});
+  for(var k=1;k<=10;k++)steps.push({p:'ave',x:d+'ª dezena: Ave-Maria '+k+' de 10.',b:1,m:d});
+  steps.push({p:'gloria',x:'Ao terminar a '+d+'ª dezena, reze o Glória ao Pai.',b:0,m:d});
+ }
+ steps.push({p:'salve',x:'Ao terminar as cinco dezenas, reze a Salve-Rainha.',b:0},{p:'sinal',x:'Conclua com o Sinal da Cruz. O terço foi concluído.',b:0});
+ n=Math.min(n,steps.length);
 }
 function drawTerco(){
-  var beadIdx=-1,h='';steps.forEach(function(s,i){if(s.b){beadIdx++;var st=i<n?' f':'';var cur=(i===n-1)?' cur':'';h+='<span class="bead'+((s.p==='pai')?' big':'')+st+cur+'"></span>'}});
-  $('#contas').innerHTML=h;
-  $('#contas').setAttribute('aria-label','Contas do terço; a conta atual está destacada.');
-  $('#progFill').style.width=Math.round(n/steps.length*100)+'%';$('#progTxt').textContent='Passo '+n+' de '+steps.length+' · '+Math.round(n/steps.length*100)+'%';
-  var box=$('#passo');
-  if(n===0){box.innerHTML='<p><b>Escolha os mistérios e toque em “Começar / Próximo passo”.</b></p>'}
-  else{var s=steps[n-1],med=s.m?meditacoes[grp][(+s.x.match(/^([1-5])/)[1])-1]:'';box.innerHTML='<h3>'+(s.p?esc(P[s.p].n):'Anúncio do mistério')+'</h3><p>'+esc(s.x)+'</p>'+(med?'<div class="card terco-meditacao"><strong>Meditação</strong><p>'+esc(med)+'</p></div>':'')+(s.p?'<div class="oracao">'+esc(P[s.p].t)+'</div>':'')}
-  if(n>0&&$('#vozPasso').checked)lerPasso();
-  $('#tAnt').disabled=n===0;$('#tProx').disabled=n>=steps.length;$('#tProx').textContent=n===0?'Começar':'Próximo passo';
-  try{localStorage.setItem(TERCO_KEY,JSON.stringify({grupo:grp,passo:n,atualizado:new Date().toISOString()}))}catch(e){}
-  var persist=$('#tercoPersistencia');if(persist)persist.textContent=n>=steps.length?'Terço concluído. Seu progresso continua guardado neste aparelho.':(n>0?'Progresso guardado: passo '+n+' de '+steps.length+'. Você pode sair e retomar depois.':'Pronto para começar. O progresso será guardado neste aparelho.');
+ var contas=[],h='',last=-1;
+ steps.forEach(function(s,i){if(s.b){last++;var state=i<n?'feita':(i===n?'atual':'');var label=(s.p==='pai'?'Conta grande':'Conta pequena')+' · passo '+(i+1)+': '+s.x;
+  h+='<button type="button" class="bead '+(s.p==='pai'?'big ':'')+state+'" data-terco-step="'+(i+1)+'" aria-label="'+esc(label)+'" aria-current="'+(i===n?'step':'false')+'" title="Ir para: '+esc(s.x)+'"></button>';contas.push(i);}});
+ $('#contas').innerHTML=h;$('#contas').querySelectorAll('[data-terco-step]').forEach(function(b){b.addEventListener('click',function(){n=Number(b.getAttribute('data-terco-step'));saveTerco();drawTerco();});});
+ $('#progFill').style.width=Math.round(n/steps.length*100)+'%';$('#progTxt').textContent='Passo '+n+' de '+steps.length+' · '+Math.round(n/steps.length*100)+'% concluído';
+ var box=$('#passo'),med=$('#meditacao'),s=n?steps[n-1]:null;
+ if(!s){box.innerHTML='<h4>Pronto para começar?</h4><p>O terço completo inclui as orações iniciais, cinco mistérios, cinco dezenas e as orações finais.</p>';med.hidden=true;med.innerHTML='';}
+ else {box.innerHTML='<h3>'+(s.p?esc(P[s.p].n):'Mistério '+s.m)+'</h3><p>'+esc(s.x)+'</p>'+(s.p?'<div class="oracao">'+esc(P[s.p].t)+'</div>':'');if(s.med){med.hidden=false;med.innerHTML='<h4>Meditação do mistério</h4><p>'+esc(s.med)+'</p><p class="terco-reflexao">Reserve alguns instantes para refletir em silêncio.</p>';}else{med.hidden=true;med.innerHTML='';}}
+ $('#tAnt').disabled=n===0;$('#tProx').disabled=n>=steps.length;$('#tProx').textContent=n===0?'Começar a rezar':(n>=steps.length?'Terço concluído':'Próximo passo →');
+ $('#tercoStatus').textContent=n>=steps.length?'Terço concluído. Que a paz acompanhe você.':(n?'Progresso salvo neste aparelho. Você está no passo '+n+' de '+steps.length+'.':'Escolha os mistérios e toque em “Começar a rezar”.');
+ if(n>0&&$('#vozPasso').checked)lerPasso(false);
 }
-var sel=$('#selMist');sel.innerHTML=Object.keys(MIST).map(function(g){return '<option value="'+g+'"'+(g===grp?' selected':'')+'>Mistérios '+g+(g===DIAS[new Date().getDay()]?' (de hoje)':'')+'</option>'}).join('');
-sel.addEventListener('change',function(){grp=sel.value;n=0;buildSteps();listMist();drawTerco()});
-function listMist(){$('#listaMist').innerHTML=MIST[grp].map(function(m){return '<li>'+esc(m)+'</li>'}).join('')}
-function lerPasso(){if(n<1)return;var s=steps[n-1];Voz.falar(s.x+' '+(s.p?P[s.p].t:''),'passo '+n+' do terço')}
-$('#vozPassoBtn').addEventListener('click',lerPasso);
-$('#tProx').addEventListener('click',function(){Voz.parar();if(n<steps.length){n++;drawTerco()}});
-$('#tAnt').addEventListener('click',function(){Voz.parar();if(n>0){n--;drawTerco()}});
-$('#tZero').addEventListener('click',function(){Voz.parar();if(n>0&&!window.confirm('Recomeçar o terço do início? O progresso atual será substituído.'))return;n=0;buildSteps();drawTerco()});
-buildSteps();try{var st=JSON.parse(localStorage.getItem(TERCO_KEY)||'null');if(st&&st.grupo===grp&&Number.isInteger(st.passo))n=Math.max(0,Math.min(steps.length,st.passo));}catch(e){}listMist();drawTerco();
+var sel=$('#selMist');sel.innerHTML=Object.keys(MIST).map(function(g){return '<option value="'+g+'"'+(g===grp?' selected':'')+'>'+esc(g)+(g===DIAS[new Date().getDay()]?' · recomendado para hoje':'')+'</option>'}).join('');
+sel.addEventListener('change',function(){if(n>0&&!window.confirm('Trocar os mistérios reinicia a posição deste terço. Deseja continuar?')){sel.value=grp;return;}grp=sel.value;n=0;buildSteps();listMist();saveTerco();drawTerco();});
+function listMist(){$('#listaMist').innerHTML=MIST[grp].map(function(m,i){return '<li><strong>'+esc(m)+'</strong><p class="mist-lista-med">'+esc(MEDITACOES[grp][i])+'</p></li>'}).join('')}
+function lerPasso(showStatus){if(n<1)return;var s=steps[n-1];Voz.parar();Voz.falar(s.x+(s.p&&P[s.p]?' '+P[s.p].t:'')+(s.med?' Meditação: '+s.med:''),'passo '+n+' do terço');}
+$('#vozPassoBtn').addEventListener('click',function(){if(n<1){n=1;saveTerco();drawTerco();}lerPasso(true);});
+$('#tProx').addEventListener('click',function(){if(n<steps.length){Voz.parar();n++;saveTerco();drawTerco();}});
+$('#tAnt').addEventListener('click',function(){if(n>0){Voz.parar();n--;saveTerco();drawTerco();}});
+$('#tZero').addEventListener('click',function(){if(!window.confirm('Deseja recomeçar o terço do início? O progresso atual será substituído.'))return;Voz.parar();n=0;saveTerco();drawTerco();});
+buildSteps();listMist();drawTerco();
 
 /* ---------- Bíblia: lista dos 73 livros com busca ---------- */
 var B=[

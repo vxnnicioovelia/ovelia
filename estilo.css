@@ -83,8 +83,11 @@ summary{cursor:pointer;font-weight:700;padding:10px 0;min-height:44px}
 summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .beads{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
 .bead{width:22px;height:22px;border-radius:50%;background:var(--soft);border:2px solid var(--mut)}
-.bead.f{background:var(--gold);border-color:var(--gold)}.bead.big{width:32px;height:32px}
-.bead.cur{outline:4px solid var(--ink);outline-offset:2px}
+.bead.f,.bead.feita{background:var(--gold);border-color:var(--olive)}.bead.big{width:32px;height:32px}
+.bead.cur,.bead.atual{background:var(--olive);border:3px solid var(--ink);outline:4px solid var(--gold);outline-offset:2px;transform:scale(1.12)}
+.bead{padding:0;flex:0 0 auto;cursor:pointer;min-width:22px;min-height:22px;box-shadow:0 1px 3px rgba(0,0,0,.16)}
+.bead:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
+.terco-principal{overflow:hidden}.terco-ajuda,.terco-status{color:var(--mut)}.terco-contas-legenda{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;color:var(--mut);margin-top:12px}.terco-contas-legenda span{display:inline-flex;align-items:center;gap:6px}.legenda-conta{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--mut);background:var(--soft)}.legenda-conta.feita{background:var(--gold);border-color:var(--olive)}.legenda-conta.atual{background:var(--olive);border-color:var(--ink);outline:2px solid var(--gold)}.terco-meditacao{background:var(--soft);border-left:5px solid var(--gold);border-radius:var(--raio-sm);padding:14px 16px;margin:12px 0}.terco-meditacao h4{margin:0 0 6px}.mist-lista-med{font-size:.95em;color:var(--mut);margin:.25em 0 .8em}.terco-controles .btn{flex:1 1 130px}.terco-status{min-height:1.5em}
 .prog{height:12px;background:var(--soft);border-radius:var(--raio-pilula);overflow:hidden}.prog>i{display:block;height:100%;background:var(--olive)}
 table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
 .livros{columns:2;gap:24px;padding-left:1.2em}.livros li{break-inside:avoid;margin:2px 0}
@@ -488,15 +491,3 @@ body.filtro-quente-ativo{isolation:isolate}
 body.contraste.tema-escuro .btn.g,body.contraste.tema-escuro .kids .btn.g{background:#111111;color:#FFFFFF;border-color:#FFFFFF}
 body.contraste.tema-escuro a:not(.btn){color:#FFFFFF}
 .painel-texto-acoes .btn{min-height:44px}@media(max-width:520px){.painel-texto{position:fixed;top:calc(env(safe-area-inset-top) + 62px);right:4vw;left:4vw;width:auto;max-width:none}.tools{gap:5px}}
-
-/* Parte 7 — terço e orações: acessibilidade e leitura confortável */
-#buscaOracoes{display:block;width:100%;max-width:100%;min-height:44px;margin:.45rem 0 1rem;padding:.7rem .85rem;border:2px solid var(--mut);border-radius:12px;background:var(--card);color:var(--ink);font:inherit}
-#listaOracoes details[hidden],#listaOracoes .categoria-oracao[hidden]{display:none!important}
-#terco .row .btn{min-height:48px;flex:1}
-#terco .beads{align-items:center;justify-content:center;gap:9px;padding:10px;border-radius:16px;background:var(--card);border:1px solid var(--mut)}
-#terco .bead{flex:0 0 auto;box-shadow:inset 0 1px 2px #0002}
-#terco .bead.cur{outline:3px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 5px var(--soft)}
-#terco .terco-meditacao{margin:.8rem 0;padding:12px}
-#terco button:focus-visible,#oracoes button:focus-visible,#buscaOracoes:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-#oracoes details summary{min-height:44px;display:flex;align-items:center;cursor:pointer}
-@media(prefers-reduced-motion:reduce){#terco *,#oracoes *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
