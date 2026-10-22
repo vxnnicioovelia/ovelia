@@ -132,7 +132,7 @@
     if(!carregando[src]){carregando[src]=new Promise(function(ok,no){
       var paths=[src,'estudos/dados/'+src],idx=0;
       function tentar(){if(idx>=paths.length){delete carregando[src];no();return}
-        var el=document.createElement('script');el.src=paths[idx++]+'?v=20261022-parte8';
+        var el=document.createElement('script');el.src=paths[idx++]+'?v=20261022-fix3';
         el.onload=function(){if(E.licoes&&E.licoes[id])ok();else tentar()};el.onerror=tentar;document.head.appendChild(el);
       }tentar();
     })}

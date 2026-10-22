@@ -307,11 +307,11 @@ function drawTerco(){
   h+='<button type="button" class="bead '+(s.p==='pai'?'big ':'')+state+'" data-terco-step="'+(i+1)+'" aria-label="'+esc(label)+'" aria-current="'+(i===n?'step':'false')+'" title="Ir para: '+esc(s.x)+'"></button>';contas.push(i);}});
  $('#contas').innerHTML=h;$('#contas').querySelectorAll('[data-terco-step]').forEach(function(b){b.addEventListener('click',function(){n=Number(b.getAttribute('data-terco-step'));saveTerco();drawTerco();});});
  $('#progFill').style.width=Math.round(n/steps.length*100)+'%';$('#progTxt').textContent='Passo '+n+' de '+steps.length+' · '+Math.round(n/steps.length*100)+'% concluído';
- var box=$('#passo'),med=$('#meditacao'),s=n?steps[n-1]:null;
+ var box=$('#passo'),med=$('#meditacao')||{hidden:true,innerHTML:''},s=n?steps[n-1]:null;
  if(!s){box.innerHTML='<h4>Pronto para começar?</h4><p>O terço completo inclui as orações iniciais, cinco mistérios, cinco dezenas e as orações finais.</p>';med.hidden=true;med.innerHTML='';}
  else {box.innerHTML='<h3>'+(s.p?esc(P[s.p].n):'Mistério '+s.m)+'</h3><p>'+esc(s.x)+'</p>'+(s.p?'<div class="oracao">'+esc(P[s.p].t)+'</div>':'');if(s.med){med.hidden=false;med.innerHTML='<h4>Meditação do mistério</h4><p>'+esc(s.med)+'</p><p class="terco-reflexao">Reserve alguns instantes para refletir em silêncio.</p>';}else{med.hidden=true;med.innerHTML='';}}
  $('#tAnt').disabled=n===0;$('#tProx').disabled=n>=steps.length;$('#tProx').textContent=n===0?'Começar a rezar':(n>=steps.length?'Terço concluído':'Próximo passo →');
- $('#tercoStatus').textContent=n>=steps.length?'Terço concluído. Que a paz acompanhe você.':(n?'Progresso salvo neste aparelho. Você está no passo '+n+' de '+steps.length+'.':'Escolha os mistérios e toque em “Começar a rezar”.');
+ var tStat=$('#tercoStatus')||{};tStat.textContent=n>=steps.length?'Terço concluído. Que a paz acompanhe você.':(n?'Progresso salvo neste aparelho. Você está no passo '+n+' de '+steps.length+'.':'Escolha os mistérios e toque em “Começar a rezar”.');
  if(n>0&&$('#vozPasso').checked)lerPasso(false);
 }
 var sel=$('#selMist');sel.innerHTML=Object.keys(MIST).map(function(g){return '<option value="'+g+'"'+(g===grp?' selected':'')+'>'+esc(g)+(g===DIAS[new Date().getDay()]?' · recomendado para hoje':'')+'</option>'}).join('');

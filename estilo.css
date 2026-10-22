@@ -597,3 +597,6 @@ body.contraste.tema-claro .ovelia-bottom-nav__item{color:#292238!important}
 body.contraste.tema-claro .ovelia-bottom-nav__item[aria-current="page"]{
   background:#E4D9F0!important;color:#292238!important;border-color:#6B4FA1!important;
 }
+
+/* Correção: botões do painel de voz no perfil Ovelias Sábias não viram elipses altas. */
+body.perfil-senior .voz-controles .btn{border-radius:18px;min-height:56px;flex:1 1 40%}
