@@ -570,3 +570,30 @@ body.contraste.tema-escuro .ovelia-bottom-nav__item[aria-current="page"]{backgro
 body.contraste.tema-claro .ovelia-bottom-nav{background:#FFFFFF;border-color:#000000}
 body.contraste.tema-claro .ovelia-bottom-nav__item{color:#000000}
 body.contraste.tema-claro .ovelia-bottom-nav__item[aria-current="page"]{background:#F0F0F0;color:#000000;box-shadow:inset 0 -3px 0 #6F3D91}
+
+
+/* Ovelia hotfix 2026-10-22: alto contraste melhora legibilidade sem converter a navegação em preto/branco puro. */
+body.contraste .ovelia-bottom-nav{
+  background:var(--card, #241D30)!important;
+  border-color:var(--roxo-600, #6B4FA1)!important;
+  color:var(--ink, #F8F5FC)!important;
+}
+body.contraste .ovelia-bottom-nav__item{
+  background:transparent!important;
+  color:var(--ink, #F8F5FC)!important;
+  border-color:transparent!important;
+  text-decoration:none!important;
+}
+body.contraste .ovelia-bottom-nav__item[aria-current="page"]{
+  background:var(--roxo-900, #3E2D58)!important;
+  color:var(--branco, #FFFFFF)!important;
+  border-color:var(--lilas-200, #D7C1F2)!important;
+  box-shadow:inset 4px 0 0 var(--lilas-claro, #BDA3E8)!important;
+}
+body.contraste.tema-claro .ovelia-bottom-nav{
+  background:#F8F5FC!important;border-color:#6B4FA1!important;color:#292238!important;
+}
+body.contraste.tema-claro .ovelia-bottom-nav__item{color:#292238!important}
+body.contraste.tema-claro .ovelia-bottom-nav__item[aria-current="page"]{
+  background:#E4D9F0!important;color:#292238!important;border-color:#6B4FA1!important;
+}
