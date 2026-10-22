@@ -121,7 +121,7 @@ var temaGuardado=null;try{temaGuardado=localStorage.getItem('ovelia-tema')}catch
 if(mediaEscuro){var temaMudou=function(){if(preferenciaTema==='auto')aplicarTema('auto',false)};if(mediaEscuro.addEventListener)mediaEscuro.addEventListener('change',temaMudou);else if(mediaEscuro.addListener)mediaEscuro.addListener(temaMudou)}
 if(temaSelect)temaSelect.addEventListener('change',function(){aplicarTema(temaSelect.value,true)});
 temaBtn.addEventListener('click',function(){aplicarTema(temaAtual()==='dark'?'light':'dark',true)});
-function aplicarFiltro(){var ligado=!!(filtroQuente&&filtroQuente.checked),nivel=filtroIntensidade?+filtroIntensidade.value:20;document.body.classList.toggle('filtro-quente-ativo',ligado);document.documentElement.style.setProperty('--ovelia-filtro-quente',String(nivel/45));document.documentElement.style.setProperty('--ovelia-filtro-quente-percent',nivel+'%');document.documentElement.style.setProperty('--ovelia-filtro-quente-opacidade',String(ligado?(nivel/45)*0.16:0));if(filtroPreview){filtroPreview.style.setProperty('--preview-calor',String(nivel/45));filtroPreview.style.setProperty('--preview-calor-percent',nivel+'%');filtroPreview.classList.add('preview-quente')}try{localStorage.setItem('ovelia-filtro-quente',JSON.stringify({ativo:ligado,intensidade:nivel}))}catch(e){}}
+function aplicarFiltro(){var ligado=!!(filtroQuente&&filtroQuente.checked),nivel=filtroIntensidade?+filtroIntensidade.value:20;document.body.classList.toggle('filtro-quente-ativo',ligado);document.documentElement.style.setProperty('--ovelia-filtro-quente',String(nivel/45));document.documentElement.style.setProperty('--ovelia-filtro-quente-percent',nivel+'%');document.documentElement.style.setProperty('--ovelia-filtro-quente-opacidade',String(ligado?(nivel/45)*0.34:0));if(filtroPreview){filtroPreview.style.setProperty('--preview-calor',String(nivel/45));filtroPreview.style.setProperty('--preview-calor-percent',nivel+'%');filtroPreview.classList.add('preview-quente')}try{localStorage.setItem('ovelia-filtro-quente',JSON.stringify({ativo:ligado,intensidade:nivel}))}catch(e){}}
 try{var fq=JSON.parse(localStorage.getItem('ovelia-filtro-quente')||'null');if(fq&&typeof fq==='object'){filtroQuente.checked=!!fq.ativo;filtroIntensidade.value=Math.max(0,Math.min(45,+fq.intensidade||0))}}catch(e){}
 if(filtroQuente)filtroQuente.addEventListener('change',aplicarFiltro);if(filtroIntensidade)filtroIntensidade.addEventListener('input',aplicarFiltro);aplicarFiltro();
 if(fonteSelect){try{fonteSelect.value=localStorage.getItem('ovelia-fonte-legivel')==='1'?'legivel':'padrao'}catch(e){};document.body.classList.toggle('fonte-legivel',fonteSelect.value==='legivel');fonteSelect.addEventListener('change',function(){document.body.classList.toggle('fonte-legivel',fonteSelect.value==='legivel');try{localStorage.setItem('ovelia-fonte-legivel',fonteSelect.value==='legivel'?'1':'0')}catch(e){}})}
@@ -272,10 +272,21 @@ var ORIG={
 for(var k in ORIG)P[k]=ORIG[k];
 var lo=$('#listaOracoes');
 lo.innerHTML=CATS.map(function(c){return '<div class="categoria-oracao '+(c.o==='kids'?'kids-cat':c.o==='original'?'original-cat':'trad-cat')+'"><h3>'+esc(c.t)+'</h3>'+(c.o==='original'||c.o==='kids'?'<p class="aviso"><b>'+(c.o==='kids'?'Orações infantis originais da Ovelia.':'Composições originais da Ovelia.')+'</b> Não são textos oficiais da Igreja.</p>':'')+c.ids.map(function(id){var p=P[id];
-  return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Oração tradicional')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
+  return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Texto tradicional · em conferência')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
 lo.addEventListener('click',function(e){var b=e.target.closest('[data-copiar]');if(!b)return;var t=P[b.getAttribute('data-copiar')].t,st=b.parentNode.querySelector('.sr');
   function ok(){st.textContent='Texto copiado.'}function fail(){st.textContent='Não foi possível copiar. Selecione o texto e copie manualmente.'}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fail)}else fail()});
+
+/* Busca de orações por título, texto e categoria; mantém as categorias existentes. */
+var buscaOracoes=$('#buscaOracoes'),oracoesStatus=$('#oracoesStatus');
+if(buscaOracoes)buscaOracoes.addEventListener('input',function(){
+ var q=buscaOracoes.value.trim().toLocaleLowerCase('pt-BR'),shown=0;
+ $$('#listaOracoes .categoria-oracao').forEach(function(cat){var count=0;
+  $$('.categoria-oracao details',cat).forEach(function(d){var match=!q||(d.textContent||'').toLocaleLowerCase('pt-BR').indexOf(q)>=0;d.hidden=!match;if(match){count++;shown++}});
+  cat.hidden=count===0;
+ });
+ if(oracoesStatus)oracoesStatus.textContent=q?(shown+' oração(ões) encontrada(s).'):'Todas as orações disponíveis.';
+});
 
 /* ---------- Terço: contador passo a passo (o progresso NÃO é salvo) ---------- */
 var MIST={
@@ -286,6 +297,9 @@ var MIST={
 };
 var DIAS={0:'Gloriosos',1:'Gozosos',2:'Dolorosos',3:'Gloriosos',4:'Luminosos',5:'Dolorosos',6:'Gozosos'};
 var grp=DIAS[new Date().getDay()],steps=[],n=0;
+var TERCO_KEY='ovelia-terco-progresso-v1';
+var meditacoes={Gozosos:['Acolha a vontade de Deus com confiança.','Peça a graça de reconhecer Jesus nas pessoas próximas.','Contemple a simplicidade do nascimento de Jesus.','Peça respeito pela vida e fidelidade a Deus.','Busque Jesus com perseverança quando se sentir perdido.'],Luminosos:['Renove as promessas do batismo e escolha o bem.','Peça atenção aos sinais de Deus na vida cotidiana.','Peça coragem para viver e anunciar o Evangelho.','Reserve espaço para o silêncio e a oração.','Agradeça o dom da Eucaristia e a presença de Cristo.'],Dolorosos:['Entregue a Deus suas angústias e peça serenidade.','Reze por quem sofre violência e humilhação.','Peça humildade e respeito por toda pessoa.','Encontre força para carregar as dificuldades sem perder a esperança.','Reze por quem sofre e por todos os que cuidam deles.'],Gloriosos:['Renove a esperança na vida nova em Cristo.','Peça que suas escolhas tenham direção e propósito.','Peça abertura ao Espírito Santo e seus dons.','Contemple a esperança cristã e a dignidade humana.','Peça perseverança na fé e na caridade.']};
+try{var savedTerco=JSON.parse(localStorage.getItem(TERCO_KEY)||'null');if(savedTerco&&MIST[savedTerco.grupo]&&Number.isInteger(savedTerco.passo)){grp=savedTerco.grupo;n=Math.max(0,Math.min(steps.length||1000,savedTerco.passo));}}catch(e){}
 function buildSteps(){
   steps=[{p:'sinal',x:'Sinal da Cruz. Segurando o crucifixo.',b:0},{p:'credo',x:'Reze o Credo, ainda no crucifixo.',b:0},{p:'pai',x:'Primeira conta grande.',b:1}];
   for(var i=1;i<=3;i++)steps.push({p:'ave',x:'Ave-Maria '+i+' de 3, nas três contas pequenas seguintes.',b:1});
@@ -301,22 +315,25 @@ function buildSteps(){
 function drawTerco(){
   var beadIdx=-1,h='';steps.forEach(function(s,i){if(s.b){beadIdx++;var st=i<n?' f':'';var cur=(i===n-1)?' cur':'';h+='<span class="bead'+((s.p==='pai')?' big':'')+st+cur+'"></span>'}});
   $('#contas').innerHTML=h;
-  $('#progFill').style.width=Math.round(n/steps.length*100)+'%';$('#progTxt').textContent='Passo '+n+' de '+steps.length;
+  $('#contas').setAttribute('aria-label','Contas do terço; a conta atual está destacada.');
+  $('#progFill').style.width=Math.round(n/steps.length*100)+'%';$('#progTxt').textContent='Passo '+n+' de '+steps.length+' · '+Math.round(n/steps.length*100)+'%';
   var box=$('#passo');
   if(n===0){box.innerHTML='<p><b>Escolha os mistérios e toque em “Começar / Próximo passo”.</b></p>'}
-  else{var s=steps[n-1];box.innerHTML='<h3>'+(s.p?esc(P[s.p].n):'Anúncio do mistério')+'</h3><p>'+esc(s.x)+'</p>'+(s.p?'<div class="oracao">'+esc(P[s.p].t)+'</div>':'')}
+  else{var s=steps[n-1],med=s.m?meditacoes[grp][(+s.x.match(/^([1-5])/)[1])-1]:'';box.innerHTML='<h3>'+(s.p?esc(P[s.p].n):'Anúncio do mistério')+'</h3><p>'+esc(s.x)+'</p>'+(med?'<div class="card terco-meditacao"><strong>Meditação</strong><p>'+esc(med)+'</p></div>':'')+(s.p?'<div class="oracao">'+esc(P[s.p].t)+'</div>':'')}
   if(n>0&&$('#vozPasso').checked)lerPasso();
   $('#tAnt').disabled=n===0;$('#tProx').disabled=n>=steps.length;$('#tProx').textContent=n===0?'Começar':'Próximo passo';
+  try{localStorage.setItem(TERCO_KEY,JSON.stringify({grupo:grp,passo:n,atualizado:new Date().toISOString()}))}catch(e){}
+  var persist=$('#tercoPersistencia');if(persist)persist.textContent=n>=steps.length?'Terço concluído. Seu progresso continua guardado neste aparelho.':(n>0?'Progresso guardado: passo '+n+' de '+steps.length+'. Você pode sair e retomar depois.':'Pronto para começar. O progresso será guardado neste aparelho.');
 }
 var sel=$('#selMist');sel.innerHTML=Object.keys(MIST).map(function(g){return '<option value="'+g+'"'+(g===grp?' selected':'')+'>Mistérios '+g+(g===DIAS[new Date().getDay()]?' (de hoje)':'')+'</option>'}).join('');
 sel.addEventListener('change',function(){grp=sel.value;n=0;buildSteps();listMist();drawTerco()});
 function listMist(){$('#listaMist').innerHTML=MIST[grp].map(function(m){return '<li>'+esc(m)+'</li>'}).join('')}
 function lerPasso(){if(n<1)return;var s=steps[n-1];Voz.falar(s.x+' '+(s.p?P[s.p].t:''),'passo '+n+' do terço')}
 $('#vozPassoBtn').addEventListener('click',lerPasso);
-$('#tProx').addEventListener('click',function(){if(n<steps.length){n++;drawTerco()}});
-$('#tAnt').addEventListener('click',function(){if(n>0){n--;drawTerco()}});
-$('#tZero').addEventListener('click',function(){n=0;drawTerco()});
-buildSteps();listMist();drawTerco();
+$('#tProx').addEventListener('click',function(){Voz.parar();if(n<steps.length){n++;drawTerco()}});
+$('#tAnt').addEventListener('click',function(){Voz.parar();if(n>0){n--;drawTerco()}});
+$('#tZero').addEventListener('click',function(){Voz.parar();if(n>0&&!window.confirm('Recomeçar o terço do início? O progresso atual será substituído.'))return;n=0;buildSteps();drawTerco()});
+buildSteps();try{var st=JSON.parse(localStorage.getItem(TERCO_KEY)||'null');if(st&&st.grupo===grp&&Number.isInteger(st.passo))n=Math.max(0,Math.min(steps.length,st.passo));}catch(e){}listMist();drawTerco();
 
 /* ---------- Bíblia: lista dos 73 livros com busca ---------- */
 var B=[

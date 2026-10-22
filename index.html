@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261022-acess6">
+<link rel="stylesheet" href="estilo.css?v=20261022-terco7">
 <link rel="stylesheet" href="biblia.css?v=20261022-base1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-base1">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-base1">
@@ -193,7 +193,8 @@
 <!-- ORAÇÕES -->
 <section class="pg" id="oracoes">
 <h2>Orações</h2>
-<p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
+<p>Toque no nome para abrir a oração. Use a busca para encontrar uma oração e “Copiar texto” para copiá-la.</p>
+<label for="buscaOracoes">Buscar oração</label><input type="search" id="buscaOracoes" placeholder="Ex.: Pai-Nosso, família, manhã" autocomplete="off" aria-label="Buscar orações"><p id="oracoesStatus" role="status" aria-live="polite"></p>
 <div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
 <div id="listaOracoes"></div>
 </section>
@@ -212,7 +213,7 @@
 <div id="passo" aria-live="polite"></div>
 <button class="btn g voz-btn" id="vozPassoBtn" type="button">🔊 Ouvir este passo</button>
 <div class="row" style="margin-top:10px"><button class="btn g lg" id="tAnt" type="button">← Voltar</button><button class="btn lg" id="tProx" type="button">Começar</button><button class="btn g" id="tZero" type="button">Recomeçar</button></div>
-<p style="color:var(--mut);font-size:.9rem">O contador do terço recomeça ao sair. O progresso das trilhas de estudo pode ser guardado apenas neste aparelho.</p></div>
+<p id="tercoPersistencia" role="status" aria-live="polite" style="color:var(--mut);font-size:.9rem">Seu progresso do terço é guardado apenas neste aparelho e será retomado quando você voltar.</p></div>
 <div class="card"><h3>Quando rezar cada conjunto de mistérios</h3>
 <table><caption class="sr" style="text-align:left;font-weight:700;padding-bottom:6px">Distribuição tradicional por dia da semana</caption>
 <thead><tr><th scope="col">Mistérios</th><th scope="col">Dias</th></tr></thead>
@@ -359,7 +360,7 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261022-acess6"></script>
+<script src="app.js?v=20261022-terco7"></script>
 <script src="navegacao-inferior.js?v=20261019-quality1" defer></script>
 <script src="biblia.js?v=20261019-quality1"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
