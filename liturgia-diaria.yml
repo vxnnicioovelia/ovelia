@@ -1,37 +1,55 @@
-name: Liturgia diária
+name: Atualizar liturgia diaria
 
-# Atualiza a liturgia do dia (e dos próximos 7 dias) dentro do repositório, na pasta dados/liturgia.
-# Roda sozinho todo dia (00:10 e 06:00 no horário de Brasília) e também pode ser rodado à mão.
 on:
-  schedule:
-    - cron: '10 3 * * *'
-    - cron: '0 9 * * *'
   workflow_dispatch:
+  schedule:
+    - cron: "20 11 * * *"
 
 permissions:
   contents: write
 
 concurrency:
-  group: liturgia-diaria
+  group: atualizar-liturgia
   cancel-in-progress: false
 
 jobs:
   atualizar:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Buscar a liturgia
-        env:
-          # Troque "sim" por "nao" para gravar somente as referências das leituras, sem o texto.
-          LITURGIA_INCLUIR_TEXTO: "sim"
-        run: node tools/gerar-liturgia.mjs
-      - name: Salvar no repositório
-        if: always()
+
+      # Usa o gerador que fica na raiz do site (gerar-liturgia.mjs).
+      # continue-on-error: se faltar a liturgia de hoje o gerador termina com erro,
+      # mas os outros dias baixados ainda devem ser salvos. O erro e reportado no ultimo passo.
+      - name: Atualizar liturgia
+        id: gerar
+        continue-on-error: true
+        run: node gerar-liturgia.mjs
+
+      - name: Salvar atualizacao (somente dados/liturgia)
         run: |
-          git config user.name "ovelia-bot"
-          git config user.email "ovelia-bot@users.noreply.github.com"
+          mkdir -p dados/liturgia
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add dados/liturgia
-          if git diff --cached --quiet; then echo "Nada mudou."; else git commit -m "Liturgia diária $(date -u +%F)" && git pull --rebase -q && git push; fi
+          if git diff --cached --quiet; then
+            echo "Nada novo para salvar."
+          else
+            git commit -m "Atualiza liturgia diaria"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Avisar se o gerador falhou
+        if: steps.gerar.outcome == 'failure'
+        run: |
+          echo "O gerador nao conseguiu obter a liturgia de hoje. Veja o log do passo 'Atualizar liturgia'."
+          exit 1

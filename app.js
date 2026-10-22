@@ -342,6 +342,8 @@ var litStatus=$('#litStatus'),litDia=$('#litDia'),litSem=$('#litSem'),litReflexa
 $('#litData').textContent=dataBR;
 $('#litAtual').textContent='';
 var LIT_API='https://liturgia.up.railway.app/v2/';
+/* 2ª tentativa na mesma API pública (versão v3, documentada no repositório Dancrf/liturgia-diaria). Não existe, até onde pudemos verificar, outra fonte pública estável e independente. */
+var LIT_API_V3='https://liturgia.up.railway.app/v3/';
 var temasEstudo=[
  {id:'misericordia',palavras:['misericórdia','misericordia','perdo','compaix','perdão'],titulo:'Misericórdia e perdão',versos:['Lucas 15,11-32','Efésios 4,32','Salmo 103,8-13'],reflexao:'A misericórdia de Deus nos convida a recomeçar e a tratar os outros com compaixão.',pergunta:'A quem posso oferecer perdão, escuta ou uma nova oportunidade?',acao:'Faça um gesto concreto de reconciliação, respeitando também os limites necessários.'},
  {id:'amor',palavras:['amor','amar','caridade','próximo','proximo'],titulo:'Amar a Deus e ao próximo',versos:['Lucas 10,25-37','João 13,34-35','1 Coríntios 13,4-7'],reflexao:'O amor cristão aparece em escolhas concretas: cuidar, escutar, servir e respeitar.',pergunta:'Quem precisa que eu pare e lhe dê atenção hoje?',acao:'Pratique um ato de caridade discreto, sem esperar recompensa.'},
@@ -363,7 +365,7 @@ function renderEstudo(tema,leituras,origem){var refs=leituras.map(function(x){re
  litReflexao.innerHTML='<span class="tag pd">Reflexão da Ovelia · conteúdo original</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p><p><b>Para refletir:</b> '+esc(tema.pergunta)+'</p><p><b>Para colocar em prática:</b> '+esc(tema.acao)+'</p>';
 }
 function textoHtml(t){return String(t||'').split(/\n+/).map(function(p){return p.trim()}).filter(Boolean).map(function(p){return '<p>'+esc(p)+'</p>'}).join('')}
-function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[],blocos='';
+function renderLiturgy(d,origem,dt,opts){var antiga=!!(opts&&opts.antiga),pedida=opts&&opts.pedida,leituraObj=d.leituras||{},defs=[['Primeira leitura',leituraObj.primeiraLeitura],['Salmo responsorial',leituraObj.salmo],['Segunda leitura',leituraObj.segundaLeitura],['Aclamação ao Evangelho',leituraObj.aclamacao||leituraObj.aleluia],['Evangelho',leituraObj.evangelho]];var refs=[],blocos='';
  /* Texto integral só é renderizado se o próprio registro declarar autorização e identificar a licença. */
  var textoPorLicenca=d.textoIntegralAutorizado===true&&typeof d.licencaTexto==='string'&&d.licencaTexto.trim().length>=8;
  var textoAoVivo=LIT_MOSTRAR_TEXTO&&origem==='api';
@@ -375,51 +377,82 @@ function renderLiturgy(d,origem,dt){var leituraObj=d.leituras||{},defs=[['Primei
     blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+(refrao?'<p class="lit-refrao"><strong>Refrão:</strong> '+esc(refrao)+'</p>':'')+(texto?'<div class="lit-texto">'+textoHtml(texto)+'</div>':'')+'</section>'});
   if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})});
  var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
- $('#litData').textContent=dataLonga(dt);
- $('#litAtual').textContent=origem==='arquivo'?'Dados litúrgicos carregados do arquivo local; a atualização depende da rotina de dados.':(origem==='api'?'Dados consultados agora na fonte externa; a disponibilidade depende do serviço.':'Dados litúrgicos cadastrados manualmente pela equipe da Ovelia.');
- var html='<div class="card"><div class="liturgia-meta"><span class="tag ok">Liturgia do dia</span>'+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
+ $('#litData').textContent=dataLonga(antiga&&pedida?pedida:dt);
+ var atualizado='';try{if(d.atualizadoEm)atualizado=' · atualizado em '+new Date(d.atualizadoEm).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){}
+ var qualFonte=origem==='arquivo'?'arquivo salvo pela Ovelia':(origem==='api'?'consulta ao vivo a um serviço público de liturgia':'cadastro manual da Ovelia');
+ $('#litAtual').textContent='Fonte: '+qualFonte+' · dados de '+dt.toLocaleDateString('pt-BR')+(origem==='arquivo'?atualizado:'')+(antiga?' (anteriores à data pedida)':'')+'.';
+ $('#litAtual').style.fontSize='.88rem';
+ var aviso=antiga?'<div class="aviso" role="alert"><p><strong>Atenção: esta NÃO é a liturgia de '+(pedida?pedida.toLocaleDateString('pt-BR'):'hoje')+'.</strong></p><p>Não conseguimos carregar os dados desse dia agora. Abaixo está a última liturgia salva, de '+dataLonga(dt)+'. Não use estas leituras como as de hoje.</p><button class="btn g" type="button" id="litTentarNovamente">Tentar novamente</button> <a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></div>':'';
+ var html=aviso+'<div class="card"><div class="liturgia-meta">'+(antiga?'<span class="tag">Dados de '+dt.toLocaleDateString('pt-BR')+'</span>':'<span class="tag ok">Liturgia do dia</span>')+''+(cor?'<span class="tag">Cor litúrgica: '+esc(cor)+'</span>':'')+'</div><h3 style="margin-top:10px">'+esc(celebracao)+'</h3>';
  if(blocos)html+='<div class="liturgia-leituras">'+blocos+'</div>';
  else html+='<p>Não foi possível identificar as leituras desta data.</p>';
  if(blocos&&!textoIntegralLiberado)html+='<p class="muted-note">O texto integral destas leituras ainda não está disponível nesta versão porque a autorização editorial para sua reprodução não foi confirmada. As referências são mantidas para consulta; a Ovelia não substitui a tradução pretendida por outra.</p><p><a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></p>';
  if(blocos&&textoPorLicenca)html+='<p class="muted-note">Texto exibido conforme a licença identificada: '+esc(d.licencaTexto)+'.</p>';
+ if(blocos&&LIT_MOSTRAR_TEXTO&&origem!=='api'&&!textoPorLicenca)html+='<p class="muted-note">Nesta consulta o texto das leituras não veio junto; mostramos as referências.</p>';
  if(blocos&&textoAoVivo&&!textoPorLicenca)html+='<p class="muted-note">Texto obtido agora de um serviço externo de liturgia. Os textos litúrgicos pertencem aos seus detentores de direitos. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p>';
  if(!textoAoVivo)html+='<p class="muted-note">As referências vêm de um serviço automático. A permissão de acesso à API não comprova, por si só, permissão para redistribuir os textos das leituras. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
- if(isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para consultar os dados e referências da liturgia de hoje.';
- var tema=escolherTema(d);renderEstudo(tema,refs,origem==='arquivo'||origem==='api');
+ if(antiga){var rt=$('#litTentarNovamente');if(rt&&pedida)rt.addEventListener('click',function(){carregarLiturgia(isoDe(pedida))})}
+ if(!antiga&&isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para consultar os dados e referências da liturgia de hoje.';
+ var tema=escolherTema(d);renderEstudo(tema,antiga?[]:refs,!antiga&&(origem==='arquivo'||origem==='api'));
 }
-function fallbackLiturgy(dt){var dtIso=isoDe(dt),L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===dtIso})[0];
+function esperar(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function comTimeout(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(new Error('tempo esgotado'))},ms)})])}
+function buscaJson(url,ms){ms=ms||9000;var ctrl=window.AbortController?new AbortController():null,t=setTimeout(function(){if(ctrl)ctrl.abort()},ms);
+ return comTimeout(fetch(url,{cache:'no-cache',headers:{'Accept':'application/json'},signal:ctrl?ctrl.signal:undefined}).then(function(r){if(!r.ok){var e=new Error('HTTP '+r.status);e.status=r.status;throw e}return r.json()}),ms+500).then(function(d){clearTimeout(t);return d},function(e){clearTimeout(t);throw e})}
+/* Repete em falhas de rede, tempo esgotado ou erro 5xx. Erros 4xx (ex.: 404 = não existe) não são repetidos. */
+function buscaComRetry(url,tentativas,ms){var n=0;function tenta(){n++;return buscaJson(url,ms).catch(function(e){if((e&&e.status>=400&&e.status<500)||n>=tentativas)throw e;return esperar(1200*n).then(tenta)})}return tenta()}
+function mesmaData(txt,dt){var t=String(txt||''),m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(t),ano,mes,dia;if(m){dia=+m[1];mes=+m[2];ano=+m[3]}else{m=/(\d{4})-(\d{2})-(\d{2})/.exec(t);if(!m)return isoDe(dt)===iso;ano=+m[1];mes=+m[2];dia=+m[3]}return ano===dt.getFullYear()&&mes===dt.getMonth()+1&&dia===dt.getDate()}
+function temLeitura(v){return Array.isArray(v)?v.length>0:!!v}
+function leiturasOk(d){return !!(d&&typeof d==='object'&&d.leituras&&typeof d.leituras==='object'&&(d.liturgia||d.celebracao)&&(temLeitura(d.leituras.primeiraLeitura)||temLeitura(d.leituras.salmo)||temLeitura(d.leituras.evangelho)))}
+/* Converte a resposta da v3 (celebracoes[].leituras[].opcoes[]) para o formato usado pelo app. */
+function deV3(d){var c=d&&d.celebracoes;if(!Array.isArray(c)||!c.length)return null;var p=c.filter(function(x){return x&&x.principal})[0]||c[0],L={primeiraLeitura:[],salmo:[],segundaLeitura:[],aclamacao:[],evangelho:[]},n=0;
+ (p.leituras||[]).slice().sort(function(a,b){return (a.ordem||0)-(b.ordem||0)}).forEach(function(l){var ops=(l.opcoes||[]).map(function(o){return{referencia:o.referencia||'',titulo:o.titulo||'',refrao:o.refrao||'',texto:o.texto||''}}),rot=String(l.rotulo||'').toLowerCase();
+  if(l.tipo==='salmo')L.salmo=ops;else if(l.tipo==='evangelho')L.evangelho=ops;else if(l.tipo==='leitura'){if(/aclama|aleluia/.test(rot))L.aclamacao=ops;else if(/segunda/.test(rot))L.segundaLeitura=ops;else if(/primeira/.test(rot)||n++===0)L.primeiraLeitura=ops;else L.segundaLeitura=ops}});
+ return{data:d.data,liturgia:p.liturgia,cor:p.cor,leituras:L}}
+function urlApi(base,dt){return base+'?dia='+dt.getDate()+'&mes='+(dt.getMonth()+1)+'&ano='+dt.getFullYear()}
+/* Sempre pede a data explícita (o servidor pode estar em outro fuso e devolver "amanhã" no fim da noite no Brasil). */
+function apiAoVivo(dt){
+ var valida=function(d){if(Array.isArray(d))d=d[0];if(!leiturasOk(d)||!mesmaData(d.data,dt))throw new Error('resposta inesperada');return d};
+ return buscaComRetry(urlApi(LIT_API,dt),2,12000).then(valida).catch(function(e1){
+  return buscaComRetry(urlApi(LIT_API_V3,dt),1,10000).then(function(d){return valida(deV3(d))}).catch(function(){throw e1})})}
+function arquivoDoDia(dt){var k=isoDe(dt);return buscaComRetry('dados/liturgia/'+k+'.json',2,8000).then(function(d){if(!leiturasOk(d)||!mesmaData(d.data||k,dt))throw new Error('arquivo inválido');return d})}
+/* Último dia salvo (até 10 dias antes da data pedida). Só é exibido com aviso claro de que NÃO é a data pedida. */
+function ultimoSalvo(dt){var pedido=isoDe(dt);
+ return buscaJson('dados/liturgia/index.json',8000).then(function(ix){var lim=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate()-10),limIso=isoDe(lim);
+  var datas=((ix&&ix.datas)||[]).filter(function(x){return dataDeIso(x)&&x<pedido&&x>=limIso}).sort();if(!datas.length)throw new Error('sem dias salvos');
+  var k=datas[datas.length-1],dk=dataDeIso(k);return buscaJson('dados/liturgia/'+k+'.json',8000).then(function(d){if(!leiturasOk(d)||!mesmaData(d.data||k,dk))throw new Error('arquivo inválido');return{d:d,dt:dk}})})}
+function fallbackLiturgy(dt,seq){var dtIso=isoDe(dt),L=window.LITURGIA||{dias:[]},manual=(L.dias||[]).filter(function(x){return x.data===dtIso})[0];
  if(manual){var conv=function(x){return x?[{referencia:x.ref||x.referencia||'',texto:x.texto||'',refrao:x.refrao||''}]:[]};renderLiturgy({data:dtIso,liturgia:manual.celebracao,leituras:{primeiraLeitura:conv(manual.primeiraLeitura),salmo:conv(manual.salmo),segundaLeitura:conv(manual.segundaLeitura),aclamacao:conv(manual.aclamacao),evangelho:conv(manual.evangelho)},cor:''},'manual',dt);return}
- litStatus.style.display='';litStatus.textContent='A liturgia desta data ainda não está disponível.';
-  litDia.innerHTML='<div class="card"><span class="tag">Sem dados</span><h3>Liturgia indisponível agora</h3><p>Não há dados confirmados para esta data. Não vamos inventar nem mostrar leituras de outro dia.</p><button class="btn g" type="button" id="litTentarNovamente">Tentar novamente</button><p><a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></p></div>';
-  var retry=$('#litTentarNovamente');if(retry)retry.addEventListener('click',function(){carregarLiturgia(dtIso)});
+ ultimoSalvo(dt).then(function(r){if(seq!==litSeq)return;renderLiturgy(r.d,'arquivo',r.dt,{antiga:true,pedida:dt})}).catch(function(){if(seq!==litSeq)return;indisponivel(dt)})}
+function indisponivel(dt){var dtIso=isoDe(dt);
+ litStatus.style.display='none';$('#litAtual').textContent='';
+ litDia.innerHTML='<div class="card" role="alert"><span class="tag">Indisponível agora</span><h3>Não conseguimos carregar a liturgia de '+esc(dt.toLocaleDateString('pt-BR'))+'</h3><p>A fonte dos dados não respondeu ou enviou algo inesperado. Não vamos inventar nem mostrar leituras de outro dia. Verifique sua conexão e tente de novo, ou consulte a liturgia em um site externo.</p><div class="row"><button class="btn" type="button" id="litTentarNovamente">Tentar novamente</button><a class="btn g" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Consultar a Liturgia no site da Canção Nova ↗</a></div></div>';
+ var retry=$('#litTentarNovamente');if(retry)retry.addEventListener('click',function(){carregarLiturgia(dtIso)});
  var n=Math.floor((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())-new Date(dt.getFullYear(),0,0))/86400000);renderEstudo(temasEstudo[n%temasEstudo.length],[],false);
 }
-function comTimeout(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(new Error('tempo esgotado'))},ms)})])}
-function buscaJson(url){return comTimeout(fetch(url,{cache:'no-cache',headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),9000)}
-function mesmaData(txt,dt){var t=String(txt||''),m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(t),ano,mes,dia;if(m){dia=+m[1];mes=+m[2];ano=+m[3]}else{m=/(\d{4})-(\d{2})-(\d{2})/.exec(t);if(!m)return isoDe(dt)===iso;ano=+m[1];mes=+m[2];dia=+m[3]}return ano===dt.getFullYear()&&mes===dt.getMonth()+1&&dia===dt.getDate()}
-function leiturasOk(d){return d&&d.leituras&&(d.liturgia||d.celebracao)}
-function apiAoVivo(dt){var hojeSim=isoDe(dt)===iso,url=hojeSim?LIT_API:LIT_API+'?dia='+dt.getDate()+'&mes='+(dt.getMonth()+1)+'&ano='+dt.getFullYear();
- return buscaJson(url).then(function(d){if(Array.isArray(d))d=d[0];if(!leiturasOk(d)||!mesmaData(d.data,dt))throw new Error('resposta inesperada');return d})}
 function carregarLiturgia(isoSel){var dt=dataDeIso(isoSel)||new Date(),seq=++litSeq;isoSel=isoDe(dt);
+ litDia.innerHTML='';$('#litAtual').textContent='';
  litStatus.style.display='';litStatus.textContent='Buscando a liturgia de '+dt.toLocaleDateString('pt-BR')+'…';
  $('#litData').textContent=dataLonga(dt);
- var fArq=function(){return buscaJson('dados/liturgia/'+isoSel+'.json').then(function(d){if(!leiturasOk(d)||!mesmaData(d.data||isoSel,dt))throw new Error('arquivo inválido');return{d:d,o:'arquivo'}})};
+ var lento=setTimeout(function(){if(seq===litSeq&&litStatus.style.display!=='none')litStatus.textContent='A fonte está demorando a responder. Ainda tentando…'},6000);
+ var fArq=function(){return arquivoDoDia(dt).then(function(d){return{d:d,o:'arquivo'}})};
  var fApi=function(){return apiAoVivo(dt).then(function(d){return{d:d,o:'api'}})};
  (LIT_MOSTRAR_TEXTO?fApi():fArq())
   .catch(function(){return LIT_MOSTRAR_TEXTO?fArq():fApi()})
-  .then(function(r){if(seq!==litSeq)return;renderLiturgy(r.d,r.o,dt)})
-  .catch(function(){if(seq!==litSeq)return;fallbackLiturgy(dt)});
+  .then(function(r){clearTimeout(lento);if(seq!==litSeq)return;renderLiturgy(r.d,r.o,dt)},function(){clearTimeout(lento);if(seq!==litSeq)return;fallbackLiturgy(dt,seq)});
 }
 (function(){var input=$('#litDataEscolhida');if(!input)return;input.value=iso;
  function ir(t){if(!dataDeIso(t))return;input.value=t;carregarLiturgia(t)}
  function deslocar(n){var dt=dataDeIso(input.value)||new Date();dt.setDate(dt.getDate()+n);ir(isoDe(dt))}
  input.addEventListener('change',function(){ir(input.value)});
  var h=$('#litHoje'),a=$('#litAnterior'),p=$('#litProximo');
- if(h)h.addEventListener('click',function(){ir(iso)});if(a)a.addEventListener('click',function(){deslocar(-1)});if(p)p.addEventListener('click',function(){deslocar(1)});
+ if(h)h.addEventListener('click',function(){ir(isoDe(dataHojeSaoPaulo()))});if(a)a.addEventListener('click',function(){deslocar(-1)});if(p)p.addEventListener('click',function(){deslocar(1)});
 })();
 $('#homeLit').textContent='Consulte a liturgia de hoje e o estudo relacionado na Ovelia.';
 carregarLiturgia(iso);
+/* Se o app ficou aberto de um dia para o outro, volta para a liturgia do novo dia ao reabrir. */
+document.addEventListener('visibilitychange',function(){if(document.hidden)return;var novo=isoDe(dataHojeSaoPaulo());if(novo===iso)return;var input=$('#litDataEscolhida'),seguia=!input||input.value===iso;iso=novo;hoje=dataHojeSaoPaulo();dataBR=dataLonga(hoje);if(seguia){if(input)input.value=iso;carregarLiturgia(iso)}});
 
 /* ---------- Infantil: histórias em detalhes + quiz sem coleta de dados ---------- */
 var Q=[

@@ -1,0 +1,20 @@
+LITURGIA - CONSERTO (substitua os arquivos pelo iPhone)
+
+ARQUIVOS PARA SUBSTITUIR (Add file > Upload files, mesmo nome, na raiz):
+  app.js
+  index.html
+  sw.js
+  liturgia-diaria.yml   (copia solta da raiz; mantenha igual ao workflow)
+ARQUIVOS NOVOS: nenhum.
+ARQUIVOS PARA APAGAR: nenhum obrigatorio (opcional: tools/gerar-liturgia.mjs e tools/gerar-biblia.mjs, vazios, nao sao mais usados).
+
+PASSO A PASSO - WORKFLOW (o que realmente roda e o arquivo da pasta .github/workflows):
+ 1. No GitHub (navegador do iPhone), abra o repositorio > .github > workflows > liturgia-diaria.yml.
+ 2. Toque no icone de lapis (Edit). Selecione tudo, apague e cole o conteudo do arquivo liturgia-diaria.yml deste ZIP.
+ 3. Toque em Commit changes > Commit directly to main.
+ 4. Aba Actions > "Atualizar liturgia diaria" > Run workflow > Run workflow (botao verde).
+ 5. Espere ~1 minuto. Verde = ok. Deve aparecer a pasta dados/liturgia com arquivos AAAA-MM-DD.json.
+    Vermelho = abra o passo "Atualizar liturgia" para ver o motivo (normalmente a fonte esta fora do ar).
+ 6. Se o Pages demorar, aguarde alguns minutos e abra o site; no iPhone, feche e reabra o app (o cache foi renovado: ovelia-shell-v16-liturgia2).
+
+Se o Actions nao tiver permissao de escrita: Settings > Actions > General > Workflow permissions > Read and write permissions > Save.
