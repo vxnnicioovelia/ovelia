@@ -34,7 +34,7 @@ function setProfileControls(){
   var compact=profile==='adult';
   var voicePanel=$('#vozControles'),voiceToggle=$('#vozToggle');
   if(voicePanel&&voiceToggle){voicePanel.hidden=profile!=='senior';voicePanel.classList.remove('voz-aberto');voiceToggle.setAttribute('aria-expanded','false')}
-  $('#textoBtn').hidden=!compact;$('#temaBtn').hidden=kids;
+  $('#textoBtn').hidden=false;$('#temaBtn').hidden=false;
   $('#aMenos').hidden=kids||compact;$('#aMais').hidden=kids||compact;$('#aCont').hidden=kids||compact;
   $('#perfilBtn').hidden=false; /* Kids precisa sempre ter caminho de volta. */
   if(compact){$('#aCont').hidden=true;$('#aMenos').hidden=true;$('#aMais').hidden=true}
@@ -113,14 +113,21 @@ document.addEventListener('click',function(e){
 });
 
 /* ---------- Tema claro/escuro e controle único de texto ---------- */
-var temaBtn=$('#temaBtn'),temaIcone=$('#temaIcone'),textoBtn=$('#textoBtn'),painelTexto=$('#painelTexto'),textoRange=$('#textoRange'),textoPreview=$('#textoPreview'),altoContrasteBtn=$('#altoContrasteBtn');
+var temaBtn=$('#temaBtn'),temaIcone=$('#temaIcone'),textoBtn=$('#textoBtn'),painelTexto=$('#painelTexto'),textoRange=$('#textoRange'),textoPreview=$('#textoPreview'),altoContrasteBtn=$('#altoContrasteBtn'),temaSelect=$('#temaSelect'),fonteSelect=$('#fonteSelect'),filtroQuente=$('#filtroQuente'),filtroIntensidade=$('#filtroIntensidade'),filtroPreview=$('#filtroPreview');
+var preferenciaTema='auto',mediaEscuro=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
 function temaAtual(){return document.body.classList.contains('tema-escuro')?'dark':'light'}
-function aplicarTema(tema,guardar){document.body.classList.toggle('tema-escuro',tema==='dark');document.body.classList.toggle('tema-claro',tema==='light');temaIcone.textContent=tema==='dark'?'☀':'☾';temaBtn.setAttribute('aria-label',tema==='dark'?'Ativar tema claro':'Ativar tema escuro');temaBtn.setAttribute('aria-pressed',String(tema==='dark'));if(guardar){try{localStorage.setItem('ovelia-tema',tema)}catch(e){}}}
-var temaGuardado=null;try{temaGuardado=localStorage.getItem('ovelia-tema')}catch(e){};aplicarTema(temaGuardado==='dark'?'dark':temaGuardado==='light'?'light':(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),false);
+function aplicarTema(tema,guardar){preferenciaTema=tema==='dark'||tema==='light'?tema:'auto';var efetivo=preferenciaTema==='auto'?(mediaEscuro&&mediaEscuro.matches?'dark':'light'):preferenciaTema;document.body.classList.toggle('tema-escuro',efetivo==='dark');document.body.classList.toggle('tema-claro',efetivo==='light');temaIcone.textContent=efetivo==='dark'?'☀':'☾';temaBtn.setAttribute('aria-label',efetivo==='dark'?'Ativar tema claro':'Ativar tema escuro');temaBtn.setAttribute('aria-pressed',String(efetivo==='dark'));if(temaSelect)temaSelect.value=preferenciaTema;if(guardar){try{localStorage.setItem('ovelia-tema',preferenciaTema)}catch(e){}}}
+var temaGuardado=null;try{temaGuardado=localStorage.getItem('ovelia-tema')}catch(e){};aplicarTema(temaGuardado==='dark'||temaGuardado==='light'?temaGuardado:'auto',false);
+if(mediaEscuro){var temaMudou=function(){if(preferenciaTema==='auto')aplicarTema('auto',false)};if(mediaEscuro.addEventListener)mediaEscuro.addEventListener('change',temaMudou);else if(mediaEscuro.addListener)mediaEscuro.addListener(temaMudou)}
+if(temaSelect)temaSelect.addEventListener('change',function(){aplicarTema(temaSelect.value,true)});
 temaBtn.addEventListener('click',function(){aplicarTema(temaAtual()==='dark'?'light':'dark',true)});
+function aplicarFiltro(){var ligado=!!(filtroQuente&&filtroQuente.checked),nivel=filtroIntensidade?+filtroIntensidade.value:20;document.body.classList.toggle('filtro-quente-ativo',ligado);document.documentElement.style.setProperty('--ovelia-filtro-quente',String(nivel/45));document.documentElement.style.setProperty('--ovelia-filtro-quente-percent',nivel+'%');document.documentElement.style.setProperty('--ovelia-filtro-quente-nivel',String(nivel));if(filtroPreview){filtroPreview.style.setProperty('--preview-calor',String(nivel/45));filtroPreview.style.setProperty('--preview-calor-percent',nivel+'%');filtroPreview.classList.add('preview-quente')}try{localStorage.setItem('ovelia-filtro-quente',JSON.stringify({ativo:ligado,intensidade:nivel}))}catch(e){}}
+try{var fq=JSON.parse(localStorage.getItem('ovelia-filtro-quente')||'null');if(fq&&typeof fq==='object'){filtroQuente.checked=!!fq.ativo;filtroIntensidade.value=Math.max(0,Math.min(45,+fq.intensidade||0))}}catch(e){}
+if(filtroQuente)filtroQuente.addEventListener('change',aplicarFiltro);if(filtroIntensidade)filtroIntensidade.addEventListener('input',aplicarFiltro);aplicarFiltro();
+if(fonteSelect){try{fonteSelect.value=localStorage.getItem('ovelia-fonte-legivel')==='1'?'legivel':'padrao'}catch(e){};document.body.classList.toggle('fonte-legivel',fonteSelect.value==='legivel');fonteSelect.addEventListener('change',function(){document.body.classList.toggle('fonte-legivel',fonteSelect.value==='legivel');try{localStorage.setItem('ovelia-fonte-legivel',fonteSelect.value==='legivel'?'1':'0')}catch(e){}})}
 textoBtn.addEventListener('click',function(){var abrir=painelTexto.hidden; painelTexto.hidden=!abrir;textoBtn.setAttribute('aria-expanded',String(abrir));if(abrir)textoRange.focus()});
 textoRange.addEventListener('input',function(){tam=+textoRange.value;applyPrefs();textoPreview.className='';textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam]});
-$('#textoPadrao').addEventListener('click',function(){tam=0;textoRange.value='0';applyPrefs();textoPreview.style.fontSize='1rem'});
+$('#textoPadrao').addEventListener('click',function(){tam=0;textoRange.value='0';applyPrefs();textoPreview.style.fontSize='1rem';if(fonteSelect)fonteSelect.value='padrao';document.body.classList.remove('fonte-legivel');if(filtroQuente)filtroQuente.checked=false;if(filtroIntensidade)filtroIntensidade.value='20';if(fonteSelect){try{localStorage.setItem('ovelia-fonte-legivel','0')}catch(e){}}body.classList.remove('contraste');$('#aCont').setAttribute('aria-pressed','false');if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed','false');aplicarPrefs();aplicarFiltro();aplicarTema('auto',true)});
 altoContrasteBtn.addEventListener('click',function(){var on=body.classList.toggle('contraste');altoContrasteBtn.setAttribute('aria-pressed',String(on));$('#aCont').setAttribute('aria-pressed',String(on));applyPrefs()});
 /* ---------- Acessibilidade: letra e contraste (só preferências locais) ---------- */
 var tam=0,body=document.body;
@@ -395,7 +402,7 @@ function renderLiturgy(d,origem,dt,opts){var antiga=!!(opts&&opts.antiga),pedida
  if(!textoAoVivo)html+='<p class="muted-note">As referências vêm de um serviço automático. A permissão de acesso à API não comprova, por si só, permissão para redistribuir os textos das leituras. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
  if(antiga){var rt=$('#litTentarNovamente');if(rt&&pedida)rt.addEventListener('click',function(){carregarLiturgia(isoDe(pedida))})}
- if(!antiga&&isoDe(dt)===iso){var homeLit=$('#homeLit'),homeParaHoje=$('#homeParaHoje'),homeParaHojeData=$('#homeParaHojeData');if(homeLit)homeLit.textContent=celebracao+(cor?' · '+cor:'');if(homeParaHoje)homeParaHoje.hidden=false;if(homeParaHojeData)homeParaHojeData.textContent=dt.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});}
+ if(!antiga&&isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para consultar os dados e referências da liturgia de hoje.';
  var tema=escolherTema(d);renderEstudo(tema,antiga?[]:refs,!antiga&&(origem==='arquivo'||origem==='api'));
 }
 function esperar(ms){return new Promise(function(r){setTimeout(r,ms)})}
