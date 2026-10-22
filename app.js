@@ -25,19 +25,15 @@ var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
 function setProfileControls(){
   var senior=profile==='senior',kids=profile==='kids';
-  $('#aMenos').textContent=senior?'Diminuir texto':'A−';
-  $('#aMais').textContent=senior?'Aumentar texto':'A+';
   $('#aCont').textContent=senior?'Alto contraste':'Contraste';
-  $('#aMenos').setAttribute('aria-label','Diminuir tamanho do texto');
-  $('#aMais').setAttribute('aria-label','Aumentar tamanho do texto');
   $('#aCont').setAttribute('aria-label','Ativar ou desativar alto contraste');
   var compact=profile==='adult';
   var voicePanel=$('#vozControles'),voiceToggle=$('#vozToggle');
   if(voicePanel&&voiceToggle){voicePanel.hidden=profile!=='senior';voicePanel.classList.remove('voz-aberto');voiceToggle.setAttribute('aria-expanded','false')}
   $('#textoBtn').hidden=false;$('#temaBtn').hidden=false;
-  $('#aMenos').hidden=kids||compact;$('#aMais').hidden=kids||compact;$('#aCont').hidden=kids||compact;
+  $('#aCont').hidden=kids||compact;
   $('#perfilBtn').hidden=false; /* Kids precisa sempre ter caminho de volta. */
-  if(compact){$('#aCont').hidden=true;$('#aMenos').hidden=true;$('#aMais').hidden=true}
+  if(compact){$('#aCont').hidden=true}
 }
 function applyProfile(){
   document.body.classList.remove('perfil-kids','perfil-senior','perfil-easy','perfil-adult');
@@ -93,6 +89,7 @@ perfilInicio.addEventListener('keydown',function(e){
 });
 function toggleMainMenu(force){var o=typeof force==='boolean'?force:!menu.classList.contains('open');menu.classList.toggle('open',o);if(menuBtn)menuBtn.setAttribute('aria-expanded',String(o));return o;}
 if(menuBtn)menuBtn.addEventListener('click',function(){toggleMainMenu()});
+var menuVoltar=$('#menuVoltar');if(menuVoltar)menuVoltar.addEventListener('click',function(){toggleMainMenu(false);if(menuBtn)menuBtn.focus()});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open')){toggleMainMenu(false);if(menuBtn)menuBtn.focus()}});
 window.OveliaMainMenu={toggle:toggleMainMenu,close:function(){toggleMainMenu(false)}};
 renderMenu();
 if(!profile){perfilInicio.hidden=false;var firstProfile=$('[data-profile]',perfilInicio);if(firstProfile)firstProfile.focus()}
@@ -131,12 +128,10 @@ $('#textoPadrao').addEventListener('click',function(){tam=0;textoRange.value='0'
 altoContrasteBtn.addEventListener('click',function(){var on=body.classList.toggle('contraste');altoContrasteBtn.setAttribute('aria-pressed',String(on));$('#aCont').setAttribute('aria-pressed',String(on));applyPrefs()});
 /* ---------- Acessibilidade: letra e contraste (só preferências locais) ---------- */
 var tam=0,body=document.body;
-function applyPrefs(){body.classList.remove('t1','t2');if(tam)body.classList.add('t'+tam);$('#aMais').disabled=tam>=2;$('#aMenos').disabled=tam<=0;if(textoRange)textoRange.value=String(tam);if(textoPreview)textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam];if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed',String(body.classList.contains('contraste')));
+function applyPrefs(){body.classList.remove('t1','t2');if(tam)body.classList.add('t'+tam);if(textoRange)textoRange.value=String(tam);if(textoPreview)textoPreview.style.fontSize=['1rem','1.18rem','1.4rem'][tam];if(altoContrasteBtn)altoContrasteBtn.setAttribute('aria-pressed',String(body.classList.contains('contraste')));
   try{localStorage.setItem('ovelia-letra',tam);localStorage.setItem('ovelia-contraste',body.classList.contains('contraste')?'1':'0')}catch(e){}}
 try{tam=+localStorage.getItem('ovelia-letra')||0;if(localStorage.getItem('ovelia-contraste')==='1'){body.classList.add('contraste')}}catch(e){}
 if(window.matchMedia&&window.matchMedia('(prefers-contrast: more)').matches&&!body.classList.contains('contraste')){try{if(localStorage.getItem('ovelia-contraste')===null)body.classList.add('contraste')}catch(e){}}
-$('#aMais').addEventListener('click',function(){tam=Math.min(2,tam+1);applyPrefs()});
-$('#aMenos').addEventListener('click',function(){tam=Math.max(0,tam-1);applyPrefs()});
 var cb=$('#aCont');cb.setAttribute('aria-pressed',body.classList.contains('contraste'));
 cb.addEventListener('click',function(){var on=body.classList.toggle('contraste');cb.setAttribute('aria-pressed',on);applyPrefs()});
 applyPrefs();
@@ -186,7 +181,7 @@ var Voz=(function(){
     if(id!==runId)return;
     if(!queue.length){active=false;current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}pz.textContent='Pausar';st.textContent='Leitura concluída.';return}
     var part=queue.shift(),u=new SpeechSynthesisUtterance(part),v=voices[+sel.value];current=u;
-    /* A língua da fala deve acompanhar a voz escolhida. Isso permite que vozes inglesas/espanholas leiam páginas traduzidas pelo navegador; para texto em português, prefira uma voz pt-BR. */u.lang=(v&&v.lang)||document.documentElement.lang||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||0.85;u.pitch=1;u.volume=1;
+    /* A língua da fala deve acompanhar a voz escolhida. Isso permite que vozes inglesas/espanholas leiam páginas traduzidas pelo navegador; para texto em português, prefira uma voz pt-BR. */u.lang=(v&&v.lang)||'pt-BR';if(v)u.voice=v;u.rate=+vel.value||0.85;u.pitch=1;u.volume=1;
     u.onstart=function(){if(id!==runId)return;if(watchdog){clearTimeout(watchdog);watchdog=null}st.textContent='Reproduzindo áudio…';};
     u.onend=function(){if(id===runId){current=null;if(watchdog){clearTimeout(watchdog);watchdog=null}var fim=(part.slice(-1)==='?'||part.slice(-1)==='!')?380:(part.slice(-1)==='.'?300:180);startTimer=setTimeout(function(){next(id)},fim)}};
     u.onerror=function(e){if(id!==runId)return;if(e.error==='canceled'||e.error==='interrupted')return;if(watchdog){clearTimeout(watchdog);watchdog=null}active=false;current=null;st.textContent='O navegador informou que não conseguiu reproduzir a voz ('+(e.error||'erro')+'). Verifique o volume e as vozes do iPhone.'};
@@ -199,7 +194,7 @@ var Voz=(function(){
   function partir(t){var r=t.match(/[^.!?;:\n]+[.!?;:]?\s*/g)||[t],o=[],c='';r.forEach(function(x){if((c+x).length>160&&c){o.push(c);c=x}else c+=x});if(c)o.push(c);return o}
   function falar(txt,tit){
     txt=(txt||'').replace(/\s+/g,' ').trim();if(!txt){st.textContent='Não há texto para ler nesta seção.';return}
-    carregar();if(!voices.length){st.textContent='Nenhuma voz foi disponibilizada pelo navegador. Abra as configurações de voz do aparelho ou tente novamente quando as vozes terminarem de carregar.';return}var precisaCancelar=active||window.speechSynthesis.speaking||window.speechSynthesis.pending||window.speechSynthesis.paused;runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Toque recebido. Preparando áudio: '+(tit||'texto')+'.';
+    carregar();var precisaCancelar=active||window.speechSynthesis.speaking||window.speechSynthesis.pending||window.speechSynthesis.paused;runId++;var id=runId;queue=partir(txt);active=true;st.textContent='Toque recebido. Preparando áudio: '+(tit||'texto')+'.';
     if(startTimer){clearTimeout(startTimer);startTimer=null}if(precisaCancelar){try{window.speechSynthesis.cancel()}catch(e){}}pz.textContent='Pausar';
     /* Inicia a primeira fala dentro do toque do usuário; no Safari móvel, adiar speak() pode bloquear o áudio. */
     try{next(id)}catch(e){active=false;current=null;st.textContent='Não foi possível iniciar a leitura neste aparelho: '+(e&&e.message?e.message:'erro do navegador')+'.'}

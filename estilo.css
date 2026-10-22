@@ -509,3 +509,9 @@ body.tema-escuro .kids-story-scene,body.dark .kids-story-scene{background:#29233
 @media(min-width:600px){.kids-feature-tabs{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(orientation:landscape) and (max-height:520px){.kids-story-scene{min-height:90px}.kids-story-scene span{font-size:2.2rem}}
 @media(prefers-reduced-motion:reduce){.kids-feature-tab{scroll-behavior:auto}}
+
+/* Ajustes de usabilidade: cabeçalho simplificado, saída clara do menu e cartões infantis maiores. */
+.menu-voltar{display:block;min-height:44px;margin:8px 0 12px}
+.kids-story-card{min-height:140px;padding:20px}
+.kids-story-card .kids-story-art,.kids-story-card svg,.kids-story-card img{width:min(100%,180px);height:auto;max-height:180px;align-self:center;object-fit:contain}
+.kids-story-card:focus-visible{outline:3px solid var(--roxo-500);outline-offset:3px}
