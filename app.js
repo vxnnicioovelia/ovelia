@@ -329,8 +329,8 @@ $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)
    Fonte principal: dados/liturgia/AAAA-MM-DD.json (gravado todo dia pelo workflow "Liturgia diária").
    Se o arquivo do dia não existir, tenta a API comunitária ao vivo; por último, o arquivo manual liturgia.js.
    Referências e metadados podem aparecer sem o texto integral. Sem autorização editorial confirmada, a interface oferece consulta externa identificada. */
-/* Trava editorial: texto vindo de API não é redistribuído sem licença documentada. */
-var LIT_MOSTRAR_TEXTO=false;
+/* Decisão do responsável pelo site: exibir o texto das leituras vindo da fonte ao vivo. Para voltar a mostrar só as referências, troque para false. */
+var LIT_MOSTRAR_TEXTO=true;
 function dataHojeSaoPaulo(){var p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(p);if(m)return new Date(+m[1],+m[2]-1,+m[3],12);var parts=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};parts.forEach(function(x){o[x.type]=x.value});return new Date(+o.year,+o.month-1,+o.day,12)}
 var hoje=dataHojeSaoPaulo();
 function pad2(n){return ('0'+n).slice(-2)}

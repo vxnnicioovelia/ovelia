@@ -1,0 +1,4 @@
+Substitua na raiz do repositorio (Add file > Upload files, mesmo nome): app.js, index.html, sw.js
+Nada novo, nada para apagar. O workflow nao muda desta vez.
+Depois: aguarde o Pages publicar, abra o site no iPhone, feche e reabra o app (cache v17-liturgia3).
+Para voltar a mostrar so as referencias: em app.js troque LIT_MOSTRAR_TEXTO=true por false.
