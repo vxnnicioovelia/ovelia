@@ -5,12 +5,12 @@
 .cal-mensal-nav{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
 .cal-mensal-nav select{max-width:100%;min-height:42px;border-radius:.6rem;padding:.45rem;background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .cal-mensal-grade{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.3rem;margin-top:.8rem}
-.cal-mensal-dia-semana{text-align:center;font-size:.78rem;font-weight:800;padding:.35rem 0;color:var(--mut, #666)}
+.cal-mensal-dia-semana{text-align:center;font-size:.78rem;font-weight:800;padding:.35rem 0;color:var(--mut, var(--cinza-600))}
 .cal-mensal-dia{min-width:0;min-height:42px;padding:.35rem .1rem;border-radius:.65rem;border:1px solid var(--line);background:transparent;color:inherit;font:inherit;font-weight:650;cursor:pointer}
-.cal-mensal-dia:hover,.cal-mensal-dia:focus-visible{outline:2px solid var(--olive, #62458F);outline-offset:1px}
-.cal-mensal-dia.hoje{box-shadow:inset 0 0 0 2px var(--gold, #D7C1F2)}
-.cal-mensal-dia.selecionado{background:var(--olive, #62458F);color:var(--on-olive,#fff);border-color:var(--olive, #62458F)}
+.cal-mensal-dia:hover,.cal-mensal-dia:focus-visible{outline:2px solid var(--olive, var(--roxo-700));outline-offset:1px}
+.cal-mensal-dia.hoje{box-shadow:inset 0 0 0 2px var(--gold, var(--lavanda-200))}
+.cal-mensal-dia.selecionado{background:var(--olive, var(--roxo-700));color:var(--on-olive,var(--branco));border-color:var(--olive, var(--roxo-700))}
 .cal-mensal-dia.vazio{visibility:hidden}
-.cal-mensal-legenda{font-size:.86rem;color:var(--mut, #666);margin:.75rem 0 0}
+.cal-mensal-legenda{font-size:.86rem;color:var(--mut, var(--cinza-600));margin:.75rem 0 0}
 @media(max-width:420px){.cal-mensal{padding:.7rem}.cal-mensal-grade{gap:.2rem}.cal-mensal-dia{min-height:38px;font-size:.9rem}.cal-mensal-nav{width:100%}.cal-mensal-nav select{flex:1}}
 @media(prefers-reduced-motion:reduce){.cal-mensal *{scroll-behavior:auto!important;transition:none!important}}

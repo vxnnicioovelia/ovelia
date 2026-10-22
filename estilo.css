@@ -1,48 +1,83 @@
 /* Ovelia — estilos. Cores oficiais ficam nas variáveis de :root. */
-:root{--bg:#F8F5FC;--card:#FFFFFF;--ink:#292238;--mut:#5F566D;--gold:#D7C1F2;--olive:#6B4FA1;--line:#E4D9F0;--soft:#F0E8F8;--hero:#62458F;--kid:#F8F5FC;--kidink:#292238;--fs:17px;
+/* ==========================================================================
+   TOKENS DA IDENTIDADE OVELIA (única fonte de verdade para cores, tipografia,
+   espaçamentos, raios e sombras). Os demais CSS só referenciam estas variáveis.
+   ========================================================================== */
+:root{
+  /* Paleta — roxo profundo */
+  --roxo-950:#2E1C43;--roxo-900:#3E2D58;--roxo-850:#3E2860;--roxo-800:#4C2E78;--roxo-700:#62458F;--roxo-600:#6B4FA1;--roxo-500:#7C4DBA;--roxo-450:#7655A8;--roxo-tinta:#59466F;
+  /* Paleta — lavanda e lilás */
+  --lavanda-25:#F7F2FC;--lavanda-50:#F8F5FC;--lavanda-75:#F3EDFB;--lavanda-100:#EEE6F8;--lavanda-125:#F0E8F8;--lavanda-150:#E4D9F0;--lavanda-200:#D7C1F2;--lavanda-300:#D8C8EE;--lavanda-400:#A996D8;
+  --lilas-claro:#BDA3E8;--lilas-texto-escuro:#D1C6DF;
+  /* Paleta — creme, branco quente e dourado suave */
+  --creme:#FFFBF4;--branco:#FFFFFF;--preto:#000000;--preto-suave:#111111;--cinza-100:#F0F0F0;--cinza-600:#666666;
+  --ambar:#C99A3B;--ambar-escuro:#B8860B;--realce:#FFDF70;
+  /* Texto escuro (sobre superfícies claras, nunca troca no tema escuro) */
+  --tinta:#292238;--tinta-suave:#5F566D;--tinta-kids:#302342;--contraste-mut:#1A1A1A;
+  /* Tema escuro */
+  --noite-900:#17131F;--noite-800:#241D30;--noite-700:#332742;--noite-600:#493B5B;
+  /* Cores semânticas (claro). Cada uma tem fundo, borda e texto */
+  --sucesso-fundo:#E4F1E6;--sucesso-borda:#2E6B3E;--sucesso-texto:#1E5A30;--sucesso-escuro-fundo:#2F4A33;--sucesso-escuro-borda:#B7CBAE;
+  --erro-fundo:#FBE6E3;--erro-borda:#A62C2C;--erro-texto:#7F1F1F;--erro-escuro-fundo:#553632;--erro-escuro-borda:#F0B3A8;
+  --alerta-fundo:#FFF1CF;--alerta-borda:#8A5A00;--alerta-texto:#6B4500;
+  --info-fundo:#E3ECFA;--info-borda:#2F5C9A;--info-texto:#1F4577;
+  /* Tipografia */
+  --fonte-titulo:Fraunces,Georgia,serif;--fonte-texto:Nunito,system-ui,sans-serif;
+  --texto-xs:.8rem;--texto-sm:.9rem;--texto-md:1rem;--texto-lg:1.15rem;--texto-xl:1.6rem;--texto-2xl:2rem;
+  /* Espaçamentos */
+  --esp-1:4px;--esp-2:8px;--esp-3:12px;--esp-4:16px;--esp-5:24px;--esp-6:32px;
+  /* Raios */
+  --raio-sm:12px;--raio-md:18px;--raio-lg:24px;--raio-pilula:99px;
+  /* Sombras leves */
+  --sombra-cor-leve:rgba(0,0,0,.13);--sombra-cor-suave:rgba(45,32,65,.07);--sombra-cor-media:rgba(55,38,90,.12);--sombra-cor-nav:rgba(49,32,72,.18);
+  --sombra-suave:0 2px 10px var(--sombra-cor-suave);--sombra-media:0 6px 22px var(--sombra-cor-media);
+  --overlay:rgba(41,34,56,.8);
+  --toque-min:44px;
+}
+:root{--bg:var(--lavanda-50);--card:var(--creme);--ink:var(--tinta);--mut:var(--tinta-suave);--gold:var(--lavanda-200);--olive:var(--roxo-600);--line:var(--lavanda-150);--soft:var(--lavanda-125);--hero:var(--roxo-700);--kid:var(--lavanda-50);--kidink:var(--tinta);--fs:17px;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root{--bg:#17131F;--card:#241D30;--ink:#F7F2FC;--mut:#D1C6DF;--gold:#D7C1F2;--olive:#BDA3E8;--line:#493B5B;--soft:#332742;--hero:#3E2D58}}
-body.contraste{--bg:#fff;--card:#fff;--ink:#000;--mut:#1a1a1a;--line:#000;--soft:#f0f0f0;--hero:#000;--kid:#fff;--kidink:#000}
-body.contraste .btn{border:2px solid #000}
+@media (prefers-color-scheme:dark){:root{--bg:var(--noite-900);--card:var(--noite-800);--ink:var(--lavanda-25);--mut:var(--lilas-texto-escuro);--gold:var(--lavanda-200);--olive:var(--lilas-claro);--line:var(--noite-600);--soft:var(--noite-700);--hero:var(--roxo-900)}}
+body.contraste{--bg:var(--branco);--card:var(--branco);--ink:var(--preto);--mut:var(--contraste-mut);--line:var(--preto);--soft:var(--cinza-100);--hero:var(--preto);--kid:var(--branco);--kidink:var(--preto)}
+body.contraste .btn{border:2px solid var(--preto)}
 body.contraste a:not(.btn){text-decoration:underline}
 *{box-sizing:border-box}html{scroll-padding-top:90px}
 body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.65 Nunito,system-ui,sans-serif}
 body.t1{--fs:20px}body.t2{--fs:24px}
-h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.25;margin:0 0 .5em}
+h1,h2,h3{font-family:var(--fonte-titulo);line-height:1.25;margin:0 0 .5em}
 h1{font-size:2rem}h2{font-size:1.6rem}h3{font-size:1.15rem}p{margin:.5em 0;max-width:72ch}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 [tabindex="-1"]:focus{outline:none}
-.skip{position:absolute;left:-999px;top:8px;background:var(--gold);color:#292238;padding:10px 16px;border-radius:99px;z-index:20;font-weight:700}
+.skip{position:absolute;left:-999px;top:8px;background:var(--gold);color:var(--tinta);padding:10px 16px;border-radius:var(--raio-pilula);z-index:20;font-weight:700}
 .skip:focus{left:8px}
 header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
 .bar{max-width:1080px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.brand{font:700 1.4rem Fraunces,serif;display:flex;align-items:center;gap:8px;text-decoration:none}
+.brand{font:700 1.4rem var(--fonte-titulo);display:flex;align-items:center;gap:8px;text-decoration:none}
 .brand img{width:42px;height:42px}
 .tools{margin-left:auto;display:flex;gap:6px;align-items:center}
 .tools .btn{padding:6px 12px;font-size:.9rem}
 nav{width:100%}
 nav ul{list-style:none;margin:0;padding:6px 0;display:none;flex-direction:column;gap:2px}
 nav ul.open{display:flex}
-nav a{display:block;padding:12px 14px;border-radius:12px;text-decoration:none;color:var(--ink)}
+nav a{display:block;padding:12px 14px;border-radius:var(--raio-sm);text-decoration:none;color:var(--ink)}
 nav a[aria-current]{background:var(--soft);font-weight:700;border-left:5px solid var(--gold)}
 main{max-width:1080px;margin:0 auto;padding:18px 16px 40px}
 .js section.pg{display:none}.js section.pg.on{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--raio-md);padding:18px;margin-bottom:14px}
 .grid{display:grid;gap:14px}
-.hero{display:flex;gap:22px;align-items:center;background:var(--hero);color:#fff;border-radius:26px;padding:24px;margin-bottom:16px}
-body.contraste .hero p{color:#fff}
-.hero p{color:#F8F5FC}.hero img{flex:0 0 200px;width:200px;background:#F8F5FC;border-radius:22px;padding:8px}
-.btn{font:inherit;font-weight:700;border:0;border-radius:99px;padding:10px 18px;background:var(--gold);color:#292238;cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
+.hero{display:flex;gap:22px;align-items:center;background:var(--hero);color:var(--branco);border-radius:26px;padding:24px;margin-bottom:16px}
+body.contraste .hero p{color:var(--branco)}
+.hero p{color:var(--lavanda-50)}.hero img{flex:0 0 200px;width:200px;background:var(--lavanda-50);border-radius:22px;padding:8px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:var(--raio-pilula);padding:10px 18px;background:var(--gold);color:var(--tinta);cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
 .btn.g{background:var(--soft);color:var(--ink)}
 .btn.lg{font-size:1.15rem;padding:14px 26px;min-height:56px}
 .btn[aria-pressed="true"]{outline:3px solid var(--ink)}
-.tag{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:99px;background:#EEE6F8;color:#292238}
-.tag.ok{background:#DDE7D8;color:#304B33}.tag.pd{background:#EEE6F8;color:#292238}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:var(--raio-pilula);background:var(--lavanda-100);color:var(--tinta)}
+.tag.ok{background:var(--sucesso-fundo);color:var(--sucesso-texto)}.tag.pd{background:var(--lavanda-100);color:var(--tinta)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .side{display:flex;gap:18px;align-items:center}.side img{flex:0 0 130px;width:130px}
 .aviso{border:2px solid var(--gold);border-radius:14px;padding:12px 16px;margin:12px 0;background:var(--card)}
-.oracao{white-space:pre-line;font-size:1.05em;background:var(--soft);border-radius:12px;padding:14px;margin:8px 0}
+.oracao{white-space:pre-line;font-size:1.05em;background:var(--soft);border-radius:var(--raio-sm);padding:14px;margin:8px 0}
 details{border:1px solid var(--line);border-radius:14px;padding:4px 16px;margin-bottom:10px;background:var(--card)}
 summary{cursor:pointer;font-weight:700;padding:10px 0;min-height:44px}
 summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
@@ -50,37 +85,37 @@ summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .bead{width:22px;height:22px;border-radius:50%;background:var(--soft);border:2px solid var(--mut)}
 .bead.f{background:var(--gold);border-color:var(--gold)}.bead.big{width:32px;height:32px}
 .bead.cur{outline:4px solid var(--ink);outline-offset:2px}
-.prog{height:12px;background:var(--soft);border-radius:99px;overflow:hidden}.prog>i{display:block;height:100%;background:var(--olive)}
+.prog{height:12px;background:var(--soft);border-radius:var(--raio-pilula);overflow:hidden}.prog>i{display:block;height:100%;background:var(--olive)}
 table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
 .livros{columns:2;gap:24px;padding-left:1.2em}.livros li{break-inside:avoid;margin:2px 0}
-input[type=search]{font:inherit;padding:12px 16px;border-radius:99px;border:2px solid var(--line);width:100%;background:var(--card);color:var(--ink)}
-.kids{background:var(--kid);color:var(--kidink);border-radius:24px;padding:18px;border:3px dashed var(--gold)}
-.kids h2,.kids h3{color:var(--kidink)}.kids .card{background:#fff;color:var(--kidink);border-color:#EEE6F8}
-body.contraste .kids .card{border-color:#000}
-.kids .btn.g{background:#EEE6F8;color:var(--kidink)}
-.opcoes{display:grid;gap:10px;margin:10px 0}.opcoes .btn{text-align:left;background:#EEE6F8;color:var(--kidink)}
-.opcoes .btn.certo{background:#DDE7D8;outline:3px solid #304B33}.opcoes .btn.errado{background:#F4E1DD;outline:3px dashed #743D35}
+input[type=search]{font:inherit;padding:12px 16px;border-radius:var(--raio-pilula);border:2px solid var(--line);width:100%;background:var(--card);color:var(--ink)}
+.kids{background:var(--kid);color:var(--kidink);border-radius:var(--raio-lg);padding:18px;border:3px dashed var(--gold)}
+.kids h2,.kids h3{color:var(--kidink)}.kids .card{background:var(--branco);color:var(--kidink);border-color:var(--lavanda-100)}
+body.contraste .kids .card{border-color:var(--preto)}
+.kids .btn.g{background:var(--lavanda-100);color:var(--kidink)}
+.opcoes{display:grid;gap:10px;margin:10px 0}.opcoes .btn{text-align:left;background:var(--lavanda-100);color:var(--kidink)}
+.opcoes .btn.certo{background:var(--sucesso-fundo);outline:3px solid var(--sucesso-texto)}.opcoes .btn.errado{background:var(--erro-fundo);outline:3px dashed var(--erro-texto)}
 footer{text-align:center;color:var(--mut);font-size:.9rem;padding:16px 18px 40px;border-top:1px solid var(--line);margin-top:20px}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media (min-width:900px){#menuBtn{display:none}nav{width:auto;order:3;flex:1 1 100%}nav ul{display:flex;flex-direction:row;flex-wrap:wrap;gap:2px;padding:0 0 6px}
-nav a{padding:8px 12px}nav a[aria-current]{border-left:0;border-bottom:4px solid var(--gold);border-radius:12px 12px 0 0}
+nav a{padding:8px 12px}nav a[aria-current]{border-left:0;border-bottom:4px solid var(--gold);border-radius:var(--raio-sm) 12px 0 0}
 .grid.c2{grid-template-columns:1fr 1fr}.grid.c3{grid-template-columns:repeat(3,1fr)}h1{font-size:2.6rem}.side img{flex-basis:170px;width:170px}}
 @media (max-width:600px){.hero{flex-direction:column;text-align:center}.hero .row{justify-content:center}.hero img{width:170px;flex:none}.side{flex-direction:column;text-align:center}.livros{columns:1}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
 /* Leitura em voz alta */
-.vozbar{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 16px;margin-bottom:14px}
+.vozbar{background:var(--card);border:1px solid var(--line);border-radius:var(--raio-md);padding:12px 16px;margin-bottom:14px}
 .vozbar label{font-weight:700;display:block;margin-top:8px}
 .vozbar select,.vozbar input[type=range]{font:inherit;max-width:100%;width:100%;margin-top:4px}
-.vozbar select{padding:10px;border-radius:12px}
+.vozbar select{padding:10px;border-radius:var(--raio-sm)}
 .vozbar .btn{padding:8px 14px}
 .voz-btn{margin:4px 0 8px}
 .sem-voz .voz-btn,.sem-voz .vozbar .row{display:none}
 
 /* Escolha inicial de perfil e experiências adaptadas */
 [hidden]{display:none!important}
-.perfil-overlay{position:fixed;inset:0;z-index:1000;background:rgba(14,23,48,.82);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
-.perfil-card{width:min(680px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--card);color:var(--ink);border-radius:24px;padding:clamp(18px,4vw,30px);text-align:center;box-shadow:0 18px 70px rgba(0,0,0,.3)}
+.perfil-overlay{position:fixed;inset:0;z-index:1000;background:var(--overlay);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.perfil-card{width:min(680px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--card);color:var(--ink);border-radius:var(--raio-lg);padding:clamp(18px,4vw,30px);text-align:center;box-shadow:0 18px 70px rgba(0,0,0,.3)}
 .perfil-card>img{width:92px;height:auto;margin:0 auto 8px;object-fit:contain}
 .perfil-card h1{font-size:clamp(1.6rem,5vw,2.25rem);margin:.4em 0}
 .perfil-opcoes{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0}
@@ -93,7 +128,7 @@ nav a{padding:8px 12px}nav a[aria-current]{border-left:0;border-bottom:4px solid
 .perfil-atual{font-size:.9rem;color:var(--mut);margin:0 0 8px}
 .liturgia-oficial{border:2px solid var(--gold)}
 .liturgia-oficial .btn{margin:6px 0}
-.kids-trilha{display:grid;gap:10px;background:#fff;border-radius:14px;padding:14px;margin:10px 0 18px;color:#292238}
+.kids-trilha{display:grid;gap:10px;background:var(--branco);border-radius:14px;padding:14px;margin:10px 0 18px;color:var(--tinta)}
 .kids-trilha label{display:flex;gap:10px;align-items:flex-start;padding:8px 0}
 .kids-trilha input{width:22px;height:22px;flex:0 0 auto}
 body.perfil-kids .hero .row a[href="#terco"],
@@ -103,10 +138,10 @@ body.perfil-kids #home .grid>.card:nth-child(5),
 body.perfil-kids #home .grid>.card:nth-child(7),
 body.perfil-kids #home .grid>.card:nth-child(8){display:none}
 body.perfil-kids #home .hero p{font-size:1.1em}
-body.perfil-kids #home .grid>.card{border-color:#D7C1F2}
+body.perfil-kids #home .grid>.card{border-color:var(--lavanda-200)}
 body.perfil-kids #listaOracoes .categoria-oracao:not(.kids-cat){display:none}
-body.perfil-kids #biblia .aviso:first-of-type{border-color:#D7C1F2}
-body.perfil-kids #biblia .card:first-of-type{border-color:#D7C1F2}
+body.perfil-kids #biblia .aviso:first-of-type{border-color:var(--lavanda-200)}
+body.perfil-kids #biblia .card:first-of-type{border-color:var(--lavanda-200)}
 body.perfil-kids .kids{font-size:1.08em}
 body.perfil-easy{--fs:24px}
 body.perfil-easy .btn{min-height:54px;padding:12px 18px}
@@ -125,17 +160,17 @@ body.perfil-kids #home .grid>.card:nth-child(5){display:block}
 /* EXPERIÊNCIAS DISTINTAS: infantil, normal e Ovelia 60+ */
 .profile-home{margin:0 0 18px}
 .profile-home[hidden]{display:none!important}
-.kids-home .kids-welcome{background:#F8F5FC;border-color:#D7C1F2}
+.kids-home .kids-welcome{background:var(--lavanda-50);border-color:var(--lavanda-200)}
 .kids-home .kids-welcome .side{align-items:center}
 .kids-home .kids-welcome img{max-width:150px;flex-basis:150px}
-.kids-home .kids-welcome h1{color:#292238}
-.kids-home .kids-welcome p{color:#292238;font-size:1.12em}
-.kids-home-actions .card{background:#FFFFFF;border:2px solid #D7C1F2;text-align:center}
+.kids-home .kids-welcome h1{color:var(--tinta)}
+.kids-home .kids-welcome p{color:var(--tinta);font-size:1.12em}
+.kids-home-actions .card{background:var(--branco);border:2px solid var(--lavanda-200);text-align:center}
 .kids-emoji{font-size:2.5rem;margin-bottom:4px}
-.kids-home-actions h2,.kids-message h2{color:#292238}
-.kids-home-actions .btn,.kids-main-btn{background:#D7C1F2;color:#292238;white-space:normal}
-.kids-message{background:#F8F5FC;border:2px dashed #D7C1F2;color:#292238}
-body.perfil-kids{--fs:19px;--bg:#F8F5FC;--card:#FFFFFF;--ink:#292238;--mut:#5F566D;--line:#D7C1F2;--soft:#EEE6F8;--hero:#62458F;--kid:#F8F5FC;--kidink:#292238}
+.kids-home-actions h2,.kids-message h2{color:var(--tinta)}
+.kids-home-actions .btn,.kids-main-btn{background:var(--lavanda-200);color:var(--tinta);white-space:normal}
+.kids-message{background:var(--lavanda-50);border:2px dashed var(--lavanda-200);color:var(--tinta)}
+body.perfil-kids{--fs:19px;--bg:var(--lavanda-50);--card:var(--branco);--ink:var(--tinta);--mut:var(--tinta-suave);--line:var(--lavanda-200);--soft:var(--lavanda-100);--hero:var(--roxo-700);--kid:var(--lavanda-50);--kidink:var(--tinta)}
 body.perfil-kids .perfil-atual{color:var(--ink)}
 body.perfil-kids .hero,body.perfil-kids #home>.card,body.perfil-kids #home>.grid{display:none!important}
 body.perfil-kids .kids-home{display:block}
@@ -144,18 +179,18 @@ body.perfil-kids #home .kids-home{display:block}
 body.perfil-kids #oracoes>p,body.perfil-kids #oracoes>.aviso{display:none}
 body.perfil-kids #oracoes h2{font-size:1.8rem}
 body.perfil-kids #listaOracoes .categoria-oracao:not(.kids-cat){display:none!important}
-body.perfil-kids #listaOracoes .kids-cat details{background:#FFFFFF;border:2px solid #D7C1F2;padding:8px 16px}
+body.perfil-kids #listaOracoes .kids-cat details{background:var(--branco);border:2px solid var(--lavanda-200);padding:8px 16px}
 body.perfil-kids #listaOracoes .kids-cat summary{font-size:1.1em}
 body.perfil-kids #infantil .kids{font-size:1.08em}
 body.perfil-kids #infantil .kids-trilha{font-size:1.05em}
 body.perfil-kids #infantil .kids-trilha label{padding:12px 4px}
 body.perfil-kids #infantil .kids-trilha input{width:26px;height:26px}
-body.perfil-kids #infantil details{border:2px solid #D7C1F2}
+body.perfil-kids #infantil details{border:2px solid var(--lavanda-200)}
 body.perfil-kids #infantil summary{font-size:1.12em;padding:14px 0}
 body.perfil-kids #infantil .opcoes .btn{min-height:58px}
-body.perfil-kids #perfilBtn{background:#EEE6F8;color:#292238}
+body.perfil-kids #perfilBtn{background:var(--lavanda-100);color:var(--tinta)}
 
-body.perfil-senior{--fs:22px;--bg:#F8F5FC;--card:#FFFFFF;--ink:#292238;--mut:#5F566D;--line:#D6C8E8;--soft:#EEE6F8;--hero:#62458F;line-height:1.8}
+body.perfil-senior{--fs:22px;--bg:var(--lavanda-50);--card:var(--branco);--ink:var(--tinta);--mut:var(--tinta-suave);--line:var(--lavanda-300);--soft:var(--lavanda-100);--hero:var(--roxo-700);line-height:1.8}
 body.perfil-senior.t1{--fs:25px}
 body.perfil-senior.t2{--fs:28px}
 body.perfil-senior h1{font-size:2.05em}
@@ -169,7 +204,7 @@ body.perfil-senior .tools{gap:8px;flex-wrap:wrap}
 body.perfil-senior .tools .btn{min-height:54px;padding:10px 14px}
 body.perfil-senior .hero,body.perfil-senior #home>.card,body.perfil-senior #home>.grid{display:none!important}
 body.perfil-senior #home .senior-home{display:block}
-.senior-welcome{background:#EEE6F8;border:2px solid #D6C8E8;border-radius:22px;padding:24px;margin-bottom:16px}
+.senior-welcome{background:var(--lavanda-100);border:2px solid var(--lavanda-300);border-radius:22px;padding:24px;margin-bottom:16px}
 .senior-welcome h1{margin-top:8px}
 .senior-tip{border-left:5px solid var(--olive);padding:8px 12px;margin-top:14px;background:var(--card)}
 .senior-actions .card{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
@@ -200,22 +235,22 @@ body.perfil-senior input,body.perfil-senior select{font:inherit;min-height:54px}
 #vozStatus:empty{min-height:0;padding:0;background:transparent}
 .liturgia-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .liturgia-referencias{display:grid;gap:8px}
-.liturgia-referencias .ref-item{background:var(--soft);border-radius:12px;padding:10px 12px}
+.liturgia-referencias .ref-item{background:var(--soft);border-radius:var(--raio-sm);padding:10px 12px}
 .estudo-do-dia{border:2px solid var(--olive);background:var(--card)}
 .estudo-do-dia .versos{font-weight:700;color:var(--olive)}
 .kids-story{border-color:var(--gold)}
 .kids-story summary{color:var(--olive)}
 .kids-home-actions .card{border-color:var(--gold)}
-.kids-home-actions .btn,.kids-main-btn{background:var(--gold);color:#292238}
-body.perfil-kids .kids-home-actions .card,body.perfil-kids .kids-message{background:#FFFFFF;color:#292238;border-color:#D7C1F2}
-body.perfil-kids .kids-home-actions h2,body.perfil-kids .kids-message h2{color:#62458F}
-body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:#EEE6F8;color:#292238}
+.kids-home-actions .btn,.kids-main-btn{background:var(--gold);color:var(--tinta)}
+body.perfil-kids .kids-home-actions .card,body.perfil-kids .kids-message{background:var(--branco);color:var(--tinta);border-color:var(--lavanda-200)}
+body.perfil-kids .kids-home-actions h2,body.perfil-kids .kids-message h2{color:var(--roxo-700)}
+body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:var(--lavanda-100);color:var(--tinta)}
 
 /* Calendário de consulta da Liturgia Diária */
 .calendario-liturgia{margin:12px 0;border:1px solid var(--line)}
 .calendario-controles{display:grid;grid-template-columns:1fr;gap:10px;max-width:560px}
 .calendario-controles label{font-weight:700}
-.calendario-controles input[type="date"]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;min-height:48px;width:100%;box-sizing:border-box}
+.calendario-controles input[type="date"]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--raio-sm);padding:12px;min-height:48px;width:100%;box-sizing:border-box}
 @media(min-width:620px){.calendario-controles{grid-template-columns:minmax(180px,.7fr) minmax(260px,1.3fr);align-items:end}.calendario-controles label{grid-column:1/-1}}
 
 /* Liturgia exibida dentro da Ovelia */
@@ -225,16 +260,16 @@ body.perfil-kids .kids .btn.g,body.perfil-kids .opcoes .btn{background:#EEE6F8;c
 .lit-titulo{margin:0;color:var(--mut)}
 .lit-ref{margin:0 0 6px;font-weight:700}
 .lit-refrao{background:var(--soft);padding:8px 10px;border-radius:10px}
-.lit-texto{font-family:'Fraunces',Georgia,serif;font-size:1.1rem;line-height:1.75}
+.lit-texto{font-family:var(--fonte-titulo);font-size:1.1rem;line-height:1.75}
 .lit-texto p{margin:0 0 .8em}
 .calendario-controles .row{margin-top:8px}
 
 /* Refinamento acessível dos controles: tema manual, texto e áudio */
-body.tema-claro{color-scheme:light;--bg:#F8F5FC;--card:#FFFFFF;--ink:#292238;--mut:#5F566D;--line:#EEE6F8;--soft:#EEE6F8;--hero:#62458F}
-body.tema-escuro{color-scheme:dark;--bg:#17131F;--card:#241D30;--ink:#F8F5FC;--mut:#D1C6DF;--line:#493B5B;--soft:#332742;--hero:#3E2D58;--kid:#241D30;--kidink:#F8F5FC}
-body.tema-escuro .hero p{color:#F8F5FC}
+body.tema-claro{color-scheme:light;--bg:var(--lavanda-50);--card:var(--creme);--ink:var(--tinta);--mut:var(--tinta-suave);--line:var(--lavanda-100);--soft:var(--lavanda-100);--hero:var(--roxo-700)}
+body.tema-escuro{color-scheme:dark;--bg:var(--noite-900);--card:var(--noite-800);--ink:var(--lavanda-50);--mut:var(--lilas-texto-escuro);--line:var(--noite-600);--soft:var(--noite-700);--hero:var(--roxo-900);--kid:var(--noite-800);--kidink:var(--lavanda-50)}
+body.tema-escuro .hero p{color:var(--lavanda-50)}
 .controle-compacto{min-width:44px;min-height:44px;padding:8px 12px!important;font-size:1rem!important}
-.painel-texto{position:absolute;right:12px;top:calc(100% + 6px);z-index:30;width:min(340px,calc(100vw - 24px));padding:16px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px #0002}
+.painel-texto{position:absolute;right:12px;top:calc(100% + 6px);z-index:30;width:min(340px,calc(100vw - 24px));padding:16px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px var(--sombra-cor-leve)}
 .painel-texto[hidden],.voz-controles[hidden]{display:none!important}
 .painel-texto label{display:block;font-weight:800}.painel-texto input[type=range]{width:100%;min-height:36px}.painel-texto p{margin:10px 0}.painel-texto-acoes{display:flex;flex-wrap:wrap;gap:8px}.painel-texto-acoes .btn{flex:1 1 auto;white-space:normal}
 .bar{position:relative}.voz-toggle{display:none}.voz-controles{display:block}
@@ -251,12 +286,12 @@ body.perfil-kids .temaBtn,body.perfil-kids #temaBtn,body.perfil-kids #textoBtn{d
 }
 
 /* ===== Camada consolidada de contraste =====
-   Causa do problema: cartões, botões e estados tinham cor de fundo fixa (#fff, #EEE6F8, #DDE7D8) enquanto o texto
+   Causa do problema: cartões, botões e estados tinham cor de fundo fixa (var(--branco), var(--lavanda-100), var(--sucesso-fundo)) enquanto o texto
    usava variáveis de tema. No tema escuro o texto ficava claro sobre fundo claro. Agora superfícies e texto
    usam sempre as mesmas variáveis (--card, --soft, --ink), que mudam juntas em cada tema. */
-:root{--on-olive:#FFFFFF;--ok-bg:#DDE7D8;--ok-line:#304B33;--bad-bg:#F4E1DD;--bad-line:#743D35;--on-gold:#292238}
-body.tema-escuro{--on-olive:#17131F;--olive:#BDA3E8;--ok-bg:#2F4A33;--ok-line:#B7CBAE;--bad-bg:#553632;--bad-line:#F0B3A8;--kid:#241D30;--kidink:#F8F5FC}
-body.contraste{--ok-bg:#fff;--ok-line:#000;--bad-bg:#fff;--bad-line:#000}
+:root{--on-olive:var(--branco);--ok-bg:var(--sucesso-fundo);--ok-line:var(--sucesso-borda);--ok-ink:var(--sucesso-texto);--bad-bg:var(--erro-fundo);--bad-line:var(--erro-borda);--bad-ink:var(--erro-texto);--warn-bg:var(--alerta-fundo);--warn-line:var(--alerta-borda);--warn-ink:var(--alerta-texto);--info-bg:var(--info-fundo);--info-line:var(--info-borda);--info-ink:var(--info-texto);--on-gold:var(--tinta);--foco:#4B2F85;--titulo:var(--roxo-900);--btn-bg:var(--roxo-700);--btn-ink:var(--branco);--btn-bg-hover:var(--roxo-800)}
+body.tema-escuro{--ok-ink:#CFE9D4;--bad-ink:#FAD4CD;--warn-bg:#4A3A18;--warn-line:#E2B85F;--warn-ink:#F7E1AE;--info-bg:#1F3350;--info-line:#8DB4EA;--info-ink:#D3E3FA;--foco:#E2D2FA;--titulo:var(--lavanda-100);--btn-bg:var(--lilas-claro);--btn-ink:var(--noite-900);--btn-bg-hover:var(--lavanda-200);--on-olive:var(--noite-900);--olive:var(--lilas-claro);--ok-bg:var(--sucesso-escuro-fundo);--ok-line:var(--sucesso-escuro-borda);--bad-bg:var(--erro-escuro-fundo);--bad-line:var(--erro-escuro-borda);--kid:var(--noite-800);--kidink:var(--lavanda-50)}
+body.contraste{--ok-bg:var(--branco);--ok-line:var(--preto);--ok-ink:var(--preto);--bad-bg:var(--branco);--bad-line:var(--preto);--bad-ink:var(--preto);--warn-bg:var(--branco);--warn-line:var(--preto);--warn-ink:var(--preto);--info-bg:var(--branco);--info-line:var(--preto);--info-ink:var(--preto);--foco:var(--preto);--titulo:var(--preto);--btn-bg:var(--preto);--btn-ink:var(--branco);--btn-bg-hover:var(--contraste-mut)}
 .kids .card,.kids-trilha,
 body.perfil-kids .kids-home-actions .card,body.perfil-kids .kids-message,.kids-message,.kids-home-actions .card,
 body.perfil-kids #listaOracoes .kids-cat details,body.perfil-kids #infantil details{background:var(--card);color:var(--ink)}
@@ -272,14 +307,14 @@ body.perfil-kids .kids-home-actions h2,body.perfil-kids .kids-message h2{color:v
 .senior-welcome{background:var(--soft);color:var(--ink);border-color:var(--line)}
 .senior-welcome h1,.senior-welcome p,.senior-tip{color:var(--ink)}
 .kids-story summary,.kids-story small,.versos,.card .versos{color:var(--olive)}
-body.contraste .kids-story summary,body.contraste .versos{color:#000}
+body.contraste .kids-story summary,body.contraste .versos{color:var(--preto)}
 .btn:focus-visible,summary:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 
 
 /* Identidade visual roxa Ovelia — refinamento conservador da base existente. */
 :root{color-scheme:light}
 @media (prefers-color-scheme:dark){:root{color-scheme:dark}}
-body{accent-color:#7655A8}
+body{accent-color:var(--roxo-450)}
 .btn.g{border-color:var(--line)}
 .btn.g:hover{border-color:var(--olive)}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--olive);outline-offset:3px}
@@ -287,17 +322,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* Ovelia Kids: biblioteca e pintura — identidade roxa, toque e foco acessível */
 .kids-library{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:12px 0 20px}
-.kids-story-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;text-align:left;padding:16px;border:2px solid #d8c8ee;border-radius:18px;background:#fff;color:#302342;font:inherit;cursor:pointer;min-height:110px}
-.kids-story-card:focus-visible,.kids-actions button:focus-visible,.kids-choices button:focus-visible{outline:3px solid #7c4dba;outline-offset:3px}
-.kids-story-card.selected{border-color:#7c4dba;background:#f3edfb;box-shadow:0 0 0 2px #7c4dba22}
-.kids-story-card strong{font-size:1.05em}.kids-story-card small,.kids-story-number{color:#59466f}.kids-story-number{font-size:.82em;font-weight:800}
-.kids-done{color:#3e2860;font-weight:800}.kids-story-reader{border-color:#d8c8ee}.kids-question{margin-top:18px;padding-top:14px;border-top:1px solid #d8c8ee}
+.kids-story-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;text-align:left;padding:16px;border:2px solid var(--lavanda-300);border-radius:var(--raio-md);background:var(--branco);color:var(--tinta-kids);font:inherit;cursor:pointer;min-height:110px}
+.kids-story-card:focus-visible,.kids-actions button:focus-visible,.kids-choices button:focus-visible{outline:3px solid var(--roxo-500);outline-offset:3px}
+.kids-story-card.selected{border-color:var(--roxo-500);background:var(--lavanda-75);box-shadow:0 0 0 2px color-mix(in srgb,var(--roxo-500) 13%,transparent)}
+.kids-story-card strong{font-size:1.05em}.kids-story-card small,.kids-story-number{color:var(--roxo-tinta)}.kids-story-number{font-size:.82em;font-weight:800}
+.kids-done{color:var(--roxo-850);font-weight:800}.kids-story-reader{border-color:var(--lavanda-300)}.kids-question{margin-top:18px;padding-top:14px;border-top:1px solid var(--lavanda-300)}
 .kids-choices{display:grid;grid-template-columns:1fr;gap:8px}.kids-choices .btn{white-space:normal;text-align:left;min-height:46px}
-.kids-answer-correct{border:2px solid #4c2e78!important;background:#eee5fa!important;color:#2e1c43!important}
+.kids-answer-correct{border:2px solid var(--roxo-800)!important;background:var(--lavanda-100)!important;color:var(--roxo-950)!important}
 .kids-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.kids-actions .btn{min-height:44px}
-.kids-paint-controls{display:grid;grid-template-columns:minmax(110px,auto) minmax(120px,1fr);gap:10px 14px;align-items:center;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.kids-paint-controls{display:grid;grid-template-columns:minmax(110px,auto) minmax(120px,1fr);gap:10px 14px;align-items:center;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:var(--raio-md)}
 .kids-paint-controls label{font-weight:800}.kids-paint-controls select,.kids-paint-controls input{max-width:100%;width:100%;min-height:42px}
-.kids-canvas-wrap{position:relative;margin-top:12px;border:2px solid #d8c8ee;border-radius:18px;overflow:hidden;background:#fff;touch-action:none}
+.kids-canvas-wrap{position:relative;margin-top:12px;border:2px solid var(--lavanda-300);border-radius:var(--raio-md);overflow:hidden;background:var(--branco);touch-action:none}
 #kidsCanvas,#kidsOutlineCanvas{display:block;width:100%;height:auto;aspect-ratio:18/13;touch-action:none}
 #kidsCanvas{position:relative;z-index:1;cursor:crosshair;background:transparent}
 #kidsOutlineCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;background:transparent}
@@ -311,3 +346,96 @@ body.perfil-kids .vozbar .row{display:flex;flex-wrap:wrap;gap:8px}
 @media(max-width:480px){.kids-paint-controls{grid-template-columns:1fr;gap:8px}.kids-story-card{min-height:0}.kids-actions .btn{flex:1 1 42%}.kids-library{grid-template-columns:1fr}}
 
 body.perfil-senior #vozOpc{display:block!important}body.perfil-senior #vozCfg{display:none!important}
+
+
+/* ==========================================================================
+   COMPONENTES PADRONIZADOS (identidade Ovelia)
+   ========================================================================== */
+/* Títulos em roxo profundo (sobre fundos coloridos o texto continua herdando a cor) */
+main h1,main h2{color:var(--titulo)}
+.hero h1,.hero h2,.home-saudacao h1,.home-saudacao h2,.kids h1,.kids h2,.kids h3{color:inherit}
+.kids-home .kids-welcome h1,.kids-home-actions h2,.kids-message h2{color:var(--kidink)}
+.brand{color:var(--titulo)}
+body.contraste .hero h1,body.contraste .hero h2,body.contraste .home-saudacao h1,body.contraste .home-saudacao h2{color:var(--branco)}
+
+/* Foco visível em tudo que é interativo */
+a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+[tabindex="-1"]:focus,[tabindex="-1"]:focus-visible{outline:none}
+.btn:focus-visible,.aba:focus-visible,.tag:focus-visible{border-radius:var(--raio-pilula)}
+
+/* Botão primário (roxo sólido), secundário (.g, lavanda) e de ícone */
+.btn{background:var(--btn-bg);color:var(--btn-ink);border-radius:var(--raio-pilula);transition:background-color .15s ease,transform .15s ease;touch-action:manipulation}
+.btn:hover{background:var(--btn-bg-hover)}
+.btn.g{background:var(--soft);color:var(--ink)}
+.btn.g:hover{background:var(--lavanda-200);color:var(--tinta)}
+body.tema-escuro .btn.g:hover{background:var(--noite-600);color:var(--ink)}
+.btn:active{transform:scale(.97)}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;transform:none}
+.btn[aria-pressed="true"]{outline:3px solid var(--foco);outline-offset:2px}
+.btn-icone,.controle-compacto{display:inline-flex;align-items:center;justify-content:center;min-width:var(--toque-min);min-height:var(--toque-min);padding:0!important;border-radius:50%}
+.controle-compacto{padding:8px 12px!important}
+body.contraste .btn,body.contraste .btn.g{background:var(--preto);color:var(--branco);border:2px solid var(--preto)}
+body.contraste .btn.g{background:var(--branco);color:var(--preto)}
+
+/* Cartões */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--raio-md);box-shadow:var(--sombra-suave)}
+body.contraste .card{box-shadow:none}
+
+/* Campos de busca e formulários */
+input[type=search],input[type=text],input[type=date],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:var(--raio-sm);padding:10px 14px;min-height:var(--toque-min);max-width:100%}
+input[type=search]{border-radius:var(--raio-pilula);padding:12px 18px}
+input[type=search]:focus,input[type=text]:focus,input[type=date]:focus,select:focus,textarea:focus{border-color:var(--foco)}
+body.contraste input,body.contraste select,body.contraste textarea{border-color:var(--preto)}
+
+/* Abas em pílula (usar: <div class="abas" role="tablist"><button class="aba" role="tab" aria-selected="true">…) */
+.abas{display:flex;flex-wrap:wrap;gap:var(--esp-2);padding:var(--esp-1);background:var(--soft);border-radius:var(--raio-pilula);margin:var(--esp-3) 0}
+.aba{font:inherit;font-weight:700;font-size:var(--texto-sm);min-height:var(--toque-min);padding:6px 16px;border:0;border-radius:var(--raio-pilula);background:transparent;color:var(--ink);cursor:pointer;touch-action:manipulation}
+.aba:hover{background:var(--lavanda-200);color:var(--tinta)}
+.aba[aria-selected="true"],.aba.ativa{background:var(--btn-bg);color:var(--btn-ink)}
+body.contraste .aba[aria-selected="true"],body.contraste .aba.ativa{background:var(--preto);color:var(--branco)}
+
+/* Chips / etiquetas */
+.tag,.chip{display:inline-block;font-size:var(--texto-xs);font-weight:700;padding:2px 10px;border-radius:var(--raio-pilula);background:var(--lavanda-100);color:var(--tinta);border:1px solid transparent}
+.tag.ok,.chip.ok{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-line)}
+.tag.erro,.chip.erro{background:var(--bad-bg);color:var(--bad-ink);border-color:var(--bad-line)}
+.tag.alerta,.chip.alerta{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
+.tag.info,.chip.info{background:var(--info-bg);color:var(--info-ink);border-color:var(--info-line)}
+body.tema-escuro .tag,body.tema-escuro .tag.pd,body.tema-escuro .chip{background:var(--noite-700);color:var(--lavanda-50)}
+body.tema-escuro .tag.ok{background:var(--ok-bg);color:var(--ok-ink)}
+body.contraste .tag,body.contraste .chip{background:var(--branco);color:var(--preto);border:1px solid var(--preto)}
+
+/* Avisos e estados: vazio, carregando, erro, sucesso, alerta, informação */
+.aviso{background:var(--creme);border:2px solid var(--ambar);border-radius:var(--raio-sm)}
+body.tema-escuro .aviso{background:var(--noite-800)}
+.estado-msg{border-radius:var(--raio-md);padding:var(--esp-3) var(--esp-4);margin:var(--esp-3) 0;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.estado-msg.vazio{border-style:dashed;color:var(--mut);text-align:center}
+.estado-msg.carregando{color:var(--mut)}
+.estado-msg.erro,.aviso.erro{background:var(--bad-bg);border-color:var(--bad-line);color:var(--ink)}
+.estado-msg.sucesso,.aviso.sucesso{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ink)}
+.estado-msg.alerta,.aviso.alerta{background:var(--warn-bg);border-color:var(--warn-line);color:var(--ink)}
+.estado-msg.info,.aviso.info{background:var(--info-bg);border-color:var(--info-line);color:var(--ink)}
+body.contraste .estado-msg,body.contraste .aviso{background:var(--branco);border:2px solid var(--preto);color:var(--preto)}
+
+/* Escolha de perfil: overlay roxo (sem azul-marinho) */
+.perfil-overlay{background:var(--overlay)}
+.perfil-card{background:var(--creme);border-radius:var(--raio-lg)}
+body.tema-escuro .perfil-card{background:var(--noite-800)}
+.perfil-opcao{border-radius:var(--raio-md);min-height:76px}
+.perfil-opcao:hover,.perfil-opcao:focus-visible{border-color:var(--roxo-600)}
+.perfil-opcao strong{color:var(--titulo)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* Alto contraste vale em qualquer tema (vence as variáveis de tema claro/escuro) */
+body.contraste,body.contraste.tema-claro,body.contraste.tema-escuro{--bg:var(--branco);--card:var(--branco);--ink:var(--preto);--mut:var(--contraste-mut);--line:var(--preto);--soft:var(--cinza-100);--hero:var(--preto);--kid:var(--branco);--kidink:var(--preto);--creme:var(--branco);--foco:var(--preto);--titulo:var(--preto);--btn-bg:var(--preto);--btn-ink:var(--branco);--btn-bg-hover:var(--contraste-mut);--olive:var(--preto);--on-olive:var(--branco)}
+
+/* Telas estreitas (320 px): sem rolagem horizontal com letras ampliadas */
+@media(max-width:400px){
+  select,.btn{max-width:100%}
+  #biblia .row>*,.biblia-controles-linha>*{min-width:0;max-width:100%}
+  .biblia-controles-linha .btn{white-space:normal;padding-left:10px;padding-right:10px}
+  th,td{overflow-wrap:anywhere;padding:6px 8px}
+  .card table{table-layout:fixed}
+}

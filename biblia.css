@@ -6,9 +6,9 @@
 .biblia-controles { margin: 14px 0; }
 .biblia-controles > label { display:block; font-weight:700; margin-bottom:6px; }
 .biblia-controles-linha { display:grid; grid-template-columns:auto minmax(110px,1fr) auto; gap:8px; align-items:center; }
-.biblia-controles select { min-width:0; width:100%; min-height:44px; padding:8px 10px; border:1px solid var(--line); border-radius:12px; background:var(--card); color:var(--ink); font:inherit; }
+.biblia-controles select { min-width:0; width:100%; min-height:44px; padding:8px 10px; border:1px solid var(--line); border-radius:var(--raio-sm); background:var(--card); color:var(--ink); font:inherit; }
 .biblia-controles button { padding:8px 12px; }
-.biblia-status { padding:10px 12px; border-radius:12px; background:var(--soft); color:var(--ink); margin:12px 0; }
+.biblia-status { padding:10px 12px; border-radius:var(--raio-sm); background:var(--soft); color:var(--ink); margin:12px 0; }
 .biblia-acoes { margin-top:12px; }
 .biblia-creditos { color:var(--mut); font-size:.88rem; margin-top:14px; }
 #livros .biblia-livro-clicavel { cursor:pointer; padding:5px 4px; border-radius:6px; }
@@ -23,11 +23,11 @@
 }
 
 /* Texto do capítulo exibido dentro da Ovelia */
-.biblia-texto { font-family: 'Fraunces', Georgia, serif; font-size: 1.12rem; line-height: 1.75; margin: 10px 0 6px; }
+.biblia-texto { font-family:var(--fonte-titulo); font-size: 1.12rem; line-height: 1.75; margin: 10px 0 6px; }
 .biblia-par { margin: 0 0 .9em; }
-.biblia-secao { margin: 1.3em 0 .4em; font-family: 'Nunito', system-ui, sans-serif; font-size: 1rem; color: var(--mut); }
+.biblia-secao { margin: 1.3em 0 .4em; font-family:var(--fonte-texto); font-size: 1rem; color: var(--mut); }
 .biblia-titulo-salmo { font-style: italic; color: var(--mut); margin: 0 0 .8em; }
-.biblia-n { font-family: 'Nunito', system-ui, sans-serif; font-size: .68em; font-weight: 700; color: var(--gold, #b8860b); margin-right: .25em; vertical-align: super; }
+.biblia-n { font-family:var(--fonte-texto); font-size: .68em; font-weight: 700; color: var(--gold, var(--ambar-escuro)); margin-right: .25em; vertical-align: super; }
 .biblia-vazio { color: var(--mut); }
 .biblia-nav-baixo { margin-top: 14px; }
 
