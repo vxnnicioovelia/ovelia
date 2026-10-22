@@ -559,3 +559,14 @@ body.perfil-kids #infantil #kidsStoryReader[hidden],body.perfil-kids #infantil #
   body.perfil-kids #infantil .kids-story-reader{padding:11px}
   body.perfil-kids #infantil .kids-actions .btn{font-size:.79rem;padding:7px 8px}
 }
+
+/* Correção 22/10: alto contraste acessível sem apagar a identidade da navegação Ovelia. */
+body.contraste .ovelia-bottom-nav{background:var(--card);border-color:var(--line);box-shadow:0 6px 24px var(--sombra-cor-nav)}
+body.contraste .ovelia-bottom-nav__item{background:transparent;color:var(--ink);border:1px solid transparent}
+body.contraste .ovelia-bottom-nav__item[aria-current="page"]{background:var(--soft);color:var(--ink);box-shadow:inset 0 -3px 0 var(--gold);border-color:var(--line)}
+body.contraste.tema-escuro .ovelia-bottom-nav{background:#111111;border-color:#FFFFFF}
+body.contraste.tema-escuro .ovelia-bottom-nav__item{color:#FFFFFF}
+body.contraste.tema-escuro .ovelia-bottom-nav__item[aria-current="page"]{background:#292238;color:#FFFFFF;box-shadow:inset 0 -3px 0 #D9B7F5}
+body.contraste.tema-claro .ovelia-bottom-nav{background:#FFFFFF;border-color:#000000}
+body.contraste.tema-claro .ovelia-bottom-nav__item{color:#000000}
+body.contraste.tema-claro .ovelia-bottom-nav__item[aria-current="page"]{background:#F0F0F0;color:#000000;box-shadow:inset 0 -3px 0 #6F3D91}

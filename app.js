@@ -450,7 +450,7 @@ function carregarLiturgia(isoSel){var dt=dataDeIso(isoSel)||new Date(),seq=++lit
  litDia.innerHTML='';$('#litAtual').textContent='';
  litStatus.style.display='';litStatus.textContent='Buscando a liturgia de '+dt.toLocaleDateString('pt-BR')+'…';
  $('#litData').textContent=dataLonga(dt);
- var lento=setTimeout(function(){if(seq===litSeq&&litStatus.style.display!=='none')litStatus.textContent='A fonte está demorando a responder. Ainda tentando…'},6000);
+ var lento=setTimeout(function(){if(seq===litSeq&&litStatus.style.display!=='none'){litStatus.textContent='A consulta está demorando. Verificando uma alternativa…';setTimeout(function(){if(seq===litSeq&&litStatus.style.display!=='none'){litStatus.style.display='none';indisponivel(dt)}},18000)}},8000);
  var fArq=function(){return arquivoDoDia(dt).then(function(d){return{d:d,o:'arquivo'}})};
  var fApi=function(){return apiAoVivo(dt).then(function(d){return{d:d,o:'api'}})};
  (LIT_MOSTRAR_TEXTO?fApi():fArq())
