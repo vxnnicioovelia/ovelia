@@ -16,13 +16,18 @@
       {n:8,titulo:'Vivendo o Evangelho no dia a dia',de:81,ate:90},
       {n:9,titulo:'Aprofundamento e revisão',de:91,ate:100}
     ],
-    /* Lições com conteúdo pronto (id sequencial, sem lacunas). */
+    /* Lições publicadas com conteúdo pronto (id sequencial, sem lacunas). */
     licoes:[
       {id:1,unidade:1,curto:'O que é a Bíblia'},
       {id:2,unidade:1,curto:'Antigo e Novo Testamento'},
       {id:3,unidade:1,curto:'Livros, capítulos e versículos'},
       {id:4,unidade:1,curto:'Os Evangelhos'},
-      {id:5,unidade:1,curto:'Salmos, cartas e outros gêneros'}
+      {id:5,unidade:1,curto:'Salmos, cartas e outros gêneros'},
+      {id:6,unidade:1,curto:'Como encontrar uma passagem bíblica'},
+      {id:7,unidade:1,curto:'Ler a Bíblia com atenção ao contexto'},
+      {id:8,unidade:1,curto:'A Palavra e as escolhas do dia a dia'},
+      {id:9,unidade:1,curto:'Os sacramentos na vida da Igreja'},
+      {id:10,unidade:1,curto:'Batismo e Eucaristia: caminhar com Cristo'}
     ]
   };
 })();

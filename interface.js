@@ -74,14 +74,32 @@
   }
   function trilha(){
     var c=h('section','jr-trilha',null,{'aria-labelledby':'jrTrilhaTit'});
-    c.appendChild(h('h3',null,'Trilha de estudos',{id:'jrTrilhaTit'}));
+    c.appendChild(h('h3',null,'Trilhas de formação',{id:'jrTrilhaTit'}));
+    var filtros=h('div','jr-filtros',null,{'role':'group','aria-label':'Filtrar trilhas'}),filtroAtivo='Todas';
+    var categorias=['Todas','Iniciantes','Vida de Fé','Sacramentos'];
+    function categoria(id){return id<=5?'Iniciantes':id<=8?'Vida de Fé':'Sacramentos'}
+    categorias.forEach(function(nome){var b=btn(nome,'jr-filtro'+(nome==='Todas'?' is-ativo':''),function(){
+      filtroAtivo=nome;
+      Array.prototype.forEach.call(filtros.children,function(x){x.classList.toggle('is-ativo',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});
+      Array.prototype.forEach.call(c.querySelectorAll('.jr-no-item'),function(item){item.hidden=filtroAtivo!=='Todas'&&item.getAttribute('data-categoria')!==filtroAtivo});
+      Array.prototype.forEach.call(c.querySelectorAll('.jr-unidade'),function(u){u.hidden=u.querySelectorAll('.jr-no-item:not([hidden])').length===0&&!u.classList.contains('is-prep')});
+    });b.setAttribute('aria-pressed',nome==='Todas'?'true':'false');filtros.appendChild(b)});
+    c.appendChild(filtros);
+    var cards=h('div','jr-trilhas-cards',null,{'aria-label':'Categorias de formação'});
+    [{nome:'Iniciantes',icone:'🌱',de:1,ate:5,nivel:'Inicial'},{nome:'Vida de Fé',icone:'🕊️',de:6,ate:8,nivel:'Intermediário'},{nome:'Sacramentos',icone:'✝️',de:9,ate:10,nivel:'Inicial'}].forEach(function(x){
+      var ids=T.licoes.filter(function(l){return l.id>=x.de&&l.id<=x.ate}),fe=ids.filter(function(l){return P.concluida(l.id)}).length,pct=ids.length?Math.round(fe/ids.length*100):0;
+      var card=h('button','jr-trilha-card',null,{type:'button','aria-label':x.nome+', '+ids.length+' lições, nível '+x.nivel+', '+pct+' por cento concluído'});
+      card.appendChild(h('span','jr-trilha-icone',x.icone,{'aria-hidden':'true'}));card.appendChild(h('strong',null,x.nome));card.appendChild(h('span','jr-trilha-meta',ids.length+' lições · '+x.nivel));
+      var bar=h('span','jr-trilha-mini-barra',null,{'role':'progressbar','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(pct),'aria-label':pct+'% concluído'});var fill=h('span');fill.style.width=pct+'%';bar.appendChild(fill);card.appendChild(bar);card.appendChild(h('span','jr-trilha-pct',pct+'% concluído'));
+      card.addEventListener('click',function(){var b=Array.prototype.filter.call(filtros.children,function(el){return el.textContent===x.nome})[0];if(b)b.click()});cards.appendChild(card);
+    });c.appendChild(cards);
     T.unidades.forEach(function(u){
       var ls=T.licoes.filter(function(l){return l.unidade===u.n}),tot=u.ate-u.de+1,fe=ls.filter(function(l){return P.concluida(l.id)}).length;
       var s=h('div','jr-unidade'+(ls.length?'':' is-prep'));
       var hd=h('div','jr-unidade-hd');hd.appendChild(h('h4',null,'Unidade '+u.n+' — '+u.titulo));
       hd.appendChild(h('p','jr-unidade-info',ls.length?'Estudos '+u.de+' a '+u.ate+' · '+fe+' de '+ls.length+' disponíveis concluídos'+(ls.length<tot?' ('+(tot-ls.length)+' em preparação)':''):'Estudos '+u.de+' a '+u.ate+' · em preparação'));
       s.appendChild(hd);
-      if(ls.length){var ol=h('ol','jr-nos');ls.forEach(function(l,i){ol.appendChild(no(l,i))});s.appendChild(ol)}
+      if(ls.length){var ol=h('ol','jr-nos');ls.forEach(function(l,i){var item=no(l,i);item.setAttribute('data-categoria',categoria(l.id));ol.appendChild(item)});s.appendChild(ol)}
       if(ls.length&&ls.length<tot)s.appendChild(h('p','jr-prep','Os próximos estudos desta unidade (a partir do '+(ls[ls.length-1].id+1)+') ainda estão sendo preparados.'));
       c.appendChild(s);
     });
@@ -110,8 +128,15 @@
   function carregarLicao(id,cb,erro){
     if(E.licoes&&E.licoes[id])return cb(E.licoes[id]);
     var src=nomeLote(id);
-    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){var s=document.createElement('script');s.src=src+'?v=20261020-auditoria13';s.onload=ok;s.onerror=function(){delete carregando[src];no()};document.head.appendChild(s)})}
-    carregando[src].then(function(){if(E.licoes[id])cb(E.licoes[id]);else erro()},erro);
+    /* Publicação pelo iPhone: tente o arquivo solto na raiz e depois estudos/dados/. */
+    if(!carregando[src]){carregando[src]=new Promise(function(ok,no){
+      var paths=[src,'estudos/dados/'+src],idx=0;
+      function tentar(){if(idx>=paths.length){delete carregando[src];no();return}
+        var el=document.createElement('script');el.src=paths[idx++]+'?v=20261022-parte8';
+        el.onload=function(){if(E.licoes&&E.licoes[id])ok();else tentar()};el.onerror=tentar;document.head.appendChild(el);
+      }tentar();
+    })}
+    carregando[src].then(function(){if(E.licoes&&E.licoes[id])cb(E.licoes[id]);else erro()},erro);
   }
   var atual=null;
   function abrir(id){
