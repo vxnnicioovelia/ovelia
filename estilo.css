@@ -37,7 +37,9 @@
 :root{--bg:var(--lavanda-50);--card:var(--creme);--ink:var(--tinta);--mut:var(--tinta-suave);--gold:var(--lavanda-200);--olive:var(--roxo-600);--line:var(--lavanda-150);--soft:var(--lavanda-125);--hero:var(--roxo-700);--kid:var(--lavanda-50);--kidink:var(--tinta);--fs:17px;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root{--bg:var(--noite-900);--card:var(--noite-800);--ink:var(--lavanda-25);--mut:var(--lilas-texto-escuro);--gold:var(--lavanda-200);--olive:var(--lilas-claro);--line:var(--noite-600);--soft:var(--noite-700);--hero:var(--roxo-900)}}
-body.contraste{--bg:var(--branco);--card:var(--branco);--ink:var(--preto);--mut:var(--contraste-mut);--line:var(--preto);--soft:var(--cinza-100);--hero:var(--preto);--kid:var(--branco);--kidink:var(--preto)}
+body.contraste{--line:var(--ink);--foco:var(--ink)}
+body.contraste :is(p,li,label,small,.muted,.texto-secundario){font-weight:600}
+body.contraste :is(.card,section,article,fieldset,input,select,textarea){border-width:2px}
 body.contraste .btn{border:2px solid var(--preto)}
 body.contraste a:not(.btn){text-decoration:underline}
 *{box-sizing:border-box}html{scroll-padding-top:90px}
@@ -420,8 +422,8 @@ body.tema-escuro .perfil-card{background:var(--noite-800)}
 }
 
 /* Alto contraste vale em qualquer tema (vence as variáveis de tema claro/escuro) */
-body.contraste.tema-claro{--bg:#FFFFFF;--card:#FFFFFF;--ink:#000000;--mut:#1A1A1A;--line:#000000;--soft:#F0F0F0;--hero:#000000;--kid:#FFFFFF;--kidink:#000000;--creme:#FFFFFF;--foco:#000000;--titulo:#000000;--btn-bg:#000000;--btn-ink:#FFFFFF;--btn-bg-hover:#1A1A1A;--olive:#000000;--on-olive:#FFFFFF}
-body.contraste.tema-escuro{--bg:#000000;--card:#111111;--ink:#FFFFFF;--mut:#F0F0F0;--line:#FFFFFF;--soft:#1A1A1A;--hero:#000000;--kid:#111111;--kidink:#FFFFFF;--creme:#111111;--foco:#FFFFFF;--titulo:#FFFFFF;--btn-bg:#FFFFFF;--btn-ink:#000000;--btn-bg-hover:#E6E6E6;--olive:#FFFFFF;--on-olive:#000000}
+body.contraste.tema-claro{--bg:#FFFDF8;--card:#FFFFFF;--ink:#17131D;--mut:#39333F;--line:#51485B;--soft:#F3F0F6;--hero:#342747;--kid:#FFFFFF;--kidink:#17131D;--creme:#FFFFFF;--foco:#17131D;--titulo:#17131D;--btn-bg:#342747;--btn-ink:#FFFFFF;--btn-bg-hover:#241A31;--olive:#342747;--on-olive:#FFFFFF}
+body.contraste.tema-escuro{--bg:#17131D;--card:#211B29;--ink:#FFFFFF;--mut:#F2ECF7;--line:#D9C9E8;--soft:#30283A;--hero:#100D14;--kid:#211B29;--kidink:#FFFFFF;--creme:#211B29;--foco:#FFFFFF;--titulo:#FFFFFF;--btn-bg:#D9C9E8;--btn-ink:#17131D;--btn-bg-hover:#FFFFFF;--olive:#D9C9E8;--on-olive:#17131D}
 
 /* Telas estreitas (320 px): sem rolagem horizontal com letras ampliadas */
 @media(max-width:400px){
@@ -483,7 +485,7 @@ body:has(#perfilInicio:not([hidden])){overflow:hidden}
 .painel-texto .painel-titulo{font-size:1.15rem;margin:0 0 12px}.painel-texto label,.painel-texto legend{display:block;font-weight:700;margin:10px 0 5px}.painel-texto select,.painel-texto input[type=range]{width:100%;min-height:44px}.painel-texto select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--txt)}.painel-texto .filtro-quente-controles{margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:12px}.painel-texto .filtro-toggle{display:flex;align-items:center;gap:10px;min-height:44px}.painel-texto .filtro-toggle input{width:22px;height:22px}.filtro-preview{padding:12px;border-radius:10px;background:var(--card);color:var(--txt);line-height:1.65}.filtro-preview.preview-quente{background:color-mix(in srgb,var(--card),#f5c879 var(--preview-calor-percent, 20%))}
 body.fonte-legivel,body.fonte-legivel *{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
 /* Filtro quente uniforme sobre toda a interface, sem bloquear toques. */
-body.filtro-quente-ativo::after{content:"";position:fixed;inset:0;z-index:9990;pointer-events:none;background:rgba(255,166,66,var(--ovelia-filtro-quente-opacidade,0));mix-blend-mode:soft-light}
+body.filtro-quente-ativo::after{content:"";position:fixed;inset:0;z-index:9990;pointer-events:none;background:rgba(255,224,170,var(--ovelia-filtro-quente-opacidade,0));mix-blend-mode:normal}
 body.filtro-quente-ativo{isolation:isolate}
 body.contraste.tema-escuro .btn.g,body.contraste.tema-escuro .kids .btn.g{background:#111111;color:#FFFFFF;border-color:#FFFFFF}
 body.contraste.tema-escuro a:not(.btn){color:#FFFFFF}
