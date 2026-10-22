@@ -23,12 +23,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261022-filtro5c">
+<link rel="stylesheet" href="estilo.css?v=20261022-kids9">
 <link rel="stylesheet" href="biblia.css?v=20261022-base1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-base1">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-base1">
 <link rel="stylesheet" href="inicio.css?v=20261022-base1">
-<link rel="stylesheet" href="estudos.css?v=20261022-parte8">
+<link rel="stylesheet" href="estudos.css?v=20261022-base1">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
 </head>
 <body>
@@ -238,6 +238,13 @@
 <section class="pg" id="infantil">
 <div class="kids">
 <div class="side"><img src="ovelha.png" width="486" height="640" alt="Ovelinha mascote"><div><h2>Vamos aprender brincando!</h2><p>Aqui tem histórias, orações e um quiz para você aprender sobre Deus. Você não precisa escrever seu nome nem fazer cadastro.</p></div></div>
+<nav class="kids-feature-tabs" aria-label="Atividades infantis">
+  <button type="button" class="kids-feature-tab is-active" data-kids-tab="stories" aria-pressed="true">📚 Histórias</button>
+  <button type="button" class="kids-feature-tab" data-kids-tab="drawings" aria-pressed="false">🎨 Desenhos</button>
+  <button type="button" class="kids-feature-tab" data-kids-tab="quiz" aria-pressed="false">❓ Quiz</button>
+  <button type="button" class="kids-feature-tab" data-kids-tab="music" aria-pressed="false" disabled aria-describedby="kidsMusicStatus">🎵 Músicas</button>
+</nav>
+<p id="kidsMusicStatus" class="muted-note">Músicas: em breve.</p>
 <h3 id="desafiosKidsTitulo" style="margin-top:14px">🌟 Desafios</h3><h4>Meu desafio de hoje</h4>
 <div class="kids-trilha">
 <label><input type="checkbox" data-progress="kids-historia"> Ler ou ouvir uma história bíblica</label>
@@ -250,14 +257,18 @@
 <p>Escolha uma história para ler ou ouvir. Cada história tem uma pergunta para você pensar.</p>
 <div class="kids-library" id="kidsLibrary" aria-labelledby="bibliotecaKidsTitulo"></div>
 <div class="card kids-story-reader" id="kidsStoryReader" aria-live="polite">
+  <div class="kids-story-progress"><span id="kidsStoryPageCount">1/12</span><progress id="kidsStoryProgress" max="12" value="1" aria-label="Progresso da história"></progress></div>
+  <div id="kidsStoryScene" class="kids-story-scene" role="img" aria-label="Ilustração provisória da história"><span aria-hidden="true">📖</span><small>Ilustração provisória</small></div>
   <h3 id="kidsStoryTitle">Escolha uma história</h3>
   <p id="kidsStoryRef" class="muted-note"></p>
   <div id="kidsStoryText"><p>Toque em uma história da biblioteca para começar.</p></div>
   <div class="row kids-actions">
-    <button class="btn g" type="button" id="kidsStoryListen">🔊 Ouvir história</button>
-    <button class="btn g" type="button" id="kidsStoryStop">■ Parar áudio</button>
-    <button class="btn g" type="button" id="kidsStoryPrev">Anterior</button>
-    <button class="btn g" type="button" id="kidsStoryNext">Próxima</button>
+    <button class="btn g" type="button" id="kidsStoryListen">🔊 Ouvir (voz do aparelho)</button>
+    <button class="btn g" type="button" id="kidsStoryParents">👨‍👩‍👧 Ler com meus pais</button>
+    <button class="btn g" type="button" id="kidsStoryStop">■ Parar voz</button>
+    <button class="btn g" type="button" id="kidsStoryPrev">← Anterior</button>
+    <button class="btn g" type="button" id="kidsStoryNext">Próxima →</button>
+    <button class="btn g" type="button" id="kidsStoryBack">Voltar à biblioteca</button>
   </div>
   <p id="kidsStoryAudioStatus" role="status" aria-live="polite" class="muted-note"></p>
   <div class="kids-question" id="kidsStoryQuestion" hidden>
@@ -367,9 +378,9 @@
 <script src="regras.js?v=20261019-estudos4"></script>
 <script src="trilha.js?v=20261019-estudos4"></script>
 <script src="progresso.js?v=20261019-estudos4"></script>
-<script src="interface.js?v=20261022-parte8"></script>
+<script src="interface.js?v=20261021-fix2"></script>
 
-<script src="./ovelia-kids.js?v=20261019-quality1"></script>
+<script src="./ovelia-kids.js?v=20261022-kids9"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>
 </body>
 </html>
