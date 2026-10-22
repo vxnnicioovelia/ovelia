@@ -68,3 +68,14 @@ body.perfil-senior .senior-help{margin-top:16px}
 .kids-creativity-tip p{margin:0}
 @media(max-width:600px){.home-saudacao{gap:14px;border-radius:22px}.home-mascotes{flex-basis:136px;width:136px}.home-ovelha{width:136px}.home-pomba{width:48px}.home-atalho{padding:12px}.kids-creativity-hero{align-items:flex-start;padding:17px;gap:12px}.kids-creativity-symbol{width:52px;height:52px;flex-basis:52px;border-radius:16px;font-size:1.7rem}}
 @media(prefers-reduced-motion:reduce){.home-atalho{transition:none}.home-atalho:hover{transform:none}}
+
+/* Início: atalhos únicos em grade responsiva e cartão diário só quando os dados chegaram. */
+.home-para-hoje[hidden]{display:none!important}
+.home-para-hoje{margin:1rem 0;padding:clamp(16px,4vw,24px);border-radius:var(--raio-lg,20px)}
+.home-para-hoje h2{margin:0}
+.home-para-hoje #homeLit{font-weight:700;line-height:1.5;margin:.7rem 0 1rem}
+.home-acessos-grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:1rem 0}
+.home-acessos-grade .home-atalho{min-width:0;min-height:84px}
+.home-acessos-grade .home-atalho strong,.home-acessos-grade .home-atalho small{overflow-wrap:anywhere}
+@media(min-width:600px){.home-acessos-grade{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.home-acessos-grade *{scroll-behavior:auto!important;transition:none!important}}

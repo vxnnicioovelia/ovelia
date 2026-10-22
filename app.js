@@ -395,7 +395,7 @@ function renderLiturgy(d,origem,dt,opts){var antiga=!!(opts&&opts.antiga),pedida
  if(!textoAoVivo)html+='<p class="muted-note">As referências vêm de um serviço automático. A permissão de acesso à API não comprova, por si só, permissão para redistribuir os textos das leituras. Em caso de dúvida sobre a celebração, confirme com a sua paróquia.</p></div>';
  litDia.innerHTML=html;litStatus.style.display='none';
  if(antiga){var rt=$('#litTentarNovamente');if(rt&&pedida)rt.addEventListener('click',function(){carregarLiturgia(isoDe(pedida))})}
- if(!antiga&&isoDe(dt)===iso)$('#homeLit').textContent=celebracao+(cor?' · '+cor:'')+'. Toque para consultar os dados e referências da liturgia de hoje.';
+ if(!antiga&&isoDe(dt)===iso){var homeLit=$('#homeLit'),homeParaHoje=$('#homeParaHoje'),homeParaHojeData=$('#homeParaHojeData');if(homeLit)homeLit.textContent=celebracao+(cor?' · '+cor:'');if(homeParaHoje)homeParaHoje.hidden=false;if(homeParaHojeData)homeParaHojeData.textContent=dt.toLocaleDateString('pt-BR',{day:'numeric',month:'long'});}
  var tema=escolherTema(d);renderEstudo(tema,antiga?[]:refs,!antiga&&(origem==='arquivo'||origem==='api'));
 }
 function esperar(ms){return new Promise(function(r){setTimeout(r,ms)})}

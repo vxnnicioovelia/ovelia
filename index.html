@@ -97,16 +97,22 @@
     <div class="home-mascotes"><img class="home-ovelha" src="ovelha-biblia.png" width="485" height="640" alt="Ovelinha, mascote da Ovelia, abraçando uma Bíblia"><img class="home-pomba" src="pomba.png" width="425" height="520" alt="" aria-hidden="true"></div>
     <div class="home-texto"><h1 id="homeSaudacao">Olá!</h1><p id="homeMsg">Que bom ter você aqui! Reserve alguns minutos para se aproximar de Deus.</p><p class="home-data" id="homeData"></p></div>
   </div>
+  <section class="card home-para-hoje" id="homeParaHoje" aria-labelledby="homeParaHojeTitulo" hidden>
+    <div class="pd-topo"><h2 id="homeParaHojeTitulo">Para hoje</h2><span class="pd-data" id="homeParaHojeData"></span></div>
+    <p id="homeLit"></p>
+    <a class="btn g" href="#liturgia">Abrir a Liturgia de hoje</a>
+  </section>
   <section class="card palavra-dia" aria-labelledby="palavraDiaTitulo">
     <div class="pd-topo"><h2 id="palavraDiaTitulo">Palavra do dia</h2><span class="pd-data" id="palavraDiaData"></span></div>
-    <div id="palavraDiaConteudo"><p class="pd-sub">Uma palavra de esperança para acompanhar seu dia</p></div>
+    <div id="palavraDiaConteudo"><p class="pd-sub">A referência bíblica de hoje, sem reproduzir texto sem autorização.</p></div>
   </section>
-  <div class="home-lit"><span class="home-lit-rotulo">Liturgia de hoje</span><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a></div>
-  <div class="home-acessos" aria-label="Acessos rápidos">
-    <a class="home-atalho" href="#terco"><span class="home-atalho-icone" aria-hidden="true">✝</span><span><strong>Rezar o terço</strong><small>Um passo de cada vez</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
-    <a class="home-atalho" href="#oracoes"><span class="home-atalho-icone" aria-hidden="true">♡</span><span><strong>Encontrar uma oração</strong><small>Para cada momento do dia</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
-    <a class="home-atalho" href="#estudos"><span class="home-atalho-icone" aria-hidden="true">▤</span><span><strong>Continuar meus estudos</strong><small>Aprenda no seu ritmo</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
-  </div>
+  <nav class="home-acessos home-acessos-grade" aria-label="Acessos rápidos">
+    <a class="home-atalho" href="#liturgia"><span class="home-atalho-icone" aria-hidden="true">▦</span><span><strong>Liturgia</strong><small>Leituras e celebração</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#biblia"><span class="home-atalho-icone" aria-hidden="true">▤</span><span><strong>Bíblia</strong><small>Livros e referências</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#terco"><span class="home-atalho-icone" aria-hidden="true">✝</span><span><strong>Terço</strong><small>Rezar passo a passo</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#oracoes"><span class="home-atalho-icone" aria-hidden="true">♡</span><span><strong>Orações</strong><small>Para cada momento</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#estudos"><span class="home-atalho-icone" aria-hidden="true">▧</span><span><strong>Estudos</strong><small>Crescer na fé</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+  </nav>
 </div>
 
 <div class="card ovelia-install-card">
@@ -359,11 +365,11 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261022-perfis1"></script>
+<script src="app.js?v=20261022-home4"></script>
 <script src="navegacao-inferior.js?v=20261019-quality1" defer></script>
 <script src="biblia.js?v=20261019-quality1"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
-<script src="inicio.js?v=20261018-inicio1"></script>
+<script src="inicio.js?v=20261022-home4"></script>
 <script src="regras.js?v=20261019-estudos4"></script>
 <script src="trilha.js?v=20261019-estudos4"></script>
 <script src="progresso.js?v=20261019-estudos4"></script>
