@@ -80,22 +80,20 @@
     function categoria(id){var l=T.licoes.filter(function(x){return x.id===id})[0];return 'Módulo '+(l?l.unidade:1)}
     categorias.forEach(function(nome){var b=btn(nome,'jr-filtro'+(nome==='Todas'?' is-ativo':''),function(){
       filtroAtivo=nome;
-      Array.prototype.forEach.call(filtros.children,function(x){x.classList.toggle('is-ativo',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});
-      Array.prototype.forEach.call(c.querySelectorAll('.jr-no-item'),function(item){item.hidden=filtroAtivo!=='Todas'&&item.getAttribute('data-categoria')!==filtroAtivo});
-      Array.prototype.forEach.call(c.querySelectorAll('.jr-unidade'),function(u){u.hidden=u.querySelectorAll('.jr-no-item:not([hidden])').length===0&&!u.classList.contains('is-prep')});
+      Array.prototype.forEach.call(filtros.children,function(x){
+        var ativo=x===b;
+        x.classList.toggle('is-ativo',ativo);
+        x.setAttribute('aria-pressed',ativo?'true':'false');
+      });
+      Array.prototype.forEach.call(c.querySelectorAll('.jr-unidade'),function(u){
+        u.hidden=filtroAtivo!=='Todas'&&u.getAttribute('data-categoria')!==filtroAtivo;
+      });
     });b.setAttribute('aria-pressed',nome==='Todas'?'true':'false');filtros.appendChild(b)});
     c.appendChild(filtros);
-    var cards=h('div','jr-trilhas-cards',null,{'aria-label':'Categorias de formação'});
-    [{nome:'Módulo 1',icone:'📖',unidade:1,nivel:'Fundamentos'},{nome:'Módulo 2',icone:'🕊️',unidade:2,nivel:'História da salvação'},{nome:'Módulo 3',icone:'✝️',unidade:3,nivel:'Jesus e o Evangelho'}].forEach(function(x){
-      var ids=T.licoes.filter(function(l){return l.unidade===x.unidade}),fe=ids.filter(function(l){return P.concluida(l.id)}).length,pct=ids.length?Math.round(fe/ids.length*100):0;
-      var card=h('button','jr-trilha-card',null,{type:'button','aria-label':x.nome+', '+ids.length+' lições, nível '+x.nivel+', '+pct+' por cento concluído'});
-      card.appendChild(h('span','jr-trilha-icone',x.icone,{'aria-hidden':'true'}));card.appendChild(h('strong',null,x.nome));card.appendChild(h('span','jr-trilha-meta',ids.length+' lições · '+x.nivel));
-      var bar=h('span','jr-trilha-mini-barra',null,{'role':'progressbar','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(pct),'aria-label':pct+'% concluído'});var fill=h('span');fill.style.width=pct+'%';bar.appendChild(fill);card.appendChild(bar);card.appendChild(h('span','jr-trilha-pct',pct+'% concluído'));
-      card.addEventListener('click',function(){var b=Array.prototype.filter.call(filtros.children,function(el){return el.textContent===x.nome})[0];if(b)b.click()});cards.appendChild(card);
-    });c.appendChild(cards);
+    /* Os filtros já representam os módulos. Não repetir os mesmos módulos em cartões separados. */
     T.unidades.forEach(function(u){
       var ls=T.licoes.filter(function(l){return l.unidade===u.n}),tot=u.ate-u.de+1,fe=ls.filter(function(l){return P.concluida(l.id)}).length;
-      var s=h('div','jr-unidade'+(ls.length?'':' is-prep'));
+      var s=h('div','jr-unidade'+(ls.length?'':' is-prep'),null,{'data-categoria':'Módulo '+u.n});
       var hd=h('div','jr-unidade-hd');hd.appendChild(h('h4',null,'Módulo '+u.n+' — '+u.titulo));
       hd.appendChild(h('p','jr-unidade-info',ls.length?fe+' de '+ls.length+' lições concluídas':'Conteúdo em preparação'));
       s.appendChild(hd);
