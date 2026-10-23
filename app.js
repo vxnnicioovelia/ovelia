@@ -45,6 +45,7 @@ function applyProfile(){
   if(kidsHome)kidsHome.hidden=profile!=='kids';
   if(seniorHome)seniorHome.hidden=profile!=='senior';
   var prayerTitle=$('#oracoes h2');if(prayerTitle)prayerTitle.textContent=profile==='kids'?'Orações para crianças':'Orações';
+  if(typeof renderPrayerLibrary==='function')renderPrayerLibrary();
   try{if(profile)localStorage.setItem('ovelia-perfil',profile)}catch(e){}
   if(perfilInicio)perfilInicio.hidden=!!profile;
   if(profile==='senior'){
@@ -95,13 +96,13 @@ renderMenu();
 if(!profile){perfilInicio.hidden=false;var firstProfile=$('[data-profile]',perfilInicio);if(firstProfile)firstProfile.focus()}
 function show(first){
   var id=location.hash.slice(1);if(!$('section.pg[id="'+id+'"]'))id='home';
-  if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
+  if(profile==='kids'&&['liturgia','terco','rosario','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
   $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   menu.classList.remove('open');if(menuNav)menuNav.classList.remove('menu-aberto');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
   window.scrollTo(0,0);
-  var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Pequenas Ovelias — histórias e orações':profile==='senior'?'Ovelias Sábias — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
+  var t=PAGES.filter(function(p){return p[0]===id})[0],subTitles={terco:'Terço guiado',rosario:'Santo Rosário'};document.title=(id==='home'?(profile==='kids'?'Pequenas Ovelias — histórias e orações':profile==='senior'?'Ovelias Sábias — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):((t?t[1]:subTitles[id]||id)+' — Ovelia'));
   if(!first){var h=$('#'+id+' h1,#'+id+' h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
 }
 window.addEventListener('hashchange',function(){show(false)});
@@ -265,8 +266,14 @@ var ORIG={
 };
 for(var k in ORIG)P[k]=ORIG[k];
 var lo=$('#listaOracoes');
-lo.innerHTML=CATS.map(function(c){return '<div class="categoria-oracao '+(c.o==='kids'?'kids-cat':c.o==='original'?'original-cat':'trad-cat')+'"><h3>'+esc(c.t)+'</h3>'+(c.o==='original'||c.o==='kids'?'<p class="aviso"><b>'+(c.o==='kids'?'Orações infantis originais da Ovelia.':'Composições originais da Ovelia.')+'</b> Não são textos oficiais da Igreja.</p>':'')+c.ids.map(function(id){var p=P[id];
-  return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Oração tradicional')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
+function renderPrayerLibrary(){
+  if(!lo)return;
+  /* As categorias infantis existem apenas nas Pequenas Ovelias; não são mostradas no perfil geral/+60. */
+  var visibleCats=CATS.filter(function(c){return c.o!=='kids'||profile==='kids';});
+  lo.innerHTML=visibleCats.map(function(c){return '<div class="categoria-oracao '+(c.o==='kids'?'kids-cat':c.o==='original'?'original-cat':'trad-cat')+'"><h3>'+esc(c.t)+'</h3>'+(c.o==='original'||c.o==='kids'?'<p class="aviso"><b>'+(c.o==='kids'?'Orações infantis originais da Ovelia.':'Composições originais da Ovelia.')+'</b> Não são textos oficiais da Igreja.</p>':'')+c.ids.map(function(id){var p=P[id];
+    return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Oração tradicional')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
+}
+renderPrayerLibrary();
 lo.addEventListener('click',function(e){var b=e.target.closest('[data-copiar]');if(!b)return;var t=P[b.getAttribute('data-copiar')].t,st=b.parentNode.querySelector('.sr');
   function ok(){st.textContent='Texto copiado.'}function fail(){st.textContent='Não foi possível copiar. Selecione o texto e copie manualmente.'}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fail)}else fail()});

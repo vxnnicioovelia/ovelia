@@ -1,143 +1,365 @@
-/* Ovelia — refinamento global: superfícies neutras, roxo apenas como identidade. */
-:root{--ov-bg:#fff;--ov-card:#fff;--ov-ink:#25232a;--ov-muted:#65616b;--ov-line:#e7e4eb;--ov-soft:#f6f5f8;--ov-accent:#6b4fa1;--ov-accent-soft:#f0eaf8}
-body.tema-claro{--bg:var(--ov-bg)!important;--card:var(--ov-card)!important;--ink:var(--ov-ink)!important;--mut:var(--ov-muted)!important;--line:var(--ov-line)!important;--soft:var(--ov-soft)!important;--hero:#fff!important;--kid:#fff;--kidink:var(--ov-ink);color-scheme:light}
-body.tema-claro .hero{background:#fff!important;color:var(--ov-ink)!important;border:1px solid var(--ov-line);box-shadow:none}
-body.tema-claro .hero p{color:var(--ov-muted)!important}body.tema-claro .hero img{background:#f8f7fa}
-body.tema-claro .btn.g{background:#f5f3f7;color:var(--ov-ink);border:1px solid var(--ov-line)}
-body.tema-claro .btn[aria-pressed="true"],body.tema-claro nav a[aria-current],body.tema-claro .ovelia-bottom-nav__item[aria-current="page"]{background:var(--ov-accent-soft)!important;color:var(--ov-accent)!important;border-color:#d9cbea}
-body.tema-claro .tag,body.tema-claro .chip{background:var(--ov-accent-soft);color:#49366d}
-body.tema-claro .card,body.tema-claro details,body.tema-claro .vozbar,body.tema-claro .perfil-card{box-shadow:0 1px 3px rgba(28,22,38,.035)}
-body.tema-claro .ovelia-bottom-nav{background:rgba(255,255,255,.97);border-color:#eae7ef;box-shadow:0 4px 24px rgba(25,20,35,.08)}body.tema-claro footer{background:#fff}
-body.tema-claro .biblia-leitor,body.tema-claro #biblia .biblia-leitor.card{background:#fff!important;color:#25232a!important;border-color:#e7e4eb!important}
-body.tema-claro .biblia-leitor .biblia-texto{background:#fff!important;color:#25232a!important;border:0!important;box-shadow:none!important;padding:clamp(4px,1.5vw,12px)!important}
-body.tema-claro .biblia-leitor .biblia-modo-livro,body.tema-claro .biblia-leitor .biblia-seletor-livro,body.tema-claro .biblia-leitor .biblia-estudo-ferramentas{background:#f7f6f9!important;color:#25232a!important;border-color:#e7e4eb!important}
-body.tema-claro .biblia-leitor .biblia-config-linha label,body.tema-claro .biblia-leitor .biblia-seletor-livro label,body.tema-claro .biblia-leitor .biblia-ferramenta label,body.tema-claro .biblia-leitor .biblia-ajustes-resumo,body.tema-claro .biblia-leitor .biblia-ferramenta summary,body.tema-claro .biblia-leitor .biblia-alcance{color:#35313b!important}
-body.tema-claro .biblia-leitor .biblia-configuracoes select,body.tema-claro .biblia-leitor .biblia-seletor-conteudo input,body.tema-claro .biblia-leitor .biblia-busca-linha input,body.tema-claro .biblia-leitor .biblia-livro-opcao,body.tema-claro .biblia-leitor .biblia-resultado{background:#fff!important;color:#25232a!important;border-color:#e1dde7!important}
-body.tema-claro .biblia-leitor .biblia-ajustes-resumo span{color:#6b4fa1!important}
-body.tema-escuro{--bg:#17181c!important;--card:#202127!important;--ink:#f2f1f5!important;--mut:#c2bec9!important;--line:#393740!important;--soft:#292830!important;--hero:#202127!important;--kid:#202127;--kidink:#f2f1f5;color-scheme:dark}
-body.tema-escuro .hero{background:#202127!important;color:#f2f1f5!important;border:1px solid #393740;box-shadow:none}body.tema-escuro .hero p{color:#c2bec9!important}body.tema-escuro .hero img{background:#292830}
-body.tema-escuro .btn.g{background:#292830;color:#f2f1f5;border:1px solid #393740}
-body.tema-escuro .btn[aria-pressed="true"],body.tema-escuro nav a[aria-current],body.tema-escuro .ovelia-bottom-nav__item[aria-current="page"]{background:#383044!important;color:#d7c3f4!important;border-color:#5a4a70}
-body.tema-escuro .tag,body.tema-escuro .chip{background:#383044;color:#e5d9f5}body.tema-escuro .ovelia-bottom-nav{background:rgba(29,29,34,.97);border-color:#393740;box-shadow:0 4px 24px rgba(0,0,0,.22)}body.tema-escuro footer{background:#17181c}
-body.tema-escuro .biblia-leitor,body.tema-escuro #biblia .biblia-leitor.card{background:#202127!important;color:#f2f1f5!important;border-color:#393740!important}
-body.tema-escuro .biblia-leitor .biblia-texto{background:#202127!important;color:#f2f1f5!important;border:0!important;box-shadow:none!important;padding:clamp(4px,1.5vw,12px)!important}
-body.tema-escuro .biblia-leitor .biblia-modo-livro,body.tema-escuro .biblia-leitor .biblia-seletor-livro,body.tema-escuro .biblia-leitor .biblia-estudo-ferramentas,body.tema-escuro .biblia-leitor .biblia-ferramenta{background:#292830!important;color:#f2f1f5!important;border-color:#393740!important}
-body.tema-escuro .biblia-leitor .biblia-config-linha label,body.tema-escuro .biblia-leitor .biblia-seletor-livro label,body.tema-escuro .biblia-leitor .biblia-ferramenta label,body.tema-escuro .biblia-leitor .biblia-ajustes-resumo,body.tema-escuro .biblia-leitor .biblia-ferramenta summary,body.tema-escuro .biblia-leitor .biblia-alcance{color:#f2f1f5!important}
-body.tema-escuro .biblia-leitor .biblia-configuracoes select,body.tema-escuro .biblia-leitor .biblia-seletor-conteudo input,body.tema-escuro .biblia-leitor .biblia-busca-linha input,body.tema-escuro .biblia-leitor .biblia-livro-opcao,body.tema-escuro .biblia-leitor .biblia-resultado{background:#202127!important;color:#f2f1f5!important;border-color:#484550!important}
-/* Filtro de conforto global: tela inteira, sem bloquear toques; intensidade limitada via JS. */
-body.filtro-quente-ativo::after{background:rgba(255,190,112,var(--ovelia-filtro-quente-opacidade,0))!important;mix-blend-mode:soft-light}
-.card{box-shadow:0 1px 3px rgba(25,20,35,.035)}
-@media(max-width:600px){main{padding:12px 12px calc(96px + env(safe-area-inset-bottom,0px))}.card{padding:14px}.hero{padding:16px;gap:12px;border-radius:20px}.ovelia-bottom-nav{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* Ovelia — correção integrada de contraste, temas, filtro global e menus de oração.
+   Carregado por último no index.html. Não contém lógica de negócio. */
+:root {
+  --ov-accent:#6B4FA1;
+  --ov-accent-soft:#F0EAF8;
+  --ov-light-bg:#FFFFFF;
+  --ov-light-card:#FFFFFF;
+  --ov-light-ink:#292631;
+  --ov-light-muted:#625D69;
+  --ov-light-line:#E7E4EB;
+  --ov-light-soft:#F7F6F9;
+  --ov-dark-bg:#17181C;
+  --ov-dark-card:#202127;
+  --ov-dark-ink:#F2F0F5;
+  --ov-dark-muted:#C7C2D0;
+  --ov-dark-line:#393740;
+  --ov-dark-soft:#292830;
+}
 
+/* Temas globais verdadeiramente neutros; o roxo só destaca estados e ações. */
+body.tema-claro {
+  --bg:var(--ov-light-bg)!important;
+  --card:var(--ov-light-card)!important;
+  --ink:var(--ov-light-ink)!important;
+  --mut:var(--ov-light-muted)!important;
+  --line:var(--ov-light-line)!important;
+  --soft:var(--ov-light-soft)!important;
+  --hero:#FFFFFF!important;
+  --kid:#FFFFFF!important;
+  --kidink:var(--ov-light-ink)!important;
+  --creme:#FFFFFF!important;
+  --lavanda-25:#F8F7FA!important;
+  --lavanda-50:#F8F7FA!important;
+  --lavanda-75:#F5F3F8!important;
+  --lavanda-100:#F0EDF4!important;
+  --lavanda-125:#F7F6F9!important;
+  --lavanda-150:#E7E4EB!important;
+  --lavanda-200:#D8CBEA!important;
+  --gold:#6B4FA1!important;
+  --olive:#6B4FA1!important;
+  --tinta:#292631!important;
+  --tinta-suave:#625D69!important;
+  color-scheme:light;
+  background:#FFFFFF!important;
+  color:#292631!important;
+}
+body.tema-escuro {
+  --bg:var(--ov-dark-bg)!important;
+  --card:var(--ov-dark-card)!important;
+  --ink:var(--ov-dark-ink)!important;
+  --mut:var(--ov-dark-muted)!important;
+  --line:var(--ov-dark-line)!important;
+  --soft:var(--ov-dark-soft)!important;
+  --hero:var(--ov-dark-card)!important;
+  --kid:var(--ov-dark-card)!important;
+  --kidink:var(--ov-dark-ink)!important;
+  --noite-900:#17181C!important;
+  --noite-800:#202127!important;
+  --noite-700:#292830!important;
+  --noite-600:#393740!important;
+  --gold:#BFA4E8!important;
+  --olive:#BFA4E8!important;
+  --tinta:#F2F0F5!important;
+  --tinta-suave:#C7C2D0!important;
+  color-scheme:dark;
+  background:#17181C!important;
+  color:#F2F0F5!important;
+}
 
-/* CORREÇÃO DE CONTRASTE — superfícies claras não podem herdar texto branco */
-body.tema-claro .hero,
-body.tema-claro .hero h1,
-body.tema-claro .hero h2,
-body.tema-claro .hero h3,
-body.tema-claro .hero h4,
-body.tema-claro .hero p,
-body.tema-claro .hero span,
-body.tema-claro .hero strong,
-body.tema-claro .hero small,
-body.tema-claro .hero time,
-body.tema-claro .hero div:not(.mascote):not(.hero-imagem) {
-  color: #292431 !important;
-}
-body.tema-claro .hero p,
-body.tema-claro .hero small,
-body.tema-claro .hero time {
-  color: #514B5A !important;
-}
-body.tema-claro .hero a:not(.btn),
-body.tema-claro .hero button:not(.btn-primary) {
-  color: #49366D !important;
-}
-body.tema-claro .hero .btn-primary {
-  color: #FFFFFF !important;
-  background: #60458D !important;
-}
-/* Texto padrão e componentes comuns no tema claro: contraste mínimo confortável. */
-body.tema-claro,
+/* Superfícies claras: texto escuro por padrão, inclusive dentro de cartões antigos. */
+body.tema-claro header,
 body.tema-claro main,
-body.tema-claro section,
-body.tema-claro article,
+body.tema-claro footer,
+body.tema-claro section.pg,
 body.tema-claro .card,
+body.tema-claro .vozbar,
+body.tema-claro .perfil-card,
 body.tema-claro details,
-body.tema-claro summary,
-body.tema-claro label,
-body.tema-claro legend {
-  color: #292631;
+body.tema-claro .oracao,
+body.tema-claro .home-continuar,
+body.tema-claro .palavra-dia {
+  background-color:#FFFFFF;
+  color:#292631;
 }
+body.tema-claro main h1,
+body.tema-claro main h2,
+body.tema-claro main h3,
+body.tema-claro main h4,
+body.tema-claro main p,
+body.tema-claro main li,
+body.tema-claro main label,
+body.tema-claro main summary,
+body.tema-claro main strong,
+body.tema-claro main small,
+body.tema-claro main legend,
+body.tema-claro main td,
+body.tema-claro main th {
+  color:#292631;
+}
+body.tema-claro .muted-note,
 body.tema-claro .muted,
-body.tema-claro .text-muted,
-body.tema-claro .subtle,
-body.tema-claro .hint,
-body.tema-claro .help,
-body.tema-claro .descricao,
-body.tema-claro .description {
-  color: #625D69 !important;
+body.tema-claro .home-continuar-aviso,
+body.tema-claro .pd-data,
+body.tema-claro .home-lit-rotulo {
+  color:#625D69!important;
 }
 body.tema-claro input,
 body.tema-claro select,
 body.tema-claro textarea {
-  color: #292631 !important;
-  background-color: #FFFFFF;
+  background:#FFFFFF!important;
+  color:#292631!important;
+  border-color:#DCD7E3!important;
 }
 body.tema-claro input::placeholder,
-body.tema-claro textarea::placeholder {
-  color: #77717F !important;
-  opacity: 1;
-}
-/* Tema escuro: garantir que textos e descrições não permaneçam escuros em painéis grafite. */
-body.tema-escuro,
+body.tema-claro textarea::placeholder { color:#716B79!important; opacity:1; }
+
+/* Superfícies escuras: texto e controles claros em toda a interface. */
+body.tema-escuro header,
 body.tema-escuro main,
-body.tema-escuro section,
-body.tema-escuro article,
-body.tema-escuro .hero,
+body.tema-escuro footer,
+body.tema-escuro section.pg,
 body.tema-escuro .card,
+body.tema-escuro .vozbar,
+body.tema-escuro .perfil-card,
 body.tema-escuro details,
-body.tema-escuro summary,
-body.tema-escuro label,
-body.tema-escuro legend {
-  color: #F2F0F5;
+body.tema-escuro .oracao,
+body.tema-escuro .home-continuar,
+body.tema-escuro .palavra-dia {
+  background-color:#202127;
+  color:#F2F0F5;
 }
-body.tema-escuro .hero h1,
-body.tema-escuro .hero h2,
-body.tema-escuro .hero h3,
-body.tema-escuro .hero h4,
-body.tema-escuro .hero p,
-body.tema-escuro .hero span,
-body.tema-escuro .hero strong,
-body.tema-escuro .hero small,
-body.tema-escuro .hero time,
-body.tema-escuro .hero div {
-  color: #F2F0F5 !important;
+body.tema-escuro main h1,
+body.tema-escuro main h2,
+body.tema-escuro main h3,
+body.tema-escuro main h4,
+body.tema-escuro main p,
+body.tema-escuro main li,
+body.tema-escuro main label,
+body.tema-escuro main summary,
+body.tema-escuro main strong,
+body.tema-escuro main small,
+body.tema-escuro main legend,
+body.tema-escuro main td,
+body.tema-escuro main th {
+  color:#F2F0F5;
 }
-body.tema-escuro .hero p,
-body.tema-escuro .hero small,
-body.tema-escuro .hero time,
+body.tema-escuro .muted-note,
 body.tema-escuro .muted,
-body.tema-escuro .text-muted,
-body.tema-escuro .subtle,
-body.tema-escuro .hint,
-body.tema-escuro .help,
-body.tema-escuro .descricao,
-body.tema-escuro .description {
-  color: #C7C2D0 !important;
-}
+body.tema-escuro .home-continuar-aviso,
+body.tema-escuro .pd-data,
+body.tema-escuro .home-lit-rotulo { color:#C7C2D0!important; }
 body.tema-escuro input,
 body.tema-escuro select,
 body.tema-escuro textarea {
-  color: #F2F0F5 !important;
-  background-color: #202127;
+  background:#202127!important;
+  color:#F2F0F5!important;
+  border-color:#484550!important;
 }
 body.tema-escuro input::placeholder,
-body.tema-escuro textarea::placeholder {
-  color: #B7B1C1 !important;
-  opacity: 1;
+body.tema-escuro textarea::placeholder { color:#B7B1C1!important; opacity:1; }
+
+/* Início: seletor antigo .hero não corresponde ao componente real .home-saudacao.
+   Estes seletores específicos corrigem o texto branco sobre fundo claro. */
+body.tema-claro #home .home-saudacao {
+  background:#FFFFFF!important;
+  background-image:none!important;
+  color:#292631!important;
+  border:1px solid #E7E4EB!important;
+  box-shadow:0 2px 8px rgba(25,20,35,.045)!important;
 }
-/* Estados de foco visíveis sem depender apenas da cor. */
-body.tema-claro :focus-visible { outline: 3px solid #8061B0; outline-offset: 2px; }
-body.tema-escuro :focus-visible { outline: 3px solid #C8B4F1; outline-offset: 2px; }
+body.tema-claro #home .home-saudacao::after { display:none!important; }
+body.tema-claro #home .home-saudacao h1,
+body.tema-claro #home .home-saudacao h2,
+body.tema-claro #home .home-saudacao p,
+body.tema-claro #home .home-saudacao .home-data,
+body.tema-claro #home .home-saudacao .home-texto,
+body.tema-claro #home .home-saudacao .home-texto * {
+  color:#292631!important;
+  text-shadow:none!important;
+}
+body.tema-claro #home .home-saudacao p,
+body.tema-claro #home .home-saudacao .home-data { color:#625D69!important; }
+body.tema-claro #home .home-ovelha,
+body.tema-claro #home .home-pomba { background:#F8F7FA!important; }
+
+body.tema-escuro #home .home-saudacao {
+  background:#202127!important;
+  background-image:none!important;
+  color:#F2F0F5!important;
+  border:1px solid #393740!important;
+  box-shadow:none!important;
+}
+body.tema-escuro #home .home-saudacao::after { display:none!important; }
+body.tema-escuro #home .home-saudacao h1,
+body.tema-escuro #home .home-saudacao h2,
+body.tema-escuro #home .home-saudacao p,
+body.tema-escuro #home .home-saudacao .home-data,
+body.tema-escuro #home .home-saudacao .home-texto,
+body.tema-escuro #home .home-saudacao .home-texto * {
+  color:#F2F0F5!important;
+  text-shadow:none!important;
+}
+body.tema-escuro #home .home-saudacao p,
+body.tema-escuro #home .home-saudacao .home-data { color:#C7C2D0!important; }
+body.tema-escuro #home .home-ovelha,
+body.tema-escuro #home .home-pomba { background:#292830!important; }
+
+/* Navegação e botões: fundos neutros, acento roxo apenas para estado ativo. */
+body.tema-claro .btn.g,
+body.tema-claro .ovelia-bottom-nav { background:#FFFFFF!important; color:#292631!important; border-color:#E7E4EB!important; }
+body.tema-claro .btn[aria-pressed="true"],
+body.tema-claro .ovelia-bottom-nav__item[aria-current="page"] {
+  background:#F0EAF8!important; color:#49366D!important; border-color:#D8CBEA!important;
+}
+body.tema-escuro .btn.g,
+body.tema-escuro .ovelia-bottom-nav { background:#202127!important; color:#F2F0F5!important; border-color:#393740!important; }
+body.tema-escuro .btn[aria-pressed="true"],
+body.tema-escuro .ovelia-bottom-nav__item[aria-current="page"] {
+  background:#383044!important; color:#E5D9F5!important; border-color:#5A4A70!important;
+}
+body.tema-claro .tag,
+body.tema-claro .chip { background:#F0EAF8!important; color:#49366D!important; }
+body.tema-escuro .tag,
+body.tema-escuro .chip { background:#383044!important; color:#E5D9F5!important; }
+body.tema-claro .aviso { background:#F8F7FA!important; color:#292631!important; border-color:#D8CBEA!important; }
+body.tema-escuro .aviso { background:#25242A!important; color:#F2F0F5!important; border-color:#5A4A70!important; }
+
+/* Bíblia: corrigir explicitamente o texto dos versículos nos dois modos.
+   O tema escuro interno do leitor é independente do tema global da página. */
+#biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-texto {
+  background:#FFFFFF!important;
+  color:#292631!important;
+  border-color:#E7E4EB!important;
+}
+#biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-texto .biblia-par,
+#biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-texto .biblia-v {
+  color:#292631!important;
+}
+#biblia .biblia-leitor.biblia-tema-escuro,
+body.tema-escuro #biblia .biblia-leitor {
+  background:#202127!important;
+  color:#F2F0F5!important;
+  border-color:#393740!important;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto,
+body.tema-escuro #biblia .biblia-leitor .biblia-texto {
+  background:#25242A!important;
+  color:#F4F1F7!important;
+  border:1px solid #3D3A44!important;
+  box-shadow:none!important;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto .biblia-par,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto .biblia-v,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto .biblia-v *,
+body.tema-escuro #biblia .biblia-leitor .biblia-texto .biblia-par,
+body.tema-escuro #biblia .biblia-leitor .biblia-texto .biblia-v,
+body.tema-escuro #biblia .biblia-leitor .biblia-texto .biblia-v * {
+  color:#F4F1F7!important;
+  text-shadow:none!important;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto .biblia-n,
+body.tema-escuro #biblia .biblia-leitor .biblia-texto .biblia-n { color:#CBB7EA!important; }
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-modo-livro,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-seletor-livro,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-estudo-ferramentas,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-ferramenta,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-resultado,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-livro-opcao {
+  background:#292830!important;color:#F2F0F5!important;border-color:#484550!important;
+}
+#biblia .biblia-leitor.biblia-tema-escuro label,
+#biblia .biblia-leitor.biblia-tema-escuro summary,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-ajustes-resumo { color:#F2F0F5!important; }
+#biblia .biblia-leitor.biblia-tema-escuro select,
+#biblia .biblia-leitor.biblia-tema-escuro input {
+  background:#202127!important;color:#F2F0F5!important;border-color:#484550!important;
+}
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-modo-livro,
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-seletor-livro,
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-estudo-ferramentas {
+  background:#F7F6F9!important;color:#292631!important;border-color:#E7E4EB!important;
+}
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-ajustes-resumo,
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-config-linha label,
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-seletor-livro label,
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) .biblia-ferramenta summary { color:#292631!important; }
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) select,
+body.tema-claro #biblia .biblia-leitor:not(.biblia-tema-escuro) input { background:#FFFFFF!important;color:#292631!important;border-color:#DCD7E3!important; }
+
+/* Orações / Terço / Rosário: hubs compactos, claros e próprios do módulo. */
+.oracao-hub { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0; }
+.oracao-hub-card {
+  display:flex;align-items:center;gap:12px;min-width:0;min-height:76px;
+  padding:14px 15px;border:1px solid #E7E4EB;border-radius:18px;
+  background:#FFFFFF;color:#292631;text-decoration:none;font:inherit;text-align:left;
+  cursor:pointer;box-shadow:0 1px 3px rgba(25,20,35,.035);
+}
+.oracao-hub-card:hover { border-color:#CBB7EA;background:#FBFAFC; }
+.oracao-hub-card:focus-visible { outline:3px solid #8061B0;outline-offset:3px; }
+.oracao-hub-icone { display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#F0EAF8;color:#49366D;font-size:1.35rem; }
+.oracao-hub-texto { display:grid;gap:3px;min-width:0;flex:1; }
+.oracao-hub-texto strong { color:#292631;font-size:1.02rem; }
+.oracao-hub-texto small { color:#625D69;line-height:1.4;font-size:.88rem; }
+.oracao-hub-seta { font-size:1.45rem;color:#6B4FA1; }
+body.tema-escuro .oracao-hub-card { background:#202127;border-color:#393740;color:#F2F0F5;box-shadow:none; }
+body.tema-escuro .oracao-hub-card:hover { background:#292830;border-color:#5A4A70; }
+body.tema-escuro .oracao-hub-texto strong { color:#F2F0F5; }
+body.tema-escuro .oracao-hub-texto small { color:#C7C2D0; }
+body.tema-escuro .oracao-hub-icone { background:#383044;color:#E5D9F5; }
+body.tema-escuro .oracao-hub-seta { color:#CBB7EA; }
+body.tema-claro .categoria-oracao h3 { color:#292631!important; }
+body.tema-escuro .categoria-oracao h3 { color:#F2F0F5!important; }
+body.tema-escuro #oracoes details { background:#202127;color:#F2F0F5;border-color:#393740; }
+body.tema-escuro #oracoes details summary { color:#F2F0F5!important; }
+body.tema-escuro #oracoes .oracao { background:#292830;color:#F2F0F5; }
+.rosario-cabecalho { padding:clamp(18px,4vw,28px);border:1px solid #E7E4EB;border-radius:22px;background:#FFFFFF;color:#292631; }
+.rosario-marca { display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#F0EAF8;color:#49366D;font-size:1.4rem; }
+.rosario-eyebrow { margin:12px 0 4px;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6B4FA1!important; }
+.rosario-cabecalho h2 { margin:.1em 0 .35em;color:#292631!important; }
+.rosario-cabecalho p:last-child { color:#625D69!important;max-width:60ch; }
+.rosario-acoes { display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 22px; }
+.rosario-principal { background:#6B4FA1!important;color:#FFFFFF!important; }
+body.tema-escuro .rosario-cabecalho { background:#202127;border-color:#393740;color:#F2F0F5; }
+body.tema-escuro .rosario-cabecalho h2 { color:#F2F0F5!important; }
+body.tema-escuro .rosario-cabecalho p:last-child { color:#C7C2D0!important; }
+body.tema-escuro .rosario-marca { background:#383044;color:#E5D9F5; }
+body.tema-escuro .rosario-como-usar { background:#202127;color:#F2F0F5;border-color:#393740; }
+body.tema-escuro .rosario-como-usar h3,
+body.tema-escuro .rosario-como-usar li { color:#F2F0F5!important; }
+
+@media(max-width:700px) {
+  .oracao-hub { grid-template-columns:1fr;gap:8px;margin:14px 0; }
+  .oracao-hub-card { min-height:66px;padding:12px; }
+  .oracao-hub-icone { width:38px;height:38px;flex-basis:38px; }
+  .rosario-cabecalho { padding:18px; }
+}
+@media(min-width:1000px) {
+  .oracao-hub { max-width:950px; }
+}
+
+/* Filtro quente de página inteira. Sem blend-mode: afeta de forma uniforme os
+   fundos, cartões, textos e a barra fixa, sem capturar toques. A intensidade
+   vem de --ovelia-filtro-quente-opacidade, atualizada pelo controle existente. */
+html.filtro-quente-global { isolation:auto!important; }
+html.filtro-quente-global::after {
+  content:""!important;
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  height:100dvh!important;
+  z-index:2147483647!important;
+  pointer-events:none!important;
+  background:rgba(255,190,92,var(--ovelia-filtro-quente-opacidade,0))!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+}
+body.filtro-quente-ativo::after { content:none!important; }
+
+/* Foco visível e redução de movimento. */
+body.tema-claro :focus-visible { outline:3px solid #8061B0;outline-offset:2px; }
+body.tema-escuro :focus-visible { outline:3px solid #CBB7EA;outline-offset:2px; }
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important; }
+}

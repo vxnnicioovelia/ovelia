@@ -23,13 +23,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261023-contrasteglobal1">
+<link rel="stylesheet" href="estilo.css?v=20261023-corrigirtudo1">
 <link rel="stylesheet" href="biblia.css?v=20261023-bookmode1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">\n<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
+<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
 <link rel="stylesheet" href="inicio.css?v=20261023-parte8">
 <link rel="stylesheet" href="estudos.css?v=20261023-filtromodulos1">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
+<link rel="stylesheet" href="./ovelia-interface.css?v=20261023-corrigirtudo1">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" aria-describedby="perfilIntro" hidden>
@@ -194,8 +196,27 @@
 <!-- ORAÇÕES -->
 <section class="pg" id="oracoes">
 <h2>Orações</h2>
-<p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
-<div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
+<p>Escolha como deseja rezar. Abra uma oração, acompanhe o Terço guiado ou entre no Santo Rosário.</p>
+
+<nav class="oracao-hub" aria-label="Escolha uma área de oração">
+  <button class="oracao-hub-card" type="button" data-scroll="listaOracoes">
+    <span class="oracao-hub-icone" aria-hidden="true">♡</span>
+    <span class="oracao-hub-texto"><strong>Orações</strong><small>Orações tradicionais e para o dia a dia</small></span>
+    <span class="oracao-hub-seta" aria-hidden="true">›</span>
+  </button>
+  <a class="oracao-hub-card" href="#terco">
+    <span class="oracao-hub-icone" aria-hidden="true">◉</span>
+    <span class="oracao-hub-texto"><strong>Terço guiado</strong><small>Mistérios, contas e acompanhamento de cada passo</small></span>
+    <span class="oracao-hub-seta" aria-hidden="true">›</span>
+  </a>
+  <a class="oracao-hub-card" href="#rosario">
+    <span class="oracao-hub-icone" aria-hidden="true">✦</span>
+    <span class="oracao-hub-texto"><strong>Santo Rosário</strong><small>Contemple os mistérios de Jesus com Maria</small></span>
+    <span class="oracao-hub-seta" aria-hidden="true">›</span>
+  </a>
+</nav>
+
+<div class="aviso">As orações infantis aparecem somente no perfil Pequenas Ovelias. Os textos tradicionais e as composições originais estão identificados em sua própria categoria.</div>
 <div id="listaOracoes"></div>
 </section>
 
@@ -226,6 +247,29 @@
 <p>3. Em cada dezena: anuncie o mistério, reze o Pai-Nosso (conta grande), dez Ave-Marias (contas pequenas) e o Glória.</p>
 <p>4. Ao final, reze a Salve-Rainha e faça o Sinal da Cruz.</p>
 <p>Não se preocupe em rezar “perfeitamente”. O importante é rezar com o coração. As orações estão na página <a href="#oracoes">Orações</a>.</p></div>
+</section>
+
+<!-- SANTO ROSÁRIO: página de entrada para a experiência de oração guiada existente -->
+<section class="pg" id="rosario">
+  <div class="rosario-cabecalho">
+    <span class="rosario-marca" aria-hidden="true">✦</span>
+    <p class="rosario-eyebrow">MOMENTO DE ORAÇÃO</p>
+    <h2>Santo Rosário</h2>
+    <p>Reze com calma, contemplando os mistérios da vida de Jesus e Maria. A Ovelia acompanha a sequência, o texto de cada oração e a conta atual durante a prática guiada.</p>
+  </div>
+  <div class="rosario-acoes">
+    <a class="btn rosario-principal" href="#terco">Começar a rezar</a>
+    <a class="btn g" href="#oracoes">Voltar às orações</a>
+  </div>
+  <div class="card rosario-como-usar">
+    <h3>Como acompanhar</h3>
+    <ol>
+      <li>Escolha os mistérios correspondentes ao dia ou os que deseja contemplar.</li>
+      <li>Toque em “Começar a rezar” e siga a oração indicada em cada etapa.</li>
+      <li>Use “Próximo passo” e “Voltar” para acompanhar o progresso sem perder a sequência.</li>
+      <li>As contas visuais indicam a posição atual; o progresso permanece salvo neste aparelho.</li>
+    </ol>
+  </div>
 </section>
 
 <!-- ESTUDOS -->
@@ -393,9 +437,10 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261023-contrasteglobal1"></script>
+<script src="app.js?v=20261023-corrigirtudo1"></script>
 <script src="navegacao-inferior.js?v=20261023-parte8" defer></script>
-<script src="biblia.js?v=20261023-bookmode1"></script>\n<script src="favoritos.js?v=20261023-parte10"></script>
+<script src="biblia.js?v=20261023-bookmode1"></script>
+<script src="favoritos.js?v=20261023-parte10"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261023-parte8"></script>
 <script src="regras.js?v=20261019-estudos4"></script>
