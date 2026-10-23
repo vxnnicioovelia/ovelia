@@ -139,19 +139,20 @@
     carregando[src].then(function(){if(E.licoes&&E.licoes[id])cb(E.licoes[id]);else erro()},erro);
   }
   var atual=null;
-  function abrir(id){
+  function abrir(id,opcoes){
+    opcoes=opcoes||{};
     if(!P.desbloqueada(id))return;
     raiz.hidden=true;licaoBox.hidden=false;licaoBox.textContent='';
     licaoBox.appendChild(h('p',null,'Carregando o estudo…',{role:'status'}));
-    carregarLicao(id,function(l){iniciar(l)},function(){
+    carregarLicao(id,function(l){iniciar(l,opcoes.passo);if(opcoes.scroll!=null)setTimeout(function(){window.scrollTo(0,Number(opcoes.scroll)||0)},80)},function(){
       licaoBox.textContent='';var c=h('div','card');c.appendChild(h('h3',null,'Não foi possível abrir este estudo'));c.appendChild(h('p',null,'O arquivo do estudo não carregou. Verifique a conexão e tente de novo.'));
       add(c,btn('Tentar de novo',null,function(){abrir(id)}),btn('Voltar à trilha','g',fechar));licaoBox.appendChild(c);
     });
   }
   function fechar(){licaoBox.hidden=true;licaoBox.textContent='';raiz.hidden=false;desenhar();window.scrollTo(0,0);var t=document.getElementById('jornadaTitulo');if(t){t.setAttribute('tabindex','-1');t.focus()}}
-  function iniciar(l){
+  function iniciar(l,passoInicial){
     var jaFeita=P.concluida(l.id);
-    atual={l:l,passo:0,revisao:jaFeita,acertos:{},primeira:{},tentouErrar:false,feito:false,resultado:null};
+    atual={l:l,passo:Math.max(0,Math.min(5,Number(passoInicial)||0)),revisao:jaFeita,acertos:{},primeira:{},tentouErrar:false,feito:false,resultado:null};
     desenharPasso();
   }
   var NOMES=['Introdução','Três versículos','O que ensinam juntos','Aplicação para hoje','Atividade','Conclusão'];
@@ -174,25 +175,13 @@
       add(corpo,h('h4',null,'Objetivo de aprendizagem'),h('p',null,l.objetivo));
       var m=h('p','jr-nota','Neste estudo: 3 passagens, uma atividade e um resumo.');corpo.appendChild(m);
     }else if(p===1){
-       corpo.appendChild(h('p','jr-nota','Referência bíblica desta etapa. O texto integral está temporariamente pendente de autorização editorial; a Ovelia não substitui a edição solicitada por outra tradução.'));
+       corpo.appendChild(h('p','jr-nota','Toque em uma referência válida para abrir o capítulo no leitor. O texto bíblico integral ainda não está disponível enquanto nenhuma tradução estiver liberada.'));
       l.versiculos.forEach(function(vv,i){
-        var d=h('section','jr-verso');d.appendChild(h('h4',null,(i+1)+'. '+vv.ref));
-        var leitura=h('div','jr-texto-biblico',null,{'aria-live':'polite'});
-        leitura.appendChild(h('p','jr-sem-texto','Buscando o trecho na Bíblia da Ovelia…'));
-        d.appendChild(leitura);
-        if(window.OVELIA_BIBLIA&&window.OVELIA_BIBLIA.licencaTextoConfirmada===true&&typeof window.OVELIA_BIBLIA.textoReferencia==='function'){
-          (function(ref,alvo){
-            alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Carregando a edição autorizada…'));
-            window.OVELIA_BIBLIA.textoReferencia(ref).then(function(resultado){
-              alvo.textContent='';
-              resultado.versiculos.forEach(function(v){var par=h('p','jr-versiculo-texto');par.appendChild(h('sup','jr-num-verso',String(v.numero)+' '));par.appendChild(document.createTextNode(v.texto));alvo.appendChild(par)});
-              alvo.appendChild(h('p','pd-credito','Texto da edição autorizada da Ovelia. Consulte os créditos editoriais da Bíblia.'));
-            }).catch(function(){alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Não foi possível carregar este trecho agora. Tente novamente mais tarde.'));});
-          })(vv.ref,leitura);
-        }else{
-          leitura.textContent='';leitura.appendChild(h('p','jr-sem-texto','A disponibilização do texto integral está pendente de autorização editorial. A referência, a explicação autoral e a atividade continuam disponíveis.'));
-          leitura.appendChild(btn('Abrir leitor da Bíblia','g',function(){location.hash='#biblia';window.scrollTo(0,0)}));
-        }
+        var d=h('section','jr-verso'),parsed=parseReferencia(vv.ref),cab=h('h4',null,(i+1)+'. ');
+        if(parsed) cab.appendChild(btn(vv.ref,'jr-ref-link',function(){abrirReferenciaDaLicao(parsed,l.id,p)}));
+        else {cab.appendChild(document.createTextNode(vv.ref));console.warn('[Ovelia] Referência não validada no catálogo:',{licao:l.id,referencia:vv.ref});}
+        d.appendChild(cab);
+        d.appendChild(h('p','jr-sem-texto','O texto bíblico integral ainda não está disponível. A referência e a explicação original da lição continuam disponíveis.'));
         d.appendChild(h('p',null,vv.explicacao));corpo.appendChild(d);
       });
     }else if(p===2){
@@ -278,6 +267,39 @@
   }
 
   desenhar();
-  window.OveliaJornada={abrir:abrir,fechar:fechar,desenhar:desenhar};
+  var BIBLE_RETURN_KEY='ovelia-estudos-retorno-biblia-v1';
+  var aliases={
+    'gn':'Gênesis','gen':'Gênesis','ex':'Êxodo','lv':'Levítico','nm':'Números','dt':'Deuteronômio','js':'Josué','jz':'Juízes','rt':'Rute',
+    '1 sm':'1 Samuel','2 sm':'2 Samuel','1 rs':'1 Reis','2 rs':'2 Reis','1 cr':'1 Crônicas','2 cr':'2 Crônicas','esd':'Esdras','ne':'Neemias',
+    'tb':'Tobias','to':'Tobias','jdt':'Judite','est':'Ester','jó':'Jó','job':'Jó','sl':'Salmos','salmo':'Salmos','salmos':'Salmos','pv':'Provérbios','pr':'Provérbios',
+    'ecl':'Eclesiastes','ct':'Cântico dos Cânticos','sb':'Sabedoria','eclo':'Eclesiástico','is':'Isaías','jr':'Jeremias','lm':'Lamentações','br':'Baruc','ez':'Ezequiel','dn':'Daniel',
+    'os':'Oseias','jl':'Joel','am':'Amós','ab':'Abdias','jn':'Jonas','mq':'Miqueias','na':'Naum','hab':'Habacuc','sf':'Sofonias','ag':'Ageu','zc':'Zacarias','ml':'Malaquias',
+    'mt':'Mateus','mc':'Marcos','lc':'Lucas','jo':'João','at':'Atos dos Apóstolos','atos':'Atos dos Apóstolos','rm':'Romanos','1 cor':'1 Coríntios','2 cor':'2 Coríntios','gl':'Gálatas','ef':'Efésios','fl':'Filipenses',
+    'cl':'Colossenses','1 ts':'1 Tessalonicenses','2 ts':'2 Tessalonicenses','1 tm':'1 Timóteo','2 tm':'2 Timóteo','tt':'Tito','fm':'Filemon','hb':'Hebreus','tg':'Tiago','1 pe':'1 Pedro','2 pe':'2 Pedro','1 jo':'1 João','2 jo':'2 João','3 jo':'3 João','jd':'Judas','ap':'Apocalipse'
+  };
+  function normRef(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[.]/g,'').replace(/\s+/g,' ').trim();}
+  function parseReferencia(ref){
+    var api=window.OVELIA_BIBLIA,lista=api&&api.books;if(!Array.isArray(lista))return null;
+    var raw=String(ref||'').trim(),m=/^(.*?)\s+(\d+)(?:\s*[:,]\s*(\d+)(?:\s*[-–]\s*(\d+))?)?$/.exec(raw);if(!m)return null;
+    var nome=normRef(m[1]),livroNome=aliases[nome]||m[1],normNome=normRef(livroNome),livro=null;
+    for(var i=0;i<lista.length;i++){if(normRef(lista[i].name)===nome){livro=lista[i];break;}}
+    if(!livro)for(var j=0;j<lista.length;j++){if(normRef(lista[j].name)===normNome){livro=lista[j];break;}}
+    if(!livro){var candidatos=lista.filter(function(b){return normRef(b.name).indexOf(nome)===0;});if(candidatos.length===1)livro=candidatos[0];}
+    var cap=Number(m[2]),verso=m[3]?Number(m[3]):null,fim=m[4]?Number(m[4]):verso;
+    if(!livro||!cap||cap>Number(livro.chapters)||(verso!==null&&(!verso||fim<verso)))return null;
+    return {code:livro.code,capitulo:cap,versiculo:verso,fim:fim,referencia:raw,livro:livro.name};
+  }
+  function abrirReferenciaDaLicao(ref,id,passo){
+    try{sessionStorage.setItem(BIBLE_RETURN_KEY,JSON.stringify({licao:id,passo:passo,scroll:window.scrollY||0,referencia:ref.referencia}));}catch(e){}
+    location.hash='#biblia';var api=window.OVELIA_BIBLIA;
+    if(api&&typeof api.abrir==='function')api.abrir(ref.code,ref.capitulo,api.traducaoSelecionada?api.traducaoSelecionada():undefined,ref.versiculo);
+    window.scrollTo(0,0);
+  }
+  function retornarDaBiblia(){
+    var dado=null;try{dado=JSON.parse(sessionStorage.getItem(BIBLE_RETURN_KEY)||'null');}catch(e){}
+    if(!dado||!dado.licao)return false;try{sessionStorage.removeItem(BIBLE_RETURN_KEY);}catch(e){}
+    location.hash='#estudos';setTimeout(function(){abrir(Number(dado.licao),{passo:Number(dado.passo)||1,scroll:Number(dado.scroll)||0});},120);return true;
+  }
+  window.OveliaJornada={abrir:abrir,fechar:fechar,desenhar:desenhar,retornarDaBiblia:retornarDaBiblia,parseReferencia:parseReferencia};
   window.addEventListener('hashchange',function(){if(location.hash==='#estudos'&&!licaoBox.hidden){/* mantém a lição aberta */}});
 })();
