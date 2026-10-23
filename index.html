@@ -23,12 +23,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261023-paodiario1">
-<link rel="stylesheet" href="biblia.css?v=20261023-ajustebiblia1">
+<link rel="stylesheet" href="estilo.css?v=20261023-parte12">
+<link rel="stylesheet" href="biblia.css?v=20261023-bookmode1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">\n<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
 <link rel="stylesheet" href="pao-diario.css?v=20261023-paodiario1">
+<link rel="stylesheet" href="santo-nomes.css?v=20261023-parte12">
 <link rel="stylesheet" href="inicio.css?v=20261023-parte8">
 <link rel="stylesheet" href="estudos.css?v=20261023-filtromodulos1">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
@@ -108,6 +108,8 @@
   <div class="home-lit"><span class="home-lit-rotulo">Liturgia de hoje</span><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a></div>
   <div class="home-acessos" aria-label="Acessos rápidos">
     <a class="home-atalho" href="#oracoes"><span class="home-atalho-icone" aria-hidden="true">♡</span><span><strong>Oração e terço</strong><small>Orações e Rosário guiado</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#santoDia"><span class="home-atalho-icone" aria-hidden="true">✧</span><span><strong>Santo do Dia</strong><small>Informação confirmada quando disponível</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
+    <a class="home-atalho" href="#nomesBiblicos"><span class="home-atalho-icone" aria-hidden="true">✝</span><span><strong>Nomes Bíblicos</strong><small>Buscar nomes, origens e significados</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
     <a class="home-atalho" id="homePaoDiario" href="#paoDiario" hidden><span class="home-atalho-icone" aria-hidden="true">☀</span><span><strong>Pão Diário</strong><small>Uma meditação para hoje</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
     <a class="home-atalho" href="#favoritos"><span class="home-atalho-icone" aria-hidden="true">☆</span><span><strong>Meus favoritos</strong><small>O que quero guardar</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
   </div>
@@ -377,6 +379,20 @@
   <p class="muted-note">Seus dados ficam neste aparelho e navegador. A cópia de segurança é gerada localmente; nada é enviado à Ovelia.</p>
 </section>
 
+
+<!-- SANTO DO DIA -->
+<section class="pg" id="santoDia" aria-labelledby="santoDiaTitulo">
+<h2 id="santoDiaTitulo">Santo do Dia</h2>
+<div class="santo-nomes-grade"><article class="santo-nomes-card"><p class="tag pd">Calendário da Igreja</p><h2>Para hoje</h2><div id="santoHojeConteudo" aria-live="polite"><p>Consultando dados locais confirmados…</p></div><div class="santo-nomes-acoes"><button class="btn g" id="santoOuvir" type="button">🔊 Ouvir</button><a class="btn g" href="https://www.vaticannews.va/pt/santo-do-dia.html" target="_blank" rel="noopener noreferrer">Consultar Vatican News ↗</a></div><p id="santoHojeStatus" role="status" aria-live="polite"></p></article></div>
+<p class="muted-note">As datas próprias de dioceses e países podem diferir. A Ovelia só exibirá uma celebração quando a data e a fonte forem conferidas; neste pacote, nenhuma data foi preenchida sem confirmação suficiente.</p><p><a class="btn g" href="#home">Voltar ao início</a></p>
+</section>
+<!-- NOMES BÍBLICOS -->
+<section class="pg" id="nomesBiblicos" aria-labelledby="nomesBiblicosTitulo">
+<h2 id="nomesBiblicosTitulo">Nomes Bíblicos</h2><p>Pesquise nomes presentes na Bíblia e consulte a referência. Os significados etimológicos variam entre obras; por isso, cada item está marcado como “em conferência”.</p>
+<div class="santo-nomes-card santo-nomes-card--nomes"><div class="santo-nomes-controles"><label>Buscar nome, origem ou referência<input id="nomesBiblicosBusca" type="search" placeholder="Ex.: Ana, hebraica, Lucas 1" autocomplete="off"></label><label>Categoria<select id="nomesBiblicosCategoria"><option value="todos">Todos os nomes</option><option value="feminino">Femininos</option><option value="masculino">Masculinos</option></select></label></div><p id="nomesBiblicosStatus" role="status" aria-live="polite"></p><div id="nomesBiblicosLista" aria-live="polite"><p>Carregando nomes…</p></div></div>
+<p class="muted-note">Fonte inicial de consulta de nomes: Nomepedia, “Nomes bíblicos”; usada como ponto de partida, não como autoridade definitiva. As referências bíblicas identificam personagens ou passagens, não reproduzem texto bíblico. As etimologias exigem revisão editorial antes de serem tratadas como confirmadas.</p><p><a class="btn g" href="#home">Voltar ao início</a></p>
+</section>
+
 <!-- PÃO DIÁRIO -->
 <section class="pg" id="paoDiario">
   <h2>Pão Diário</h2>
@@ -410,12 +426,13 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261023-paodiario1"></script>
+<script src="app.js?v=20261023-parte12"></script>
 <script src="navegacao-inferior.js?v=20261023-paodiario1" defer></script>
-<script src="biblia.js?v=20261023-ajustebiblia1"></script>
-<script src="favoritos.js?v=20261023-paodiario1"></script>
+<script src="biblia.js?v=20261023-bookmode1"></script>\n<script src="favoritos.js?v=20261023-paodiario1"></script>
 <script src="pao-diario-dados.js?v=20261023-paodiario1"></script>
 <script src="pao-diario.js?v=20261023-paodiario1"></script>
+<script src="santo-nomes-dados.js?v=20261023-parte12"></script>
+<script src="santo-nomes.js?v=20261023-parte12"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261023-parte8"></script>
 <script src="regras.js?v=20261019-estudos4"></script>

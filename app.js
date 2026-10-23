@@ -17,9 +17,9 @@ if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
-  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['favoritos','Favoritos infantis'],['paoDiario','Pão Diário'],['instalarOvelia','Instalar Ovelia']];
-  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['favoritos','Favoritos'],['paoDiario','Pão Diário'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
-  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['favoritos','Favoritos'],['paoDiario','Pão Diário'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['favoritos','Favoritos infantis'],['santoDia','Santo do Dia'],['nomesBiblicos','Nomes Bíblicos'],['paoDiario','Pão Diário'],['instalarOvelia','Instalar Ovelia']];
+  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['favoritos','Favoritos'],['santoDia','Santo do Dia'],['nomesBiblicos','Nomes Bíblicos'],['paoDiario','Pão Diário'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['favoritos','Favoritos'],['santoDia','Santo do Dia'],['nomesBiblicos','Nomes Bíblicos'],['paoDiario','Pão Diário'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
 }
 var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}

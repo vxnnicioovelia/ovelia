@@ -1,13 +1,13 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v34-20261023-ajustebiblia1';
+var CACHE='ovelia-shell-v34-20261023-parte12';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261023-paodiario1','./pao-diario.css?v=20261023-paodiario1','./favoritos.css?v=20261023-parte10','./biblia.css?v=20261023-ajustebiblia1',
+  './estilo.css?v=20261023-parte12','./pao-diario.css?v=20261023-paodiario1','./santo-nomes.css?v=20261023-parte12','./favoritos.css?v=20261023-parte10','./biblia.css?v=20261023-bookmode1',
   './calendario-liturgico.css?v=20261022-hotfix2','./navegacao-inferior.css?v=20261022-hotfix2',
   './inicio.css?v=20261022-base1','./estudos.css?v=20261023-filtromodulos1','./ovelia-pwa.css?v=20261019-1',
-  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261023-paodiario1','./pao-diario.js?v=20261023-paodiario1','./pao-diario-dados.js?v=20261023-paodiario1',
-  './navegacao-inferior.js?v=20261023-paodiario1','./favoritos.js?v=20261023-paodiario1','./biblia.js?v=20261023-ajustebiblia1',
+  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261023-parte12','./pao-diario.js?v=20261023-paodiario1','./pao-diario-dados.js?v=20261023-paodiario1','./santo-nomes-dados.js?v=20261023-parte12','./santo-nomes.js?v=20261023-parte12',
+  './navegacao-inferior.js?v=20261023-paodiario1','./favoritos.js?v=20261023-paodiario1','./biblia.js?v=20261023-bookmode1',
   './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261018-inicio1',
   './regras.js?v=20261019-estudos4','./trilha.js?v=20261023-modulos1',
   './progresso.js?v=20261023-modulos1','./licoes-001-010.js?v=20261022-fix3',
