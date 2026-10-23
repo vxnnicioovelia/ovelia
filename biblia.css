@@ -64,3 +64,30 @@ body.perfil-senior .biblia-leitor.biblia-fonte-1 .biblia-texto{font-size:1.48rem
 body.perfil-senior .biblia-leitor.biblia-fonte-2 .biblia-texto{font-size:1.6rem}
 body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-kids #bibliaAnterior,body.perfil-kids #bibliaProximo,body.perfil-kids #bibliaAnterior2,body.perfil-kids #bibliaProximo2{display:none!important}
 @media(max-width:360px){.biblia-config-linha{grid-template-columns:1fr;gap:5px}.biblia-modo-livro{padding:9px}.biblia-leitor .biblia-texto{padding:10px;font-size:1.04rem}}
+
+
+/* Refinamento Parte 5: leitor limpo, ajustes recolhidos e contraste acessível. */
+.biblia-modo-livro{display:block;padding:10px 0;margin:8px 0 14px;border:0;background:transparent}
+.biblia-ajustes-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:12px 15px;min-height:48px;border:1px solid #b9a8c9;border-radius:14px;background:#392a49;color:#fff;font-weight:700}
+.biblia-ajustes-toggle:focus-visible,.biblia-tema-botao:focus-visible{outline:3px solid #d6b8ff;outline-offset:3px}
+.biblia-ajustes-conteudo{display:grid;gap:12px;margin-top:10px;padding:14px;border:1px solid #cfc1d9;border-radius:14px;background:#f4eef8;color:#30243a}
+.biblia-ajustes-conteudo[hidden]{display:none!important}
+.biblia-ajustes-conteudo .biblia-config-linha label{color:#30243a}
+.biblia-ajustes-conteudo .biblia-config-linha select{background:#fff;color:#241b2b;border-color:#8e7c9c}
+.biblia-leitor .biblia-leitor-topo p,.biblia-leitor .biblia-creditos{color:#554638}
+.biblia-leitor .biblia-status{color:#342a20}
+.biblia-leitor .biblia-nav-baixo{display:none!important}
+.biblia-leitor.biblia-tema-escuro .biblia-ajustes-conteudo{background:#302b35;color:#f5efe5;border-color:#62566a}
+.biblia-leitor.biblia-tema-escuro .biblia-ajustes-conteudo .biblia-config-linha label{color:#f5efe5}
+.biblia-leitor.biblia-tema-escuro .biblia-ajustes-conteudo .biblia-config-linha select{background:#25212a;color:#fff;border-color:#786a82}
+.biblia-leitor.biblia-tema-escuro .biblia-ajustes-toggle{background:#4a3b57;color:#fff;border-color:#8d7a9b}
+.biblia-leitor.biblia-tema-escuro .biblia-tema-botao{background:#4a3b57;color:#fff;border-color:#8d7a9b}
+.biblia-leitor.biblia-tema-escuro .biblia-status{background:#39313f;color:#fff}
+.biblia-leitor.biblia-tema-escuro .biblia-creditos{color:#e0d4e8}
+.biblia-leitor .biblia-texto{box-shadow:0 2px 8px rgba(55,38,25,.06)}
+@media(max-width:420px){
+ .biblia-config-linha{grid-template-columns:1fr;gap:6px}
+ .biblia-ajustes-conteudo{padding:12px}
+ .biblia-leitor .biblia-texto{padding:14px 12px;margin-top:12px}
+}
+body.perfil-senior .biblia-ajustes-toggle,body.perfil-senior .biblia-ajustes-conteudo select,body.perfil-senior .biblia-tema-botao{min-height:52px;font-size:1.08rem}

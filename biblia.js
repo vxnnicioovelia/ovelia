@@ -121,15 +121,19 @@
   function ensureControls() {
     var controls = $('bibliaModoLivro'); if (controls) return controls;
     controls = document.createElement('div'); controls.id='bibliaModoLivro'; controls.className='biblia-modo-livro';
-    controls.innerHTML = '<div class="biblia-config-linha"><label for="bibliaTraducao">Tradução</label><select id="bibliaTraducao" aria-label="Escolher tradução bíblica"></select></div>'+
+    controls.innerHTML = '<button type="button" class="btn g biblia-ajustes-toggle" id="bibliaAbrirAjustes" aria-expanded="false" aria-controls="bibliaAjustesConteudo">Ajustes de leitura <span aria-hidden="true">⌄</span></button>'+
+      '<div id="bibliaAjustesConteudo" class="biblia-ajustes-conteudo" hidden>'+
+      '<div class="biblia-config-linha"><label for="bibliaTraducao">Sua Bíblia</label><select id="bibliaTraducao" aria-label="Escolher tradução bíblica"></select></div>'+
       '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaFonteTamanho">Tamanho da letra</label><select id="bibliaFonteTamanho"><option value="0">Normal</option><option value="1">Grande</option><option value="2">Muito grande</option></select></div>'+
       '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaEspacamento">Espaçamento</label><select id="bibliaEspacamento"><option value="normal">Normal</option><option value="amplo">Amplo</option><option value="extra">Extra</option></select></div>'+
-      '<button type="button" class="btn g biblia-tema-botao" id="bibliaAlternarTema" aria-pressed="false">Ativar tema escuro da leitura</button>';
+      '<button type="button" class="btn g biblia-tema-botao" id="bibliaAlternarTema" aria-pressed="false">Ativar modo escuro</button></div>';
     var top = panel.querySelector('.biblia-leitor-topo');
     if (top && top.parentNode) top.parentNode.insertBefore(controls, top.nextSibling); else panel.insertBefore(controls, panel.firstChild);
     return controls;
   }
   var controls = ensureControls(), translationSelect = $('bibliaTraducao'), fontSelect = $('bibliaFonteTamanho'), spacingSelect = $('bibliaEspacamento'), themeButton = $('bibliaAlternarTema');
+  var settingsToggle=$('bibliaAbrirAjustes'), settingsContent=$('bibliaAjustesConteudo');
+  settingsToggle.addEventListener('click',function(){var open=settingsToggle.getAttribute('aria-expanded')!=='true';settingsToggle.setAttribute('aria-expanded',String(open));settingsContent.hidden=!open;settingsToggle.innerHTML=open?'Fechar ajustes <span aria-hidden="true">⌃</span>':'Ajustes de leitura <span aria-hidden="true">⌄</span>';});
   function renderTranslationOptions() {
     var current = translation ? translation.id : '';
     translationSelect.innerHTML='';
@@ -259,7 +263,7 @@
     if(spacingSelect.value==='extra')panel.classList.add('biblia-espaco-extra');
     var dark=themeButton.getAttribute('aria-pressed')==='true';
     if(dark)panel.classList.add('biblia-tema-escuro');
-    themeButton.textContent=dark?'Desativar tema escuro da leitura':'Ativar tema escuro da leitura';
+    themeButton.textContent=dark?'Desativar modo escuro':'Ativar modo escuro';
   }
   function saveReadingSettings(){try{localStorage.setItem(FONT_KEY,JSON.stringify({font:fontSelect.value,space:spacingSelect.value,dark:themeButton.getAttribute('aria-pressed')==='true'}));}catch(e){}}
   function restoreReadingSettings(){try{var s=JSON.parse(localStorage.getItem(FONT_KEY)||'null');if(s){fontSelect.value=['0','1','2'].indexOf(String(s.font))>=0?String(s.font):'0';spacingSelect.value=['normal','amplo','extra'].indexOf(s.space)>=0?s.space:'normal';themeButton.setAttribute('aria-pressed',String(!!s.dark));}}catch(e){}applyReadingSettings();}
