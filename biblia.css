@@ -257,3 +257,38 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
   .biblia-texto { width:100%; }
   .biblia-modo-livro { width:100%; }
 }
+
+
+/* Parte 16 — leitura confortável no iPhone: ajustes recolhíveis e área livre acima da navegação fixa. */
+#biblia { padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px)); scroll-margin-top: 92px; }
+#biblia .biblia-leitor { scroll-margin-top: 92px; scroll-margin-bottom: calc(170px + env(safe-area-inset-bottom, 0px)); }
+#biblia .biblia-ajustes-resumo { width:100%; border:0; border-radius:10px; background:transparent; text-align:left; font:inherit; }
+#biblia .biblia-ajustes-resumo[aria-expanded="true"] { padding-bottom:8px; border-bottom:1px solid var(--line); }
+#biblia .biblia-ajustes-resumo[aria-expanded="false"] { padding:4px 0; }
+#biblia .biblia-ajustes-resumo:focus-visible { outline:3px solid var(--olive, #9b7bd0); outline-offset:3px; }
+#biblia .biblia-ajustes-resumo span { display:block; }
+#biblia .biblia-configuracoes[hidden] { display:none !important; }
+#biblia .biblia-configuracoes { min-width:0; }
+#biblia .biblia-texto { font-size:clamp(1.03rem, 4.2vw, 1.14rem); line-height:1.82; padding:clamp(12px, 3.5vw, 20px); }
+#biblia .biblia-par { max-width:68ch; margin-inline:auto; }
+#biblia .biblia-controles-linha { align-items:stretch; }
+#biblia .biblia-controles-linha button { min-height:46px; }
+#biblia #bibliaStatus { margin-top:10px; }
+#biblia .biblia-creditos { font-size:.84rem; line-height:1.55; }
+#biblia #livros { scroll-margin-top:90px; }
+@media (max-width:620px) {
+  #biblia { padding-bottom:calc(190px + env(safe-area-inset-bottom, 0px)); }
+  #biblia .biblia-leitor.card { padding:clamp(12px, 3.8vw, 17px); }
+  #biblia .biblia-leitor-topo h3 { font-size:1.25rem; line-height:1.3; }
+  #biblia .biblia-configuracoes { gap:9px; }
+  #biblia .biblia-config-linha { grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr); gap:8px; }
+  #biblia .biblia-texto { max-width:100%; margin:12px 0 8px; border-radius:10px; }
+  #biblia .biblia-nav-baixo { position:relative; z-index:1; }
+}
+@media (max-width:380px) {
+  #biblia .biblia-config-linha { grid-template-columns:1fr; gap:4px; }
+  #biblia .biblia-config-linha label { font-size:.92rem; }
+  #biblia .biblia-texto { font-size:1.02rem; line-height:1.78; padding:11px; }
+  #biblia .biblia-controles-linha button { font-size:.95rem; }
+}
+@media (prefers-reduced-motion:reduce) { #biblia * { scroll-behavior:auto !important; } }

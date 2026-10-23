@@ -151,6 +151,24 @@
     return controls;
   }
   var controls = ensureControls(), translationSelect = $('bibliaTraducao'), fontSelect = $('bibliaFonteTamanho'), spacingSelect = $('bibliaEspacamento'), themeButton = $('bibliaAlternarTema');
+  // Parte 16: configurações recolhíveis no celular para priorizar a leitura.
+  function setupCompactSettings(){
+    if(!controls || controls.querySelector('.biblia-ajustes-resumo'))return;
+    var summary=document.createElement('button');
+    summary.type='button'; summary.className='biblia-ajustes-resumo';
+    summary.setAttribute('aria-controls','bibliaConfiguracoes');
+    var expanded=!(window.matchMedia && window.matchMedia('(max-width: 620px)').matches);
+    summary.setAttribute('aria-expanded',String(expanded));
+    summary.innerHTML='<strong>Ajustes de leitura</strong><span>Tradução, fonte, espaçamento e tema</span>';
+    var wrapper=document.createElement('div'); wrapper.id='bibliaConfiguracoes'; wrapper.className='biblia-configuracoes';
+    while(controls.firstChild){wrapper.appendChild(controls.firstChild);}
+    wrapper.hidden=!expanded; controls.appendChild(summary); controls.appendChild(wrapper);
+    summary.addEventListener('click',function(){
+      var open=summary.getAttribute('aria-expanded')!=='true';
+      summary.setAttribute('aria-expanded',String(open)); wrapper.hidden=!open;
+    });
+  }
+  setupCompactSettings();
   var returnStudyButton=document.getElementById('bibliaVoltarEstudo');
   if(!returnStudyButton&&panel){returnStudyButton=document.createElement('button');returnStudyButton.type='button';returnStudyButton.id='bibliaVoltarEstudo';returnStudyButton.className='btn g';returnStudyButton.textContent='← Voltar ao estudo';returnStudyButton.hidden=true;var panelTop=panel.querySelector('.biblia-leitor-topo');if(panelTop)panelTop.appendChild(returnStudyButton);returnStudyButton.addEventListener('click',function(){if(window.OveliaJornada&&window.OveliaJornada.retornarDaBiblia())returnStudyButton.hidden=true;});}
   function atualizarVoltaEstudo(){try{returnStudyButton.hidden=!sessionStorage.getItem(ESTUDOS_RETORNO_KEY);}catch(e){returnStudyButton.hidden=true;}}
