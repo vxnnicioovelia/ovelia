@@ -109,3 +109,108 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
 .biblia-leitor .biblia-ferramenta[open] > summary,
 .biblia-leitor details[open] > .biblia-ajustes-resumo { margin-bottom:4px; }
 @media(max-width:380px){.biblia-leitor .biblia-ajustes-resumo{align-items:flex-start;flex-direction:column;justify-content:center}.biblia-leitor .biblia-ajustes-resumo span{font-size:.82em}}
+
+
+/* Ajuste visual 2026-10-23: o leitor acompanha o tema global da Ovelia.
+   O tema escuro próprio continua disponível quando ativado pelo usuário. */
+#biblia .biblia-leitor.card {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--line);
+  box-shadow: var(--sombra-suave, none);
+}
+#biblia .biblia-leitor .biblia-leitor-topo p,
+#biblia .biblia-leitor .biblia-creditos { color: var(--mut); }
+#biblia .biblia-leitor .biblia-status {
+  background: var(--soft);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+#biblia .biblia-leitor .biblia-texto {
+  background: var(--soft);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  max-width: 66ch;
+  width: 100%;
+}
+#biblia .biblia-leitor .biblia-modo-livro,
+#biblia .biblia-leitor .biblia-seletor-livro,
+#biblia .biblia-leitor .biblia-estudo-ferramentas {
+  background: var(--soft);
+  color: var(--ink);
+  border-color: var(--line);
+}
+#biblia .biblia-leitor .biblia-config-linha label,
+#biblia .biblia-leitor .biblia-seletor-livro label,
+#biblia .biblia-leitor .biblia-ferramenta label { color: var(--ink); }
+#biblia .biblia-leitor .biblia-config-linha select,
+#biblia .biblia-leitor .biblia-busca-linha input,
+#biblia .biblia-leitor .biblia-seletor-livro input {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--line);
+}
+#biblia .biblia-leitor .biblia-ferramenta,
+#biblia .biblia-leitor .biblia-livro-opcao,
+#biblia .biblia-leitor .biblia-resultado,
+#biblia .biblia-leitor .biblia-comparacao-card {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--line);
+}
+#biblia .biblia-leitor .biblia-ferramenta summary,
+#biblia .biblia-leitor .biblia-alcance { color: var(--mut); }
+#biblia .biblia-leitor .biblia-secao,
+#biblia .biblia-leitor .biblia-titulo-salmo { color: var(--mut); }
+
+/* Contraste explícito quando a pessoa ativa o tema escuro interno do leitor. */
+#biblia .biblia-leitor.biblia-tema-escuro {
+  background: #211e25;
+  color: #f5efe5;
+  border-color: #49414e;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto {
+  background: #29252d;
+  color: #f5efe5;
+  border-color: #554b5b;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-status,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-modo-livro,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-seletor-livro,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-estudo-ferramentas,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-ferramenta,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-livro-opcao,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-resultado,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-comparacao-card {
+  background: #302b35;
+  color: #f5efe5;
+  border-color: #554b5b;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-config-linha label,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-seletor-livro label,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-ferramenta label,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-ferramenta summary,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-alcance,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-secao,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-titulo-salmo,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-leitor-topo p,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-creditos { color: #d4c6dc; }
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-config-linha select,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-busca-linha input,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-seletor-livro input {
+  background: #25212a;
+  color: #f5efe5;
+  border-color: #62566a;
+}
+#biblia .biblia-leitor { scroll-margin-bottom: 140px; overflow-wrap: anywhere; }
+#biblia .biblia-controles-linha > * { min-width: 0; }
+@media (max-width: 620px) {
+  #biblia .biblia-leitor.card { padding: clamp(12px, 4vw, 18px); }
+  #biblia .biblia-config-linha { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  #biblia .biblia-config-linha label { overflow-wrap: anywhere; }
+}
+@media (max-width: 380px) {
+  #biblia .biblia-config-linha { grid-template-columns: 1fr; gap: 5px; }
+  #biblia .biblia-leitor .biblia-configuracoes,
+  #biblia .biblia-leitor .biblia-seletor-conteudo { gap: 9px; }
+}
