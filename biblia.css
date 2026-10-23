@@ -214,3 +214,29 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
   #biblia .biblia-leitor .biblia-configuracoes,
   #biblia .biblia-leitor .biblia-seletor-conteudo { gap: 9px; }
 }
+
+
+/* Parte 14 — leitura móvel: catálogo compacto e nenhum painel vazio. */
+#biblia #livros ul {
+  list-style: none; margin: 10px 0 16px; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
+}
+#biblia #livros ul li {
+  min-width: 0; margin: 0; padding: 10px 9px; border: 1px solid var(--line);
+  border-radius: 9px; background: var(--card); color: var(--ink);
+  line-height: 1.35; overflow-wrap: anywhere;
+}
+#biblia #livros ul li::marker { content: ''; }
+#biblia #livros ul li.biblia-livro-clicavel { min-height: 42px; display: flex; align-items: center; }
+#biblia #livros ul li.biblia-livro-clicavel:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+#biblia #bibliaTexto:empty { display: none; }
+#biblia #bibliaStatus { line-height: 1.65; overflow-wrap: anywhere; }
+#biblia .biblia-creditos { overflow-wrap: anywhere; }
+#biblia .biblia-leitor { min-width: 0; }
+#biblia .biblia-texto { box-sizing: border-box; }
+@media (max-width: 390px) {
+  #biblia #livros ul { grid-template-columns: 1fr; gap: 5px; }
+  #biblia #livros ul li { padding: 9px 10px; }
+  #biblia .biblia-controles-linha { gap: 6px; }
+  #biblia .biblia-controles button { min-width: 0; padding: 9px 8px; }
+}

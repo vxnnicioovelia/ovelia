@@ -239,7 +239,7 @@
     title.textContent=book.name+' '+ch;
     subtitle.textContent=book.testament+(book.note?' · '+book.note:'');
     chapterSelect.value=String(ch);updateControls();savePosition();metadataCredits(t);clearText();
-    if(!isAvailable(t)){setStatus((t?t.nome:'Esta tradução')+' está em preparação. Nenhum texto bíblico será exibido até a validação técnica e a confirmação do responsável.');return;}
+    if(!isAvailable(t)){setStatus((t?t.nome:'Esta tradução')+' ainda não tem texto integrado e validado. A navegação por livro e capítulo está disponível, mas os versículos só aparecerão depois de importar e validar os arquivos reais da tradução.');return;}
     setStatus('Carregando '+book.name+' '+ch+'…');
     loadBook(book).then(function(data){if(token!==requestId||t!==translation)return;if(isKids()){clearText();setStatus('A Bíblia adulta não está disponível no perfil Pequenas Ovelias.');return;}drawChapter(book,data,ch);if(pendingVerse){var alvo=texto.querySelector('[data-versiculo="'+String(pendingVerse).replace(/[^0-9]/g,'')+'"]');if(alvo){alvo.classList.add('biblia-versiculo-destacado');alvo.scrollIntoView({behavior:'smooth',block:'center'});}pendingVerse=null;}}).catch(function(err){if(token!==requestId||t!==translation)return;if(isKids()){clearText();setStatus('A Bíblia adulta não está disponível no perfil Pequenas Ovelias.');return;}clearText();setStatus(err&&err.message?err.message:'Não foi possível carregar este capítulo.',true);});
     if(!options.noScroll && panel.scrollIntoView) panel.scrollIntoView({behavior:'smooth',block:'start'});
@@ -255,7 +255,7 @@
     var idx=books.indexOf(selected), target=chapter+delta;
     if(target<1&&idx>0){selected=books[idx-1];fillChapters(selected);loadChapter(chapterCount(selected));}
     else if(target>chapterCount(selected)&&idx<books.length-1){selected=books[idx+1];fillChapters(selected);loadChapter(1);}
-    else if(target>=1&&target<=selected.chapters)loadChapter(target);
+    else if(target>=1&&target<=chapterCount(selected))loadChapter(target);
     else setStatus('Você chegou ao início ou ao fim do catálogo de livros.');
   }
   function applyReadingSettings() {
@@ -284,7 +284,7 @@
   }
   translationSelect.addEventListener('change',function(){
     var chosen=translations.find(function(t){return t.id===translationSelect.value;});
-    if(!isAvailable(chosen)){translationSelect.value=translation?translation.id:'';setStatus((chosen?chosen.nome:'Esta tradução')+' está em preparação. Nenhum texto bíblico será exibido.');return;}
+    if(!isAvailable(chosen)){translationSelect.value=translation?translation.id:'';setStatus((chosen?chosen.nome:'Esta tradução')+' ainda não tem texto integrado e validado. Escolha uma tradução disponível para ler versículos.');return;}
     translation=chosen;bookCache=Object.create(null);indexCache=Object.create(null);
     var pos=readPosition(translation), b=pos&&books.find(function(x){return x.code===pos.code;});
     selected=b||selected||books[0];chapter=pos&&b?Math.max(1,Math.min(chapterCount(b),+pos.chapter||1)):1;fillChapters(selected);loadChapter(chapter);
