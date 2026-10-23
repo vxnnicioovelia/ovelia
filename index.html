@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261022-fix3">
+<link rel="stylesheet" href="estilo.css?v=20261023-sobre-diagnostico1">
 <link rel="stylesheet" href="biblia.css?v=20261023-bookmode1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
@@ -351,7 +351,7 @@
     <h2>Instalação neste navegador</h2>
     <p id="pwaInstrucaoStatus" role="status" aria-live="polite">Verificando se este navegador oferece instalação direta…</p>
     <button class="btn g" id="pwaPromptBtn" type="button" hidden>Instalar agora</button>
-    <p class="muted-note">A instalação depende do navegador. O progresso e as preferências da Ovelia continuam guardados localmente neste aparelho e podem não ser sincronizados com outros dispositivos.</p>
+    <p class="muted-note">A instalação depende do navegador. Instalar pode ajudar o navegador a conservar os dados por mais tempo, mas não é uma garantia: o sistema ou a limpeza do navegador ainda pode removê-los. O progresso e as preferências não são sincronizados automaticamente entre aparelhos.</p>
   </div>
   <p><a class="btn g" href="#home">Voltar ao início</a></p>
 </section>
@@ -368,8 +368,10 @@
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
 <p><b>Liturgia:</b> quando os dados estão disponíveis, mostramos data, celebração, cor litúrgica e referências das leituras; a presença de referências não significa que o texto integral esteja disponível. <b>Bíblia:</b> o leitor mantém os 73 livros e a navegação, mas os textos integrais aguardam autorização editorial. Não declaramos uma edição completa antes da validação da licença e dos arquivos.</p>
-<p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho o perfil escolhido, as preferências de tamanho de letra, contraste, voz e velocidade, além das etapas de estudo marcadas como concluídas. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
-<p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. As referências litúrgicas dependem dos dados disponíveis no servidor; textos integrais só serão exibidos com autorização confirmada. A Ovelia não envia notificações.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
+<p><b>Privacidade e armazenamento:</b> a Ovelia não exige cadastro. Preferências, posição de leitura e progresso são guardados localmente neste aparelho e navegador; não são sincronizados automaticamente entre aparelhos. Esses dados podem ser perdidos se você limpar os dados do navegador, desinstalar o app web ou usar outro aparelho/navegador. Algumas funções, como conteúdo litúrgico ao vivo e recursos externos, precisam de internet. Recursos externos, como fontes de letra, podem fazer conexões com seus próprios serviços.</p>
+<p><b>Disponibilidade:</b> a estrutura principal pode abrir offline se estiver no cache deste navegador. Conteúdos que dependem de fontes externas, como liturgia ao vivo, não são garantidos sem internet; nesses casos, a Ovelia deve informar que não foi possível carregar os dados.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
+<div class="card" id="transparenciaTraducoes"><h3>Estado das traduções bíblicas</h3><p class="muted-note">Estado lido do catálogo da Ovelia. “Em preparação” significa que o texto integral não é exibido.</p><div id="transparenciaTraducoesLista" aria-live="polite"><p>Carregando catálogo…</p></div></div>
+<details class="card diagnostico-card" id="diagnosticoOvelia"><summary><strong>Diagnóstico do aplicativo</strong></summary><p class="muted-note">Informações técnicas simples; nenhum dado pessoal é mostrado.</p><dl id="diagnosticoOveliaLista"><dt>Versão do site</dt><dd>Carregando…</dd></dl><p id="diagnosticoOveliaStatus" role="status" aria-live="polite"></p><button class="btn g" id="atualizarOveliaBtn" type="button">Atualizar o app</button><p class="muted-note">A atualização pode remover caches antigos. Os dados de progresso guardados no armazenamento do site não serão apagados.</p></details>
 </section>
 </main>
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
@@ -387,5 +389,6 @@
 
 <script src="./ovelia-kids.js?v=20261022-usabilidade2"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>
+<script src="diagnostico.js?v=20261023-sobre-diagnostico1" defer></script>
 </body>
 </html>

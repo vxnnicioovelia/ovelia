@@ -600,3 +600,14 @@ body.contraste.tema-claro .ovelia-bottom-nav__item[aria-current="page"]{
 
 /* Correção: botões do painel de voz no perfil Ovelias Sábias não viram elipses altas. */
 body.perfil-senior .voz-controles .btn{border-radius:18px;min-height:56px;flex:1 1 40%}
+
+/* Parte 9 — transparência e diagnóstico acessível */
+#transparenciaTraducoesLista .traducao-transparencia{padding:12px 0;border-bottom:1px solid var(--borda,rgba(180,150,210,.35))}
+#transparenciaTraducoesLista .traducao-transparencia:last-child{border-bottom:0}
+#transparenciaTraducoesLista .traducao-transparencia h4{margin:0 0 6px;color:var(--texto,#f6efff)}
+#transparenciaTraducoesLista .traducao-transparencia p{margin:4px 0;overflow-wrap:anywhere}
+#diagnosticoOvelia summary{cursor:pointer;padding:4px 0;color:var(--texto,#f6efff)}
+#diagnosticoOvelia dl{display:grid;grid-template-columns:minmax(110px,1fr) minmax(0,1.4fr);gap:8px 12px;overflow-wrap:anywhere}
+#diagnosticoOvelia dt{font-weight:700;color:var(--texto,#f6efff)}
+#diagnosticoOvelia dd{margin:0;color:var(--texto-secundario,#d7cbe3)}
+@media(max-width:360px){#diagnosticoOvelia dl{grid-template-columns:1fr;gap:2px}#diagnosticoOvelia dd{margin-bottom:8px}}

@@ -1,13 +1,13 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v32-20261023-oracao-unificada';
+var CACHE='ovelia-shell-v33-20261023-parte9-diagnostico';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261022-fix3','./biblia.css?v=20261023-bookmode1',
+  './estilo.css?v=20261023-sobre-diagnostico1','./biblia.css?v=20261023-bookmode1',
   './calendario-liturgico.css?v=20261022-hotfix2','./navegacao-inferior.css?v=20261022-hotfix2',
   './inicio.css?v=20261023-parte8','./estudos.css?v=20261023-filtromodulos1','./ovelia-pwa.css?v=20261019-1',
   './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261023-oracao-unificada',
-  './navegacao-inferior.js?v=20261023-oracao-unificada','./biblia.js?v=20261023-bookmode1',
+  './navegacao-inferior.js?v=20261023-oracao-unificada','./diagnostico.js?v=20261023-sobre-diagnostico1','./biblia.js?v=20261023-bookmode1',
   './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261023-parte8',
   './regras.js?v=20261019-estudos4','./trilha.js?v=20261023-modulos1',
   './progresso.js?v=20261023-modulos1','./licoes-001-010.js?v=20261022-fix3',
@@ -21,7 +21,7 @@ self.addEventListener('install',function(event){
 self.addEventListener('activate',function(event){
   event.waitUntil(caches.keys().then(function(keys){return Promise.all(keys.filter(function(key){return key.indexOf('ovelia-shell-')===0&&key!==CACHE;}).map(function(key){return caches.delete(key);}));}).then(function(){return self.clients.claim();}));
 });
-self.addEventListener('message',function(event){if(event.data&&event.data.type==='SKIP_WAITING')self.skipWaiting();});
+self.addEventListener('message',function(event){if(!event.data)return;if(event.data.type==='SKIP_WAITING')self.skipWaiting();if(event.data.type==='CLEAR_OLD_CACHES'){event.waitUntil(caches.keys().then(function(keys){return Promise.all(keys.filter(function(key){return key.indexOf('ovelia-shell-')===0&&key!==CACHE;}).map(function(key){return caches.delete(key);}));}));}});
 self.addEventListener('fetch',function(event){
   var req=event.request;
   if(req.method!=='GET')return;
