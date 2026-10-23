@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ovelia — Bíblia, Liturgia Diária e orações católicas</title>
 <meta name="description" content="Ovelia: plataforma católica gratuita de fé e aprendizado, com orações, terço passo a passo, estudos bíblicos e uma área infantil. Sem cadastro.">
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#17181C" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#62458F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Ovelia">
@@ -23,17 +23,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261023-parte17-prayerux">
-<link rel="stylesheet" href="biblia.css?v=20261023-leitura-mobile1">
+<link rel="stylesheet" href="estilo.css?v=20261023-contrasteglobal1">
+<link rel="stylesheet" href="biblia.css?v=20261023-bookmode1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
-<link rel="stylesheet" href="pao-diario.css?v=20261023-paodiario1">
-<link rel="stylesheet" href="santo-nomes.css?v=20261023-parte12">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">\n<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
 <link rel="stylesheet" href="inicio.css?v=20261023-parte8">
 <link rel="stylesheet" href="estudos.css?v=20261023-filtromodulos1">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
-<link rel="stylesheet" href="./ovelia-interface.css?v=20261023-contraste2">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" aria-describedby="perfilIntro" hidden>
@@ -110,9 +106,6 @@
   <div class="home-lit"><span class="home-lit-rotulo">Liturgia de hoje</span><p id="homeLit"></p><a class="btn g" href="#liturgia">Abrir a Liturgia</a></div>
   <div class="home-acessos" aria-label="Acessos rápidos">
     <a class="home-atalho" href="#oracoes"><span class="home-atalho-icone" aria-hidden="true">♡</span><span><strong>Oração e terço</strong><small>Orações e Rosário guiado</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
-    <a class="home-atalho" href="#santoDia"><span class="home-atalho-icone" aria-hidden="true">✧</span><span><strong>Santo do Dia</strong><small>Informação confirmada quando disponível</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
-    <a class="home-atalho" href="#nomesBiblicos"><span class="home-atalho-icone" aria-hidden="true">✝</span><span><strong>Nomes Bíblicos</strong><small>Buscar nomes, origens e significados</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
-    <a class="home-atalho" id="homePaoDiario" href="#paoDiario" hidden><span class="home-atalho-icone" aria-hidden="true">☀</span><span><strong>Pão Diário</strong><small>Uma meditação para hoje</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
     <a class="home-atalho" href="#favoritos"><span class="home-atalho-icone" aria-hidden="true">☆</span><span><strong>Meus favoritos</strong><small>O que quero guardar</small></span><span class="home-chevron" aria-hidden="true">›</span></a>
   </div>
 </div>
@@ -154,8 +147,8 @@
 <section class="pg" id="biblia">
 <h2>Bíblia</h2>
 <div class="biblia-aviso aviso">
-  <strong>Leitor bíblico · BPM disponível online (rascunho em revisão)</strong>
-  <p>A Bíblia Portuguesa Mundial (BPM), declarada em domínio público pelo eBible.org, está disponível para leitura online em capítulos. A edição-fonte ainda é um rascunho em revisão e é carregada de uma fonte externa fixada; capítulos já abertos podem permanecer no cache do aparelho. As demais traduções continuam em preparação.</p>
+  <strong>Leitor bíblico · autorização editorial pendente</strong>
+  <p>A Ovelia mantém a navegação pelos 73 livros, capítulos e referências. A exibição dos textos integrais aguarda autorização editorial. Não usamos outra tradução para preencher a interface e não declaramos a Bíblia completa enquanto a edição licenciada não estiver disponível e validada.</p>
 </div>
 <div id="bibliaLeitor" class="biblia-leitor card" aria-live="polite">
   <div class="biblia-leitor-topo">
@@ -184,7 +177,7 @@
   <div class="row biblia-acoes">
     <button class="btn g" id="bibliaEscolherLivro" type="button">Voltar à lista de livros</button>
   </div>
-  <p class="biblia-creditos">Texto da BPM: eBible.org, tradução declarada em domínio público, rascunho em revisão. O carregamento de novos capítulos exige conexão; capítulos já consultados podem ficar no cache do navegador. Matos Soares e Figueiredo permanecem em preparação.</p>
+  <p class="biblia-creditos">A estrutura dos 73 livros está disponível para navegação. A exibição dos textos integrais está temporariamente pendente de autorização editorial. A Ovelia não substitui o texto por outra tradução nem apresenta referências como se fossem versículos completos.</p>
 </div>
 <div class="aviso"><span class="tag">Como usar</span><p>Escolha um livro na lista abaixo e toque nele para abrir a leitura. Use os botões Anterior e Próximo, ou escolha o capítulo na lista.</p></div>
 <div class="card"><h3>Como ler a Bíblia (para iniciantes)</h3>
@@ -200,26 +193,10 @@
 
 <!-- ORAÇÕES -->
 <section class="pg" id="oracoes">
-<h2>Oração</h2>
-<p>Escolha o que deseja rezar. Você pode voltar a este menu a qualquer momento.</p>
-<div id="menuOracao" class="menu-oracao" aria-label="Opções de oração">
-  <button class="menu-oracao-item" type="button" data-oracao-abrir="lista">
-    <span class="menu-oracao-icone" aria-hidden="true">♡</span><span><strong>Orações</strong><small>Orações tradicionais e para diferentes momentos</small></span><span aria-hidden="true">›</span>
-  </button>
-  <a class="menu-oracao-item" href="#terco" data-adulto-oracao data-oracao-destino="terco">
-    <span class="menu-oracao-icone" aria-hidden="true">◉</span><span><strong>Terços</strong><small>Escolha os mistérios e acompanhe cada etapa</small></span><span aria-hidden="true">›</span>
-  </a>
-  <a class="menu-oracao-item" href="#terco" data-adulto-oracao data-oracao-destino="rosario">
-    <span class="menu-oracao-icone" aria-hidden="true">✦</span><span><strong>Santo Rosário</strong><small>Reze os mistérios de Jesus e Maria, passo a passo</small></span><span aria-hidden="true">›</span>
-  </a>
-</div>
-<div id="oracaoListaPainel" hidden>
-  <button class="btn g" id="voltarMenuOracao" type="button">← Voltar às opções de oração</button>
-  <h3>Orações</h3>
-  <p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
-  <div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
-  <div id="listaOracoes"></div>
-</div>
+<h2>Orações</h2>
+<p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
+<div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
+<div id="listaOracoes"></div>
 </section>
 
 <!-- TERÇO -->
@@ -233,7 +210,6 @@
 <p id="progTxt" role="status" aria-live="polite" style="color:var(--mut)"></p>
 <div class="beads" id="contas" aria-hidden="true"></div>
 <label style="display:block;margin:8px 0"><input type="checkbox" id="vozPasso"> Ler cada passo em voz alta</label>
-<div id="tercoMarcadorAtual" class="terco-marcador-atual" aria-live="polite" aria-atomic="true"><span class="terco-marcador-simbolo" aria-hidden="true">✝</span><span>Início da oração</span></div>
 <div id="passo" aria-live="polite"></div>
 <div id="meditacao" class="terco-meditacao" hidden></div>
 <p id="tercoStatus" role="status" aria-live="polite" style="color:var(--mut)"></p>
@@ -385,7 +361,7 @@
   <p>Guarde passagens, orações, estudos e conteúdos para reencontrar neste aparelho.</p>
   <div class="card favoritos-tools">
     <label for="favoritosFiltro">Filtrar por tipo</label>
-    <select id="favoritosFiltro"><option value="todos">Todos</option><option value="biblia">Versículos</option><option value="oracao">Orações</option><option value="licao">Lições</option><option value="historia">Histórias infantis</option><option value="liturgia">Liturgia</option><option value="pao-diario">Pão Diário</option></select>
+    <select id="favoritosFiltro"><option value="todos">Todos</option><option value="biblia">Versículos</option><option value="oracao">Orações</option><option value="licao">Lições</option><option value="historia">Histórias infantis</option><option value="liturgia">Liturgia</option></select>
     <div class="favoritos-acoes"><button class="btn g" id="exportarDadosBtn" type="button">Exportar meus dados</button><button class="btn g" id="importarDadosBtn" type="button">Importar cópia</button><input id="importarDadosArquivo" type="file" accept=".json,application/json" hidden></div>
     <p id="backupStatus" role="status" aria-live="polite"></p>
     <div id="importarPrevia" class="importar-previa" hidden></div>
@@ -396,34 +372,6 @@
   <div class="card"><h3>Itens guardados</h3><div id="favoritosLista" aria-live="polite"></div></div>
   <div class="card"><h3>Histórico de leitura</h3><div id="historicoLeituraLista"></div></div>
   <p class="muted-note">Seus dados ficam neste aparelho e navegador. A cópia de segurança é gerada localmente; nada é enviado à Ovelia.</p>
-</section>
-
-
-<!-- SANTO DO DIA -->
-<section class="pg" id="santoDia" aria-labelledby="santoDiaTitulo">
-<h2 id="santoDiaTitulo">Santo do Dia</h2>
-<div class="santo-nomes-grade"><article class="santo-nomes-card"><p class="tag pd">Calendário da Igreja</p><h2>Para hoje</h2><div id="santoHojeConteudo" aria-live="polite"><p>Consultando dados locais confirmados…</p></div><div class="santo-nomes-acoes"><button class="btn g" id="santoOuvir" type="button">🔊 Ouvir</button><a class="btn g" href="https://www.vaticannews.va/pt/santo-do-dia.html" target="_blank" rel="noopener noreferrer">Consultar Vatican News ↗</a></div><p id="santoHojeStatus" role="status" aria-live="polite"></p></article></div>
-<p class="muted-note">As datas próprias de dioceses e países podem diferir. A Ovelia só exibirá uma celebração quando a data e a fonte forem conferidas; neste pacote, nenhuma data foi preenchida sem confirmação suficiente.</p><p><a class="btn g" href="#home">Voltar ao início</a></p>
-</section>
-<!-- NOMES BÍBLICOS -->
-<section class="pg" id="nomesBiblicos" aria-labelledby="nomesBiblicosTitulo">
-<h2 id="nomesBiblicosTitulo">Nomes Bíblicos</h2><p>Pesquise nomes presentes na Bíblia e consulte a referência. Os significados etimológicos variam entre obras; por isso, cada item está marcado como “em conferência”.</p>
-<div class="santo-nomes-card santo-nomes-card--nomes"><div class="santo-nomes-controles"><label>Buscar nome, origem ou referência<input id="nomesBiblicosBusca" type="search" placeholder="Ex.: Ana, hebraica, Lucas 1" autocomplete="off"></label><label>Categoria<select id="nomesBiblicosCategoria"><option value="todos">Todos os nomes</option><option value="feminino">Femininos</option><option value="masculino">Masculinos</option></select></label></div><p id="nomesBiblicosStatus" role="status" aria-live="polite"></p><div id="nomesBiblicosLista" aria-live="polite"><p>Carregando nomes…</p></div></div>
-<p class="muted-note">Fonte inicial de consulta de nomes: Nomepedia, “Nomes bíblicos”; usada como ponto de partida, não como autoridade definitiva. As referências bíblicas identificam personagens ou passagens, não reproduzem texto bíblico. As etimologias exigem revisão editorial antes de serem tratadas como confirmadas.</p><p><a class="btn g" href="#home">Voltar ao início</a></p>
-</section>
-
-<!-- PÃO DIÁRIO -->
-<section class="pg" id="paoDiario">
-  <h2>Pão Diário</h2>
-  <p>Uma meditação original da Ovelia para acompanhar o dia, com uma pergunta e uma prática concreta.</p>
-  <article class="pao-diario-card" aria-labelledby="paoTitulo">
-    <div class="pao-diario-topo"><h2 id="paoTitulo">Carregando meditação…</h2><time class="pao-diario-data" id="paoData"></time></div>
-    <div class="pao-diario-conteudo" id="paoConteudo" aria-live="polite"></div>
-    <div class="pao-diario-acoes"><button class="btn g" id="paoFavoritar" type="button">☆ Guardar nos favoritos</button><button class="btn g" type="button" onclick="if(window.OVELIA_VOZ&&window.OVELIA_VOZ.ler){window.OVELIA_VOZ.ler(document.getElementById('paoConteudo').innerText)}else if('speechSynthesis' in window){var u=new SpeechSynthesisUtterance(document.getElementById('paoConteudo').innerText);u.lang='pt-BR';speechSynthesis.cancel();speechSynthesis.speak(u)}else{document.getElementById('paoStatus').textContent='Leitura por voz não disponível neste navegador.'}">🔊 Ouvir meditação</button></div>
-    <p id="paoStatus" class="muted-note" role="status" aria-live="polite"></p>
-  </article>
-  <p class="muted-note">As meditações são conteúdo original da Ovelia. As referências indicam passagens para consulta; não reproduzimos o texto bíblico integral aqui.</p>
-  <p><a class="btn g" href="#home">Voltar ao início</a></p>
 </section>
 
 <!-- SOBRE -->
@@ -445,20 +393,15 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261023-temaneutro1"></script>
-<script src="navegacao-inferior.js?v=20261023-paodiario1" defer></script>
-<script src="biblia.js?v=20261023-leitura-mobile1"></script>
-<script src="favoritos.js?v=20261023-paodiario1"></script>
-<script src="pao-diario-dados.js?v=20261023-paodiario1"></script>
-<script src="pao-diario.js?v=20261023-paodiario1"></script>
-<script src="santo-nomes-dados.js?v=20261023-parte12"></script>
-<script src="santo-nomes.js?v=20261023-parte12"></script>
+<script src="app.js?v=20261023-contrasteglobal1"></script>
+<script src="navegacao-inferior.js?v=20261023-parte8" defer></script>
+<script src="biblia.js?v=20261023-bookmode1"></script>\n<script src="favoritos.js?v=20261023-parte10"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261023-parte8"></script>
 <script src="regras.js?v=20261019-estudos4"></script>
 <script src="trilha.js?v=20261023-modulos1"></script>
 <script src="progresso.js?v=20261023-modulos1"></script>
-<script src="interface.js?v=20261023-estudos-regressao1"></script>
+<script src="interface.js?v=20261023-filtromodulos1"></script>
 
 <script src="./ovelia-kids.js?v=20261022-usabilidade2"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>
