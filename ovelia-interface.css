@@ -29,3 +29,115 @@ body.filtro-quente-ativo::after{background:rgba(255,190,112,var(--ovelia-filtro-
 .card{box-shadow:0 1px 3px rgba(25,20,35,.035)}
 @media(max-width:600px){main{padding:12px 12px calc(96px + env(safe-area-inset-bottom,0px))}.card{padding:14px}.hero{padding:16px;gap:12px;border-radius:20px}.ovelia-bottom-nav{padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* CORREÇÃO DE CONTRASTE — superfícies claras não podem herdar texto branco */
+body.tema-claro .hero,
+body.tema-claro .hero h1,
+body.tema-claro .hero h2,
+body.tema-claro .hero h3,
+body.tema-claro .hero h4,
+body.tema-claro .hero p,
+body.tema-claro .hero span,
+body.tema-claro .hero strong,
+body.tema-claro .hero small,
+body.tema-claro .hero time,
+body.tema-claro .hero div:not(.mascote):not(.hero-imagem) {
+  color: #292431 !important;
+}
+body.tema-claro .hero p,
+body.tema-claro .hero small,
+body.tema-claro .hero time {
+  color: #514B5A !important;
+}
+body.tema-claro .hero a:not(.btn),
+body.tema-claro .hero button:not(.btn-primary) {
+  color: #49366D !important;
+}
+body.tema-claro .hero .btn-primary {
+  color: #FFFFFF !important;
+  background: #60458D !important;
+}
+/* Texto padrão e componentes comuns no tema claro: contraste mínimo confortável. */
+body.tema-claro,
+body.tema-claro main,
+body.tema-claro section,
+body.tema-claro article,
+body.tema-claro .card,
+body.tema-claro details,
+body.tema-claro summary,
+body.tema-claro label,
+body.tema-claro legend {
+  color: #292631;
+}
+body.tema-claro .muted,
+body.tema-claro .text-muted,
+body.tema-claro .subtle,
+body.tema-claro .hint,
+body.tema-claro .help,
+body.tema-claro .descricao,
+body.tema-claro .description {
+  color: #625D69 !important;
+}
+body.tema-claro input,
+body.tema-claro select,
+body.tema-claro textarea {
+  color: #292631 !important;
+  background-color: #FFFFFF;
+}
+body.tema-claro input::placeholder,
+body.tema-claro textarea::placeholder {
+  color: #77717F !important;
+  opacity: 1;
+}
+/* Tema escuro: garantir que textos e descrições não permaneçam escuros em painéis grafite. */
+body.tema-escuro,
+body.tema-escuro main,
+body.tema-escuro section,
+body.tema-escuro article,
+body.tema-escuro .hero,
+body.tema-escuro .card,
+body.tema-escuro details,
+body.tema-escuro summary,
+body.tema-escuro label,
+body.tema-escuro legend {
+  color: #F2F0F5;
+}
+body.tema-escuro .hero h1,
+body.tema-escuro .hero h2,
+body.tema-escuro .hero h3,
+body.tema-escuro .hero h4,
+body.tema-escuro .hero p,
+body.tema-escuro .hero span,
+body.tema-escuro .hero strong,
+body.tema-escuro .hero small,
+body.tema-escuro .hero time,
+body.tema-escuro .hero div {
+  color: #F2F0F5 !important;
+}
+body.tema-escuro .hero p,
+body.tema-escuro .hero small,
+body.tema-escuro .hero time,
+body.tema-escuro .muted,
+body.tema-escuro .text-muted,
+body.tema-escuro .subtle,
+body.tema-escuro .hint,
+body.tema-escuro .help,
+body.tema-escuro .descricao,
+body.tema-escuro .description {
+  color: #C7C2D0 !important;
+}
+body.tema-escuro input,
+body.tema-escuro select,
+body.tema-escuro textarea {
+  color: #F2F0F5 !important;
+  background-color: #202127;
+}
+body.tema-escuro input::placeholder,
+body.tema-escuro textarea::placeholder {
+  color: #B7B1C1 !important;
+  opacity: 1;
+}
+/* Estados de foco visíveis sem depender apenas da cor. */
+body.tema-claro :focus-visible { outline: 3px solid #8061B0; outline-offset: 2px; }
+body.tema-escuro :focus-visible { outline: 3px solid #C8B4F1; outline-offset: 2px; }

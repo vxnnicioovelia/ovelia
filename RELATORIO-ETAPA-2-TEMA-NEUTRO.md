@@ -12,3 +12,10 @@ Não foram alterados rotas, IDs, chaves de armazenamento, sequência do Terço, 
 
 ## Verificação
 As referências de CSS/cache foram conferidas estaticamente. Os testes visuais reais no Safari/iPhone ainda precisam ser feitos após aplicação. Alguns estilos hardcoded em módulos podem exigir ajustes específicos após observar as telas.
+
+
+## Correção posterior baseada na captura do iPhone
+- Causa visual observada: o cartão de saudação ficou claro, mas alguns descendentes mantiveram texto branco.
+- Correção: regras explícitas de contraste para títulos, parágrafos e textos auxiliares dentro de `.hero`, além de regras globais para componentes claros/escuros.
+- Cache: nova versão `ovelia-shell-v41-20261023-contraste2` e nova query string do CSS.
+- Ainda requer confirmação visual após aplicação no GitHub Pages; não foi possível executar Safari/iPhone nesta etapa.

@@ -25,3 +25,7 @@ Não apague outros arquivos.
 - Bíblia continua carregando versículos, navegando capítulos e mantendo controles de fonte/espaçamento.
 - Filtro de conforto no mínimo e máximo; deve cobrir a tela inteira e não bloquear toques.
 - Testar larguras 320, 360, 390 e 430 px e desktop.
+
+
+## Correção complementar de contraste
+A captura do iPhone mostrou texto branco sobre a área clara da saudação. Esta correção força texto escuro no tema claro, texto claro no tema escuro, melhora a cor de textos secundários e placeholders e reforça o foco visível. O arquivo `ovelia-interface.css` continua sendo carregado por último. A versão de cache foi atualizada para evitar reutilização do CSS antigo.
