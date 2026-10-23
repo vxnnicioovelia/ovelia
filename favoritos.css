@@ -1,0 +1,17 @@
+
+/* Parte 10 — favoritos e cópia local */
+.favoritos-tools{display:grid;gap:12px}
+.favoritos-tools select,.favoritos-tools textarea{width:100%;max-width:100%;box-sizing:border-box}
+.favoritos-acoes,.favorito-acoes{display:flex;flex-wrap:wrap;gap:8px}
+.favorito-item{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line,rgba(180,150,210,.3))}
+.favorito-item:last-child{border-bottom:0}
+.favorito-item strong{display:block;margin:8px 0}
+.favorito-item p{margin:5px 0}
+.favorito-item small{color:var(--mut)}
+.favorito-acoes{align-items:center;flex-shrink:0}
+.favorito-salvar-secao{margin:10px 0 14px}
+.biblia-favoritar{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:30px;margin-inline-start:5px;border:1px solid var(--line,rgba(180,150,210,.5));border-radius:999px;background:var(--card,#2b2035);color:var(--text,#fff);font-size:1rem;vertical-align:middle}
+.importar-previa{border:1px solid var(--line,rgba(180,150,210,.4));border-radius:12px;padding:12px}
+@media(max-width:480px){.favorito-item{display:block}.favorito-acoes{margin-top:10px}.favoritos-acoes .btn{flex:1 1 100%}}
+body.perfil-kids #favoritos .favorito-salvar-secao[data-fav-section="liturgia"],
+body.perfil-kids #favoritos .favorito-salvar-secao[data-fav-section="estudos"]{display:none}
