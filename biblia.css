@@ -73,3 +73,39 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
 .biblia-alcance{font-size:.9rem;color:var(--mut)}.biblia-testamento-abas{display:grid;grid-template-columns:1fr 1fr;gap:8px}.biblia-testamento-abas .ativo{outline:2px solid var(--gold);font-weight:800}.biblia-lista-livros{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:240px;overflow:auto}.biblia-livro-opcao,.biblia-resultado{border:1px solid var(--line);border-radius:8px;padding:9px;background:var(--soft);color:var(--ink);font:inherit;text-align:left;overflow-wrap:anywhere}.biblia-ferramenta-acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px}.biblia-marcador-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.biblia-versiculo-selecionado{background:#e8dcf4;outline:2px solid #76519a;border-radius:4px}.biblia-versiculo-marcado{box-shadow:inset 0 -2px 0 #a582c9}.biblia-comparacao-card{padding:10px;margin:8px 0;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink)}.biblia-comparacao-card h4{margin:0 0 6px}
 .biblia-leitor.biblia-tema-escuro .biblia-estudo-ferramentas,.biblia-leitor.biblia-tema-escuro .biblia-seletor-livro,.biblia-leitor.biblia-tema-escuro .biblia-ferramenta,.biblia-leitor.biblia-tema-escuro .biblia-livro-opcao,.biblia-leitor.biblia-tema-escuro .biblia-resultado,.biblia-leitor.biblia-tema-escuro .biblia-comparacao-card{background:#302b35;color:#f5efe5;border-color:#554b5b}.biblia-leitor.biblia-tema-escuro .biblia-busca-linha input,.biblia-leitor.biblia-tema-escuro .biblia-seletor-livro input{background:#25212a;color:#f5efe5;border-color:#62566a}
 @media(max-width:380px){.biblia-lista-livros{grid-template-columns:1fr}.biblia-ferramenta-acoes{grid-template-columns:1fr}.biblia-busca-linha{grid-template-columns:1fr}.biblia-marcador-item{align-items:flex-start;flex-direction:column}}
+
+
+/* Refinamento minimalista e contraste: controles recolhidos até solicitação. */
+.biblia-leitor .biblia-modo-livro,
+.biblia-leitor .biblia-seletor-livro,
+.biblia-leitor .biblia-estudo-ferramentas { color:#f8f3ff; background:#30243d; border-color:#594766; }
+.biblia-leitor .biblia-config-linha label,
+.biblia-leitor .biblia-seletor-livro label,
+.biblia-leitor .biblia-ferramenta label { color:#f8f3ff; }
+.biblia-leitor .biblia-ajustes-resumo { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; min-height:44px; cursor:pointer; color:#fff; font-weight:750; padding:5px 2px; }
+.biblia-leitor .biblia-ajustes-resumo span { color:#e2d5f1; font-size:.88em; font-weight:500; }
+.biblia-leitor .biblia-configuracoes, .biblia-leitor .biblia-seletor-conteudo { display:grid; gap:12px; padding-top:12px; }
+.biblia-leitor .biblia-configuracoes select,
+.biblia-leitor .biblia-seletor-conteudo input,
+.biblia-leitor .biblia-busca-linha input { color:#fff; background:#211a2b; border-color:#806b91; }
+.biblia-leitor .biblia-ferramenta summary { color:#fff; min-height:42px; display:flex; align-items:center; }
+.biblia-leitor .biblia-alcance { color:#e4d9ed; }
+.biblia-leitor .biblia-livro-opcao, .biblia-leitor .biblia-resultado { color:#fff; background:#40304f; border-color:#665276; }
+.biblia-leitor .biblia-testamento-abas .ativo { outline-color:#e0c7ff; background:#57416a; color:#fff; }
+.biblia-leitor.biblia-tema-escuro .biblia-modo-livro,
+.biblia-leitor.biblia-tema-escuro .biblia-seletor-livro,
+.biblia-leitor.biblia-tema-escuro .biblia-estudo-ferramentas { background:#211d27; color:#fff; border-color:#5c5065; }
+.biblia-leitor.biblia-tema-escuro .biblia-config-linha label,
+.biblia-leitor.biblia-tema-escuro .biblia-seletor-livro label { color:#fff; }
+.biblia-leitor.biblia-tema-escuro .biblia-ajustes-resumo { color:#fff; }
+.biblia-leitor.biblia-tema-escuro .biblia-ajustes-resumo span { color:#e5d9ee; }
+.biblia-leitor.biblia-tema-escuro .biblia-configuracoes select,
+.biblia-leitor.biblia-tema-escuro .biblia-seletor-conteudo input,
+.biblia-leitor.biblia-tema-escuro .biblia-busca-linha input { background:#17141c; color:#fff; border-color:#74647f; }
+.biblia-leitor.biblia-tema-escuro .biblia-ferramenta summary,
+.biblia-leitor.biblia-tema-escuro .biblia-alcance { color:#f4eaff; }
+.biblia-leitor.biblia-tema-escuro .biblia-livro-opcao,
+.biblia-leitor.biblia-tema-escuro .biblia-resultado { background:#302738; color:#fff; border-color:#65566f; }
+.biblia-leitor .biblia-ferramenta[open] > summary,
+.biblia-leitor details[open] > .biblia-ajustes-resumo { margin-bottom:4px; }
+@media(max-width:380px){.biblia-leitor .biblia-ajustes-resumo{align-items:flex-start;flex-direction:column;justify-content:center}.biblia-leitor .biblia-ajustes-resumo span{font-size:.82em}}
