@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261023-parte12">
+<link rel="stylesheet" href="estilo.css?v=20261023-parte17-prayerux">
 <link rel="stylesheet" href="biblia.css?v=20261023-leitura-mobile1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
@@ -199,10 +199,26 @@
 
 <!-- ORAÇÕES -->
 <section class="pg" id="oracoes">
-<h2>Orações</h2>
-<p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
-<div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
-<div id="listaOracoes"></div>
+<h2>Oração</h2>
+<p>Escolha o que deseja rezar. Você pode voltar a este menu a qualquer momento.</p>
+<div id="menuOracao" class="menu-oracao" aria-label="Opções de oração">
+  <button class="menu-oracao-item" type="button" data-oracao-abrir="lista">
+    <span class="menu-oracao-icone" aria-hidden="true">♡</span><span><strong>Orações</strong><small>Orações tradicionais e para diferentes momentos</small></span><span aria-hidden="true">›</span>
+  </button>
+  <a class="menu-oracao-item" href="#terco" data-adulto-oracao data-oracao-destino="terco">
+    <span class="menu-oracao-icone" aria-hidden="true">◉</span><span><strong>Terços</strong><small>Escolha os mistérios e acompanhe cada etapa</small></span><span aria-hidden="true">›</span>
+  </a>
+  <a class="menu-oracao-item" href="#terco" data-adulto-oracao data-oracao-destino="rosario">
+    <span class="menu-oracao-icone" aria-hidden="true">✦</span><span><strong>Santo Rosário</strong><small>Reze os mistérios de Jesus e Maria, passo a passo</small></span><span aria-hidden="true">›</span>
+  </a>
+</div>
+<div id="oracaoListaPainel" hidden>
+  <button class="btn g" id="voltarMenuOracao" type="button">← Voltar às opções de oração</button>
+  <h3>Orações</h3>
+  <p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
+  <div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
+  <div id="listaOracoes"></div>
+</div>
 </section>
 
 <!-- TERÇO -->
@@ -216,6 +232,7 @@
 <p id="progTxt" role="status" aria-live="polite" style="color:var(--mut)"></p>
 <div class="beads" id="contas" aria-hidden="true"></div>
 <label style="display:block;margin:8px 0"><input type="checkbox" id="vozPasso"> Ler cada passo em voz alta</label>
+<div id="tercoMarcadorAtual" class="terco-marcador-atual" aria-live="polite" aria-atomic="true"><span class="terco-marcador-simbolo" aria-hidden="true">✝</span><span>Início da oração</span></div>
 <div id="passo" aria-live="polite"></div>
 <div id="meditacao" class="terco-meditacao" hidden></div>
 <p id="tercoStatus" role="status" aria-live="polite" style="color:var(--mut)"></p>
@@ -427,7 +444,7 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261023-parte12"></script>
+<script src="app.js?v=20261023-parte17-prayerux"></script>
 <script src="navegacao-inferior.js?v=20261023-paodiario1" defer></script>
 <script src="biblia.js?v=20261023-leitura-mobile1"></script>
 <script src="favoritos.js?v=20261023-paodiario1"></script>

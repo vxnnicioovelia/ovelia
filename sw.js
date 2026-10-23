@@ -1,10 +1,10 @@
 /* Ovelia service worker. Pre-caches only same-origin shell assets; dynamic JSON feeds stay network-only. */
 'use strict';
-var CACHE='ovelia-shell-v38-20261023-leitura-mobile1';
+var CACHE='ovelia-shell-v39-20261023-parte17-prayerux';
 var SHELL=[
   './','./index.html',
   './manifest.webmanifest?v=20261019-quality1', './favicon-64.png',
-  './apple-touch-icon.png', './estilo.css?v=20261023-parte12',
+  './apple-touch-icon.png', './estilo.css?v=20261023-parte17-prayerux',
   './biblia.css?v=20261023-leitura-mobile1', './calendario-liturgico.css?v=20261022-hotfix2',
   './navegacao-inferior.css?v=20261022-hotfix2', './favoritos.css?v=20261023-parte10',
   './pao-diario.css?v=20261023-paodiario1', './santo-nomes.css?v=20261023-parte12',
@@ -12,7 +12,7 @@ var SHELL=[
   './ovelia-pwa.css?v=20261019-1', './icone-128.png',
   './ovelha.png', './ovelha-biblia.png',
   './pomba.png', './inicio-dados.js?v=20261018-inicio1',
-  './liturgia.js?v=20261020-liturgia11', './app.js?v=20261023-parte12',
+  './liturgia.js?v=20261020-liturgia11', './app.js?v=20261023-parte17-prayerux',
   './navegacao-inferior.js?v=20261023-paodiario1', './biblia.js?v=20261023-leitura-mobile1',
   './favoritos.js?v=20261023-paodiario1', './pao-diario-dados.js?v=20261023-paodiario1',
   './pao-diario.js?v=20261023-paodiario1', './santo-nomes-dados.js?v=20261023-parte12',

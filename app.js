@@ -17,9 +17,9 @@ if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
-  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['favoritos','Favoritos infantis'],['santoDia','Santo do Dia'],['nomesBiblicos','Nomes Bíblicos'],['paoDiario','Pão Diário'],['instalarOvelia','Instalar Ovelia']];
-  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['favoritos','Favoritos'],['santoDia','Santo do Dia'],['nomesBiblicos','Nomes Bíblicos'],['paoDiario','Pão Diário'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
-  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['favoritos','Favoritos'],['santoDia','Santo do Dia'],['nomesBiblicos','Nomes Bíblicos'],['paoDiario','Pão Diário'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['favoritos','Favoritos infantis'],['instalarOvelia','Instalar Ovelia']];
+  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['favoritos','Favoritos'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['favoritos','Favoritos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
 }
 var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
@@ -45,6 +45,7 @@ function applyProfile(){
   if(kidsHome)kidsHome.hidden=profile!=='kids';
   if(seniorHome)seniorHome.hidden=profile!=='senior';
   var prayerTitle=$('#oracoes h2');if(prayerTitle)prayerTitle.textContent=profile==='kids'?'Orações para crianças':'Orações';
+  $$('[data-adulto-oracao]').forEach(function(el){el.hidden=profile==='kids'});
   try{if(profile)localStorage.setItem('ovelia-perfil',profile)}catch(e){}
   if(perfilInicio)perfilInicio.hidden=!!profile;
   if(profile==='senior'){
@@ -97,6 +98,18 @@ function show(first){
   var id=location.hash.slice(1);if(!$('section.pg[id="'+id+'"]'))id='home';
   if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
+  if(id==='oracoes'){
+    var mode='menu';try{mode=sessionStorage.getItem('ovelia-oracao-submenu')||'menu'}catch(e){}
+    var menuOr=$('#menuOracao'),listaOr=$('#oracaoListaPainel');
+    if(menuOr)menuOr.hidden=mode==='lista';if(listaOr)listaOr.hidden=mode!=='lista';
+  }
+  if(id==='terco'){
+    var modoTerco='terco';try{modoTerco=sessionStorage.getItem('ovelia-terco-modo')||'terco'}catch(e){}
+    var tituloTerco=$('#terco h2'),introTerco=$('#terco .side p'),subTerco=$('#terco .card h3');
+    if(tituloTerco)tituloTerco.textContent=modoTerco==='rosario'?'Santo Rosário':'Terços';
+    if(introTerco)introTerco.textContent=modoTerco==='rosario'?'Acompanhe o Santo Rosário passo a passo, contemplando os mistérios da vida de Jesus e de Maria. Escolha os mistérios e avance no seu ritmo.':'Escolha o conjunto de mistérios e acompanhe a oração passo a passo. Em cada dezena, medite um mistério da vida de Jesus e de Maria.';
+    if(subTerco)subTerco.textContent=modoTerco==='rosario'?'Acompanhar o Santo Rosário':'Rezar o terço, passo a passo';
+  }
   $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   menu.classList.remove('open');if(menuNav)menuNav.classList.remove('menu-aberto');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
@@ -264,6 +277,13 @@ var ORIG={
   criancaMedo:{n:'Oração da criança quando sentir medo ou tristeza',t:'Jesus, estou com medo ou com o coração triste.\nFica perto de mim e ajuda-me a conversar com um adulto em quem confio.\nDá-me coragem, consolo e esperança. Amém.'}
 };
 for(var k in ORIG)P[k]=ORIG[k];
+var menuOracao=$('#menuOracao'),listaOracaoPainel=$('#oracaoListaPainel');
+function abrirListaOracoes(){try{sessionStorage.setItem('ovelia-oracao-submenu','lista')}catch(e){}if(menuOracao)menuOracao.hidden=true;if(listaOracaoPainel)listaOracaoPainel.hidden=false;var h=$('#oracaoListaPainel h3');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+function voltarMenuOracoes(){try{sessionStorage.setItem('ovelia-oracao-submenu','menu')}catch(e){}if(menuOracao)menuOracao.hidden=false;if(listaOracaoPainel)listaOracaoPainel.hidden=true;var h=$('#oracoes h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+var abrirOrBtn=$('[data-oracao-abrir="lista"]');if(abrirOrBtn)abrirOrBtn.addEventListener('click',abrirListaOracoes);
+var voltarOrBtn=$('#voltarMenuOracao');if(voltarOrBtn)voltarOrBtn.addEventListener('click',voltarMenuOracoes);
+$$('[data-oracao-destino]').forEach(function(a){a.addEventListener('click',function(){var modo=a.getAttribute('data-oracao-destino');try{sessionStorage.setItem('ovelia-terco-modo',modo);sessionStorage.setItem('ovelia-oracao-submenu','menu')}catch(e){}})});
+$$('a[href="#oracoes"]').forEach(function(a){a.addEventListener('click',function(){try{sessionStorage.setItem('ovelia-oracao-submenu','menu')}catch(e){}})});
 var lo=$('#listaOracoes');
 lo.innerHTML=CATS.map(function(c){return '<div class="categoria-oracao '+(c.o==='kids'?'kids-cat':c.o==='original'?'original-cat':'trad-cat')+'"><h3>'+esc(c.t)+'</h3>'+(c.o==='original'||c.o==='kids'?'<p class="aviso"><b>'+(c.o==='kids'?'Orações infantis originais da Ovelia.':'Composições originais da Ovelia.')+'</b> Não são textos oficiais da Igreja.</p>':'')+c.ids.map(function(id){var p=P[id];
   return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Oração tradicional')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');
@@ -303,11 +323,12 @@ function buildSteps(){
 }
 function drawTerco(){
  var contas=[],h='',last=-1;
- steps.forEach(function(s,i){if(s.b){last++;var state=i<n?'feita':(i===n?'atual':'');var label=(s.p==='pai'?'Conta grande':'Conta pequena')+' · passo '+(i+1)+': '+s.x;
-  h+='<button type="button" class="bead '+(s.p==='pai'?'big ':'')+state+'" data-terco-step="'+(i+1)+'" aria-label="'+esc(label)+'" aria-current="'+(i===n?'step':'false')+'" title="Ir para: '+esc(s.x)+'"></button>';contas.push(i);}});
+ steps.forEach(function(s,i){if(s.b){last++;var state=(n===0&&i===0)||i===n-1?'atual':(i<n-1?'feita':'');var label=(s.p==='pai'?'Conta grande':'Conta pequena')+' · passo '+(i+1)+': '+s.x;
+  h+='<button type="button" class="bead '+(s.p==='pai'?'big ':'')+state+'" data-terco-step="'+(i+1)+'" aria-label="'+esc(label)+'" aria-current="'+(((n===0&&i===0)||i===n-1)?'step':'false')+'" title="Ir para: '+esc(s.x)+'"></button>';contas.push(i);}});
  $('#contas').innerHTML=h;$('#contas').querySelectorAll('[data-terco-step]').forEach(function(b){b.addEventListener('click',function(){n=Number(b.getAttribute('data-terco-step'));saveTerco();drawTerco();});});
  $('#progFill').style.width=Math.round(n/steps.length*100)+'%';$('#progTxt').textContent='Passo '+n+' de '+steps.length+' · '+Math.round(n/steps.length*100)+'% concluído';
  var box=$('#passo'),med=$('#meditacao')||{hidden:true,innerHTML:''},s=n?steps[n-1]:null;
+  var marcador=$('#tercoMarcadorAtual');if(marcador){if(!s){marcador.innerHTML='<span class="terco-marcador-simbolo" aria-hidden="true">✝</span><span>Início da oração</span>';}else{var tipo=s.p==='pai'?'Conta grande':s.p==='ave'?'Conta pequena':s.p==='credo'||s.p==='sinal'?'Crucifixo':'Meditação do mistério';marcador.innerHTML='<span class="terco-marcador-simbolo '+(s.p==='pai'?'grande':s.p==='ave'?'pequena':'misterio')+'" aria-hidden="true">'+(s.p==='pai'?'●':s.p==='ave'?'●':s.p==='credo'||s.p==='sinal'?'✝':'✦')+'</span><span><strong>'+tipo+'</strong><small>Passo '+n+' de '+steps.length+'</small></span>';}}
  if(!s){box.innerHTML='<h4>Pronto para começar?</h4><p>O terço completo inclui as orações iniciais, cinco mistérios, cinco dezenas e as orações finais.</p>';med.hidden=true;med.innerHTML='';}
  else {box.innerHTML='<h3>'+(s.p?esc(P[s.p].n):'Mistério '+s.m)+'</h3><p>'+esc(s.x)+'</p>'+(s.p?'<div class="oracao">'+esc(P[s.p].t)+'</div>':'');if(s.med){med.hidden=false;med.innerHTML='<h4>Meditação do mistério</h4><p>'+esc(s.med)+'</p><p class="terco-reflexao">Reserve alguns instantes para refletir em silêncio.</p>';}else{med.hidden=true;med.innerHTML='';}}
  $('#tAnt').disabled=n===0;$('#tProx').disabled=n>=steps.length;$('#tProx').textContent=n===0?'Começar a rezar':(n>=steps.length?'Terço concluído':'Próximo passo →');
