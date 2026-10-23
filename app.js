@@ -17,9 +17,9 @@ if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
-  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['favoritos','Favoritos infantis'],['instalarOvelia','Instalar Ovelia']];
-  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['favoritos','Favoritos'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
-  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['favoritos','Favoritos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  if(profile==='kids')return [['home','Início'],['favoritos','Favoritos infantis'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['instalarOvelia','Instalar Ovelia']];
+  if(profile==='senior')return [['home','Início'],['favoritos','Favoritos'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  return [['home','Início'],['favoritos','Favoritos'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
 }
 var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
@@ -45,6 +45,7 @@ function applyProfile(){
   if(kidsHome)kidsHome.hidden=profile!=='kids';
   if(seniorHome)seniorHome.hidden=profile!=='senior';
   var prayerTitle=$('#oracoes h2');if(prayerTitle)prayerTitle.textContent=profile==='kids'?'Orações para crianças':'Orações';
+  var rosarioAcesso=$('#rosarioAcesso');if(rosarioAcesso)rosarioAcesso.hidden=profile==='kids';
   try{if(profile)localStorage.setItem('ovelia-perfil',profile)}catch(e){}
   if(perfilInicio)perfilInicio.hidden=!!profile;
   if(profile==='senior'){
