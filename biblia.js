@@ -1,9 +1,27 @@
 /* Ovelia — leitor bíblico integrado.
-   Mantém a navegação pelos 73 livros. Os textos integrais só podem ser publicados após
-   confirmação da autorização editorial e validação dos arquivos da tradução licenciada. */
+   A BPM é carregada por capítulo a partir da edição pública identificada nos créditos;
+   outras traduções permanecem bloqueadas enquanto não houver conteúdo e licença validados. */
 (function () {
   'use strict';
   var BASE = 'dados/biblia/';
+  var BPM_REMOTE_BASE = 'https://raw.githubusercontent.com/GuilhermeGms3/scriptorium-os/ff8c1b95abd6a70c3bf83ca3467b22fe660fe745/generated/corpora/biblia-portuguesa-mundial/2026-08-19/books/';
+  var BPM_EDITION_KEY = 'biblia-portuguesa-mundial-2026-08-19';
+  var BPM_CACHE_NAME = 'ovelia-biblia-bpm-20261023-v2';
+  var BPM_BOOK_SLUGS = {
+    'GEN':'genesis','EXO':'exodus','LEV':'leviticus','NUM':'numbers','DEU':'deuteronomy',
+    'JOS':'joshua','JDG':'judges','RUT':'ruth','1SA':'1-samuel','2SA':'2-samuel',
+    '1KI':'1-kings','2KI':'2-kings','1CH':'1-chronicles','2CH':'2-chronicles','EZR':'ezra','NEH':'nehemiah',
+    'TOB':'tobit','JDT':'judith','ESG':'greek-esther','JOB':'job','PSA':'psalms','PRO':'proverbs',
+    'ECC':'ecclesiastes','SNG':'song-of-songs','WIS':'wisdom','SIR':'sirach','ISA':'isaiah','JER':'jeremiah',
+    'LAM':'lamentations','BAR':'baruch','EZK':'ezekiel','DAG':'greek-daniel','HOS':'hosea','JOL':'joel',
+    'AMO':'amos','OBA':'obadiah','JON':'jonah','MIC':'micah','NAM':'nahum','HAB':'habakkuk','ZEP':'zephaniah',
+    'HAG':'haggai','ZEC':'zechariah','MAL':'malachi','1MA':'1-maccabees','2MA':'2-maccabees',
+    'MAT':'matthew','MRK':'mark','LUK':'luke','JHN':'john','ACT':'acts','ROM':'romans',
+    '1CO':'1-corinthians','2CO':'2-corinthians','GAL':'galatians','EPH':'ephesians','PHP':'philippians',
+    'COL':'colossians','1TH':'1-thessalonians','2TH':'2-thessalonians','1TI':'1-timothy','2TI':'2-timothy',
+    'TIT':'titus','PHM':'philemon','HEB':'hebrews','JAS':'james','1PE':'1-peter','2PE':'2-peter',
+    '1JN':'1-john','2JN':'2-john','3JN':'3-john','JUD':'jude','REV':'revelation'
+  };
   var books = [
     {name:'Gênesis',code:'GEN',chapters:50,testament:'Antigo Testamento'},
     {name:'Êxodo',code:'EXO',chapters:40,testament:'Antigo Testamento'},
@@ -90,12 +108,12 @@
   // O catálogo editorial canônico fica na raiz do site; os textos seguem em dados/biblia/<id>/.
   var CATALOG_URL = 'catalogo-biblia.json';
   var selected = null, chapter = 1, translation = null, translations = [], catalogReady = false;
-  var bookCache = Object.create(null), indexCache = Object.create(null), requestId = 0;
+  var bookCache = Object.create(null), indexCache = Object.create(null), chapterCache = Object.create(null), requestId = 0;
   var FONT_KEY = 'ovelia-biblia-leitura-v1';
   var ESTUDOS_RETORNO_KEY = 'ovelia-estudos-retorno-biblia-v1';
   var pendingVerse = null;
   var defaultTranslations = [
-    {id:'bpm',nome:'Bíblia Portuguesa Mundial (BPM)',estado:'em_preparacao',origem:'',edicao:'',licenca:{}},
+    {id:'bpm',nome:'Bíblia Portuguesa Mundial (BPM)',estado:'em_preparacao',estadoLeitura:'disponivel_online',fonteRemota:true,origem:'https://ebible.org/find/details.php?id=porbrbsl',edicao:'Bíblia Portuguesa Mundial, pacote eBible.org de 19/08/2026; rascunho em revisão. Conteúdo consultado por capítulo em espelho técnico fixado.',licenca:{tipo:'Domínio público (declarado pelo eBible.org)',titular:'Bíblia Portuguesa Mundial / eBible.org',url:'https://ebible.org/porbrbsl/copyright.htm'}},
     {id:'matos-soares',nome:'Manuel de Matos Soares',estado:'em_preparacao',origem:'',edicao:'',licenca:{}},
     {id:'figueiredo',nome:'Antônio Pereira de Figueiredo',estado:'em_preparacao',origem:'',edicao:'',licenca:{}}
   ];
@@ -103,7 +121,7 @@
   function findBook(name) { var n=normalize(name); return books.find(function(b){return normalize(b.name)===n;}) || null; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
   function isKids() { return document.body.classList.contains('perfil-kids'); }
-  function isAvailable(t) { return !!t && t.estado === 'disponivel'; }
+  function isAvailable(t) { return !!t && (t.estado === 'disponivel' || (t.id === 'bpm' && t.fonteRemota === true && t.estadoLeitura === 'disponivel_online')); }
   function chapterCount(book, t) {
     t=t||translation; if(!t)return book.chapters;
     var item=Array.isArray(t.livrosEsperados)?t.livrosEsperados.find(function(x){return x.code===book.code;}):null;
@@ -142,7 +160,7 @@
     translationSelect.innerHTML='';
     translations.forEach(function(t){
       var opt=document.createElement('option'); opt.value=t.id;
-      opt.textContent=t.nome + (isAvailable(t) ? '' : ' — Em preparação');
+      opt.textContent=t.nome + (t.id==='bpm' && isAvailable(t) ? ' — online (rascunho em revisão)' : (isAvailable(t) ? '' : ' — Em preparação'));
       opt.disabled=!isAvailable(t); translationSelect.appendChild(opt);
     });
     var firstAvailable=translations.find(isAvailable);
@@ -150,7 +168,7 @@
     if (translation) translationSelect.value=translation.id;
     translationSelect.disabled=isKids() || !firstAvailable;
     if (isKids()) translationSelect.setAttribute('aria-label','Bíblia adulta indisponível no perfil Pequenas Ovelias');
-    else translationSelect.setAttribute('aria-label','Escolher tradução; as traduções em preparação não exibem texto');
+    else translationSelect.setAttribute('aria-label','Escolher tradução; BPM disponível online, edição em revisão');
   }
   function setStatus(message, retry) {
     status.textContent='';
@@ -212,8 +230,73 @@
       return fetch(BASE+t.id+'/'+book.code+'.json').then(function(r){if(!r.ok)throw new Error('Arquivo do livro não encontrado ('+r.status+').');return r.json();});
     }).then(function(raw){var data=normalizeBookData(raw,book,t);bookCache[cacheKey]=data;return data;});
   }
+  function openBpmCache() {
+    try { return window.caches && window.caches.open ? window.caches.open(BPM_CACHE_NAME).catch(function(){return null;}) : Promise.resolve(null); }
+    catch(e) { return Promise.resolve(null); }
+  }
+  function fetchJsonCached(url, backupUrl) {
+    var candidates=[url];
+    if(backupUrl && backupUrl!==url) candidates.push(backupUrl);
+    function tryNetwork(index) {
+      if(index>=candidates.length) return Promise.reject(new Error('Não foi possível acessar a fonte online.'));
+      var candidate=candidates[index], controller=typeof AbortController!=='undefined'?new AbortController():null;
+      var timer=controller?setTimeout(function(){controller.abort();},8000):null;
+      return fetch(candidate, { method:'GET', mode:'cors', credentials:'omit', cache:'no-cache', signal:controller?controller.signal:undefined }).then(function(response){
+        if(!response.ok) throw new Error('A fonte da Bíblia respondeu HTTP '+response.status+'.');
+        var copy=response.clone();
+        return response.json().then(function(data){
+          return openBpmCache().then(function(cache){
+            if(!cache) return data;
+            return cache.put(candidate,copy).catch(function(){return null;}).then(function(){return data;});
+          });
+        });
+      }).then(function(data){if(timer)clearTimeout(timer);return data;}).catch(function(){if(timer)clearTimeout(timer);return tryNetwork(index+1);});
+    }
+    return tryNetwork(0).catch(function(){
+      return openBpmCache().then(function(cache){
+        if(!cache) throw new Error('Não foi possível acessar a Bíblia online. Confira sua conexão e tente novamente.');
+        return candidates.reduce(function(chain,candidate){
+          return chain.then(function(found){return found || cache.match(candidate);});
+        },Promise.resolve(null)).then(function(saved){
+          if(saved) return saved.json();
+          throw new Error('Este capítulo ainda não está salvo no aparelho e não foi possível acessar a Bíblia online. Confira sua conexão e tente novamente.');
+        });
+      });
+    });
+  }
+  function loadBpmChapter(book, chapterNumber) {
+    var slug=BPM_BOOK_SLUGS[book.code];
+    if(!slug) return Promise.reject(new Error('Este livro ainda não está mapeado na edição BPM.'));
+    var n=Number(chapterNumber);
+    if(!Number.isInteger(n)||n<1||n>chapterCount(book)) return Promise.reject(new Error('O capítulo solicitado não existe no catálogo.'));
+    var file=(n<10?'0':'')+String(n)+'.json';
+    var path=slug+'/'+file;
+    var url=BPM_REMOTE_BASE+path;
+    var backupUrl='https://cdn.jsdelivr.net/gh/GuilhermeGms3/scriptorium-os@ff8c1b95abd6a70c3bf83ca3467b22fe660fe745/generated/corpora/biblia-portuguesa-mundial/2026-08-19/books/'+path;
+    var key='bpm:'+book.code+':'+n;
+    if(chapterCache[key]) return Promise.resolve(chapterCache[key]);
+    return fetchJsonCached(url,backupUrl).then(function(raw){
+      if(!raw||raw.chapter!==n||!Array.isArray(raw.verses)) throw new Error('O arquivo recebido não tem o formato esperado para '+book.name+' '+n+'.');
+      var verses=raw.verses.map(function(v){
+        var text=v&&v.translations&&v.translations[BPM_EDITION_KEY];
+        var number=Number(v&&v.verse);
+        if(!Number.isInteger(number)||number<1||typeof text!=='string'||!text.trim()) return null;
+        return {n:number,t:text.trim(),s:'',p:false};
+      }).filter(Boolean);
+      if(!verses.length) throw new Error('O arquivo de '+book.name+' '+n+' não contém versículos utilizáveis.');
+      var result={chapter:{n:n,d:'',v:verses},chapters:null};
+      chapterCache[key]=result;
+      return result;
+    });
+  }
+  function loadChapterData(book, chapterNumber, t) {
+    t=t||translation;
+    if(!t||!isAvailable(t)) return Promise.reject(new Error('Esta tradução ainda não está disponível para leitura.'));
+    if(t.id==='bpm' && t.fonteRemota) return loadBpmChapter(book,chapterNumber);
+    return loadBook(book);
+  }
   function drawChapter(book,data,ch) {
-    var cap=data.chapters[ch-1];
+    var cap=data.chapter || (data.chapters && data.chapters[ch-1]);
     if(!cap || !Array.isArray(cap.v) || !cap.v.length){clearText();setStatus('Este capítulo não existe ou ainda não foi validado nesta tradução.');return;}
     var html='',open=false;
     if(cap.d) html+='<p class="biblia-titulo-salmo">'+esc(cap.d)+'</p>';
@@ -239,9 +322,9 @@
     title.textContent=book.name+' '+ch;
     subtitle.textContent=book.testament+(book.note?' · '+book.note:'');
     chapterSelect.value=String(ch);updateControls();savePosition();metadataCredits(t);clearText();
-    if(!isAvailable(t)){setStatus((t?t.nome:'Esta tradução')+' ainda não tem texto integrado e validado. A navegação por livro e capítulo está disponível, mas os versículos só aparecerão depois de importar e validar os arquivos reais da tradução.');return;}
+    if(!isAvailable(t)){setStatus((t?t.nome:'Esta tradução')+' ainda não está disponível para leitura. A navegação por livro e capítulo permanece disponível.');return;}
     setStatus('Carregando '+book.name+' '+ch+'…');
-    loadBook(book).then(function(data){if(token!==requestId||t!==translation)return;if(isKids()){clearText();setStatus('A Bíblia adulta não está disponível no perfil Pequenas Ovelias.');return;}drawChapter(book,data,ch);if(pendingVerse){var alvo=texto.querySelector('[data-versiculo="'+String(pendingVerse).replace(/[^0-9]/g,'')+'"]');if(alvo){alvo.classList.add('biblia-versiculo-destacado');alvo.scrollIntoView({behavior:'smooth',block:'center'});}pendingVerse=null;}}).catch(function(err){if(token!==requestId||t!==translation)return;if(isKids()){clearText();setStatus('A Bíblia adulta não está disponível no perfil Pequenas Ovelias.');return;}clearText();setStatus(err&&err.message?err.message:'Não foi possível carregar este capítulo.',true);});
+    loadChapterData(book,ch,t).then(function(data){if(token!==requestId||t!==translation)return;if(isKids()){clearText();setStatus('A Bíblia adulta não está disponível no perfil Pequenas Ovelias.');return;}drawChapter(book,data,ch);if(pendingVerse){var alvo=texto.querySelector('[data-versiculo="'+String(pendingVerse).replace(/[^0-9]/g,'')+'"]');if(alvo){alvo.classList.add('biblia-versiculo-destacado');alvo.scrollIntoView({behavior:'smooth',block:'center'});}pendingVerse=null;}}).catch(function(err){if(token!==requestId||t!==translation)return;if(isKids()){clearText();setStatus('A Bíblia adulta não está disponível no perfil Pequenas Ovelias.');return;}clearText();setStatus(err&&err.message?err.message:'Não foi possível carregar este capítulo.',true);});
     if(!options.noScroll && panel.scrollIntoView) panel.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function selectBook(book, restore) {
@@ -316,7 +399,7 @@
     var m=/^(\d+)\s*,\s*(\d+)(?:\s*[-–]\s*(\d+))?$/.exec(resto);
     if(!m)return Promise.reject(new Error('Formato de referência não reconhecido: '+raw));
     var capNum=+m[1],from=+m[2],to=+(m[3]||m[2]);
-    return loadBook(book).then(function(data){var cap=data.chapters[capNum-1];if(!cap)throw new Error('Capítulo inexistente');var verses=cap.v.filter(function(v){var n=parseInt(v.n,10);return n>=from&&n<=to;});if(!verses.length)throw new Error('Versículos inexistentes');return {livro:book,capitulo:capNum,referencia:original,versiculos:verses.map(function(v){return {numero:v.n,texto:v.t};})};});
+    return loadChapterData(book,capNum,translation).then(function(data){var cap=data.chapter || (data.chapters && data.chapters[capNum-1]);if(!cap)throw new Error('Capítulo inexistente');var verses=cap.v.filter(function(v){var n=parseInt(v.n,10);return n>=from&&n<=to;});if(!verses.length)throw new Error('Versículos inexistentes');return {livro:book,capitulo:capNum,referencia:original,versiculos:verses.map(function(v){return {numero:v.n,texto:v.t};})};});
   }
   var profileObserver=new MutationObserver(function(records){
     if(!records.some(function(r){return r.attributeName==='class';}))return;
@@ -335,6 +418,6 @@
     traducaoSelecionada:function(){return isAvailable(translation)?translation.id:null;},
     textoReferencia:textoReferencia,
     books:books.map(function(b){return {name:b.name,code:b.code,chapters:b.chapters,testament:b.testament};}),
-    traducoes:function(){return translations.map(function(t){return {id:t.id,nome:t.nome,estado:t.estado};});}
+    traducoes:function(){return translations.map(function(t){return {id:t.id,nome:t.nome,estado:t.estado,disponibilidade:isAvailable(t)?(t.fonteRemota?'online':'local'):'em_preparacao'};});}
   };
 })();

@@ -240,3 +240,20 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
   #biblia .biblia-controles-linha { gap: 6px; }
   #biblia .biblia-controles button { min-width: 0; padding: 9px 8px; }
 }
+
+
+/* Parte 15 — leitor com capítulo remoto BPM e layout estável no celular */
+#biblia, #bibliaLeitor, .biblia-leitor, .biblia-texto { box-sizing:border-box; min-width:0; max-width:100%; }
+#bibliaLeitor { width:100%; }
+.biblia-texto { overflow-wrap:anywhere; word-break:normal; }
+.biblia-texto .biblia-par { line-height:1.85; margin:0 0 1em; }
+.biblia-status { overflow-wrap:anywhere; }
+.biblia-creditos { overflow-wrap:anywhere; font-size:.92em; }
+@media (max-width:620px) {
+  #biblia, #bibliaLeitor { width:100%; max-width:100%; margin-left:0; margin-right:0; }
+  #bibliaLeitor { padding:clamp(14px,4vw,22px); }
+  .biblia-controles-linha { flex-wrap:wrap; gap:8px; }
+  .biblia-controles-linha > button, .biblia-controles-linha > select { min-width:0; }
+  .biblia-texto { width:100%; }
+  .biblia-modo-livro { width:100%; }
+}

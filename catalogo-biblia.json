@@ -7,15 +7,15 @@
       "nome": "Bíblia Portuguesa Mundial (BPM)",
       "idioma": "pt",
       "origem": "https://ebible.org/find/details.php?id=porbrbsl",
-      "edicao": "Bíblia Portuguesa Mundial — edição eBible.org; rascunho em revisão. A versão exata dos arquivos será registrada na importação.",
+      "edicao": "Bíblia Portuguesa Mundial (BPM), pacote eBible.org de 19/08/2026; rascunho em revisão. Leitura online por capítulo a partir de espelho técnico fixado.",
       "licenca": {
         "tipo": "Domínio público (declarado pelo eBible.org)",
         "titular": "Bíblia Portuguesa Mundial / eBible.org",
         "url": "https://ebible.org/porbrbsl/copyright.htm",
-        "comprovacao": "A página oficial do eBible.org declara Public Domain e informa que a tradução é um rascunho em revisão. Conferir e registrar a versão exata do pacote no momento da importação."
+        "comprovacao": "A fonte oficial declara domínio público e rascunho em revisão. O pacote USFM usado para gerar o espelho tem SHA-256 52eae6cc562494ac9d68e618e271ff764628dec34017cc2a4f37fd446f3e66bd."
       },
       "estado": "em_preparacao",
-      "numeracaoSalmos": "a_validar",
+      "numeracaoSalmos": "numeracao_fonte_ebible_a_validar",
       "dataValidacao": null,
       "livrosEsperados": [
         {
@@ -457,7 +457,17 @@
           "testament": "Novo Testamento"
         }
       ],
-      "diferencasCapitulos": {}
+      "diferencasCapitulos": {},
+      "estadoLeitura": "disponivel_online",
+      "fonteRemota": true,
+      "remoto": {
+        "base": "https://raw.githubusercontent.com/GuilhermeGms3/scriptorium-os/ff8c1b95abd6a70c3bf83ca3467b22fe660fe745/generated/corpora/biblia-portuguesa-mundial/2026-08-19/books/",
+        "commit": "ff8c1b95abd6a70c3bf83ca3467b22fe660fe745",
+        "editionId": "biblia-portuguesa-mundial-2026-08-19",
+        "sourcePackageSha256": "52eae6cc562494ac9d68e618e271ff764628dec34017cc2a4f37fd446f3e66bd",
+        "observacao": "A disponibilidade da BPM é online; capítulos visitados podem ficar no cache do navegador. O acervo espelhado contém 81 works da fonte e usa os 73 códigos católicos mapeados pelo leitor; acréscimos gregos de Ester e Daniel são usados para os livros canônicos.",
+        "backupBase": "https://cdn.jsdelivr.net/gh/GuilhermeGms3/scriptorium-os@ff8c1b95abd6a70c3bf83ca3467b22fe660fe745/generated/corpora/biblia-portuguesa-mundial/2026-08-19/books/"
+      }
     },
     {
       "id": "matos-soares",
