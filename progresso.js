@@ -3,7 +3,7 @@
 (function(){
   var E=window.OveliaEstudos,R=E.regras,T=E.trilha,KEY='ovelia-jornada-v1';
   var salvoOk=true,estado=carregar();
-  function vazio(){return{v:1,licoes:{},dias:{},meta:R.META_PADRAO}}
+  function vazio(){return{v:1,licoes:{},dias:{},meta:R.META_PADRAO,revisao:{}}}
   function pad(n){return n<10?'0'+n:''+n}
   function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
   function hoje(){return iso(new Date())}
@@ -21,6 +21,7 @@
     if(raw.dias&&typeof raw.dias==='object')Object.keys(raw.dias).forEach(function(k){
       var n=raw.dias[k];if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&typeof n==='number'&&n>0&&n<1000)s.dias[k]=Math.floor(n);
     });
+    if(raw.revisao&&typeof raw.revisao==='object')Object.keys(raw.revisao).forEach(function(k){var q=raw.revisao[k];if(q&&Number.isInteger(+q.licao)&&indice(+q.licao)>=0&&Number.isInteger(+q.questao)){s.revisao[k]={licao:+q.licao,questao:+q.questao,enunciado:String(q.enunciado||'Pergunta para revisar').slice(0,240),tentativas:Math.max(1,+q.tentativas||1),proxima:String(q.proxima||hoje())}}});
     return s;
   }
   function carregar(){
@@ -58,10 +59,7 @@
     return best;
   }
   function unidadesCompletas(){
-    var n=0;T.unidades.forEach(function(u){
-      var tot=u.ate-u.de+1,feitas=T.licoes.filter(function(l){return l.unidade===u.n&&concluida(l.id)}).length;
-      if(feitas===tot)n++;
-    });return n;
+    var n=0;T.unidades.forEach(function(u){var ls=T.licoes.filter(function(l){return l.unidade===u.n});if(ls.length&&ls.every(function(l){return concluida(l.id)}))n++;});return n;
   }
   function contexto(){
     var ls=Object.keys(estado.licoes).map(function(k){return estado.licoes[k]}),x=xp();
@@ -87,11 +85,14 @@
     r.salvo=salvar();return r;
   }
   function setMeta(v){if(v===0||v===1||v===2){estado.meta=v;salvar()}}
+  function registrarErro(id,questao,enunciado){var k=String(+id)+':'+String(+questao),q=estado.revisao[k]||{licao:+id,questao:+questao,enunciado:String(enunciado||'Pergunta para revisar').slice(0,240),tentativas:0};q.tentativas++;q.proxima=iso(new Date(Date.now()+86400000));estado.revisao[k]=q;salvar();return q}
+  function resolverErro(id,questao){var k=String(+id)+':'+String(+questao);if(estado.revisao[k]){delete estado.revisao[k];salvar();return true}return false}
+  function revisoes(){var h=hoje();return Object.keys(estado.revisao).map(function(k){var q=estado.revisao[k];q.chave=k;q.pronta=q.proxima<=h;return q}).sort(function(a,b){return a.proxima.localeCompare(b.proxima)})}
   function reiniciar(){estado=vazio();salvar()}
   E.progresso={
     concluida:concluida,desbloqueada:desbloqueada,estadoDe:estado_,xp:xp,nivelDe:nivelDe,proxima:proxima,semana:semana,
     concluir:concluir,meta:function(){return estado.meta},setMeta:setMeta,atividadesHoje:function(){return estado.dias[hoje()]||0},
-    contexto:contexto,conquistasGanhas:conquistasGanhas,salvoLocalmente:function(){return salvoOk},reiniciar:reiniciar,
+    contexto:contexto,conquistasGanhas:conquistasGanhas,salvoLocalmente:function(){return salvoOk},reiniciar:reiniciar,registrarErro:registrarErro,resolverErro:resolverErro,revisoes:revisoes,
     total:function(){return T.licoes.length},feitas:function(){return Object.keys(estado.licoes).length},
     revisada:function(id){return !!(estado.licoes[id]&&estado.licoes[id].rev)},iso:iso
   };
