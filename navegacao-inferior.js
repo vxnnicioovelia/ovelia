@@ -35,20 +35,20 @@
     if(p==='senior')return [item('home','Início','home'),item('liturgia','Liturgia','liturgia'),item('biblia','Bíblia','biblia'),item('oracoes','Orações','oracoes'),item('mais','Mais','mais')];
     return [item('home','Início','home'),item('liturgia','Liturgia','liturgia'),item('biblia','Bíblia','biblia'),item('oracoes','Oração','oracoes'),item('estudos','Estudos','estudos'),item('mais','Mais','mais')];
   }
-  function currentId(){var id=(location.hash||'#home').slice(1);return id||'home'}
+  function currentId(){var id=(location.hash||'#home').slice(1)||'home';if(!document.querySelector('section.pg[id="'+id.replace(/"/g,'')+'"]'))return 'home';if(profile()==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0)return 'home';return id}
   function render(){
     var id=currentId(),items=destinations();
     inner.style.gridTemplateColumns='repeat('+items.length+', minmax(0, 1fr))';nav.setAttribute('data-perfil',profile());
     inner.innerHTML=items.map(function(d){
-      if(d.id==='mais')return '<button type="button" class="ovelia-bottom-nav__item ovelia-bottom-nav__more" aria-label="Mais opções de navegação" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true">'+icons.mais+'</svg><span>Mais</span></button>';
+      if(d.id==='mais')return '<button type="button" class="ovelia-bottom-nav__item ovelia-bottom-nav__more" aria-label="Mais opções de navegação" aria-controls="menu" aria-expanded="'+(menu.classList.contains('open')?'true':'false')+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+icons.mais+'</svg><span>Mais</span></button>';
       return '<a class="ovelia-bottom-nav__item" href="#'+d.id+'"'+(id===d.id?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+icons[d.icon]+'</svg><span>'+d.label+'</span></a>';
     }).join('');
     var more=inner.querySelector('.ovelia-bottom-nav__more');
     if(more)more.addEventListener('click',function(){
       if(window.OveliaMainMenu){
         var opened=window.OveliaMainMenu.toggle();
-        if(opened){var first=menu.querySelector('a');if(first)first.focus();}
-      }else{menu.classList.toggle('open');var firstFallback=menu.querySelector('a');if(firstFallback)firstFallback.focus();}
+        more.setAttribute('aria-expanded',String(!!opened));if(opened){var first=menu.querySelector('a');if(first)first.focus();}
+      }else{var openedFallback=!menu.classList.contains('open');menu.classList.toggle('open',openedFallback);more.setAttribute('aria-expanded',String(openedFallback));var firstFallback=menu.querySelector('a');if(openedFallback&&firstFallback)firstFallback.focus();}
     });
   }
   window.addEventListener('hashchange',render);

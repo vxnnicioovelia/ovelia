@@ -37,7 +37,44 @@
       box.appendChild(el('p','pd-aviso','O texto desta passagem aparecerá aqui quando houver uma tradução com uso autorizado. Por enquanto, leia-a na sua Bíblia.'));
     }
     var r=el('div','pd-reflexao');r.appendChild(el('span','tag pd','Reflexão da Ovelia · conteúdo original'));r.appendChild(el('p',null,v.reflexao));box.appendChild(r);
+    var bib=window.OVELIA_BIBLIA,available=bib&&typeof bib.traducoes==='function'?bib.traducoes().find(function(t){return t.estado==='disponivel'}):null;
+    if(available){var ref=resolverReferencia(v.ref);if(ref){var link=el('button','btn g pd-abrir-biblia','Ler passagem na Bíblia');link.type='button';link.addEventListener('click',function(){location.hash='#biblia';setTimeout(function(){window.OVELIA_BIBLIA.abrir(ref.book.code,ref.chapter,available.id,ref.verse)},80)});box.appendChild(link)}}
   }
+
+
+  function resolverReferencia(ref){
+    var bib=window.OVELIA_BIBLIA;if(!bib||!Array.isArray(bib.books))return null;
+    var m=/^(.+?)\s+(\d+)(?:\s*[:,]\s*(\d+))?(?:\s*[-–]\s*(\d+))?$/.exec(String(ref||'').trim());
+    if(!m)return null;
+    var norm=function(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().replace(/^sl$/,'salmos').replace(/^salmo$/,'salmos').replace(/^jo$/,'joao').replace(/^joao$/,'joao').replace(/^mt$/,'mateus').replace(/^lc$/,'lucas').replace(/^mc$/,'marcos').replace(/^1 cor$/,'1 corintios').replace(/^2 cor$/,'2 corintios').replace(/^fil$/,'filipenses').replace(/^ef$/,'efesios').replace(/^is$/,'isaias').replace(/^rom$/,'romanos');};
+    var name=norm(m[1]), aliases={'salmos':'salmos','joao':'joao','1 corintios':'1 corintios','2 corintios':'2 corintios','atos':'atos dos apostolos','cantico':'cantico dos canticos','siracida':'eclesiastico (siracida)'};
+    name=aliases[name]||name;
+    var book=bib.books.find(function(b){return norm(b.name)===name || norm(b.name).replace(' (siracida)','')===name || norm(b.name).replace(' dos apostolos','')===name;});
+    if(!book)return null;
+    var chapter=+m[2],verse=m[3]?+m[3]:null;if(chapter<1||chapter>book.chapters|| (verse!==null&&verse<1))return null;
+    return {book:book,chapter:chapter,verse:verse};
+  }
+  function renderContinuar(){
+    var card=$('homeContinuarCard'),items=$('homeContinuarItens');if(!card||!items)return;
+    items.textContent='';var entries=[];
+    if(document.body.classList.contains('perfil-kids')){card.hidden=true;return;}
+    var bib=window.OVELIA_BIBLIA;
+    if(bib&&Array.isArray(bib.books)){
+      var ids=Object.keys(localStorageSafe()).filter(function(k){return /^ovelia-biblia-posicao-v1-/.test(k)}).sort();
+      var pos=null,tid=null;
+      for(var i=ids.length-1;i>=0;i--){try{var v=JSON.parse(localStorageSafe()[ids[i]]);if(v&&typeof v.code==='string'&&Number(v.chapter)>0){pos=v;tid=ids[i].slice('ovelia-biblia-posicao-v1-'.length);break}}catch(e){}}
+      if(pos){var b=bib.books.find(function(x){return x.code===pos.code});if(b&&+pos.chapter<=b.chapters)entries.push({kind:'biblia',title:'Continuar a Bíblia',detail:b.name+' '+pos.chapter,action:function(){location.hash='#biblia';setTimeout(function(){if(window.OVELIA_BIBLIA)window.OVELIA_BIBLIA.abrir(pos.code,+pos.chapter,tid)},80)}})}
+    }
+    var E=window.OveliaEstudos, P=E&&E.progresso;
+    if(P){var st=null;try{st=JSON.parse(localStorage.getItem('ovelia-jornada-v1')||'null')}catch(e){}
+      var latest=0,latestDate='';if(st&&st.licoes)Object.keys(st.licoes).forEach(function(k){var x=st.licoes[k];if(x&&/^\d{4}-\d{2}-\d{2}$/.test(x.data)&&x.data>=latestDate){latestDate=x.data;latest=+k}});
+      var next=P.proxima&&P.proxima();var target=latest|| (next&&next.id);
+      if(target)entries.push({kind:'estudos',title:latest?'Retomar meu estudo':'Começar meus estudos',detail:latest?'Lição '+latest:'Próxima lição '+target,action:function(){location.hash='#estudos';setTimeout(function(){if(window.OveliaJornada&&window.OveliaJornada.abrir)window.OveliaJornada.abrir(target)},80)}});
+    }
+    entries.forEach(function(x){var b=el('button','home-continuar-item');b.type='button';b.appendChild(el('strong',null,x.title));b.appendChild(el('span',null,x.detail));b.appendChild(el('span','home-chevron','›'));b.addEventListener('click',x.action);items.appendChild(b)});
+    card.hidden=!entries.length;
+  }
+  function localStorageSafe(){var o={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);o[k]=localStorage.getItem(k)}}catch(e){}return o}
 
   function renderKids(d,h){
     var g=periodo(h);
@@ -53,6 +90,7 @@
     if(msgs&&msgs.length)setTxt('homeMsg',msgs[indiceDoDia(d)%msgs.length]);
     setTxt('homeData',dataLonga(d));setTxt('palavraDiaData',dataLonga(d));
     renderKids(d,h);
+    renderContinuar();
     var chave=iso(d);var box=$('palavraDiaConteudo');
     if(!box||box.getAttribute('data-data')!==chave)renderPalavra(d);
   }
@@ -61,5 +99,9 @@
   /* Atualiza a saudação e a data sem precisar recarregar a página. */
   setInterval(function(){render()},60000);
   document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
-  window.OveliaInicio={render:render,periodo:periodo,indiceDoDia:indiceDoDia};
+  window.OveliaInicio={render:render,periodo:periodo,indiceDoDia:indiceDoDia,renderContinuar:renderContinuar};
+  window.addEventListener('storage',renderContinuar);
+  window.addEventListener('hashchange',renderContinuar);
+  setTimeout(renderContinuar,500);
+  setTimeout(function(){renderPalavra(new Date())},900);
 })();

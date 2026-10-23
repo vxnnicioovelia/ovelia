@@ -79,3 +79,18 @@ body.perfil-senior .senior-help{margin-top:16px}
 .home-acessos-grade .home-atalho strong,.home-acessos-grade .home-atalho small{overflow-wrap:anywhere}
 @media(min-width:600px){.home-acessos-grade{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.home-acessos-grade *{scroll-behavior:auto!important;transition:none!important}}
+
+/* Parte 8 — retomada compacta e acessível na Home */
+.home-continuar[hidden]{display:none!important}
+.home-continuar{margin-block:1rem}
+.home-continuar-itens{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.65rem}
+.home-continuar-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem .75rem;align-items:center;width:100%;padding:.9rem 1rem;border:1px solid var(--borda,#bca9d8);border-radius:1rem;background:var(--superficie,#fff);color:var(--texto,#292033);text-align:left;font:inherit;cursor:pointer}
+.home-continuar-item strong{font-size:1rem;line-height:1.35}
+.home-continuar-item span:not(.home-chevron){font-size:.9rem;opacity:.88;grid-column:1}
+.home-continuar-item .home-chevron{grid-column:2;grid-row:1/3;font-size:1.7rem}
+.home-continuar-item:focus-visible,.pd-abrir-biblia:focus-visible{outline:3px solid var(--roxo-claro,#c6a8f3);outline-offset:3px}
+.home-continuar-aviso{font-size:.85rem;margin:.65rem 0 0;color:var(--texto-secundario,#655b6e)}
+.tema-escuro .home-continuar-item,body.tema-escuro .home-continuar-item{background:#30243c;color:#fff;border-color:#78628f}
+.tema-escuro .home-continuar-aviso,body.tema-escuro .home-continuar-aviso{color:#eee5f7}
+.pd-abrir-biblia{margin-top:.75rem}
+@media(max-width:390px){.home-continuar-item{padding:.8rem}.home-continuar-itens{grid-template-columns:1fr}}
