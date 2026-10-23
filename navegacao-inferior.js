@@ -35,7 +35,7 @@
     if(p==='senior')return [item('home','Início','home'),item('liturgia','Liturgia','liturgia'),item('biblia','Bíblia','biblia'),item('oracoes','Orações','oracoes'),item('mais','Mais','mais')];
     return [item('home','Início','home'),item('liturgia','Liturgia','liturgia'),item('biblia','Bíblia','biblia'),item('oracoes','Oração','oracoes'),item('estudos','Estudos','estudos'),item('mais','Mais','mais')];
   }
-  function currentId(){var id=(location.hash||'#home').slice(1)||'home';if(!document.querySelector('section.pg[id="'+id.replace(/"/g,'')+'"]'))return 'home';if(profile()==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0)return 'home';return id}
+  function currentId(){var id=(location.hash||'#home').slice(1)||'home';if(profile()==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0)return 'home';if(id==='terco')id='oracoes';if(!document.querySelector('section.pg[id="'+id.replace(/"/g,'')+'"]'))return 'home';return id}
   function render(){
     var id=currentId(),items=destinations();
     inner.style.gridTemplateColumns='repeat('+items.length+', minmax(0, 1fr))';nav.setAttribute('data-perfil',profile());

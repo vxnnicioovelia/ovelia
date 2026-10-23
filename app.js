@@ -18,8 +18,8 @@ var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#pe
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
   if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['instalarOvelia','Instalar Ovelia']];
-  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Orações'],['terco','Rezar o terço'],['biblia','Bíblia'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
-  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Orações'],['terco','Terço'],['estudos','Estudos bíblicos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
 }
 var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
@@ -45,6 +45,7 @@ function applyProfile(){
   if(kidsHome)kidsHome.hidden=profile!=='kids';
   if(seniorHome)seniorHome.hidden=profile!=='senior';
   var prayerTitle=$('#oracoes h2');if(prayerTitle)prayerTitle.textContent=profile==='kids'?'Orações para crianças':'Orações';
+  var rosarioAcesso=$('.oracao-terco-acesso');if(rosarioAcesso)rosarioAcesso.style.display=profile==='kids'?'none':'flex';
   try{if(profile)localStorage.setItem('ovelia-perfil',profile)}catch(e){}
   if(perfilInicio)perfilInicio.hidden=!!profile;
   if(profile==='senior'){
@@ -97,11 +98,13 @@ function show(first){
   var id=location.hash.slice(1);if(!$('section.pg[id="'+id+'"]'))id='home';
   if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
-  $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  var menuActiveId=id==='terco'?'oracoes':id;
+  $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+menuActiveId)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   menu.classList.remove('open');if(menuNav)menuNav.classList.remove('menu-aberto');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
   window.scrollTo(0,0);
-  var t=PAGES.filter(function(p){return p[0]===id})[0];document.title=(id==='home'?(profile==='kids'?'Pequenas Ovelias — histórias e orações':profile==='senior'?'Ovelias Sábias — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(t?t[1]:id)+' — Ovelia');
+  var titleId=id==='terco'?'oracoes':id;
+  var t=PAGES.filter(function(p){return p[0]===titleId})[0];document.title=(id==='home'?(profile==='kids'?'Pequenas Ovelias — histórias e orações':profile==='senior'?'Ovelias Sábias — fé e oração':'Ovelia — Bíblia, Liturgia Diária e orações católicas'):(id==='terco'?'Oração e terço':(t?t[1]:id))+' — Ovelia');
   if(!first){var h=$('#'+id+' h1,#'+id+' h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
 }
 window.addEventListener('hashchange',function(){show(false)});
