@@ -611,3 +611,22 @@ body.perfil-senior .voz-controles .btn{border-radius:18px;min-height:56px;flex:1
 #diagnosticoOvelia dt{font-weight:700;color:var(--texto,#f6efff)}
 #diagnosticoOvelia dd{margin:0;color:var(--texto-secundario,#d7cbe3)}
 @media(max-width:360px){#diagnosticoOvelia dl{grid-template-columns:1fr;gap:2px}#diagnosticoOvelia dd{margin-bottom:8px}}
+
+
+/* Menu compacto da área Oração: três destinos claros, sem duplicar a navegação inferior. */
+.menu-oracao{display:grid;gap:12px;margin:18px 0 24px}
+.menu-oracao-item{display:grid;grid-template-columns:56px minmax(0,1fr) 20px;align-items:center;gap:14px;width:100%;box-sizing:border-box;padding:16px;border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--ink);text-align:left;text-decoration:none;font:inherit;cursor:pointer;min-height:88px}
+.menu-oracao-item strong,.menu-oracao-item small{display:block}
+.menu-oracao-item strong{font-size:1.08rem;line-height:1.3}
+.menu-oracao-item small{margin-top:4px;color:var(--mut);font-size:.9rem;line-height:1.4}
+.menu-oracao-icone{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--soft);color:var(--ink);font-size:1.8rem;font-weight:700}
+.menu-oracao-item:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.menu-oracao-item:hover{border-color:var(--gold)}
+.menu-oracao[hidden],#oracaoListaPainel[hidden]{display:none!important}
+body.perfil-kids .menu-oracao-item{background:var(--branco);color:var(--kidink);border-color:var(--lavanda-100)}
+body.perfil-kids .menu-oracao-item small{color:var(--kidink)}
+body.tema-escuro .menu-oracao-item{background:var(--card);color:var(--ink);border-color:var(--line)}
+body.tema-escuro .menu-oracao-item small{color:var(--mut)}
+@media(max-width:360px){.menu-oracao-item{grid-template-columns:46px minmax(0,1fr) 16px;gap:10px;padding:13px}.menu-oracao-icone{width:44px;height:44px;font-size:1.55rem}.menu-oracao-item small{font-size:.84rem}}
+
+.menu-oracao-item[hidden]{display:none!important}

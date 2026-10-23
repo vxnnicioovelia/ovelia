@@ -17,9 +17,9 @@ if(['kids','adult','senior'].indexOf(profile)<0)profile='';
 var perfilInicio=$('#perfilInicio'),perfilBtn=$('#perfilBtn'),perfilAtual=$('#perfilAtual');
 var kidsHome=$('#kidsHome'),seniorHome=$('#seniorHome');
 function pagesForProfile(){
-  if(profile==='kids')return [['home','Início'],['favoritos','Favoritos infantis'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['instalarOvelia','Instalar Ovelia']];
-  if(profile==='senior')return [['home','Início'],['favoritos','Favoritos'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
-  return [['home','Início'],['favoritos','Favoritos'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  if(profile==='kids')return [['home','Início'],['infantil','Histórias e quiz'],['criatividade','Criatividade'],['oracoes','Orações infantis'],['favoritos','Favoritos infantis'],['instalarOvelia','Instalar Ovelia']];
+  if(profile==='senior')return [['home','Início'],['liturgia','Liturgia diária'],['oracoes','Oração e terço'],['biblia','Bíblia'],['favoritos','Favoritos'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
+  return [['home','Início'],['liturgia','Liturgia'],['biblia','Bíblia'],['oracoes','Oração e terço'],['estudos','Estudos bíblicos'],['favoritos','Favoritos'],['infantil','Área infantil'],['instalarOvelia','Instalar Ovelia'],['sobre','Sobre']];
 }
 var PAGES=pagesForProfile(),menu=$('#menu'),menuBtn=$('#menuBtn');
 function renderMenu(){PAGES=pagesForProfile();menu.innerHTML=PAGES.map(function(p){return '<li><a href="#'+p[0]+'">'+p[1]+'</a></li>'}).join('')}
@@ -45,7 +45,7 @@ function applyProfile(){
   if(kidsHome)kidsHome.hidden=profile!=='kids';
   if(seniorHome)seniorHome.hidden=profile!=='senior';
   var prayerTitle=$('#oracoes h2');if(prayerTitle)prayerTitle.textContent=profile==='kids'?'Orações para crianças':'Orações';
-  var rosarioAcesso=$('#rosarioAcesso');if(rosarioAcesso)rosarioAcesso.hidden=profile==='kids';
+  $$('[data-adulto-oracao]').forEach(function(el){el.hidden=profile==='kids'});
   try{if(profile)localStorage.setItem('ovelia-perfil',profile)}catch(e){}
   if(perfilInicio)perfilInicio.hidden=!!profile;
   if(profile==='senior'){
@@ -98,6 +98,18 @@ function show(first){
   var id=location.hash.slice(1);if(!$('section.pg[id="'+id+'"]'))id='home';
   if(profile==='kids'&&['liturgia','terco','estudos','biblia','sobre'].indexOf(id)>=0){id='home';if(location.hash!=='#home')history.replaceState(null,'',location.pathname+location.search+'#home');}
   $$('section.pg').forEach(function(s){s.classList.toggle('on',s.id===id)});
+  if(id==='oracoes'){
+    var mode='menu';try{mode=sessionStorage.getItem('ovelia-oracao-submenu')||'menu'}catch(e){}
+    var menuOr=$('#menuOracao'),listaOr=$('#oracaoListaPainel');
+    if(menuOr)menuOr.hidden=mode==='lista';if(listaOr)listaOr.hidden=mode!=='lista';
+  }
+  if(id==='terco'){
+    var modoTerco='terco';try{modoTerco=sessionStorage.getItem('ovelia-terco-modo')||'terco'}catch(e){}
+    var tituloTerco=$('#terco h2'),introTerco=$('#terco .side p'),subTerco=$('#terco .card h3');
+    if(tituloTerco)tituloTerco.textContent=modoTerco==='rosario'?'Santo Rosário':'Terços';
+    if(introTerco)introTerco.textContent=modoTerco==='rosario'?'Acompanhe o Santo Rosário passo a passo, contemplando os mistérios da vida de Jesus e de Maria. Escolha os mistérios e avance no seu ritmo.':'Escolha o conjunto de mistérios e acompanhe a oração passo a passo. Em cada dezena, medite um mistério da vida de Jesus e de Maria.';
+    if(subTerco)subTerco.textContent=modoTerco==='rosario'?'Acompanhar o Santo Rosário':'Rezar o terço, passo a passo';
+  }
   $$('#menu a').forEach(function(a){if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   menu.classList.remove('open');if(menuNav)menuNav.classList.remove('menu-aberto');if(menuBtn)menuBtn.setAttribute('aria-expanded','false');
   if(typeof Voz!=='undefined')Voz.parar();
@@ -265,6 +277,13 @@ var ORIG={
   criancaMedo:{n:'Oração da criança quando sentir medo ou tristeza',t:'Jesus, estou com medo ou com o coração triste.\nFica perto de mim e ajuda-me a conversar com um adulto em quem confio.\nDá-me coragem, consolo e esperança. Amém.'}
 };
 for(var k in ORIG)P[k]=ORIG[k];
+var menuOracao=$('#menuOracao'),listaOracaoPainel=$('#oracaoListaPainel');
+function abrirListaOracoes(){try{sessionStorage.setItem('ovelia-oracao-submenu','lista')}catch(e){}if(menuOracao)menuOracao.hidden=true;if(listaOracaoPainel)listaOracaoPainel.hidden=false;var h=$('#oracaoListaPainel h3');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+function voltarMenuOracoes(){try{sessionStorage.setItem('ovelia-oracao-submenu','menu')}catch(e){}if(menuOracao)menuOracao.hidden=false;if(listaOracaoPainel)listaOracaoPainel.hidden=true;var h=$('#oracoes h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+var abrirOrBtn=$('[data-oracao-abrir="lista"]');if(abrirOrBtn)abrirOrBtn.addEventListener('click',abrirListaOracoes);
+var voltarOrBtn=$('#voltarMenuOracao');if(voltarOrBtn)voltarOrBtn.addEventListener('click',voltarMenuOracoes);
+$$('[data-oracao-destino]').forEach(function(a){a.addEventListener('click',function(){var modo=a.getAttribute('data-oracao-destino');try{sessionStorage.setItem('ovelia-terco-modo',modo);sessionStorage.setItem('ovelia-oracao-submenu','menu')}catch(e){}})});
+$$('a[href="#oracoes"]').forEach(function(a){a.addEventListener('click',function(){try{sessionStorage.setItem('ovelia-oracao-submenu','menu')}catch(e){}})});
 var lo=$('#listaOracoes');
 lo.innerHTML=CATS.map(function(c){return '<div class="categoria-oracao '+(c.o==='kids'?'kids-cat':c.o==='original'?'original-cat':'trad-cat')+'"><h3>'+esc(c.t)+'</h3>'+(c.o==='original'||c.o==='kids'?'<p class="aviso"><b>'+(c.o==='kids'?'Orações infantis originais da Ovelia.':'Composições originais da Ovelia.')+'</b> Não são textos oficiais da Igreja.</p>':'')+c.ids.map(function(id){var p=P[id];
   return '<details id="or-'+id+'"><summary>'+esc(p.n)+'</summary><div class="oracao" id="t-'+id+'">'+esc(p.t)+'</div><button class="btn g" type="button" data-copiar="'+id+'">Copiar texto</button> <span class="tag '+(c.o==='original'||c.o==='kids'?'pd':'ok')+'">'+(c.o==='original'||c.o==='kids'?'Original da Ovelia':'Oração tradicional')+'</span><span class="sr" role="status" aria-live="polite" style="margin-left:8px"></span></details>'}).join('')+'</div>'}).join('');

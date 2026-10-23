@@ -23,11 +23,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261022-fix3">
+<link rel="stylesheet" href="estilo.css?v=20261023-oracao-menu1">
 <link rel="stylesheet" href="biblia.css?v=20261023-bookmode1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
-<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
+<link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">\n<link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
 <link rel="stylesheet" href="inicio.css?v=20261023-parte8">
 <link rel="stylesheet" href="estudos.css?v=20261023-filtromodulos1">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
@@ -194,21 +193,31 @@
 
 <!-- ORAÇÕES -->
 <section class="pg" id="oracoes">
-<h2>Oração e terço</h2>
-<p>Escolha uma oração tradicional ou continue uma devoção guiada.</p>
-<div class="card" id="rosarioAcesso" data-adulto-only>
-  <h3>🌹 Santo Rosário</h3>
-  <p>Reze o terço passo a passo, acompanhe os mistérios e avance no seu ritmo.</p>
-  <a class="btn" href="#terco" id="abrirRosarioBtn">Iniciar Rosário guiado</a>
+<h2>Oração</h2>
+<p>Escolha o que deseja rezar. Você pode voltar a este menu a qualquer momento.</p>
+<div id="menuOracao" class="menu-oracao" aria-label="Opções de oração">
+  <button class="menu-oracao-item" type="button" data-oracao-abrir="lista">
+    <span class="menu-oracao-icone" aria-hidden="true">♡</span><span><strong>Orações</strong><small>Orações tradicionais e para diferentes momentos</small></span><span aria-hidden="true">›</span>
+  </button>
+  <a class="menu-oracao-item" href="#terco" data-adulto-oracao data-oracao-destino="terco">
+    <span class="menu-oracao-icone" aria-hidden="true">◉</span><span><strong>Terços</strong><small>Escolha os mistérios e acompanhe cada etapa</small></span><span aria-hidden="true">›</span>
+  </a>
+  <a class="menu-oracao-item" href="#terco" data-adulto-oracao data-oracao-destino="rosario">
+    <span class="menu-oracao-icone" aria-hidden="true">✦</span><span><strong>Santo Rosário</strong><small>Reze os mistérios de Jesus e Maria, passo a passo</small></span><span aria-hidden="true">›</span>
+  </a>
 </div>
-<h3>Orações</h3>
-<p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
-<div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
-<div id="listaOracoes"></div>
+<div id="oracaoListaPainel" hidden>
+  <button class="btn g" id="voltarMenuOracao" type="button">← Voltar às opções de oração</button>
+  <h3>Orações</h3>
+  <p>Toque no nome para abrir a oração. O botão “Copiar texto” copia a oração para você colar onde quiser.</p>
+  <div class="aviso">Os textos tradicionais seguem as versões mais usadas no Brasil e ainda passarão por conferência final com fonte oficial. As composições originais da Ovelia estão sempre identificadas como tais.</div>
+  <div id="listaOracoes"></div>
+</div>
 </section>
 
 <!-- TERÇO -->
 <section class="pg" id="terco">
+<p><a class="btn g" href="#oracoes">← Voltar ao menu de oração</a></p>
 <div class="side" style="margin-bottom:12px"><img src="ovelha.png" width="486" height="640" alt="Ovelinha sentada, mascote do Ovelia"><div><h2>Terço</h2><p>O terço tem cinco dezenas. Em cada uma medita-se um mistério da vida de Jesus e de Maria, rezando 1 Pai-Nosso, 10 Ave-Marias e 1 Glória.</p></div></div>
 <div class="card"><h3>Rezar o terço, passo a passo</h3>
 <label for="selMist" style="font-weight:700">Mistérios</label><br>
@@ -401,10 +410,9 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261023-parte11"></script>
+<script src="app.js?v=20261023-oracao-menu1"></script>
 <script src="navegacao-inferior.js?v=20261023-parte8" defer></script>
-<script src="biblia.js?v=20261023-bookmode1"></script>
-<script src="favoritos.js?v=20261023-parte10"></script>
+<script src="biblia.js?v=20261023-bookmode1"></script>\n<script src="favoritos.js?v=20261023-parte10"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261023-parte8"></script>
 <script src="regras.js?v=20261019-estudos4"></script>
