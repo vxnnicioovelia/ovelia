@@ -87,7 +87,8 @@
   var prev2 = $('bibliaAnterior2'), next2 = $('bibliaProximo2'), nav2 = $('bibliaNavBaixo');
   var status = $('bibliaStatus'), bookList = $('livros'), panel = $('bibliaLeitor');
   if (!texto || !chapterSelect || !panel) return;
-  var CATALOG_URL = BASE + 'catalogo.json';
+  // O catálogo editorial canônico fica na raiz do site; os textos seguem em dados/biblia/<id>/.
+  var CATALOG_URL = 'catalogo-biblia.json';
   var selected = null, chapter = 1, translation = null, translations = [], catalogReady = false;
   var bookCache = Object.create(null), indexCache = Object.create(null), requestId = 0;
   var FONT_KEY = 'ovelia-biblia-leitura-v1';

@@ -21,8 +21,9 @@ for (const [label, value] of [['origem',m.origem || m.source],['edição',m.edic
 }
 if (m.id && m.id !== id) die('metadata.id não corresponde ao id selecionado.');
 if (!Array.isArray(source.livros)) die('Entrada deve conter livros[].');
-const catalogPath = path.join(root,'dados/biblia/catalogo.json');
-if (!fs.existsSync(catalogPath)) die('Catálogo ausente em dados/biblia/catalogo.json.');
+const catalogCandidates = [path.join(root,'catalogo-biblia.json'), path.join(root,'dados/biblia/catalogo.json')];
+const catalogPath = catalogCandidates.find(p => fs.existsSync(p));
+if (!catalogPath) die('Catálogo ausente. Esperado catalogo-biblia.json na raiz ou dados/biblia/catalogo.json.');
 const catalog = JSON.parse(fs.readFileSync(catalogPath,'utf8'));
 const tr = (catalog.traducoes || []).find(x=>x.id===id);
 if (!tr) die('Tradução não cadastrada no catálogo: '+id);
@@ -57,13 +58,15 @@ fs.writeFileSync(path.join(outDir,'indice.json'),JSON.stringify({schemaVersion:1
 tr.origem=sourceMeta.origem; tr.edicao=sourceMeta.edicao; tr.idioma=sourceMeta.idioma; tr.licenca=sourceMeta.licenca; tr.estado='em_preparacao'; tr.dataValidacao=null;
 fs.writeFileSync(catalogPath,JSON.stringify(catalog,null,2)+'\n');
 const env={...process.env,OVELIA_CONFIRMAR_LICENCA:confirm?'sim':'nao'};
-const result=spawnSync(process.execPath,[path.join(root,'tools/validar-biblia.mjs'),id,root],{stdio:'inherit',env});
+const validatorPath=path.join(root,'validar-biblia.mjs');
+if(!fs.existsSync(validatorPath))die('Validador principal ausente: validar-biblia.mjs.');
+const result=spawnSync(process.execPath,[validatorPath,id,root],{stdio:'inherit',env});
 if (result.status !== 0) die('Validação reprovada. Os arquivos importados ficam em preparação e não podem ser publicados como tradução disponível.');
 if (confirm) {
  // O workflow executa novamente o validador após definir disponível. Só promover após validação completa.
  tr.estado='disponivel'; tr.dataValidacao=new Date().toISOString().slice(0,10);
  fs.writeFileSync(catalogPath,JSON.stringify(catalog,null,2)+'\n');
- const final=spawnSync(process.execPath,[path.join(root,'tools/validar-biblia.mjs'),id,root],{stdio:'inherit',env});
+ const final=spawnSync(process.execPath,[validatorPath,id,root],{stdio:'inherit',env});
  if(final.status!==0){tr.estado='em_preparacao';tr.dataValidacao=null;fs.writeFileSync(catalogPath,JSON.stringify(catalog,null,2)+'\n');die('Validação final falhou; tradução mantida em_preparacao.');}
 }
 console.log(confirm?'Importação validada com confirmação do proprietário.':'Importação estrutural; tradução permanece em_preparacao.');

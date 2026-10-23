@@ -92,7 +92,7 @@
     c.appendChild(filtros);
     /* Os filtros já representam os módulos. Não repetir os mesmos módulos em cartões separados. */
     T.unidades.forEach(function(u){
-      var ls=T.licoes.filter(function(l){return l.unidade===u.n}),tot=u.ate-u.de+1,fe=ls.filter(function(l){return P.concluida(l.id)}).length;
+      var ls=T.licoes.filter(function(l){return l.unidade===u.n}),tot=ls.length,fe=ls.filter(function(l){return P.concluida(l.id)}).length;
       var s=h('div','jr-unidade'+(ls.length?'':' is-prep'),null,{'data-categoria':'Módulo '+u.n});
       var hd=h('div','jr-unidade-hd');hd.appendChild(h('h4',null,'Módulo '+u.n+' — '+u.titulo));
       hd.appendChild(h('p','jr-unidade-info',ls.length?fe+' de '+ls.length+' lições concluídas':'Conteúdo em preparação'));

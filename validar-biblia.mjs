@@ -5,12 +5,13 @@ import path from 'node:path';
 
 const [id, rootArg] = process.argv.slice(2);
 const root = path.resolve(rootArg || '.');
-const catalogPath = path.join(root, 'dados/biblia/catalogo.json');
+const catalogCandidates = [path.join(root, 'catalogo-biblia.json'), path.join(root, 'dados/biblia/catalogo.json')];
+const catalogPath = catalogCandidates.find(p => fs.existsSync(p));
 const errors = [], warnings = [];
 const fail = m => errors.push(m);
 const readJson = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 if (!id) { console.error('Uso: node validar-biblia.mjs <id> [raiz-do-repositorio]'); process.exit(2); }
-if (!fs.existsSync(catalogPath)) { console.error('ERRO: catálogo ausente: ' + catalogPath); process.exit(1); }
+if (!catalogPath) { console.error('ERRO: catálogo ausente. Esperado catalogo-biblia.json na raiz ou dados/biblia/catalogo.json.'); process.exit(1); }
 let catalog;
 try { catalog = readJson(catalogPath); } catch(e) { console.error('ERRO: catálogo JSON inválido: ' + e.message); process.exit(1); }
 const tr = (catalog.traducoes || []).find(x => x.id === id);

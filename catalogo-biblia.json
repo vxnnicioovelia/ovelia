@@ -6,13 +6,13 @@
       "id": "bpm",
       "nome": "Bíblia Portuguesa Mundial (BPM)",
       "idioma": "pt",
-      "origem": "",
-      "edicao": "",
+      "origem": "https://ebible.org/find/details.php?id=porbrbsl",
+      "edicao": "Bíblia Portuguesa Mundial — edição eBible.org; rascunho em revisão. A versão exata dos arquivos será registrada na importação.",
       "licenca": {
-        "tipo": "",
-        "titular": "",
-        "url": "",
-        "comprovacao": ""
+        "tipo": "Domínio público (declarado pelo eBible.org)",
+        "titular": "Bíblia Portuguesa Mundial / eBible.org",
+        "url": "https://ebible.org/porbrbsl/copyright.htm",
+        "comprovacao": "A página oficial do eBible.org declara Public Domain e informa que a tradução é um rascunho em revisão. Conferir e registrar a versão exata do pacote no momento da importação."
       },
       "estado": "em_preparacao",
       "numeracaoSalmos": "a_validar",
