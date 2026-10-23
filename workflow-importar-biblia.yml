@@ -1,0 +1,73 @@
+name: Importar e validar tradução bíblica
+on:
+  workflow_dispatch:
+    inputs:
+      traducao_id:
+        description: "ID do catálogo: bpm, matos-soares ou figueiredo"
+        required: true
+        type: choice
+        options:
+          - bpm
+          - matos-soares
+          - figueiredo
+      arquivo_entrada:
+        description: "Nome de um arquivo JSON de fonte colocado na raiz do repositório"
+        required: true
+        type: string
+      confirmar_licenca:
+        description: "Você confirmou nesta conversa a licença desta edição?"
+        required: true
+        type: choice
+        options:
+          - nao
+          - sim
+permissions:
+  contents: write
+jobs:
+  importar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Preparar catálogo
+        run: |
+          mkdir -p dados/biblia tools
+          if [ ! -f dados/biblia/catalogo.json ]; then
+            test -f catalogo-biblia.json || { echo "Falta catalogo-biblia.json na raiz"; exit 1; }
+            cp catalogo-biblia.json dados/biblia/catalogo.json
+          fi
+      - name: Validar arquivo de entrada
+        env:
+          INPUT_FILE: ${{ inputs.arquivo_entrada }}
+        run: |
+          case "$INPUT_FILE" in
+            ""|*..*|/*) echo "Nome de arquivo inválido"; exit 1 ;;
+            *.json) test -f "$INPUT_FILE" ;;
+            *) echo "Somente JSON é aceito nesta versão"; exit 1 ;;
+          esac
+      - name: Importar e validar
+        env:
+          TRANSLATION_ID: ${{ inputs.traducao_id }}
+          CONFIRM_LICENSE: ${{ inputs.confirmar_licenca }}
+          INPUT_FILE: ${{ inputs.arquivo_entrada }}
+        run: node tools/importar-biblia.mjs "$INPUT_FILE" "$TRANSLATION_ID" "$CONFIRM_LICENSE" .
+      - name: Conferir árvore e preparar commit
+        run: |
+          node --check tools/importar-biblia.mjs
+          node --check tools/validar-biblia.mjs
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git add dados/biblia
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração em dados/biblia para gravar."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Importa dados bíblicos validados"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -1,0 +1,59 @@
+OVELIA — PARTE 3: importação e validação por tradução
+
+ARQUIVOS DESTE PACOTE (todos soltos):
+- catalogo-biblia.json -> colocar em dados/biblia/catalogo.json
+- mapa-passagens.json -> colocar na raiz (estrutura sem equivalências presumidas)
+- metadados-biblia.json -> colocar na raiz (registro inicial vazio)
+- validar-biblia.mjs -> colocar em tools/validar-biblia.mjs
+- importar-biblia.mjs -> colocar em tools/importar-biblia.mjs
+- workflow-importar-biblia.yml -> colocar em .github/workflows/importar-biblia.yml
+
+COMO MOVER PELO IPHONE (para cada arquivo destinado a pasta):
+1. No GitHub, abra o arquivo enviado e toque no lápis (Edit).
+2. No campo do nome do arquivo, apague o nome atual e digite o caminho completo indicado acima.
+3. Salve a alteração. Não crie as pastas manualmente; o GitHub aceita o caminho no nome.
+
+FORMATO DE ENTRADA ACEITO NESTA VERSÃO: JSON UTF-8, com:
+{
+  "metadata": {
+    "id": "bpm",
+    "idioma": "pt",
+    "origem": "fonte identificável",
+    "edicao": "edição identificável",
+    "licenca": {
+      "tipo": "licença declarada pela fonte",
+      "titular": "titular/autor informado",
+      "url": "URL de referência, se houver",
+      "comprovacao": "referência documental da permissão ou do domínio público alegado"
+    }
+  },
+  "livros": [{
+    "code": "GEN",
+    "nome": "nome fornecido pela fonte",
+    "idOriginal": "identificador original opcional",
+    "particularidades": {},
+    "capitulos": [{
+      "numero": 1,
+      "versiculos": [{"numero": 1, "texto": "texto fornecido no arquivo de fonte", "idOriginal": "opcional"}]
+    }]
+  }]
+}
+Não há texto bíblico de exemplo neste pacote. O formato USFM NÃO é implementado nesta versão; não tente importar .usfm.
+
+5 PASSOS QUANDO TIVER O ARQUIVO DE FONTE:
+1. Confirme aqui na conversa a fonte, edição e licença da tradução; não selecione “sim” sem essa confirmação.
+2. Coloque o arquivo JSON de entrada na raiz do repositório e preencha metadados reais, sem texto inventado.
+3. Envie os scripts para tools/ e o workflow para .github/workflows/ usando os caminhos acima.
+4. No GitHub, abra Actions > Importar e validar tradução bíblica > Run workflow; escolha o ID, o nome do JSON e “não” até você confirmar a licença.
+5. Leia o relatório. Só selecione “sim” depois de confirmar a licença nesta conversa; uma base incompleta ou metadados ausentes devem ser recusados.
+
+ESTADOS:
+- em_preparacao: padrão para todas as traduções.
+- disponivel: somente após base estruturalmente completa, metadados e confirmação explícita.
+- bloqueada: manter quando a fonte/licença não estiver liberada ou houver impedimento.
+
+LIMITES IMPORTANTES:
+- Nenhuma tradução é marcada disponível por este pacote.
+- O mapa de passagens começa vazio de propósito; sem equivalência confirmada, comparações devem avisar que não podem alinhar.
+- O validador confere 73 livros, capítulos esperados, duplicações, lacunas internas, textos vazios e metadados. A quantidade esperada de capítulos pode ser ajustada em diferencasCapitulos por código, quando documentada no catálogo. Ele não prova autenticidade textual nem concede licença.
+- O workflow é manual e NÃO foi executado. Ele grava apenas dados/biblia/ e usa pull --rebase antes do push.

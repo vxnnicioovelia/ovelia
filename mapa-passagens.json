@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "descricao": "Mapa explícito de alinhamento entre edições. Estrutura inicial sem equivalências presumidas; comparações devem avisar quando não houver mapeamento confirmado.",
+  "numeracaoSalmos": {
+    "default": "sem_mapeamento",
+    "regras": []
+  },
+  "passagens": [],
+  "baruc": {
+    "BAR": {
+      "capitulo": 6,
+      "tituloAlternativo": "Carta de Jeremias",
+      "equivalenciasConfirmadas": []
+    }
+  }
+}
