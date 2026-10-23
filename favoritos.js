@@ -30,7 +30,7 @@ window.OVELIA_FAVORITOS={
  adicionar:function(item){return add(item)},remover:remove,listar:function(){return allFav().filter(visible)},
  registrarLeitura:record, listarHistorico:function(){return parse(HISTORY_KEY,[]).filter(function(x){return !kidOnly()||x.tipo==='historia'||x.infantil===true}).slice(0,30)}
 };
-function labelType(t){return({biblia:'Versículo',oracao:'Oração',licao:'Lição',historia:'História infantil',liturgia:'Liturgia',leitura:'Leitura'})[t]||'Conteúdo'}
+function labelType(t){return({biblia:'Versículo',oracao:'Oração',licao:'Lição',historia:'História infantil',liturgia:'Liturgia',leitura:'Leitura','pao-diario':'Pão Diário'})[t]||'Conteúdo'}
 function render(){
  var list=$('favoritosLista'),hist=$('historicoLeituraLista'),filter=$('favoritosFiltro');if(!list||!hist)return;
  var type=filter?filter.value:'todos',a=allFav().filter(visible).filter(function(x){return type==='todos'||x.tipo===type});
