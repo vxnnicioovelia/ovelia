@@ -23,9 +23,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261024-kindle2">
-<link rel="stylesheet" href="biblia.css?v=20261024-kindle2">
-<link rel="stylesheet" href="biblia-leitor.css?v=20261024-kindle2">
+<link rel="stylesheet" href="estilo.css?v=20261023-contraste2">
+<link rel="stylesheet" href="biblia.css?v=20261024-menu-minimal1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
 <link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
@@ -148,71 +147,19 @@
 
 <!-- BÍBLIA -->
 <section class="pg" id="biblia">
-
-<section class="biblia-leitor-ux" id="bibliaLeitorUX" aria-label="Leitor bíblico imersivo" hidden>
-  <div class="bl-toolbar">
-    <button type="button" class="bl-icon-btn" id="blSair" aria-label="Sair do leitor">‹</button>
-    <button type="button" class="bl-book-button" id="blAbrirLivros" aria-label="Selecionar livro e capítulo">
-      <strong id="blLivroCapitulo">Abrindo a Bíblia…</strong>
-      <small id="blLocalizacao">Bíblia Portuguesa Mundial</small>
-    </button>
-    <button type="button" class="bl-icon-btn" id="blAjustesBtn" aria-label="Configurações de leitura" aria-expanded="false">Aa</button>
-    <button type="button" class="bl-icon-btn" id="blImersivoBtn" aria-label="Alternar controles de leitura" aria-pressed="false">⛶</button>
-  </div>
-  <div class="bl-reader-progress" aria-hidden="true"><span id="blProgresso"></span></div>
-  <div class="bl-reading-scroll" id="blRolagem" tabindex="0" aria-label="Texto bíblico; role verticalmente para ler">
-    <article class="bl-reading-content" id="blConteudo" aria-live="polite"><p class="bl-reader-empty">Carregando texto bíblico…</p></article>
-  </div>
-  <div class="bl-bottom-toolbar" id="blBarraInferior">
-    <button type="button" id="blAnterior">‹ Anterior</button>
-    <span class="bl-reader-location" id="blCapituloRodape">Capítulo 1</span>
-    <button type="button" id="blProximo">Próximo ›</button>
-  </div>
-  <div class="bl-read-settings" id="blAjustes" hidden>
-    <strong>Leitura</strong>
-    <label for="blFonte">Tamanho do texto</label>
-    <select id="blFonte">
-      <option value="1.05rem">Pequeno</option>
-      <option value="1.2rem" selected>Normal</option>
-      <option value="1.4rem">Grande</option>
-      <option value="1.65rem">Muito grande</option>
-    </select>
-    <label for="blEspaco">Espaçamento</label>
-    <select id="blEspaco">
-      <option value="1.65">Compacto</option>
-      <option value="1.92" selected>Normal</option>
-      <option value="2.15">Amplo</option>
-      <option value="2.4">Extra</option>
-    </select>
-    <label for="blTema">Tema de leitura</label>
-    <select id="blTema">
-      <option value="claro">Claro</option>
-      <option value="escuro">Escuro</option>
-      <option value="quente">Quente</option>
-    </select>
-    <button type="button" class="bl-icon-btn" id="blFecharAjustes" style="width:100%;border-radius:12px;margin-top:12px">Concluir</button>
-  </div>
-  <div class="bl-book-sheet" id="blSeletor" hidden>
-    <div class="bl-book-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="blTituloSeletor">
-      <div class="bl-sheet-head"><strong id="blTituloSeletor">Escolher livro</strong><button type="button" class="bl-icon-btn" id="blFecharSeletor" aria-label="Fechar seletor">×</button></div>
-      <input class="bl-book-search" id="blBuscaLivro" type="search" placeholder="Buscar livro bíblico" autocomplete="off">
-      <div id="blListaLivros"></div>
-      <div id="blSeletorCapitulos" hidden><div class="bl-testament-label" id="blTituloCapitulos">Escolha o capítulo</div><div class="bl-chapters-grid" id="blListaCapitulos"></div></div>
-    </div>
-  </div>
-</section>
-
 <h2>Bíblia</h2>
-<div class="biblia-aviso aviso">
-  <strong>Leitor bíblico · autorização editorial pendente</strong>
-  <p>A Ovelia mantém a navegação pelos 73 livros, capítulos e referências. A exibição dos textos integrais aguarda autorização editorial. Não usamos outra tradução para preencher a interface e não declaramos a Bíblia completa enquanto a edição licenciada não estiver disponível e validada.</p>
+<div class="biblia-licenca-nota" role="note">
+  <strong>Bíblia Portuguesa Mundial (BPM) · domínio público</strong>
+  <span>Fonte: eBible.org · edição técnica usada nesta leitura: 19/08/2026 · tradução em revisão.
+    <a href="https://ebible.org/porbrbsl/copyright.htm" target="_blank" rel="noopener noreferrer">Ver fonte e licença ↗</a>
+  </span>
 </div>
 <div id="bibliaLeitor" class="biblia-leitor card" aria-live="polite">
   <div class="biblia-leitor-topo">
     <div>
       <span class="tag pd">Leitura bíblica</span>
-      <h3 id="bibliaTituloLivro">Escolha um livro</h3>
-      <p id="bibliaSubtitulo">Selecione um dos 73 livros abaixo para começar.</p>
+      <h3 id="bibliaTituloLivro">Carregando a Bíblia…</h3>
+      <p id="bibliaSubtitulo">Escolha um livro e leia o capítulo.</p>
     </div>
   </div>
   <div class="biblia-controles">
@@ -225,27 +172,40 @@
       <button class="btn g" type="button" id="bibliaProximo" disabled>Próximo →</button>
     </div>
   </div>
-  <div id="bibliaStatus" class="biblia-status" role="status" aria-live="polite">A leitura será exibida aqui após selecionar um livro.</div>
+  <div id="bibliaStatus" class="biblia-status" role="status" aria-live="polite">Carregando o capítulo bíblico…</div>
   <div id="bibliaTexto" class="biblia-texto"></div>
   <div class="biblia-controles-linha biblia-nav-baixo" id="bibliaNavBaixo" hidden>
     <button class="btn g" type="button" id="bibliaAnterior2" disabled>← Anterior</button>
     <button class="btn g" type="button" id="bibliaProximo2" disabled>Próximo →</button>
   </div>
   <div class="row biblia-acoes">
-    <button class="btn g" id="bibliaEscolherLivro" type="button">Voltar à lista de livros</button>
+    <button class="btn g" id="bibliaEscolherLivro" type="button" aria-controls="bibliaMenuLivros" aria-expanded="false">Escolher livro</button>
   </div>
-  <p class="biblia-creditos">A estrutura dos 73 livros está disponível para navegação. A exibição dos textos integrais está temporariamente pendente de autorização editorial. A Ovelia não substitui o texto por outra tradução nem apresenta referências como se fossem versículos completos.</p>
+  <p class="biblia-creditos">Tradução: Bíblia Portuguesa Mundial (BPM), disponibilizada pelo eBible.org como domínio público. A edição técnica usada pela Ovelia é de 19/08/2026 e está identificada como rascunho em revisão. <a href="https://ebible.org/porbrbsl/copyright.htm" target="_blank" rel="noopener noreferrer">Fonte e licença ↗</a></p>
 </div>
-<div class="aviso"><span class="tag">Como usar</span><p>Escolha um livro na lista abaixo e toque nele para abrir a leitura. Use os botões Anterior e Próximo, ou escolha o capítulo na lista.</p></div>
-<div class="card"><h3>Como ler a Bíblia (para iniciantes)</h3>
-<p>1. Comece por um Evangelho, por exemplo Marcos ou Lucas, e leia um trecho curto por dia.</p>
-<p>2. Os livros têm capítulos e versículos. Em “Lc 10,25-37”, Lc é Lucas, 10 é o capítulo e 25-37 são os versículos.</p>
-<p>3. Antes de ler, faça uma breve oração pedindo luz ao Espírito Santo. Depois, releia e pergunte: o que este texto diz? O que ele me pede?</p></div>
-<div class="card"><h3>Os 73 livros da Bíblia católica</h3>
-<label for="buscaLivro" style="font-weight:700">Buscar livro pelo nome</label>
-<input type="search" id="buscaLivro" placeholder="Ex.: Lucas" autocomplete="off">
-<p id="livrosN" role="status" aria-live="polite" style="color:var(--mut)"></p>
-<div id="livros"></div></div>
+
+<div id="bibliaMenuLivros" class="biblia-menu-livros" hidden>
+  <div class="biblia-menu-livros-topo">
+    <div>
+      <h3>Escolher livro</h3>
+      <p>Selecione um livro. Ele abre no capítulo 1; depois você pode escolher outro capítulo.</p>
+    </div>
+    <button class="btn g" type="button" id="bibliaFecharMenuLivros">Fechar</button>
+  </div>
+  <label for="buscaLivro">Buscar livro</label>
+  <input type="search" id="buscaLivro" placeholder="Ex.: Marcos, Salmos, Gênesis" autocomplete="off">
+  <p id="livrosN" role="status" aria-live="polite"></p>
+  <div id="livros"></div>
+</div>
+
+<details class="biblia-como-ler">
+  <summary>Como começar a ler a Bíblia</summary>
+  <div>
+    <p>Você pode começar por um Evangelho, como Marcos ou Lucas, e ler um trecho por dia.</p>
+    <p>Em uma referência como “Lc 10,25-37”, “Lc” é Lucas, “10” é o capítulo e “25-37” são os versículos.</p>
+    <p>Antes de ler, faça uma breve oração. Depois, releia e pergunte: o que este texto diz? O que ele me pede?</p>
+  </div>
+</details>
 </section>
 
 <!-- ORAÇÕES -->
@@ -484,7 +444,7 @@
 <div class="card"><h3>Transparência sobre os conteúdos</h3>
 <p><b>Orações tradicionais:</b> textos de domínio da Igreja, em versões usadas no Brasil, em conferência final.</p>
 <p><b>Estudos, histórias infantis e orações marcadas como originais:</b> material próprio da Ovelia.</p>
-<p><b>Liturgia:</b> quando os dados estão disponíveis, mostramos data, celebração, cor litúrgica e referências das leituras; a presença de referências não significa que o texto integral esteja disponível. <b>Bíblia:</b> o leitor mantém os 73 livros e a navegação, mas os textos integrais aguardam autorização editorial. Não declaramos uma edição completa antes da validação da licença e dos arquivos.</p>
+<p><b>Liturgia:</b> quando os dados estão disponíveis, mostramos data, celebração, cor litúrgica e referências das leituras; a presença de referências não significa que todo texto litúrgico esteja disponível. <b>Bíblia:</b> a Bíblia Portuguesa Mundial (BPM) é identificada pelo eBible.org como domínio público. A Ovelia informa a edição usada (pacote técnico de 19/08/2026) e deixa claro que a tradução está em revisão. Outras traduções só são habilitadas após verificar suas próprias condições de uso.</p>
 <p><b>Privacidade:</b> o site não tem cadastro, não coleta dados e não usa cookies próprios. Guarda no seu aparelho o perfil escolhido, as preferências de tamanho de letra, contraste, voz e velocidade, além das etapas de estudo marcadas como concluídas. A leitura em voz alta usa a voz instalada no seu aparelho e não envia texto para nenhum servidor da Ovelia. As fontes de letra vêm do Google Fonts; se não carregarem, o site usa fontes do seu aparelho.</p>
 <p><b>Próximas etapas:</b> notificações diárias e notícias católicas selecionadas. As referências litúrgicas dependem dos dados disponíveis no servidor; textos integrais só serão exibidos com autorização confirmada. A Ovelia não envia notificações.</p><p><b>Contato:</b> ainda não há canal de contato público.</p></div>
 </section>
@@ -492,10 +452,9 @@
 <footer><p style="margin:0 auto;max-width:none">Ovelia · Criado por Vxnnicio · © <span id="ano"></span></p><p style="margin:8px auto 0;max-width:none"><a href="https://www.instagram.com/oveliaoficial/" target="_blank" rel="noopener noreferrer">Instagram oficial @oveliaoficial ↗</a></p></footer>
 <script src="inicio-dados.js?v=20261018-inicio1"></script>
 <script src="liturgia.js?v=20261020-liturgia11"></script>
-<script src="app.js?v=20261023-corrigirtudo1"></script>
+<script src="app.js?v=20261024-menu-minimal1"></script>
 <script src="navegacao-inferior.js?v=20261023-parte8" defer></script>
-<script src="biblia.js?v=20261024-kindle2"></script>
-<script src="biblia-leitor.js?v=20261024-kindle2"></script>
+<script src="biblia.js?v=20261024-menu-minimal1"></script>
 <script src="favoritos.js?v=20261023-parte10"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
 <script src="inicio.js?v=20261023-parte8"></script>

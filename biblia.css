@@ -340,56 +340,124 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
 #biblia .biblia-leitor .biblia-n { color:var(--olive, #76519A) !important; font:600 .68em/1 system-ui,sans-serif; margin-right:.14em; }
 
 
-/* Kindle reader component: loaded only while the reader script activates it. */
-#biblia .biblia-leitor-ux{display:none}
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia{padding:0;margin:0;min-height:calc(100dvh - env(safe-area-inset-top,0px));}
-html.biblia-leitor-ativo body.biblia-leitor-ativo header.site-header,
-html.biblia-leitor-ativo body.biblia-leitor-ativo .site-header,
-html.biblia-leitor-ativo body.biblia-leitor-ativo .ovelia-bottom-nav{display:none!important}
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia>h2,
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia>.biblia-aviso,
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia>.aviso,
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia>.card:not(#bibliaLeitor){display:none!important}
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia #bibliaLeitor{display:none!important}
-html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia .biblia-leitor-ux{display:flex}
-.biblia-leitor-ux{--bl-bg:#FFFFFF;--bl-panel:#FFFFFF;--bl-fg:#25232A;--bl-muted:#625D68;--bl-line:#E7E4EB;--bl-accent:#6B4FA1;--bl-soft:#F6F4F8;position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;min-height:100dvh;background:var(--bl-bg);color:var(--bl-fg);font-family:Nunito,system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-.biblia-leitor-ux.bl-escuro{--bl-bg:#19181D;--bl-panel:#222127;--bl-fg:#F2F0F5;--bl-muted:#C1BBC9;--bl-line:#3E3B45;--bl-accent:#C6A9F0;--bl-soft:#2B2832;color-scheme:dark}
-.biblia-leitor-ux.bl-quente{--bl-bg:#F8F0DE;--bl-panel:#F8F0DE;--bl-fg:#30291F;--bl-muted:#6C5B46;--bl-line:#E5D5B7;--bl-soft:#F1E4CA}
-.bl-toolbar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bl-line);background:var(--bl-bg);flex-shrink:0}
-.bl-icon-btn{min-width:42px;min-height:42px;border:1px solid var(--bl-line);border-radius:50%;background:var(--bl-panel);color:var(--bl-fg);font:inherit;font-size:1.05rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.bl-book-button{flex:1;min-width:0;text-align:left;border:0;background:transparent;color:var(--bl-fg);font:inherit;display:flex;flex-direction:column;overflow:hidden}
-.bl-book-button strong{font:700 1.02rem Nunito,system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bl-book-button small{color:var(--bl-muted);font-size:.78rem}
-.bl-read-settings{position:absolute;z-index:6;top:calc(env(safe-area-inset-top,0px) + 62px);right:12px;width:min(300px,calc(100vw - 24px));padding:14px;border:1px solid var(--bl-line);border-radius:16px;background:var(--bl-panel);color:var(--bl-fg);box-shadow:0 8px 28px rgba(0,0,0,.15)}
-.bl-read-settings[hidden],.bl-book-sheet[hidden]{display:none!important}
-.bl-read-settings label{display:block;font-size:.84rem;font-weight:700;margin:8px 0 4px}
-.bl-read-settings select,.bl-read-settings input[type=range]{width:100%;min-height:40px}
-.bl-reader-progress{height:3px;background:var(--bl-line);flex-shrink:0}
-.bl-reader-progress span{display:block;height:100%;width:0;background:var(--bl-accent);transition:width .12s}
-.bl-reading-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
-.bl-reading-content{width:min(100%,760px);min-height:100%;padding:clamp(22px,6vw,52px) clamp(22px,7vw,72px) 35vh;margin-inline:auto;color:var(--bl-fg);background:var(--bl-bg);font-family:Georgia,"Times New Roman",serif;font-size:var(--bl-font,1.22rem);line-height:var(--bl-line-height,1.92);letter-spacing:.005em;overflow-wrap:anywhere}
-.bl-reading-content .biblia-par{max-width:unset;margin:0 0 1.15em;padding:0;color:inherit}
-.bl-reading-content .biblia-n{font:600 .62em/1.2 Nunito,system-ui,sans-serif;color:var(--bl-accent);vertical-align:super;margin-right:.16em}
-.bl-reading-content .biblia-v{color:inherit}
-.bl-reading-content .biblia-favoritar{display:inline-flex;vertical-align:super;width:1.3em;height:1.3em;min-width:1.3em;align-items:center;justify-content:center;margin:0 .1em;border:1px solid var(--bl-line);border-radius:50%;background:var(--bl-soft);color:var(--bl-accent);font:600 .65em/1 system-ui,sans-serif;padding:0}
-.bl-reader-chapter-label{text-align:center;color:var(--bl-muted);font:600 .78rem Nunito,system-ui,sans-serif;margin:0 0 22px}
-.bl-reader-empty{font:1rem/1.6 Nunito,system-ui,sans-serif;color:var(--bl-muted);padding:18px 0}
-.bl-bottom-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bl-bg);border-top:1px solid var(--bl-line);flex-shrink:0}
-.bl-bottom-toolbar button{min-height:42px;padding:7px 13px;border:1px solid var(--bl-line);border-radius:999px;background:var(--bl-panel);color:var(--bl-fg);font:600 .9rem Nunito,system-ui,sans-serif}
-.bl-bottom-toolbar button:disabled{opacity:.35}
-.bl-reader-location{color:var(--bl-muted);font:600 .8rem Nunito,system-ui,sans-serif;text-align:center;flex:1}
-.bl-book-sheet{position:fixed;inset:0;z-index:9010;background:rgba(17,15,22,.45);display:flex;align-items:flex-end;justify-content:center}
-.bl-book-sheet-panel{width:100%;max-width:720px;max-height:min(86dvh,850px);overflow:auto;background:var(--bl-bg);color:var(--bl-fg);border-radius:22px 22px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 34px rgba(0,0,0,.18)}
-.bl-sheet-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.bl-book-search{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--bl-line);border-radius:12px;background:var(--bl-panel);color:var(--bl-fg);font:inherit;margin:14px 0}
-.bl-testament-label{font:700 .78rem Nunito,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--bl-muted);margin:14px 0 8px}
-.bl-book-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.bl-book-grid button{min-height:42px;padding:8px 10px;border:1px solid var(--bl-line);border-radius:10px;text-align:left;background:var(--bl-panel);color:var(--bl-fg);font:600 .9rem Nunito,system-ui,sans-serif}
-.bl-book-grid button[aria-current=true]{border-color:var(--bl-accent);background:var(--bl-soft)}
-.bl-chapters-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:12px}
-.bl-chapters-grid button{min-height:42px;border:1px solid var(--bl-line);border-radius:10px;background:var(--bl-panel);color:var(--bl-fg);font:600 .9rem Nunito,system-ui,sans-serif}
-.bl-chapters-grid button[aria-current=true]{background:var(--bl-accent);border-color:var(--bl-accent);color:white}
-.biblia-leitor-ux button:focus-visible,.biblia-leitor-ux select:focus-visible,.biblia-leitor-ux input:focus-visible{outline:3px solid var(--bl-accent);outline-offset:2px}
-@media(min-width:700px){.bl-reading-content{padding:42px 82px 20vh}.bl-book-sheet{align-items:center;padding:24px}.bl-book-sheet-panel{border-radius:22px}}
-@media(max-width:380px){.bl-toolbar{gap:6px;padding-inline:9px}.bl-icon-btn{min-width:38px;min-height:38px}.bl-book-grid{grid-template-columns:1fr}.bl-chapters-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.bl-reading-content{padding-inline:20px;font-size:var(--bl-font,1.16rem)}}
-@media(prefers-reduced-motion:reduce){.biblia-leitor-ux *{transition:none!important;animation:none!important}}
+/* Ovelia — menu bíblico compacto, licença identificada e configurações de conforto. */
+.biblia-licenca-nota{
+  display:flex;flex-direction:column;gap:3px;
+  margin:0 0 12px;padding:9px 0;
+  border-bottom:1px solid var(--line);
+  color:var(--mut);font-size:.82rem;line-height:1.45;
+}
+.biblia-licenca-nota strong{color:var(--ink);font-size:.88rem}
+.biblia-licenca-nota a,.biblia-creditos a{color:var(--olive,var(--accent));text-decoration:underline;text-underline-offset:2px}
+.biblia-menu-livros[hidden]{display:none!important}
+.biblia-menu-livros{
+  margin:12px 0 18px;padding:14px;
+  border:1px solid var(--line);border-radius:16px;
+  background:var(--card);color:var(--ink);
+}
+.biblia-menu-livros-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.biblia-menu-livros-topo h3{margin:0;font-size:1.05rem}
+.biblia-menu-livros-topo p{margin:4px 0 0;color:var(--mut);font-size:.86rem;line-height:1.45}
+.biblia-menu-livros-topo .btn{min-height:40px;white-space:nowrap}
+.biblia-menu-livros>label{display:block;font-weight:700;margin:8px 0 6px;font-size:.9rem}
+.biblia-menu-livros>input[type=search]{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit}
+.biblia-menu-livros>input[type=search]::placeholder{color:var(--mut);opacity:1}
+.biblia-menu-livros #livrosN{font-size:.78rem;color:var(--mut);margin:8px 0}
+.biblia-menu-livros #livros h3{
+  margin:14px 0 7px;padding-bottom:6px;border-bottom:1px solid var(--line);
+  color:var(--mut);font:800 .76rem/1.4 var(--fonte-texto,system-ui,sans-serif);
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.biblia-menu-livros #livros .livros{
+  list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;margin:0 0 12px;padding:0;
+}
+.biblia-menu-livros #livros .livros li{
+  list-style:none;margin:0;padding:8px 10px;min-height:42px;
+  display:flex;align-items:center;border:1px solid var(--line);
+  border-radius:10px;background:var(--soft);color:var(--ink);
+  font-size:.9rem;line-height:1.3;overflow-wrap:anywhere;
+  cursor:pointer;
+}
+.biblia-menu-livros #livros .livros li::marker{content:""}
+.biblia-menu-livros #livros .livros li:hover,
+.biblia-menu-livros #livros .livros li:focus-visible{
+  border-color:var(--olive,var(--accent));outline:2px solid transparent;
+  background:var(--card);
+}
+.biblia-como-ler{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink)}
+.biblia-como-ler summary{cursor:pointer;font-weight:700;min-height:28px}
+.biblia-como-ler div{color:var(--mut);font-size:.9rem;line-height:1.55;padding-top:8px}
+.biblia-config-linha.biblia-luz-azul-controle{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
+.biblia-config-linha.biblia-luz-azul-controle input[type=checkbox]{width:24px;height:24px;accent-color:var(--olive,var(--accent))}
+.biblia-config-linha .biblia-controle-ajuda{grid-column:1/-1;color:var(--mut);font-size:.78rem;line-height:1.4}
+#bibliaLuzAzulIntensidade{width:100%;min-width:0;accent-color:var(--olive,var(--accent))}
+#bibliaLuzAzulValor{color:var(--mut);font-size:.82rem;text-align:right}
+#biblia .biblia-leitor .biblia-tema-botao{width:100%;min-height:44px}
+#biblia .biblia-leitor.biblia-tema-claro,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-leitor-topo,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-modo-livro,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-texto,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-status{
+  background:#FFFFFF!important;color:#28232D!important;border-color:#E4DEE9!important;
+}
+#biblia .biblia-leitor.biblia-tema-claro .biblia-texto *,
+#biblia .biblia-leitor.biblia-tema-claro h3,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-leitor-topo p,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-creditos,
+#biblia .biblia-leitor.biblia-tema-claro label,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-status p{color:#28232D!important}
+#biblia .biblia-leitor.biblia-tema-claro .biblia-configuracoes,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-ajustes-resumo{background:#F7F6F9!important;color:#28232D!important}
+#biblia .biblia-leitor.biblia-tema-escuro,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-leitor-topo,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-modo-livro,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-status{
+  background:#222127!important;color:#F5F1F8!important;border-color:#403B48!important;
+}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto *,
+#biblia .biblia-leitor.biblia-tema-escuro h3,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-leitor-topo p,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-creditos,
+#biblia .biblia-leitor.biblia-tema-escuro label,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-status p{color:#F5F1F8!important;background-color:transparent}
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-configuracoes,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-ajustes-resumo{background:#2C2932!important;color:#F5F1F8!important;border-color:#494250!important}
+#biblia .biblia-leitor.biblia-tema-escuro select,
+#biblia .biblia-leitor.biblia-tema-escuro input:not([type=range]):not([type=checkbox]){
+  background:#292630!important;color:#F5F1F8!important;border-color:#494250!important;
+}
+#biblia #bibliaMenuLivros #livros li:focus-visible,
+#biblia .biblia-leitor button:focus-visible,
+#biblia .biblia-menu-livros input:focus-visible{
+  outline:3px solid var(--olive,var(--accent));outline-offset:2px;
+}
+@media(max-width:520px){
+  .biblia-menu-livros{padding:11px;border-radius:14px}
+  .biblia-menu-livros #livros .livros{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  .biblia-menu-livros #livros .livros li{min-height:44px;font-size:.86rem;padding:8px}
+}
+@media(max-width:350px){
+  .biblia-menu-livros #livros .livros{grid-template-columns:1fr}
+  .biblia-menu-livros-topo{flex-wrap:wrap}
+}
+
+
+/* Seletor minimalista: abre primeiro o Testamento; a busca expande os resultados. */
+.biblia-menu-livros #livros .biblia-grupo-livros{
+  display:block;border:1px solid var(--line);border-radius:12px;
+  margin:8px 0;overflow:hidden;background:var(--card);color:var(--ink);
+}
+.biblia-menu-livros #livros .biblia-grupo-livros>summary{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  min-height:48px;padding:11px 12px;cursor:pointer;list-style:none;
+  color:var(--ink);font-weight:800;font-size:.9rem;background:var(--soft);
+}
+.biblia-menu-livros #livros .biblia-grupo-livros>summary::-webkit-details-marker{display:none}
+.biblia-menu-livros #livros .biblia-grupo-livros>summary::after{
+  content:"+";font:700 1.2rem/1 system-ui,sans-serif;color:var(--mut)
+}
+.biblia-menu-livros #livros .biblia-grupo-livros[open]>summary::after{content:"−"}
+.biblia-menu-livros #livros .biblia-grupo-livros>.livros{padding:8px;margin:0}
+.biblia-menu-livros #livros .biblia-grupo-livros .livros li{background:var(--card)}

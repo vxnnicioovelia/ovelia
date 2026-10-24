@@ -145,7 +145,9 @@
     controls.innerHTML = '<div class="biblia-config-linha"><label for="bibliaTraducao">Tradução</label><select id="bibliaTraducao" aria-label="Escolher tradução bíblica"></select></div>'+
       '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaFonteTamanho">Tamanho da letra</label><select id="bibliaFonteTamanho"><option value="0">Normal</option><option value="1">Grande</option><option value="2">Muito grande</option></select></div>'+
       '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaEspacamento">Espaçamento</label><select id="bibliaEspacamento"><option value="normal">Normal</option><option value="amplo">Amplo</option><option value="extra">Extra</option></select></div>'+
-      '<button type="button" class="btn g biblia-tema-botao" id="bibliaAlternarTema" aria-pressed="false">Ativar tema escuro da leitura</button>';
+      '<button type="button" class="btn g biblia-tema-botao" id="bibliaAlternarTema" aria-pressed="false">Tema da leitura: claro</button>'+
+      '<div class="biblia-config-linha biblia-ajustes-linha biblia-luz-azul-controle"><label for="bibliaLuzAzul">Diminuir luz azul (tela inteira)</label><input type="checkbox" id="bibliaLuzAzul" aria-describedby="bibliaLuzAzulAjuda"><span id="bibliaLuzAzulAjuda" class="biblia-controle-ajuda">Aplica um tom quente uniforme à tela inteira.</span></div>'+
+      '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaLuzAzulIntensidade">Intensidade do filtro</label><input type="range" id="bibliaLuzAzulIntensidade" min="0" max="45" step="5" value="20"><output id="bibliaLuzAzulValor" for="bibliaLuzAzulIntensidade">20%</output></div>';
     var top = panel.querySelector('.biblia-leitor-topo');
     if (top && top.parentNode) top.parentNode.insertBefore(controls, top.nextSibling); else panel.insertBefore(controls, panel.firstChild);
     return controls;
@@ -159,7 +161,7 @@
     summary.setAttribute('aria-controls','bibliaConfiguracoes');
     var expanded=!(window.matchMedia && window.matchMedia('(max-width: 620px)').matches);
     summary.setAttribute('aria-expanded',String(expanded));
-    summary.innerHTML='<strong>Ajustes de leitura</strong><span>Tradução, fonte, espaçamento e tema</span>';
+    summary.innerHTML='<strong>Ajustes de leitura</strong><span>Tradução, letra, tema e luz azul</span>';
     var wrapper=document.createElement('div'); wrapper.id='bibliaConfiguracoes'; wrapper.className='biblia-configuracoes';
     while(controls.firstChild){wrapper.appendChild(controls.firstChild);}
     wrapper.hidden=!expanded; controls.appendChild(summary); controls.appendChild(wrapper);
@@ -360,16 +362,50 @@
     else setStatus('Você chegou ao início ou ao fim do catálogo de livros.');
   }
   function applyReadingSettings() {
-    panel.classList.remove('biblia-fonte-1','biblia-fonte-2','biblia-espaco-amplo','biblia-espaco-extra','biblia-tema-escuro');
+    panel.classList.remove('biblia-fonte-1','biblia-fonte-2','biblia-espaco-amplo','biblia-espaco-extra','biblia-tema-escuro','biblia-tema-claro');
     if(fontSelect.value==='1')panel.classList.add('biblia-fonte-1');
     if(fontSelect.value==='2')panel.classList.add('biblia-fonte-2');
     if(spacingSelect.value==='amplo')panel.classList.add('biblia-espaco-amplo');
     if(spacingSelect.value==='extra')panel.classList.add('biblia-espaco-extra');
     var dark=themeButton.getAttribute('aria-pressed')==='true';
-    if(dark)panel.classList.add('biblia-tema-escuro');
-    themeButton.textContent=dark?'Desativar tema escuro da leitura':'Ativar tema escuro da leitura';
+    panel.classList.add(dark?'biblia-tema-escuro':'biblia-tema-claro');
+    themeButton.textContent=dark?'Tema da leitura: escuro':'Tema da leitura: claro';
+    themeButton.setAttribute('aria-label',dark?'Tema escuro ativo. Toque para usar o tema claro':'Tema claro ativo. Toque para usar o tema escuro');
   }
-  function saveReadingSettings(){try{localStorage.setItem(FONT_KEY,JSON.stringify({font:fontSelect.value,space:spacingSelect.value,dark:themeButton.getAttribute('aria-pressed')==='true'}));}catch(e){}}
+  var blueLightToggle=$('bibliaLuzAzul'), blueLightRange=$('bibliaLuzAzulIntensidade'), blueLightOutput=$('bibliaLuzAzulValor');
+  function syncBlueLightFromGlobal(){
+    var globalToggle=$('filtroQuente'), globalRange=$('filtroIntensidade'), saved=null;
+    try{saved=JSON.parse(localStorage.getItem('ovelia-filtro-quente')||'null');}catch(e){}
+    if(globalToggle) blueLightToggle.checked=!!globalToggle.checked;
+    else blueLightToggle.checked=!!(saved&&saved.ativo);
+    var level=globalRange?Number(globalRange.value):(saved&&Number.isFinite(+saved.intensidade)?+saved.intensidade:20);
+    level=Math.max(0,Math.min(45,Number.isFinite(level)?level:20));
+    blueLightRange.value=String(level); if(blueLightOutput)blueLightOutput.value=level+'%';
+  }
+  function applyBlueLightToGlobal(){
+    var globalToggle=$('filtroQuente'), globalRange=$('filtroIntensidade');
+    if(globalToggle){
+      globalToggle.checked=!!blueLightToggle.checked;
+      globalToggle.dispatchEvent(new Event('change',{bubbles:true}));
+    }else{
+      document.body.classList.toggle('filtro-quente-ativo',!!blueLightToggle.checked);
+      document.documentElement.classList.toggle('filtro-quente-global',!!blueLightToggle.checked);
+    }
+    if(globalRange){
+      globalRange.value=String(Math.max(0,Math.min(45,+blueLightRange.value||0)));
+      globalRange.dispatchEvent(new Event('input',{bubbles:true}));
+    }else{
+      document.documentElement.style.setProperty('--ovelia-filtro-quente-opacidade',String(blueLightToggle.checked?(Math.max(0,Math.min(45,+blueLightRange.value||0))/45)*0.42:0));
+    }
+    if(blueLightOutput)blueLightOutput.value=blueLightRange.value+'%';
+  }
+  blueLightToggle.addEventListener('change',applyBlueLightToGlobal);
+  blueLightRange.addEventListener('input',applyBlueLightToGlobal);
+  var globalBlueToggle=$('filtroQuente'), globalBlueRange=$('filtroIntensidade');
+  if(globalBlueToggle)globalBlueToggle.addEventListener('change',syncBlueLightFromGlobal);
+  if(globalBlueRange)globalBlueRange.addEventListener('input',syncBlueLightFromGlobal);
+  syncBlueLightFromGlobal();
+    function saveReadingSettings(){try{localStorage.setItem(FONT_KEY,JSON.stringify({font:fontSelect.value,space:spacingSelect.value,dark:themeButton.getAttribute('aria-pressed')==='true'}));}catch(e){}}
   function restoreReadingSettings(){try{var s=JSON.parse(localStorage.getItem(FONT_KEY)||'null');if(s){fontSelect.value=['0','1','2'].indexOf(String(s.font))>=0?String(s.font):'0';spacingSelect.value=['normal','amplo','extra'].indexOf(s.space)>=0?s.space:'normal';themeButton.setAttribute('aria-pressed',String(!!s.dark));}}catch(e){}applyReadingSettings();}
   function initCatalog() {
     return fetch(CATALOG_URL).then(function(r){if(!r.ok)throw new Error('Catálogo ausente');return r.json();}).then(function(data){
@@ -399,11 +435,18 @@
   spacingSelect.addEventListener('change',function(){applyReadingSettings();saveReadingSettings();});
   themeButton.addEventListener('click',function(){themeButton.setAttribute('aria-pressed',String(themeButton.getAttribute('aria-pressed')!=='true'));applyReadingSettings();saveReadingSettings();});
   restoreReadingSettings();
-  var escolher=$('bibliaEscolherLivro');
-  if(escolher)escolher.addEventListener('click',function(){var search=$('buscaLivro');if(search)search.focus();if(bookList)bookList.scrollIntoView({behavior:'smooth',block:'start'});});
+  var escolher=$('bibliaEscolherLivro'), menuLivros=$('bibliaMenuLivros'), fecharMenu=$('bibliaFecharMenuLivros');
+  function setBookMenu(open){
+    if(!menuLivros||!escolher)return;
+    menuLivros.hidden=!open; escolher.setAttribute('aria-expanded',String(!!open));
+    if(open){var search=$('buscaLivro');if(search){search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));window.setTimeout(function(){search.focus();},20);}if(menuLivros.scrollIntoView)menuLivros.scrollIntoView({behavior:'smooth',block:'nearest'});}
+    else if(escolher.focus)escolher.focus({preventScroll:true});
+  }
+  if(escolher)escolher.addEventListener('click',function(){setBookMenu(!!(menuLivros&&menuLivros.hidden));});
+  if(fecharMenu)fecharMenu.addEventListener('click',function(){setBookMenu(false);});
   if(bookList){
-    bookList.addEventListener('click',function(e){var li=e.target.closest('li');if(!li)return;var book=findBook(li.textContent);if(!book)return;e.preventDefault();selectBook(book,false);});
-    bookList.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var li=e.target.closest('li');if(!li)return;var book=findBook(li.textContent);if(!book)return;e.preventDefault();selectBook(book,false);});
+    bookList.addEventListener('click',function(e){var li=e.target.closest('li');if(!li)return;var book=findBook(li.textContent);if(!book)return;e.preventDefault();selectBook(book,false);setBookMenu(false);});
+    bookList.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var li=e.target.closest('li');if(!li)return;var book=findBook(li.textContent);if(!book)return;e.preventDefault();selectBook(book,false);setBookMenu(false);});
     var observer=new MutationObserver(function(){Array.prototype.forEach.call(bookList.querySelectorAll('li'),function(li){if(!findBook(li.textContent))return;li.tabIndex=0;li.setAttribute('role','button');li.setAttribute('aria-label','Ler '+li.textContent.trim());li.classList.add('biblia-livro-clicavel');});});
     observer.observe(bookList,{childList:true,subtree:true});
     Array.prototype.forEach.call(bookList.querySelectorAll('li'),function(li){if(findBook(li.textContent)){li.tabIndex=0;li.setAttribute('role','button');li.classList.add('biblia-livro-clicavel');}});

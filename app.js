@@ -343,7 +343,7 @@ var B=[
 ];
 function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
 function drawLivros(q){q=norm(q||'');var total=0;
-  var h=B.map(function(g){var l=g[1].filter(function(x){return norm(x).indexOf(q)>-1});total+=l.length;return l.length?'<h3>'+esc(g[0])+'</h3><ul class="livros">'+l.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':''}).join('');
+  var h=B.map(function(g){var l=g[1].filter(function(x){return norm(x).indexOf(q)>-1});total+=l.length;return l.length?'<details class="biblia-grupo-livros"'+(q?' open':'')+'><summary>'+esc(g[0])+'</summary><ul class="livros">'+l.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></details>':''}).join('');
   $('#livros').innerHTML=h||'<p>Nenhum livro encontrado com esse nome.</p>';$('#livrosN').textContent=total+' livro'+(total===1?'':'s')+' exibido'+(total===1?'':'s')+' (de 73)'}
 $('#buscaLivro').addEventListener('input',function(e){drawLivros(e.target.value)});drawLivros('');
 
