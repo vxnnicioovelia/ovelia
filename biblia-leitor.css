@@ -12,7 +12,7 @@ html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia #bibliaLeitorUX{displa
 html.biblia-leitor-ativo body.biblia-leitor-ativo header,
 html.biblia-leitor-ativo body.biblia-leitor-ativo .site-header,
 html.biblia-leitor-ativo body.biblia-leitor-ativo .ovelia-bottom-nav{display:none!important}
-.biblia-leitor-ux{--bl-bg:#FFFFFF;--bl-panel:#FFFFFF;--bl-fg:#25232A;--bl-muted:#625D68;--bl-line:#E7E4EB;--bl-accent:#6B4FA1;--bl-soft:#F6F4F8;position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;min-height:100dvh;background:var(--bl-bg);color:var(--bl-fg);font-family:Nunito,system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);opacity:1;transition:opacity .14s ease}
+.biblia-leitor-ux{--bl-bg:#FFFFFF;--bl-panel:#FFFFFF;--bl-fg:#25232A;--bl-muted:#625D68;--bl-line:#E7E4EB;--bl-accent:#6B4FA1;--bl-soft:#F6F4F8;position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;min-height:100dvh;background:var(--bl-bg);color:var(--bl-fg);font-family:Nunito,system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:0;opacity:1;transition:opacity .14s ease}
 .biblia-leitor-ux.bl-loading{opacity:.84}
 .biblia-leitor-ux.bl-escuro{--bl-bg:#19181D;--bl-panel:#222127;--bl-fg:#F2F0F5;--bl-muted:#C1BBC9;--bl-line:#3E3B45;--bl-accent:#C6A9F0;--bl-soft:#2B2832;color-scheme:dark}
 .biblia-leitor-ux.bl-quente{--bl-bg:#F8F0DE;--bl-panel:#F8F0DE;--bl-fg:#30291F;--bl-muted:#6C5B46;--bl-line:#E5D5B7;--bl-soft:#F1E4CA}
@@ -60,3 +60,72 @@ html.biblia-leitor-ativo body.biblia-leitor-ativo .ovelia-bottom-nav{display:non
 .bl-reading-content.bl-page-enter{animation:bl-enter .18s ease-out}
 @keyframes bl-enter{from{opacity:.45;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){.bl-reading-content.bl-page-enter{animation:none}}
+
+
+/* Integração corrigida — menu minimalista de testamento > livro > capítulo. */
+.bl-testaments{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.bl-testaments>[data-testamento]{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  min-height:50px;padding:12px 14px;border:1px solid var(--bl-line);border-radius:13px;
+  background:var(--bl-panel);color:var(--bl-fg);font:700 1rem Nunito,system-ui,sans-serif;text-align:left
+}
+.bl-testament-books{padding:8px 0}
+.bl-testamento-grupo{border:1px solid var(--bl-line);border-radius:12px;background:var(--bl-panel);margin:8px 0;overflow:hidden}
+.bl-testamento-grupo>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px;min-height:46px;background:var(--bl-soft);font-weight:800;cursor:pointer}
+.bl-testamento-grupo>summary::-webkit-details-marker{display:none}
+.bl-testamento-grupo>summary::after{content:"＋";font-size:1rem;color:var(--bl-muted)}
+.bl-testamento-grupo[open]>summary::after{content:"−"}
+.bl-testamento-count{font-size:.76rem;font-weight:600;color:var(--bl-muted)}
+.bl-book-grid{padding:8px}
+#blResultadosBusca[hidden],#blSeletorCapitulos[hidden]{display:none!important}
+.bl-search-label{display:block;margin:14px 0 5px;font-weight:700;font-size:.86rem}
+.bl-blue-toggle{display:flex!important;align-items:center;gap:9px;margin-top:14px!important;padding:8px 0}
+.bl-blue-toggle input{width:22px;height:22px;accent-color:var(--bl-accent)}
+.bl-settings-done{width:100%;min-height:44px;border:1px solid var(--bl-line);border-radius:12px;background:var(--bl-soft);color:var(--bl-fg);font:700 .95rem Nunito,system-ui,sans-serif;margin-top:14px}
+.bl-read-settings select{display:block;padding:8px;border:1px solid var(--bl-line);border-radius:10px;background:var(--bl-panel);color:var(--bl-fg)}
+.bl-read-settings input[type=range]{accent-color:var(--bl-accent)}
+.bl-reading-content .biblia-favoritar{vertical-align:middle;position:relative;z-index:1}
+.bl-reading-content .biblia-par{color:var(--bl-fg)!important;background:transparent!important}
+.bl-reading-content .biblia-v,.bl-reading-content .biblia-v *{color:inherit!important;background:transparent!important}
+html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia>.biblia-licenca-nota{display:none!important}
+@media(max-width:380px){
+ .bl-book-sheet-panel{padding:15px 12px calc(18px + env(safe-area-inset-bottom,0px))}
+ .bl-reading-content{padding-left:20px;padding-right:20px}
+ .bl-toolbar{gap:6px}
+ .bl-book-button strong{font-size:.94rem}
+ .bl-bottom-toolbar{padding-inline:8px;gap:6px}
+ .bl-bottom-toolbar button{font-size:.82rem;padding-inline:10px}
+}
+
+
+/* UI correction: one clean testamento > book > chapter flow. */
+.bl-reader-hint{font:500 .82rem/1.45 Nunito,system-ui,sans-serif;color:var(--bl-muted);margin:0 0 6px}
+.bl-testamento-grupo{border:1px solid var(--bl-line);border-radius:12px;background:var(--bl-panel);margin:9px 0;overflow:hidden}
+.bl-testamento-grupo>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px;min-height:48px;background:var(--bl-soft);font-weight:800;cursor:pointer}
+.bl-testamento-grupo>summary::-webkit-details-marker{display:none}
+.bl-testamento-grupo>summary::after{content:"＋";font-size:1rem;color:var(--bl-muted)}
+.bl-testamento-grupo[open]>summary::after{content:"−"}
+.bl-testamento-count{font-size:.76rem;font-weight:600;color:var(--bl-muted)}
+.bl-book-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:9px}
+.bl-book-grid button{min-height:44px;padding:9px 10px;border:1px solid var(--bl-line);border-radius:10px;background:var(--bl-panel);color:var(--bl-fg);font:600 .9rem/1.25 Nunito,system-ui,sans-serif;text-align:left;overflow-wrap:anywhere}
+.bl-book-grid button[aria-current=true]{border-color:var(--bl-accent);background:var(--bl-soft);box-shadow:inset 3px 0 var(--bl-accent)}
+.bl-search-label{display:block;margin:14px 0 5px;font-weight:700;font-size:.86rem}
+.bl-reader-hint{margin-top:0}
+.bl-blue-toggle{display:flex!important;align-items:center;gap:9px;margin-top:14px!important;padding:8px 0}
+.bl-blue-toggle input{width:22px;height:22px;accent-color:var(--bl-accent)}
+.bl-settings-done{width:100%;min-height:44px;border:1px solid var(--bl-line);border-radius:12px;background:var(--bl-soft);color:var(--bl-fg);font:700 .95rem Nunito,system-ui,sans-serif;margin-top:14px}
+.bl-read-settings select{display:block;padding:8px;border:1px solid var(--bl-line);border-radius:10px;background:var(--bl-panel);color:var(--bl-fg)}
+.bl-read-settings input[type=range]{accent-color:var(--bl-accent)}
+.bl-reading-content .biblia-favoritar{vertical-align:middle;position:relative;z-index:1}
+.bl-reading-content .biblia-par{color:var(--bl-fg)!important;background:transparent!important}
+.bl-reading-content .biblia-v,.bl-reading-content .biblia-v *{color:inherit!important;background:transparent!important}
+html.biblia-leitor-ativo body.biblia-leitor-ativo #biblia>.biblia-licenca-nota{display:none!important}
+@media(max-width:380px){
+ .bl-book-sheet-panel{padding:15px 12px calc(18px + env(safe-area-inset-bottom,0px))}
+ .bl-reading-content{padding-left:20px;padding-right:20px}
+ .bl-toolbar{gap:6px}
+ .bl-icon-btn{min-width:38px;min-height:38px}
+ .bl-book-button strong{font-size:.94rem}
+ .bl-bottom-toolbar{padding-inline:8px;gap:6px}
+ .bl-bottom-toolbar button{font-size:.82rem;padding-inline:10px}
+}

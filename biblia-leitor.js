@@ -7,10 +7,10 @@
   var view = $('blRolagem'), content = $('blConteudo'), title = $('blLivroCapitulo');
   var locationLabel = $('blLocalizacao'), footerLabel = $('blCapituloRodape');
   var progress = $('blProgresso'), sheet = $('blSeletor'), settings = $('blAjustes');
-  var selectorList = $('blListaLivros'), chapterList = $('blListaCapitulos');
+  var selectorList = $('blResultadosBusca'), chapterList = $('blListaCapitulos');
   var current = { code: 'GEN', chapter: 1, verse: null };
   var lastRenderedSignature = '';
-  var touch = null, immersive = false;
+  var touch = null, immersive = false, previousHash = '#home';
   var books = [];
   var STORAGE_KEY = 'ovelia-biblia-leitor-ui-v1';
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -41,12 +41,39 @@
     if (theme === 'quente') root.classList.add('bl-quente');
     saveSettings();
   }
+  function applyWarmLight(syncOnly) {
+    var globalToggle = $('filtroQuente');
+    var globalRange = $('filtroIntensidade');
+    if (syncOnly) {
+      try {
+        var saved = JSON.parse(localStorage.getItem('ovelia-filtro-quente') || 'null');
+        $('blLuzAzul').checked = globalToggle ? !!globalToggle.checked : !!(saved && saved.ativo);
+        $('blLuzAzulNivel').value = String(Math.max(0, Math.min(45, globalRange ? Number(globalRange.value) : (saved && Number(saved.intensidade) || 20))));
+      } catch (e) {}
+      return;
+    }
+    var on = $('blLuzAzul').checked;
+    var level = Math.max(0, Math.min(45, Number($('blLuzAzulNivel').value) || 0));
+    if (globalToggle && globalRange) {
+      globalToggle.checked = on;
+      globalRange.value = String(level);
+      globalToggle.dispatchEvent(new Event('change', { bubbles: true }));
+      globalRange.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      document.documentElement.classList.toggle('filtro-quente-global', on);
+      document.body.classList.toggle('filtro-quente-ativo', on);
+      document.documentElement.style.setProperty('--ovelia-filtro-quente-opacidade', String(on ? (level / 45) * 0.42 : 0));
+      try { localStorage.setItem('ovelia-filtro-quente', JSON.stringify({ ativo: on, intensidade: level })); } catch (e) {}
+    }
+  }
   function saveSettings() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         font: $('blFonte').value,
         spacing: $('blEspaco').value,
         theme: $('blTema').value,
+        warm: $('blLuzAzul').checked,
+        warmLevel: $('blLuzAzulNivel').value,
         immersive: immersive
       }));
     } catch (e) {}
@@ -54,15 +81,19 @@
   function restoreSettings() {
     try {
       var data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (!data) return;
-      if (['1.05rem', '1.2rem', '1.4rem', '1.65rem'].indexOf(data.font) >= 0) $('blFonte').value = data.font;
-      if (['1.65', '1.92', '2.15', '2.4'].indexOf(String(data.spacing)) >= 0) $('blEspaco').value = String(data.spacing);
-      if (['claro', 'escuro', 'quente'].indexOf(data.theme) >= 0) $('blTema').value = data.theme;
-      immersive = !!data.immersive;
+      if (data) {
+        if (['1.05rem', '1.2rem', '1.4rem', '1.65rem'].indexOf(data.font) >= 0) $('blFonte').value = data.font;
+        if (['1.65', '1.92', '2.15', '2.4'].indexOf(String(data.spacing)) >= 0) $('blEspaco').value = String(data.spacing);
+        if (['claro', 'escuro', 'quente'].indexOf(data.theme) >= 0) $('blTema').value = data.theme;
+        if (typeof data.warm === 'boolean') $('blLuzAzul').checked = data.warm;
+        if (data.warmLevel != null && Number.isFinite(Number(data.warmLevel))) $('blLuzAzulNivel').value = String(Math.max(0, Math.min(45, Number(data.warmLevel))));
+        immersive = !!data.immersive;
+      }
     } catch (e) {}
     applyType();
     setTheme($('blTema').value);
-    setImmersive(immersive, false);
+    applyWarmLight(true);
+    root.classList.remove('bl-controles-ocultos');
   }
   function applyType() {
     content.style.setProperty('--bl-font', $('blFonte').value);
@@ -71,17 +102,19 @@
   }
   function setImmersive(on, persist) {
     immersive = !!on;
-    document.documentElement.classList.toggle('biblia-leitor-ativo', true);
-    document.body.classList.toggle('biblia-leitor-ativo', true);
     root.classList.toggle('bl-controles-ocultos', immersive);
-    $('blImersivoBtn').setAttribute('aria-pressed', String(immersive));
-    $('blImersivoBtn').setAttribute('aria-label', immersive ? 'Mostrar controles de leitura' : 'Ocultar controles de leitura');
+    var immersiveButton = $('blImersivoBtn');
+    if (immersiveButton) {
+      immersiveButton.setAttribute('aria-pressed', String(immersive));
+      immersiveButton.setAttribute('aria-label', immersive ? 'Mostrar controles de leitura' : 'Ocultar controles de leitura');
+    }
     if (persist !== false) saveSettings();
   }
   function enterReader() {
     document.documentElement.classList.add('biblia-leitor-ativo');
     document.body.classList.add('biblia-leitor-ativo');
     root.hidden = false;
+    setImmersive(immersive, false);
     syncFromLegacy();
     renderBookList();
     if (current.verse) {
@@ -98,14 +131,20 @@
     settings.hidden = true;
     sheet.hidden = true;
     immersive = false;
-    $('blImersivoBtn').setAttribute('aria-pressed', 'false');
-    var section = $('biblia');
-    if (section) section.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+    root.classList.remove('bl-controles-ocultos');
+    if ($('blImersivoBtn')) $('blImersivoBtn').setAttribute('aria-pressed', 'false');
+    var target = previousHash && previousHash !== '#biblia' ? previousHash : '#home';
+    if (location.hash === target) {
+      var section = document.querySelector(target);
+      if (section) section.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+    } else {
+      location.hash = target;
+    }
   }
   function syncFromLegacy() {
+    books = apiBooks();
     var info = titleFromLegacy(), api = getAPI();
     if (!info.book) return;
-    books = apiBooks();
     current.code = info.book.code;
     current.chapter = info.chapter;
     if (!api || !content) return;
@@ -183,8 +222,9 @@
   }
   function renderBookList(filter) {
     books = apiBooks();
-    if (!books.length) return;
-    var search = filter == null ? $('blBuscaLivro').value : filter;
+    if (!books.length || !selectorList) return;
+    var searchInput = $('blBuscaLivro');
+    var search = filter == null ? searchInput.value : filter;
     var normalized = String(search || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     var testaments = ['Antigo Testamento', 'Novo Testamento'];
     selectorList.innerHTML = '';
@@ -194,28 +234,41 @@
         return book.testament === testament && hay.indexOf(normalized) >= 0;
       });
       if (!group.length) return;
-      var heading = document.createElement('p'); heading.className = 'bl-testament-label'; heading.textContent = testament;
-      selectorList.appendChild(heading);
-      var grid = document.createElement('div'); grid.className = 'bl-book-grid';
+      var details = document.createElement('details');
+      details.className = 'bl-testamento-grupo';
+      details.open = !!normalized;
+      var summary = document.createElement('summary');
+      summary.innerHTML = '<span>' + esc(testament) + '</span><span class="bl-testamento-count">' + group.length + ' livros</span>';
+      details.appendChild(summary);
+      var grid = document.createElement('div');
+      grid.className = 'bl-book-grid';
       group.forEach(function (book) {
-        var button = document.createElement('button'); button.type = 'button'; button.textContent = book.name;
+        var button = document.createElement('button');
+        button.type = 'button'; button.textContent = book.name;
         button.setAttribute('aria-current', String(book.code === current.code));
         button.addEventListener('click', function () {
           current.code = book.code; current.chapter = 1; current.verse = null;
           $('blSeletorCapitulos').hidden = false;
           $('blTituloSeletor').textContent = book.name + ' — escolher capítulo';
           renderChapterButtons(book);
+          details.open = true;
+          Array.prototype.forEach.call(selectorList.querySelectorAll('button[aria-current]'), function (b) {
+            b.setAttribute('aria-current', String(b === button));
+          });
         });
         grid.appendChild(button);
       });
-      selectorList.appendChild(grid);
+      details.appendChild(grid);
+      selectorList.appendChild(details);
     });
+    // The first stage is testamento; show chapters only after a book is picked.
   }
   function renderChapterButtons(book) {
     chapterList.innerHTML = '';
     for (var i = 1; i <= book.chapters; i++) {
       (function (chapter) {
         var button = document.createElement('button'); button.type = 'button'; button.textContent = chapter;
+        button.setAttribute('aria-label', book.name + ', capítulo ' + chapter);
         button.setAttribute('aria-current', String(book.code === current.code && chapter === current.chapter));
         button.addEventListener('click', function () {
           var api = getAPI();
@@ -243,14 +296,17 @@
     $('blTituloSeletor').textContent = 'Escolher livro';
     renderBookList('');
     sheet.hidden = false;
-    $('blBuscaLivro').focus();
+    window.setTimeout(function () { $('blBuscaLivro').focus(); }, 30);
   }
   function closeSelector() { sheet.hidden = true; $('blAbrirLivros').focus(); }
   function toggleSettings(force) {
     var open = force == null ? settings.hidden : !!force;
     settings.hidden = !open;
     $('blAjustesBtn').setAttribute('aria-expanded', String(open));
-    if (open) $('blFonte').focus();
+    if (open) {
+      applyWarmLight(true);
+      $('blFonte').focus();
+    }
   }
   function onTouchStart(event) {
     if (event.touches.length !== 1 || sheet.hidden === false) { touch = null; return; }
@@ -265,6 +321,7 @@
     navigate(dx < 0 ? 1 : -1);
   }
   function trackLegacyState() {
+    books = apiBooks();
     var info = titleFromLegacy();
     if (!info.book) return;
     current.code = info.book.code;
@@ -276,21 +333,36 @@
     renderChapterButtons(info.book);
   }
   function observeLegacyContent() {
-    var legacy = $('bibliaTexto');
-    if (!legacy) return;
-    new MutationObserver(function () {
+    var legacy = $('bibliaTexto'), legacyStatus = $('bibliaStatus');
+    if (legacy) new MutationObserver(function () {
       if (root.hidden) return;
       var info = titleFromLegacy();
-      if (!info.book) return;
+      if (!info.book || !legacy.innerHTML.trim()) return;
       var signature = info.book.code + ':' + info.chapter;
-      if (legacy.innerHTML.trim()) {
-        content.classList.remove('bl-loading');
-        content.innerHTML = legacy.innerHTML;
-        content.classList.remove('bl-page-enter'); void content.offsetWidth; content.classList.add('bl-page-enter');
-        lastRenderedSignature = signature;
-        trackLegacyState();
-      }
+      content.classList.remove('bl-loading');
+      content.innerHTML = legacy.innerHTML;
+      content.classList.remove('bl-page-enter'); void content.offsetWidth; content.classList.add('bl-page-enter');
+      lastRenderedSignature = signature;
+      trackLegacyState();
     }).observe(legacy, { childList: true, subtree: true, characterData: true });
+    if (legacyStatus) new MutationObserver(function () {
+      if (root.hidden || legacyStatus.hidden || !legacyStatus.textContent.trim()) return;
+      if (legacy && legacy.innerHTML.trim()) return;
+      var message = legacyStatus.textContent.trim();
+      content.classList.remove('bl-loading');
+      content.innerHTML = '<p class="bl-reader-empty">' + esc(message) + '</p>';
+      if (/não foi possível|falha|conexão|erro/i.test(message)) {
+        var retry = document.createElement('button');
+        retry.type = 'button';
+        retry.className = 'bl-settings-done';
+        retry.textContent = 'Tentar novamente';
+        retry.addEventListener('click', function () {
+          var info = titleFromLegacy();
+          if (info.book) { var api = getAPI(); if (api) api.abrir(info.book.code, info.chapter); }
+        });
+        content.appendChild(retry);
+      }
+    }).observe(legacyStatus, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['hidden'] });
   }
   function bind() {
     $('blAbrirLivros').addEventListener('click', openSelector);
@@ -299,13 +371,37 @@
     $('blFecharAjustes').addEventListener('click', function () { toggleSettings(false); });
     $('blFecharSeletor').addEventListener('click', closeSelector);
     sheet.addEventListener('click', function (event) { if (event.target === sheet) closeSelector(); });
-    $('blBuscaLivro').addEventListener('input', function () { renderBookList(this.value); });
+    $('blBuscaLivro').addEventListener('input', function () {
+      $('blSeletorCapitulos').hidden = true;
+      renderBookList(this.value);
+    });
     $('blAnterior').addEventListener('click', function () { navigate(-1); });
     $('blProximo').addEventListener('click', function () { navigate(1); });
-    $('blImersivoBtn').addEventListener('click', function () { setImmersive(!immersive, true); });
+    if ($('blImersivoBtn')) $('blImersivoBtn').addEventListener('click', function () { setImmersive(!immersive, true); });
+    $('blLuzAzul').addEventListener('change', applyWarmLight);
+    $('blLuzAzulNivel').addEventListener('input', applyWarmLight);
+    var globalWarmToggle = $('filtroQuente'), globalWarmRange = $('filtroIntensidade');
+    if (globalWarmToggle) globalWarmToggle.addEventListener('change', function () { applyWarmLight(true); });
+    if (globalWarmRange) globalWarmRange.addEventListener('input', function () { applyWarmLight(true); });
+
     $('blFonte').addEventListener('change', applyType);
     $('blEspaco').addEventListener('change', applyType);
-    $('blTema').addEventListener('change', function () { setTheme(this.value); });
+    $('blTema').addEventListener('change', function () {
+      setTheme(this.value);
+      applyType();
+    });
+    content.addEventListener('click', function (event) {
+      var copiedButton = event.target.closest('.biblia-favoritar');
+      if (copiedButton) {
+        event.preventDefault();
+        event.stopPropagation();
+        var copiedVerse = copiedButton.closest('[data-versiculo]');
+        var verseNo = copiedVerse && copiedVerse.getAttribute('data-versiculo');
+        var originalVerse = verseNo && $('bibliaTexto').querySelector('[data-versiculo="' + verseNo.replace(/[^0-9]/g, '') + '"]');
+        var originalButton = originalVerse && originalVerse.querySelector('.biblia-favoritar');
+        if (originalButton) originalButton.click();
+      }
+    });
     view.addEventListener('scroll', updateProgress, { passive: true });
     view.addEventListener('click', function (event) {
       if (!immersive || event.target.closest('button,a,input,select')) return;
@@ -327,6 +423,7 @@
     document.addEventListener('click', function (event) {
       var bibleTab = event.target.closest('[href="#biblia"],[data-section="biblia"],[data-target="#biblia"]');
       if (!bibleTab) return;
+      if (location.hash && location.hash !== '#biblia') previousHash = location.hash;
       window.setTimeout(enterReader, 80);
     });
     document.addEventListener('click', function (event) {
@@ -336,8 +433,16 @@
       }
     });
     window.addEventListener('hashchange', function () {
-      if (location.hash === '#biblia') window.setTimeout(enterReader, 60);
-      else if (!root.hidden) exitReader();
+      if (location.hash === '#biblia') window.setTimeout(enterReader, 80);
+      else if (!root.hidden) {
+        document.documentElement.classList.remove('biblia-leitor-ativo');
+        document.body.classList.remove('biblia-leitor-ativo');
+        root.hidden = true;
+        settings.hidden = true;
+        sheet.hidden = true;
+        immersive = false;
+        root.classList.remove('bl-controles-ocultos');
+      }
     });
     observeLegacyContent();
     window.setTimeout(function () {
