@@ -686,3 +686,49 @@ html.filtro-quente-global::after {
   mix-blend-mode: multiply;
 }
 body.filtro-quente-ativo::after { content: none !important; }
+
+
+/* Ovelia — correção de contraste global, hotfix 2026-10-23 (não altera lógica). */
+body.tema-claro .hero,
+body.tema-claro .hero *,
+body.tema-claro #inicio .hero,
+body.tema-claro #inicio .hero * {
+  color: #30263B !important;
+  text-shadow: none !important;
+}
+body.tema-claro .hero p,
+body.tema-claro .hero small,
+body.tema-claro .hero time,
+body.tema-claro #inicio .hero p,
+body.tema-claro #inicio .hero small,
+body.tema-claro #inicio .hero time {
+  color: #51485B !important;
+}
+body.tema-claro .hero { background:#FFFFFF !important; border:1px solid #E7E1ED !important; }
+body.tema-claro .hero a,
+body.tema-claro .hero .btn { color:#30263B !important; }
+body.tema-escuro .hero,
+body.tema-escuro .hero *,
+body.tema-escuro #inicio .hero,
+body.tema-escuro #inicio .hero * {
+  color:#F7F3FA !important;
+  text-shadow:none !important;
+}
+body.tema-escuro .hero p,
+body.tema-escuro .hero small,
+body.tema-escuro .hero time { color:#D9D1E2 !important; }
+body.tema-escuro .hero { background:#25212C !important; border:1px solid #494052 !important; }
+body.tema-escuro main .card,
+body.tema-escuro main .card * { color:var(--ink, #F1EDF5); }
+body.tema-claro main .card,
+body.tema-claro main .card * { color:var(--ink, #302B36); }
+body.tema-claro main .card .btn,
+body.tema-escuro main .card .btn { color:var(--ink) !important; }
+/* O filtro quente cobre a viewport inteira, incluindo cabeçalho e navegação fixa. */
+html.filtro-quente-global::after {
+  z-index:2147483646 !important;
+  position:fixed !important;
+  inset:0 !important;
+  pointer-events:none !important;
+  mix-blend-mode:multiply !important;
+}

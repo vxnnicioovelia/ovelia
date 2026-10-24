@@ -292,3 +292,49 @@ body.perfil-kids #bibliaModoLivro,body.perfil-kids #bibliaCapitulo,body.perfil-k
   #biblia .biblia-controles-linha button { font-size:.95rem; }
 }
 @media (prefers-reduced-motion:reduce) { #biblia * { scroll-behavior:auto !important; } }
+
+
+/* Ovelia — hotfix de contraste do leitor bíblico e posição dos ícones de favorito. */
+#biblia .biblia-leitor,
+#biblia .biblia-leitor h1,
+#biblia .biblia-leitor h2,
+#biblia .biblia-leitor h3,
+#biblia .biblia-leitor h4,
+#biblia .biblia-leitor p,
+#biblia .biblia-leitor label,
+#biblia .biblia-leitor small,
+#biblia .biblia-leitor strong,
+#biblia .biblia-leitor summary { color:var(--ink) !important; }
+#biblia .biblia-leitor .biblia-texto,
+#biblia .biblia-leitor .biblia-texto p,
+#biblia .biblia-leitor .biblia-texto span:not(.biblia-favoritar),
+#biblia .biblia-leitor .biblia-texto sup { color:inherit; }
+#biblia .biblia-leitor.biblia-tema-claro,
+#biblia .biblia-leitor.biblia-tema-claro .biblia-texto {
+  background:#FFFFFF !important; color:#28232D !important; border-color:#E4DEE9 !important;
+}
+#biblia .biblia-leitor.biblia-tema-claro .biblia-texto * { color:#28232D !important; }
+#biblia .biblia-leitor.biblia-tema-escuro,
+#biblia .biblia-leitor.biblia-tema-escuro h1,
+#biblia .biblia-leitor.biblia-tema-escuro h2,
+#biblia .biblia-leitor.biblia-tema-escuro h3,
+#biblia .biblia-leitor.biblia-tema-escuro h4,
+#biblia .biblia-leitor.biblia-tema-escuro p,
+#biblia .biblia-leitor.biblia-tema-escuro label,
+#biblia .biblia-leitor.biblia-tema-escuro small,
+#biblia .biblia-leitor.biblia-tema-escuro strong,
+#biblia .biblia-leitor.biblia-tema-escuro summary { color:#F5F0F8 !important; }
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto,
+#biblia .biblia-leitor.biblia-tema-escuro .biblia-texto * {
+  background-color:transparent; color:#F5F0F8 !important; border-color:#554B5B;
+}
+#biblia .biblia-leitor .biblia-v { position:relative; }
+#biblia .biblia-leitor .biblia-favoritar {
+  display:inline-flex; align-items:center; justify-content:center;
+  vertical-align:super; width:1.45em; height:1.45em; min-width:1.45em;
+  margin:0 .12em; padding:0; border:1px solid var(--line);
+  border-radius:50%; background:var(--soft); color:var(--ink);
+  font:700 .72em/1 system-ui,sans-serif; cursor:pointer;
+}
+#biblia .biblia-leitor .biblia-favoritar:focus-visible { outline:2px solid var(--olive); outline-offset:2px; }
+#biblia .biblia-leitor .biblia-n { color:var(--olive, #76519A) !important; font:600 .68em/1 system-ui,sans-serif; margin-right:.14em; }

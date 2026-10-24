@@ -1,9 +1,9 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v34-20261023-corrigirtudo1';
+var CACHE='ovelia-shell-v35-20261023-contraste2';
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261023-corrigirtudo1','./favoritos.css?v=20261023-parte10','./biblia.css?v=20261023-bookmode1',
+  './estilo.css?v=20261023-contraste2','./favoritos.css?v=20261023-parte10','./biblia.css?v=20261023-contraste2',
   './calendario-liturgico.css?v=20261022-hotfix2','./navegacao-inferior.css?v=20261022-hotfix2',
   './inicio.css?v=20261022-base1','./estudos.css?v=20261023-filtromodulos1','./ovelia-pwa.css?v=20261019-1','./ovelia-interface.css?v=20261023-corrigirtudo1',
   './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261023-corrigirtudo1',
