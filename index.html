@@ -23,16 +23,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="estilo.css?v=20261023-contraste2">
+<link rel="stylesheet" href="estilo.css?v=20261024-parte17">
 <link rel="stylesheet" href="biblia.css?v=20261024-menu-minimal1">
 <link rel="stylesheet" href="calendario-liturgico.css?v=20261022-hotfix2">
 <link rel="stylesheet" href="navegacao-inferior.css?v=20261022-hotfix2">
 <link rel="stylesheet" href="favoritos.css?v=20261023-parte10">
-<link rel="stylesheet" href="inicio.css?v=20261023-parte8">
-<link rel="stylesheet" href="estudos.css?v=20261023-filtromodulos1">
+<link rel="stylesheet" href="inicio.css?v=20261024-parte17">
+<link rel="stylesheet" href="estudos.css?v=20261024-parte17">
 <link rel="stylesheet" href="./ovelia-pwa.css?v=20261019-1">
 <link rel="stylesheet" href="./ovelia-interface.css?v=20261023-corrigirtudo1">
-<link rel="stylesheet" href="biblia-leitor.css?v=20261024-leitor-integrado2">
 </head>
 <body>
 <div id="perfilInicio" class="perfil-overlay" role="dialog" aria-modal="true" aria-labelledby="perfilTitulo" aria-describedby="perfilIntro" hidden>
@@ -148,56 +147,6 @@
 
 <!-- BÍBLIA -->
 <section class="pg" id="biblia">
-
-<div id="bibliaLeitorUX" class="biblia-leitor-ux" aria-label="Leitor bíblico imersivo" hidden>
-  <div class="bl-toolbar">
-    <button type="button" class="bl-icon-btn" id="blSair" aria-label="Sair do leitor">‹</button>
-    <button type="button" class="bl-book-button" id="blAbrirLivros" aria-label="Selecionar testamento, livro e capítulo">
-      <strong id="blLivroCapitulo">Bíblia</strong><small id="blLocalizacao">Escolha um livro</small>
-    </button>
-    <button type="button" class="bl-icon-btn" id="blAjustesBtn" aria-label="Configurações de leitura" aria-expanded="false">Aa</button>
-    <button type="button" class="bl-icon-btn" id="blImersivoBtn" aria-label="Ocultar controles de leitura" aria-pressed="false">⛶</button>
-  </div>
-  <div class="bl-reader-progress" aria-hidden="true"><span id="blProgresso"></span></div>
-  <div class="bl-reading-scroll" id="blRolagem" tabindex="0" aria-label="Texto bíblico; role verticalmente para ler">
-    <article class="bl-reading-content" id="blConteudo" aria-live="polite"><p class="bl-reader-empty">Escolha um livro para começar a leitura.</p></article>
-  </div>
-  <div class="bl-bottom-toolbar" id="blBarraInferior">
-    <button type="button" id="blAnterior">‹ Anterior</button>
-    <span class="bl-reader-location" id="blCapituloRodape">Capítulo 1</span>
-    <button type="button" id="blProximo">Próximo ›</button>
-  </div>
-  <div class="bl-read-settings" id="blAjustes" hidden>
-    <strong>Ajustes de leitura</strong>
-    <label for="blFonte">Tamanho da letra</label>
-    <select id="blFonte">
-      <option value="1.05rem">Pequena</option><option value="1.2rem" selected>Normal</option>
-      <option value="1.4rem">Grande</option><option value="1.65rem">Muito grande</option>
-    </select>
-    <label for="blEspaco">Espaçamento</label>
-    <select id="blEspaco">
-      <option value="1.65">Compacto</option><option value="1.92" selected>Normal</option>
-      <option value="2.15">Amplo</option><option value="2.4">Extra</option>
-    </select>
-    <label for="blTema">Tema da leitura</label>
-    <select id="blTema"><option value="claro">Claro</option><option value="escuro">Escuro</option><option value="quente">Quente</option></select>
-    <label class="bl-blue-toggle" for="blLuzAzul"><input id="blLuzAzul" type="checkbox"> Diminuir luz azul</label>
-    <label for="blLuzAzulNivel">Intensidade da luz quente</label>
-    <input id="blLuzAzulNivel" type="range" min="0" max="45" step="5" value="20">
-    <button type="button" id="blFecharAjustes" class="bl-settings-done">Concluir</button>
-  </div>
-  <div class="bl-book-sheet" id="blSeletor" hidden>
-    <div class="bl-book-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="blTituloSeletor">
-      <div class="bl-sheet-head"><strong id="blTituloSeletor">Escolher livro</strong><button type="button" class="bl-icon-btn" id="blFecharSeletor" aria-label="Fechar seletor">×</button></div>
-      <label for="blBuscaLivro" class="bl-search-label">Buscar livro</label>
-      <input class="bl-book-search" id="blBuscaLivro" type="search" placeholder="Ex.: Marcos, Salmos, Gênesis" autocomplete="off">
-      <p class="bl-reader-hint">Escolha um Testamento, depois o livro e o capítulo.</p>
-      <div id="blResultadosBusca"></div>
-      <div id="blSeletorCapitulos" hidden><div class="bl-testament-label" id="blTituloCapitulos">Escolha o capítulo</div><div class="bl-chapters-grid" id="blListaCapitulos"></div></div>
-    </div>
-  </div>
-</div>
-
 <h2>Bíblia</h2>
 <div class="biblia-licenca-nota" role="note">
   <strong>Bíblia Portuguesa Mundial (BPM) · domínio público</strong>
@@ -505,15 +454,14 @@
 <script src="liturgia.js?v=20261020-liturgia11"></script>
 <script src="app.js?v=20261024-menu-minimal1"></script>
 <script src="navegacao-inferior.js?v=20261023-parte8" defer></script>
-<script src="biblia.js?v=20261024-menu-minimal1"></script>
+<script src="biblia.js?v=20261024-parte17"></script>
 <script src="favoritos.js?v=20261023-parte10"></script>
-<script src="biblia-leitor.js?v=20261024-leitor-integrado2"></script>
 <script src="calendario-liturgico.js?v=20261017-1"></script>
-<script src="inicio.js?v=20261023-parte8"></script>
+<script src="inicio.js?v=20261024-parte17"></script>
 <script src="regras.js?v=20261019-estudos4"></script>
 <script src="trilha.js?v=20261023-modulos1"></script>
 <script src="progresso.js?v=20261023-modulos1"></script>
-<script src="interface.js?v=20261023-filtromodulos1"></script>
+<script src="interface.js?v=20261024-parte17"></script>
 
 <script src="./ovelia-kids.js?v=20261022-usabilidade2"></script>
 <script src="./ovelia-pwa.js?v=20261019-2"></script>

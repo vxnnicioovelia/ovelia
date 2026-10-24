@@ -117,3 +117,17 @@ body.perfil-senior .jr-no-n{flex-basis:64px;width:64px;height:64px}
 
 /* Parte 7 — módulos e revisão espaçada */
 .jr-revisao-lista{list-style:none;padding:0;margin:10px 0;display:grid;gap:10px}.jr-revisao-item{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}.jr-revisao-item .btn{justify-self:start;max-width:100%;white-space:normal}.jr-unidade-hd h4{overflow-wrap:anywhere}
+
+/* Parte 17 — contraste consistente para passagens bíblicas dentro dos Estudos. */
+body.tema-claro .jr-texto-biblico,
+body.tema-claro .jr-texto-biblico p,
+body.tema-claro .jr-texto-biblico .jr-versiculo-texto,
+body.tema-claro .jr-verso h4 { color:#302B36 !important; }
+body.tema-escuro .jr-texto-biblico,
+body.tema-escuro .jr-texto-biblico p,
+body.tema-escuro .jr-texto-biblico .jr-versiculo-texto,
+body.tema-escuro .jr-verso h4 { color:#F1EDF5 !important; }
+body.tema-claro .jr-texto-biblico { background:#F8F6FA; border-color:#E2D9EB; }
+body.tema-escuro .jr-texto-biblico { background:#29252F; border-color:#494052; }
+body.tema-claro .jr-sem-texto { color:#5B5365 !important; }
+body.tema-escuro .jr-sem-texto { color:#D0C9D9 !important; }

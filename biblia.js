@@ -146,8 +146,7 @@
       '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaFonteTamanho">Tamanho da letra</label><select id="bibliaFonteTamanho"><option value="0">Normal</option><option value="1">Grande</option><option value="2">Muito grande</option></select></div>'+
       '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaEspacamento">Espaçamento</label><select id="bibliaEspacamento"><option value="normal">Normal</option><option value="amplo">Amplo</option><option value="extra">Extra</option></select></div>'+
       '<button type="button" class="btn g biblia-tema-botao" id="bibliaAlternarTema" aria-pressed="false">Tema da leitura: claro</button>'+
-      '<div class="biblia-config-linha biblia-ajustes-linha biblia-luz-azul-controle"><label for="bibliaLuzAzul">Diminuir luz azul (tela inteira)</label><input type="checkbox" id="bibliaLuzAzul" aria-describedby="bibliaLuzAzulAjuda"><span id="bibliaLuzAzulAjuda" class="biblia-controle-ajuda">Aplica um tom quente uniforme à tela inteira.</span></div>'+
-      '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaLuzAzulIntensidade">Intensidade do filtro</label><input type="range" id="bibliaLuzAzulIntensidade" min="0" max="45" step="5" value="20"><output id="bibliaLuzAzulValor" for="bibliaLuzAzulIntensidade">20%</output></div>';
+      '<div class="biblia-config-linha biblia-ajustes-linha"><label for="bibliaLuzAzulIntensidade">Temperatura quente da tela (0% desativa)</label><input type="range" id="bibliaLuzAzulIntensidade" min="0" max="45" step="5" value="20"><output id="bibliaLuzAzulValor" for="bibliaLuzAzulIntensidade">20%</output><span class="biblia-controle-ajuda">Aplica um tom uniforme à tela inteira.</span></div>';
     var top = panel.querySelector('.biblia-leitor-topo');
     if (top && top.parentNode) top.parentNode.insertBefore(controls, top.nextSibling); else panel.insertBefore(controls, panel.firstChild);
     return controls;
@@ -367,39 +366,28 @@
     if(fontSelect.value==='2')panel.classList.add('biblia-fonte-2');
     if(spacingSelect.value==='amplo')panel.classList.add('biblia-espaco-amplo');
     if(spacingSelect.value==='extra')panel.classList.add('biblia-espaco-extra');
-    var dark=themeButton.getAttribute('aria-pressed')==='true';
+    var dark=document.body.classList.contains('tema-escuro');
     panel.classList.add(dark?'biblia-tema-escuro':'biblia-tema-claro');
-    themeButton.textContent=dark?'Tema da leitura: escuro':'Tema da leitura: claro';
-    themeButton.setAttribute('aria-label',dark?'Tema escuro ativo. Toque para usar o tema claro':'Tema claro ativo. Toque para usar o tema escuro');
+    themeButton.textContent=dark?'Tema do site: escuro':'Tema do site: claro';
+    themeButton.setAttribute('aria-label',dark?'Tema escuro do site ativo. Toque para alternar o tema geral':'Tema claro do site ativo. Toque para alternar o tema geral');
+    themeButton.setAttribute('aria-pressed',String(dark));
   }
-  var blueLightToggle=$('bibliaLuzAzul'), blueLightRange=$('bibliaLuzAzulIntensidade'), blueLightOutput=$('bibliaLuzAzulValor');
+  var blueLightRange=$('bibliaLuzAzulIntensidade'), blueLightOutput=$('bibliaLuzAzulValor');
   function syncBlueLightFromGlobal(){
     var globalToggle=$('filtroQuente'), globalRange=$('filtroIntensidade'), saved=null;
     try{saved=JSON.parse(localStorage.getItem('ovelia-filtro-quente')||'null');}catch(e){}
-    if(globalToggle) blueLightToggle.checked=!!globalToggle.checked;
-    else blueLightToggle.checked=!!(saved&&saved.ativo);
     var level=globalRange?Number(globalRange.value):(saved&&Number.isFinite(+saved.intensidade)?+saved.intensidade:20);
+    if(globalToggle && !globalToggle.checked) level=0;
     level=Math.max(0,Math.min(45,Number.isFinite(level)?level:20));
     blueLightRange.value=String(level); if(blueLightOutput)blueLightOutput.value=level+'%';
   }
   function applyBlueLightToGlobal(){
-    var globalToggle=$('filtroQuente'), globalRange=$('filtroIntensidade');
-    if(globalToggle){
-      globalToggle.checked=!!blueLightToggle.checked;
-      globalToggle.dispatchEvent(new Event('change',{bubbles:true}));
-    }else{
-      document.body.classList.toggle('filtro-quente-ativo',!!blueLightToggle.checked);
-      document.documentElement.classList.toggle('filtro-quente-global',!!blueLightToggle.checked);
-    }
-    if(globalRange){
-      globalRange.value=String(Math.max(0,Math.min(45,+blueLightRange.value||0)));
-      globalRange.dispatchEvent(new Event('input',{bubbles:true}));
-    }else{
-      document.documentElement.style.setProperty('--ovelia-filtro-quente-opacidade',String(blueLightToggle.checked?(Math.max(0,Math.min(45,+blueLightRange.value||0))/45)*0.42:0));
-    }
-    if(blueLightOutput)blueLightOutput.value=blueLightRange.value+'%';
+    var globalToggle=$('filtroQuente'), globalRange=$('filtroIntensidade'), level=Math.max(0,Math.min(45,+blueLightRange.value||0));
+    if(globalToggle){globalToggle.checked=level>0;globalToggle.dispatchEvent(new Event('change',{bubbles:true}));}
+    if(globalRange){globalRange.value=String(level);globalRange.dispatchEvent(new Event('input',{bubbles:true}));}
+    else{document.documentElement.style.setProperty('--ovelia-filtro-quente-opacidade',String((level/45)*0.42));document.documentElement.classList.toggle('filtro-quente-global',level>0);}
+    if(blueLightOutput)blueLightOutput.value=level+'%';
   }
-  blueLightToggle.addEventListener('change',applyBlueLightToGlobal);
   blueLightRange.addEventListener('input',applyBlueLightToGlobal);
   var globalBlueToggle=$('filtroQuente'), globalBlueRange=$('filtroIntensidade');
   if(globalBlueToggle)globalBlueToggle.addEventListener('change',syncBlueLightFromGlobal);
@@ -433,7 +421,8 @@
   if(sharedFontRange){sharedFontRange.addEventListener('input',function(){fontSelect.value=String(Math.max(0,Math.min(2,+sharedFontRange.value||0)));applyReadingSettings();saveReadingSettings();});}
   fontSelect.addEventListener('change',function(){if(sharedFontRange)sharedFontRange.value=fontSelect.value;applyReadingSettings();saveReadingSettings();});
   spacingSelect.addEventListener('change',function(){applyReadingSettings();saveReadingSettings();});
-  themeButton.addEventListener('click',function(){themeButton.setAttribute('aria-pressed',String(themeButton.getAttribute('aria-pressed')!=='true'));applyReadingSettings();saveReadingSettings();});
+  themeButton.addEventListener('click',function(){var globalTheme=$('temaBtn');if(globalTheme)globalTheme.click();applyReadingSettings();saveReadingSettings();});
+  var themeObserver=new MutationObserver(function(){applyReadingSettings();});themeObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
   restoreReadingSettings();
   var escolher=$('bibliaEscolherLivro'), menuLivros=$('bibliaMenuLivros'), fecharMenu=$('bibliaFecharMenuLivros');
   function setBookMenu(open){
@@ -460,7 +449,8 @@
     var m=/^(\d+)\s*,\s*(\d+)(?:\s*[-–]\s*(\d+))?$/.exec(resto);
     if(!m)return Promise.reject(new Error('Formato de referência não reconhecido: '+raw));
     var capNum=+m[1],from=+m[2],to=+(m[3]||m[2]);
-    return loadChapterData(book,capNum,translation).then(function(data){var cap=data.chapter || (data.chapters && data.chapters[capNum-1]);if(!cap)throw new Error('Capítulo inexistente');var verses=cap.v.filter(function(v){var n=parseInt(v.n,10);return n>=from&&n<=to;});if(!verses.length)throw new Error('Versículos inexistentes');return {livro:book,capitulo:capNum,referencia:original,versiculos:verses.map(function(v){return {numero:v.n,texto:v.t};})};});
+    var sourceTranslation=(translation&&isAvailable(translation))?translation:defaultTranslations[0];
+    return loadChapterData(book,capNum,sourceTranslation).then(function(data){var cap=data.chapter || (data.chapters && data.chapters[capNum-1]);if(!cap)throw new Error('Capítulo inexistente');var verses=cap.v.filter(function(v){var n=parseInt(v.n,10);return n>=from&&n<=to;});if(!verses.length)throw new Error('Versículos inexistentes');return {livro:book,capitulo:capNum,referencia:original,versiculos:verses.map(function(v){return {numero:v.n,texto:v.t};})};});
   }
   var profileObserver=new MutationObserver(function(records){
     if(!records.some(function(r){return r.attributeName==='class';}))return;
@@ -479,6 +469,6 @@
     traducaoSelecionada:function(){return isAvailable(translation)?translation.id:null;},
     textoReferencia:textoReferencia,
     books:books.map(function(b){return {name:b.name,code:b.code,chapters:b.chapters,testament:b.testament};}),
-    traducoes:function(){return translations.map(function(t){return {id:t.id,nome:t.nome,estado:t.estado,disponibilidade:isAvailable(t)?(t.fonteRemota?'online':'local'):'em_preparacao'};});}
+    traducoes:function(){return translations.map(function(t){var disponivel=isAvailable(t);return {id:t.id,nome:t.nome,estado:disponivel?'disponivel':t.estado,disponibilidade:disponivel?(t.fonteRemota?'online':'local'):'em_preparacao'};});}
   };
 })();

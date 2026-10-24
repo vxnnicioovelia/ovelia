@@ -34,7 +34,17 @@
       box.appendChild(el('p','pd-credito',v.traducao+' · '+v.licenca+' · Fonte: '+v.fonte));
     }else{
       var p=el('p','pd-ref');p.appendChild(el('span','pd-rotulo','Passagem para ler hoje: '));p.appendChild(document.createTextNode(v.ref));box.appendChild(p);
-      box.appendChild(el('p','pd-aviso','O texto desta passagem aparecerá aqui quando houver uma tradução com uso autorizado. Por enquanto, leia-a na sua Bíblia.'));
+      var aviso=el('p','pd-aviso','Carregando a passagem da Bíblia Portuguesa Mundial (BPM)…');box.appendChild(aviso);
+      var bib=window.OVELIA_BIBLIA, referencia=v.ref, dataDaPassagem=iso(d);
+      if(bib&&typeof bib.textoReferencia==='function'){
+        bib.textoReferencia(referencia).then(function(resultado){
+          if(!box.isConnected||box.getAttribute('data-data')!==dataDaPassagem||box.getAttribute('data-ref')!==referencia)return;
+          aviso.remove();var trecho=el('blockquote','pd-texto');
+          resultado.versiculos.forEach(function(vv){trecho.appendChild(document.createTextNode(vv.numero+' '));trecho.appendChild(document.createTextNode(vv.texto+' '));});
+          box.insertBefore(trecho,box.querySelector('.pd-reflexao'));
+          box.insertBefore(el('p','pd-credito','Bíblia Portuguesa Mundial (BPM) · domínio público declarado pelo eBible.org; tradução em revisão.'),box.querySelector('.pd-reflexao'));
+        }).catch(function(){if(box.isConnected&&box.getAttribute('data-data')===dataDaPassagem)aviso.textContent='Não foi possível carregar a passagem agora. Confira a conexão ou abra a referência no leitor bíblico.';});
+      }else aviso.textContent='O leitor bíblico ainda está iniciando. Abra a Bíblia para consultar esta referência.';
     }
     var r=el('div','pd-reflexao');r.appendChild(el('span','tag pd','Reflexão da Ovelia · conteúdo original'));r.appendChild(el('p',null,v.reflexao));box.appendChild(r);
     var bib=window.OVELIA_BIBLIA,available=bib&&typeof bib.traducoes==='function'?bib.traducoes().find(function(t){return t.estado==='disponivel'}):null;

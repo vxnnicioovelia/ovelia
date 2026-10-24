@@ -94,3 +94,13 @@ body.perfil-senior .senior-help{margin-top:16px}
 .tema-escuro .home-continuar-aviso,body.tema-escuro .home-continuar-aviso{color:#eee5f7}
 .pd-abrir-biblia{margin-top:.75rem}
 @media(max-width:390px){.home-continuar-item{padding:.8rem}.home-continuar-itens{grid-template-columns:1fr}}
+
+/* Parte 17 — Palavra do dia: texto BPM carregado com contraste pelo tema global. */
+body.tema-claro #palavraDiaConteudo .pd-texto,
+body.tema-claro #palavraDiaConteudo .pd-texto *,
+body.tema-claro #palavraDiaConteudo .pd-credito { color:#302B36 !important; }
+body.tema-escuro #palavraDiaConteudo .pd-texto,
+body.tema-escuro #palavraDiaConteudo .pd-texto *,
+body.tema-escuro #palavraDiaConteudo .pd-credito { color:#F1EDF5 !important; }
+body.tema-claro #palavraDiaConteudo .pd-texto { background:#F8F6FA; }
+body.tema-escuro #palavraDiaConteudo .pd-texto { background:#29252F; }

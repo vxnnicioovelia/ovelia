@@ -179,17 +179,17 @@
         var leitura=h('div','jr-texto-biblico',null,{'aria-live':'polite'});
         leitura.appendChild(h('p','jr-sem-texto','Buscando o trecho na Bíblia da Ovelia…'));
         d.appendChild(leitura);
-        if(window.OVELIA_BIBLIA&&window.OVELIA_BIBLIA.licencaTextoConfirmada===true&&typeof window.OVELIA_BIBLIA.textoReferencia==='function'){
+        if(window.OVELIA_BIBLIA&&typeof window.OVELIA_BIBLIA.textoReferencia==='function'){
           (function(ref,alvo){
-            alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Carregando a edição autorizada…'));
+            alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Carregando a Bíblia Portuguesa Mundial (BPM)…'));
             window.OVELIA_BIBLIA.textoReferencia(ref).then(function(resultado){
               alvo.textContent='';
               resultado.versiculos.forEach(function(v){var par=h('p','jr-versiculo-texto');par.appendChild(h('sup','jr-num-verso',String(v.numero)+' '));par.appendChild(document.createTextNode(v.texto));alvo.appendChild(par)});
-              alvo.appendChild(h('p','pd-credito','Texto da edição autorizada da Ovelia. Consulte os créditos editoriais da Bíblia.'));
+              alvo.appendChild(h('p','pd-credito','Bíblia Portuguesa Mundial (BPM) · fonte e créditos disponíveis na aba Bíblia.'));
             }).catch(function(){alvo.textContent='';alvo.appendChild(h('p','jr-sem-texto','Não foi possível carregar este trecho agora. Tente novamente mais tarde.'));});
           })(vv.ref,leitura);
         }else{
-          leitura.textContent='';leitura.appendChild(h('p','jr-sem-texto','A disponibilização do texto integral está pendente de autorização editorial. A referência, a explicação autoral e a atividade continuam disponíveis.'));
+          leitura.textContent='';leitura.appendChild(h('p','jr-sem-texto','O texto desta passagem ainda não pôde ser carregado. A referência, a explicação e a atividade continuam disponíveis; tente novamente quando estiver conectado.'));
           leitura.appendChild(btn('Abrir leitor da Bíblia','g',function(){location.hash='#biblia';window.scrollTo(0,0)}));
         }
         d.appendChild(h('p',null,vv.explicacao));corpo.appendChild(d);
