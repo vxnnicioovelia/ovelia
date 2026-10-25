@@ -732,3 +732,11 @@ html.filtro-quente-global::after {
   pointer-events:none !important;
   mix-blend-mode:multiply !important;
 }
+
+/* Auditoria 20261025 — perfil +60: cabeçalho e painel de voz sem quebras de palavra. Escopo restrito a body.perfil-senior. */
+body.perfil-senior .tools .controle-compacto{flex:0 0 auto!important;min-width:48px}
+body.perfil-senior .tools #perfilBtn{flex:1 1 auto!important;white-space:nowrap}
+body.perfil-senior .voz-controles .btn{flex:1 1 calc(50% - 8px);min-width:0;padding:10px 12px;line-height:1.25;overflow-wrap:normal;word-break:normal;hyphens:none}
+body.perfil-senior .voz-controles #vozPag{flex-basis:100%}
+body.perfil-senior .voz-controles .btn{font-size:1rem!important;white-space:nowrap}
+body.perfil-senior .tools .btn{font-size:1rem!important}
