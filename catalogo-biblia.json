@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "descricao": "Catálogo de traduções independentes da Bíblia na Ovelia. Todas começam em_preparacao; nenhuma é publicada até validação técnica e confirmação do proprietário.",
+  "descricao": "Catálogo de traduções independentes da Bíblia na Ovelia. A BPM pode ser lida online como rascunho em revisão; disponibilidade não representa aprovação editorial. As demais traduções permanecem em preparação até validação e confirmação do responsável.",
   "traducoes": [
     {
       "id": "bpm",

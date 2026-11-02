@@ -1,12 +1,12 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v48-20261025-auditoria'
+var CACHE='ovelia-shell-v49-20261102-evangelho1'
 var SHELL=[
   './','./index.html',
   './estilo.css?v=20261025-auditoria1','./favoritos.css?v=20261023-parte10','./biblia.css?v=20261024-versiculos-bpm1','./biblia-leitor.css?v=20261024-leitor-tema-global4',
   './calendario-liturgico.css?v=20261022-hotfix2','./navegacao-inferior.css?v=20261022-hotfix2',
   './inicio.css?v=20261023-parte8','./estudos.css?v=20261024-versiculos-legiveis1','./ovelia-pwa.css?v=20261019-1','./ovelia-interface.css?v=20261025-auditoria1',
-  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261024-menu-minimal1',
+  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261102-evangelho1',
   './navegacao-inferior.js?v=20261023-parte8','./favoritos.js?v=20261023-parte10','./biblia.js?v=20261024-versiculos-bpm1','./biblia-leitor.js?v=20261025-kindle-selector-fix1',
   './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261024-versiculos-bpm1',
   './regras.js?v=20261019-estudos4','./trilha.js?v=20261023-modulos1',

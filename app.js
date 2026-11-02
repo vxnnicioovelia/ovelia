@@ -377,6 +377,7 @@ var temasEstudo=[
 ];
 function primeira(arr){return Array.isArray(arr)?(arr[0]||null):arr||null}
 function refLeitura(obj){if(!obj)return '';return obj.referencia||obj.ref||obj.referenciaBiblica||obj.titulo||''}
+function tituloEvangelhoCorrigido(titulo,referencia){var nomes={mt:'Mateus',mateus:'Mateus',mc:'Marcos',marcos:'Marcos',lc:'Lucas',lucas:'Lucas',jo:'João',joao:'João',joão:'João'};var m=String(referencia||'').match(/(?:^|\b)(Mt|Mateus|Mc|Marcos|Lc|Lucas|Jo(?:ão|ao)?)(?=\s|\d|\.|,)/i);if(!m)return titulo||'';var canonico=nomes[m[1].normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()];if(!canonico)return titulo||'';var texto=String(titulo||'');return texto.replace(/(segundo\s+)(Mateus|Marcos|Lucas|João|Joao)/i,'$1'+canonico)}
 function textoDados(d){try{return JSON.stringify({liturgia:d.liturgia,leituras:d.leituras}).toLowerCase()}catch(e){return ''}}
 function escolherTema(d){var texto=textoDados(d),melhor=null,pontos=0;temasEstudo.forEach(function(t){var n=t.palavras.reduce(function(s,p){return s+(texto.indexOf(p)>=0?1:0)},0);if(n>pontos){pontos=n;melhor=t}});if(melhor)return melhor;var n=Math.floor((new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate())-new Date(hoje.getFullYear(),0,0))/86400000);return temasEstudo[n%temasEstudo.length]}
 function renderEstudo(tema,leituras,origem){var refs=leituras.map(function(x){return x.titulo+': '+x.ref}).filter(function(x){return x.indexOf(': ')>0});var html='<span class="tag pd">Trilha de estudo da Ovelia</span><h3>'+esc(tema.titulo)+'</h3><p>'+esc(tema.reflexao)+'</p>';
@@ -393,10 +394,10 @@ function renderLiturgy(d,origem,dt,opts){var antiga=!!(opts&&opts.antiga),pedida
  var textoAoVivo=LIT_MOSTRAR_TEXTO&&origem==='api';
  var textoIntegralLiberado=textoPorLicenca||textoAoVivo;
  defs.forEach(function(def){var arr=Array.isArray(def[1])?def[1]:(def[1]?[def[1]]:[]);if(!arr.length)return;var unique=[];
-  arr.forEach(function(o){var r=refLeitura(o);if(r&&unique.indexOf(r)<0)unique.push(r);
+  arr.forEach(function(o){var r=refLeitura(o),titulo=o&&o.titulo?(def[0]==='Evangelho'?tituloEvangelhoCorrigido(o.titulo,r):o.titulo):'';if(r&&unique.indexOf(r)<0)unique.push(r);
     var texto=textoIntegralLiberado&&o&&typeof o.texto==='string'?o.texto.trim():'';
     var refrao=textoIntegralLiberado&&o&&typeof o.refrao==='string'?o.refrao.trim():'';
-    blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(o&&o.titulo&&o.titulo!==r?'<p class="lit-titulo">'+esc(o.titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+(refrao?'<p class="lit-refrao"><strong>Refrão:</strong> '+esc(refrao)+'</p>':'')+(texto?'<div class="lit-texto">'+textoHtml(texto)+'</div>':'')+'</section>'});
+    blocos+='<section class="lit-bloco"><h4>'+esc(def[0])+'</h4>'+(titulo&&titulo!==r?'<p class="lit-titulo">'+esc(titulo)+'</p>':'')+(r?'<p class="lit-ref">'+esc(r)+'</p>':'')+(refrao?'<p class="lit-refrao"><strong>Refrão:</strong> '+esc(refrao)+'</p>':'')+(texto?'<div class="lit-texto">'+textoHtml(texto)+'</div>':'')+'</section>'});
   if(unique.length)refs.push({titulo:def[0],ref:unique.join(' / ')})});
  var celebracao=d.liturgia||d.celebracao||'Liturgia do dia';var cor=d.cor||d.corLiturgica||'';
  $('#litData').textContent=dataLonga(antiga&&pedida?pedida:dt);
