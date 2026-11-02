@@ -1,20 +1,26 @@
 # Ovelia
 
-Ovelia é uma aplicação web estática instalável (PWA), com áreas de liturgia, Bíblia, oração, estudos, conteúdo infantil e recursos de acompanhamento pessoal. Este repositório contém a versão web; aplicativos nativos para iOS e Android ainda não fazem parte deste pacote.
+Aplicação web estática instalável (PWA) com áreas de liturgia, Bíblia, oração, estudos, conteúdo infantil e acompanhamento pessoal. Este repositório contém o site web; os aplicativos nativos para iOS e Android ainda não fazem parte deste pacote.
+
+## Estrutura do repositório
+
+- `index.html`, `404.html`, `manifest.webmanifest`, `sw.js` e `robots.txt`: entradas e configurações do GitHub Pages.
+- `assets/css/`: estilos do site.
+- `assets/js/`: código JavaScript da aplicação.
+- `assets/images/`: imagens, ícones e ilustrações.
+- `dados/`: catálogos bíblicos e dados litúrgicos.
+- `estudos/dados/`: lições carregadas pela área de estudos.
+- `tools/`: ferramentas de manutenção e validação.
+- `docs/atualizacoes/`: registros de mudanças.
+- `docs/editorial/`: materiais editoriais.
+- `docs/historico/`: arquivos antigos preservados para consulta, não carregados pelo site.
+
+As regras para futuras alterações estão em [AGENTS.md](AGENTS.md). A raiz fica reservada às entradas e configurações do site.
 
 ## Bíblia Portuguesa Mundial (BPM)
 
-A BPM permanece disponível para leitura online com aviso visível de que o texto está em revisão. O catálogo registra a declaração de domínio público do eBible.org. A disponibilidade técnica não significa revisão editorial concluída; correções devem ser avaliadas antes de qualquer declaração de versão final.
-
-## Estrutura
-
-- Arquivos HTML, CSS, JavaScript, imagens e configuração PWA na raiz: recursos carregados pelo site.
-- `dados/`: conteúdo local consumido pela aplicação.
-- `tools/`: ferramentas de manutenção e validação de dados.
-- `.github/workflows/`: automações ativas do repositório.
-- `docs/editorial/`: inventário editorial.
-- `docs/historico/`: relatórios, instruções antigas, rascunhos, cópias redundantes e módulos que não estão ligados à interface atual. São mantidos para consulta e não são carregados pelo site.
+A BPM permanece disponível para leitura online com aviso visível de que o texto está em revisão. O catálogo registra a declaração de domínio público do eBible.org. A disponibilidade técnica não significa revisão editorial concluída.
 
 ## Desenvolvimento
 
-O site não exige etapa de compilação. Abra `index.html` em um servidor estático local para visualizar a aplicação. Mudanças publicadas no GitHub Pages exigem envio explícito ao repositório.
+O site não exige compilação. Sirva `index.html` por um servidor estático para visualizá-lo localmente. Ao mover um recurso, atualize os caminhos de carregamento, o manifesto e o cache do service worker.

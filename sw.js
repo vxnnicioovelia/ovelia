@@ -1,19 +1,19 @@
 /* Ovelia service worker. Only caches same-origin static shell assets; never caches JSON/content feeds. */
 'use strict';
-var CACHE='ovelia-shell-v49-20261102-evangelho1'
+var CACHE='ovelia-shell-v50-20261102-pastas'
 var SHELL=[
   './','./index.html',
-  './estilo.css?v=20261025-auditoria1','./favoritos.css?v=20261023-parte10','./biblia.css?v=20261024-versiculos-bpm1','./biblia-leitor.css?v=20261024-leitor-tema-global4',
-  './calendario-liturgico.css?v=20261022-hotfix2','./navegacao-inferior.css?v=20261022-hotfix2',
-  './inicio.css?v=20261023-parte8','./estudos.css?v=20261024-versiculos-legiveis1','./ovelia-pwa.css?v=20261019-1','./ovelia-interface.css?v=20261025-auditoria1',
-  './inicio-dados.js?v=20261018-inicio1','./liturgia.js?v=20261020-liturgia11','./app.js?v=20261102-evangelho1',
-  './navegacao-inferior.js?v=20261023-parte8','./favoritos.js?v=20261023-parte10','./biblia.js?v=20261024-versiculos-bpm1','./biblia-leitor.js?v=20261025-kindle-selector-fix1',
-  './calendario-liturgico.js?v=20261017-1','./inicio.js?v=20261024-versiculos-bpm1',
-  './regras.js?v=20261019-estudos4','./trilha.js?v=20261023-modulos1',
-  './progresso.js?v=20261023-modulos1','./licoes-001-010.js?v=20261023-modulos1',
-  './interface.js?v=20261024-versiculos-bpm1','./licoes-011-020.js?v=20261023-modulos1','./ovelia-pwa.js?v=20261019-2','./ovelia-kids.js?v=20261022-usabilidade2',
-  './icone-128.png','./favicon-64.png','./apple-touch-icon.png',
-  './pwa-192.png','./pwa-512.png','./manifest.webmanifest?v=20261019-quality1'
+  './assets/css/estilo.css?v=20261025-auditoria1','./assets/css/favoritos.css?v=20261023-parte10','./assets/css/biblia.css?v=20261024-versiculos-bpm1','./assets/css/biblia-leitor.css?v=20261024-leitor-tema-global4',
+  './assets/css/calendario-liturgico.css?v=20261022-hotfix2','./assets/css/navegacao-inferior.css?v=20261022-hotfix2',
+  './assets/css/inicio.css?v=20261023-parte8','./assets/css/estudos.css?v=20261024-versiculos-legiveis1','./assets/css/ovelia-pwa.css?v=20261019-1','./assets/css/ovelia-interface.css?v=20261025-auditoria1',
+  './assets/js/inicio-dados.js?v=20261018-inicio1','./assets/js/liturgia.js?v=20261020-liturgia11','./assets/js/app.js?v=20261102-evangelho1',
+  './assets/js/navegacao-inferior.js?v=20261023-parte8','./assets/js/favoritos.js?v=20261023-parte10','./assets/js/biblia.js?v=20261024-versiculos-bpm1','./assets/js/biblia-leitor.js?v=20261025-kindle-selector-fix1',
+  './assets/js/calendario-liturgico.js?v=20261017-1','./assets/js/inicio.js?v=20261024-versiculos-bpm1',
+  './assets/js/regras.js?v=20261019-estudos4','./assets/js/trilha.js?v=20261023-modulos1',
+  './assets/js/progresso.js?v=20261023-modulos1','./estudos/dados/licoes-001-010.js?v=20261023-modulos1',
+  './assets/js/interface.js?v=20261024-versiculos-bpm1','./estudos/dados/licoes-011-020.js?v=20261023-modulos1','./assets/js/ovelia-pwa.js?v=20261019-2','./assets/js/ovelia-kids.js?v=20261022-usabilidade2',
+  './assets/images/icone-128.png','./assets/images/favicon-64.png','./assets/images/apple-touch-icon.png',
+  './assets/images/pwa-192.png','./assets/images/pwa-512.png','./manifest.webmanifest?v=20261019-quality1'
 ]
 self.addEventListener('install',function(event){
   event.waitUntil(caches.open(CACHE).then(function(cache){return Promise.all(SHELL.map(function(url){return cache.add(url).catch(function(){/* Um recurso opcional ausente não deve cancelar o cache dos demais. */});}));}).then(function(){return self.skipWaiting();}));
